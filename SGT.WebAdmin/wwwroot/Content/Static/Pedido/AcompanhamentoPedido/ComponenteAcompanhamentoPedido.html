@@ -1,0 +1,569 @@
+﻿<style>
+    .div-border-acompanhamento {
+        border: 1px solid #D3D3D3;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .imagens-entrega-container {
+    }
+
+        .imagens-entrega-container .imagem-entrega {
+            margin-bottom: 30px;
+            cursor: pointer;
+            -webkit-transition: all 100ms linear;
+            -moz-transition: all 100ms linear;
+            -ms-transition: all 100ms linear;
+            -o-transition: all 100ms linear;
+            transition: all 100ms linear;
+        }
+
+            .imagens-entrega-container .imagem-entrega:hover {
+                opacity: .8;
+            }
+
+            .imagens-entrega-container .imagem-entrega .imagem-background {
+                background-size: cover;
+                background-position: center;
+                background-color: #ececec;
+                min-height: 200px;
+                border-radius: 3px;
+            }
+
+    .imagens-coleta-container .imagem-coleta {
+        margin-bottom: 30px;
+        cursor: pointer;
+        -webkit-transition: all 100ms linear;
+        -moz-transition: all 100ms linear;
+        -ms-transition: all 100ms linear;
+        -o-transition: all 100ms linear;
+        transition: all 100ms linear;
+    }
+
+        .imagens-coleta-container .imagem-coleta:hover {
+            opacity: .8;
+        }
+
+        .imagens-coleta-container .imagem-coleta .imagem-background {
+            background-size: cover;
+            background-position: center;
+            background-color: #ececec;
+            min-height: 200px;
+            border-radius: 3px;
+        }
+
+    .imagens-entrega-container, .imagens-coleta-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+</style>
+
+<div id="acompanhamento-pedido-templete">
+    <div id="knockoutEtapaAcompanhamentoPedido" class="row div-border-acompanhamento mb-4 mx-1">
+        <div class="col col-3">
+            <div>
+                <label> <b data-bind="text: Numero.text"> </b> <span data-bind="text: Numero.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: NotasFiscais.text"> </b> <span data-bind="text: NotasFiscais.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: DescricaoSituacaoAcompanhamentoPedido.text"> </b> <span data-bind="text: DescricaoSituacaoAcompanhamentoPedido.val"> </span> </label>
+            </div>
+            <div data-bind="visible: DescricaoStatusMonitoramento.val()">
+                <label> <b data-bind="text: DescricaoStatusMonitoramento.text"> </b> <span data-bind="text: DescricaoStatusMonitoramento.val"> </span> </label>
+            </div>
+        </div>
+        <div class="col col-3">
+            <div>
+                <label> <b data-bind="text: Remetente.text"> </b> <span data-bind="text: Remetente.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: Destinatario.text"> </b> <span data-bind="text: Destinatario.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: ValorFrete.text"> </b> <span data-bind="text: ValorFrete.val"> </span> </label>
+            </div>
+        </div>
+        <div class="col col-3">
+            <div>
+                <label> <b data-bind="text: Origem.text"> </b> <span data-bind="text: Origem.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: Destino.text"> </b> <span data-bind="text: Destino.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: TipoDeCarga.text"> </b> <span data-bind="text: TipoDeCarga.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: DataColeta.text"> </b> <span data-bind="text: DataColeta.val"> </span> </label>
+            </div>
+        </div>
+        <div class="col col-3">
+            <div>
+                <label> <b data-bind="text: Tracao.text"> </b> <span data-bind="text: Tracao.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: Reboques.text"> </b> <span data-bind="text: Reboques.val"> </span> </label>
+            </div>
+            <div>
+                <label> <b data-bind="text: Motoristas.text"> </b> <span data-bind="text: Motoristas.val"> </span> </label>
+            </div>
+        </div>
+        <hr class="mt-3 mb-1" />
+        <ul class="nav nav-steps">
+
+            <li data-target="#step1" data-bind="visible : EtapaPedido.visible">
+                <button data-bind="attr: {id : EtapaPedido.idLI, 'data-bs-toggle': EtapaPedido.dataToggle, 'data-bs-target': ('#'+EtapaPedido.idTab) }, click : EtapaPedido.eventClick, visible : EtapaPedido.visible, enable: EtapaPedido.enable">
+                    <span class="step" data-bind="css: EtapaPedido.stepClass, attr: {'data-content' : EtapaPedido.tooltip, 'data-original-title' : EtapaPedido.tooltipTitle }">
+                        <i class="fal fa-file-alt"></i>
+                    </span>
+                    <span class="title" data-bind="text: EtapaPedido.text"></span>
+                </button>
+            </li>
+
+
+            <li data-target="#step2" data-bind="visible : EtapaColeta.visible">
+                <button data-bind="attr: {id : EtapaColeta.idLI, 'data-bs-toggle': EtapaColeta.dataToggle, 'data-bs-target': ('#'+EtapaColeta.idTab) }, click : EtapaColeta.eventClick, visible : EtapaColeta.visible, enable: EtapaColeta.enable">
+                    <span class="step" data-bind="css: EtapaColeta.stepClass, attr: {'data-content' : EtapaColeta.tooltip, 'data-original-title' : EtapaColeta.tooltipTitle }">
+                        <i class="fal fa-link"></i>
+                    </span>
+                    <span class="title" data-bind="text: EtapaColeta.text"></span>
+                </button>
+            </li>
+
+            <li data-target="#step3" data-bind="visible : EtapaTransporte.visible">
+                <button data-bind="attr: {id : EtapaTransporte.idLI, 'data-bs-toggle': EtapaTransporte.dataToggle, 'data-bs-target': ('#'+EtapaTransporte.idTab) }, click : EtapaTransporte.eventClick, visible : EtapaTransporte.visible, enable: EtapaTransporte.enable">
+                    <span class="step" data-bind="css: EtapaTransporte.stepClass, attr: {'data-content' : EtapaTransporte.tooltip, 'data-original-title' : EtapaTransporte.tooltipTitle }">
+                        <i class="fal fa-link"></i>
+                    </span>
+                    <span class="title" data-bind="text: EtapaTransporte.text"></span>
+                </button>
+            </li>
+
+            <li data-target="#step4" data-bind="visible : EtapaEntrega.visible">
+                <button data-bind="attr: {id : EtapaEntrega.idLI, 'data-bs-toggle': EtapaEntrega.dataToggle, 'data-bs-target': ('#'+EtapaEntrega.idTab) }, click : EtapaEntrega.eventClick, visible : EtapaEntrega.visible, enable: EtapaEntrega.enable">
+                    <span class="step" data-bind="css: EtapaTransporte.stepClass, attr: {'data-content' : EtapaEntrega.tooltip, 'data-original-title' : EtapaEntrega.tooltipTitle }">
+                        <i class="fal fa-link"></i>
+                    </span>
+                    <span class="title" data-bind="text: EtapaEntrega.text"></span>
+                </button>
+            </li>
+        </ul>
+        <div id="acompanhamentoPedidoStep" class="tab-content ">
+            <div class="tab-pane fade" data-bind="attr: {id : EtapaPedido.idTab }">
+                <!-- ko component: {
+                    name: "acompanhamento-pedido-dados-pedido", params: EtapaPedido.idTab
+                }
+                -->
+                <!--
+
+                /ko -->
+            </div>
+            <div class="tab-pane fade" data-bind="attr: {id : EtapaColeta.idTab }">
+                <!-- ko component: {
+                    name: "acompanhamento-pedido-dados-coleta", params: EtapaColeta.idTab
+                }
+                -->
+                <!--
+
+                /ko -->
+            </div>
+            <div class="tab-pane fade" data-bind="attr: {id : EtapaTransporte.idTab }">
+                <!-- ko component: {
+                    name: "acompanhamento-pedido-dados-transporte", params: EtapaTransporte.idTab
+                }
+                -->
+                <!--
+
+                /ko -->
+            </div>
+            <div class="tab-pane fade" data-bind="attr: {id : EtapaEntrega.idTab }">
+                <!-- ko component: {
+                    name: "acompanhamento-pedido-dados-entrega", params: EtapaEntrega.idTab
+                }
+                -->
+                <!--
+
+                /ko -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="acompanhamento-pedido-dados-pedido-templete">
+
+    <fieldset>
+        <div class="row" data-bind="attr: {id : knockoutId.val } ">
+
+            <h3 data-bind="text: DadosPedido.text"></h3>
+            <section class="col col-12">
+                <label> <b data-bind="text: NumeroPedidoEmbarcador.text"> </b> <span data-bind="text: NumeroPedidoEmbarcador.val"> </span> </label>
+            </section>
+            <section class="col col-12">
+                <label> <b data-bind="text: NumerosNotas.text"> </b> <span data-bind="text: NumerosNotas.val"> </span> </label>
+            </section>
+            <section class="col col-12">
+                <label> <b data-bind="text: Remetente.text"> </b> <span data-bind="text: Remetente.val"> </span> </label>
+            </section>
+            <section class="col col-12">
+                <label> <b data-bind="text: Origem.text"> </b> <span data-bind="text: Origem.val"> </span> </label>
+            </section>
+            <section class="col col-12">
+                <label> <b data-bind="text: Destinatario.text"> </b> <span data-bind="text: Destinatario.val"> </span> </label>
+            </section>
+            <section class="col col-12">
+                <label> <b data-bind="text: Destino.text"> </b> <span data-bind="text: Destino.val"> </span> </label>
+            </section>
+            <section class="col col-12">
+                <label> <b data-bind="text: DataCarregamentoPedido.text"> </b> <span data-bind="text: DataCarregamentoPedido.val"> </span> </label>
+            </section>
+            <section class="col col-12">
+                <label> <b data-bind="text: NumeroCarga.text"> </b> <span data-bind="text: NumeroCarga.val"> </span> </label>
+            </section>
+            <section class="col col-12">
+                <label> <b data-bind="text: PesoTotal.text"> </b> <span data-bind="text: PesoTotal.val"> </span> </label>
+            </section>
+            <section class="col col-12" data-bind="visible: PrevisaoEntrega.val() != '' ">
+                <label> <b data-bind="text: PrevisaoEntrega.text"> </b> <span data-bind="text: PrevisaoEntrega.val"> </span> </label>
+            </section>
+            <section class="col col-12" data-bind="visible: URLRastreamentoEntrega.val() != '' ">
+                <label> <b data-bind="text: URLRastreamentoEntrega.text"> </b> <a href="" target="_blank" rel="noopener noreferrer" data-bind="attr: { href: URLRastreamentoEntrega.val }"><span data-bind="text: URLRastreamentoEntrega.val"> </span></a> </label>
+            </section>
+            <section class="col col-12" data-bind="visible: ResumoEstadia.visible">
+                <button class="btn btn-primary" type="button" data-bind="click: ResumoEstadia.eventClick, attr: { id: ResumoEstadia.id}">
+                    <span data-bind="text: ResumoEstadia.text"></span>
+                </button>
+            </section>
+        </div>
+
+    </fieldset>
+</div>
+
+
+<div id="acompanhamento-pedido-dados-coleta-templete">
+    <h3 data-bind="text: DadosColeta.text"></h3>
+
+
+    <div class="row" data-bind="attr: {id : knockoutId.val } ">
+        <div class="alert alert-info alert-block" data-bind="visible: !CodigoPedido.visible()">
+            <strong data-bind="text: Informacao.text"></strong> <span data-bind="text: TextoInformacao.text"></span>
+        </div>
+
+
+        <div data-bind="visible: CodigoPedido.visible">
+            <ul class="nav nav-tabs mb-3" id="myTab">
+                <li class="nav-item">
+                    <a data-bind="attr: {href : '#tab-detalhes-coleta'+ knockoutId.val }" class="nav-link active" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet" data-bind="text: Detalhes.text"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a data-bind="attr: {href : '#tab-dados-coleta'+ knockoutId.val }" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet" data-bind="text: DadosColeta.text"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a data-bind="attr: {href : '#tab-local-coleta'+ knockoutId.val }" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet" data-bind="text: LocalColeta.text"></span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a data-bind="attr: {href : '#tab-fotos-coleta'+ knockoutId.val }" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet" data-bind="text: Fotos.text"></span>
+                    </a>
+                </li>
+            </ul>
+
+            <div id="myTabContent" class="tab-content  border border-top-0 p-3">
+                <div class="tab-pane fade active show" data-bind="attr: {id : 'tab-detalhes-coleta'+ knockoutId.val}">
+                    <div class="row">
+                        <div class="col col-12">
+                            <span> <b data-bind="text: Situacao.text"> </b> <span data-bind="text: Situacao.val"> </span> </span>
+                        </div>
+                        <div class="col col-12">
+                            <span> <b data-bind="text: Programacao.text"> </b> <span data-bind="text: Programacao.val"> </span> </span>
+                        </div>
+                        <div class="col col-12">
+                            <span> <b data-bind="text: Transportador.text"> </b> <span data-bind="text: Transportador.val"> </span> </span>
+                        </div>
+                        <div class="col col-12">
+                            <span> <b data-bind="text: Veiculo.text"> </b> <span data-bind="text: Veiculo.val"> </span> </span>
+                        </div>
+                        <div class="col col-12">
+                            <span> <b data-bind="text: Motorista.text"> </b> <span data-bind="text: Motorista.val"> </span> </span>
+                        </div>
+                        <div class="col col-12">
+                            <span> <b data-bind="text: ModeloVeiculo.text"> </b> <span data-bind="text: ModeloVeiculo.val"> </span> </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" data-bind="attr: {id : 'tab-dados-coleta'+ knockoutId.val}">
+                    <div class="col-12 col-md-12" data-bind="visible: Lacres.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Lacres.text"></label>
+                            <input type="text" class="form-control" data-bind="class: Lacres.requiredClass, value: Lacres.val, valueUpdate: 'afterkeydown', attr: { maxlength: Lacres.maxlength, id : Lacres.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                            <textarea class="form-control" rows="4" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                        </div>
+                    </div>
+                    <footer id="knockoutCRUDLocais" class="justify-content-end col-12 d-flex">
+                        <input type="button" data-bind="click: Salvar.eventClick, visible: Salvar.visible, attr: { value: Salvar.text, id : Salvar.id}, enable : Salvar.enable" class="btn btn-labeled btn-success" />
+                    </footer>
+                </div>
+
+                <div class="tab-pane fade" data-bind="attr: {id : 'tab-local-coleta'+ knockoutId.val}">
+                    <div class="map-container">
+                        <div data-bind="attr: {id : 'map-local-coleta'+ knockoutId.val}" style="width:100%; height:550px"> </div>
+                        <div data-bind="text: LocalColeta.val" style="margin-top: 10px; font-weight: bold"> </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" data-bind="attr: {id : 'tab-fotos-coleta'+ knockoutId.val}">
+                    <div class="row imagens-coleta-container">
+                        <!-- ko foreach: { data: Imagens.val, as: 'Imagem' } -->
+                        <div class="col col-sm-4 imagem-coleta">
+                            <div class="imagem-background" data-bind="style: {'background-image': 'url(data:image/png;base64,' + Imagem.Miniatura +')'}"></div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="acompanhamento-pedido-dados-transporte-templete">
+
+
+
+    <div class="row" data-bind="attr: {id : knockoutId.val } ">
+        <section class="col col-6">
+            <h3 data-bind="text: DadosTransporte.text"> </h3>
+            <h3 data-bind="text: Historico.text"> </h3>
+
+            <fieldset>
+                <div class="20-content">
+                    <div class="widget-body no-padding-bottom" id="container-grid-dados-transporte-historico-pedido">
+                        <table width="100%" class="table table-bordered table-hover table-condensed table-striped tableCursorMove" data-bind="attr: { id: HistoricoPedido.idGrid}" cellspacing="0"> </table>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div id="divAduanasPedido" class="mt-5" data-bind="visible: PossuiPassagemAduanas.val()">
+                <h3>
+                    Aduana
+                </h3>
+
+                <fieldset>
+                    <div class="20-content">
+                        <div class="widget-body no-padding-bottom" id="container-grid-dados-transporte-historico-aduana">
+                            <table width="100%" class="table table-bordered table-hover table-condensed table-striped tableCursorMove" data-bind="attr: { id: HistoricosAduana.idGrid}" cellspacing="0"> </table>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </section>
+
+        <section class="col col-6">
+            <h3>
+                Mapa
+            </h3>
+            <fieldset>
+                <!-- LocalTransporte -->
+                <div class="map-container">
+                    <div class="smart-form" id="DetalhesMapa" style="position:relative; padding:2px">
+                        <div class="legenda-rotas-container">
+                            <div>
+                                <strong>Rotas</strong>
+                                <ul id="legenda-rotas-mapa" class="legenda">
+                                    <li class="rota-planejada"><span class="linha"></span><span class="descricao">Planejada</span><span class="distancia"></span></li>
+                                    <li class="rota-ate-origem"><span class="linha"></span><span class="descricao">Até origem</span><span class="distancia"></span></li>
+                                    <li class="rota-ate-destino"><span class="linha"></span><span class="descricao">Até destino</span><span class="distancia"></span></li>
+                                    <li class="rota-realizada"><span class="linha"></span><span class="descricao">Realizada</span><span class="distancia"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <fieldset class="fieldset-no-padding">
+                            <div data-bind="attr: {id: 'map-' + knockoutId.val}" style="width:100%;height:600px;"></div>
+                        </fieldset>
+                    </div>
+                </div>
+            </fieldset>
+        </section>
+    </div>
+
+</div>
+
+<div id="acompanhamento-pedido-dados-entrega-templete">
+
+
+    <div class="row" data-bind="attr: {id : knockoutId.val } ">
+        <h3 data-bind="text: DadosEntrega.text"></h3>
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="nav-item">
+                <a data-bind="attr: {href : '#tab-detalhes-entrega'+ knockoutId.val }" class="nav-link active" data-bs-toggle="tab">
+                    <span class="hidden-mobile hidden-tablet" data-bind="text: Detalhes.text"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a data-bind="attr: {href : '#tab-local-entrega'+ knockoutId.val }" class="nav-link" data-bs-toggle="tab">
+                    <span class="hidden-mobile hidden-tablet" data-bind="text: LocalEntrega.text"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a data-bind="attr: {href : '#tab-fotos-entrega'+ knockoutId.val }" class="nav-link" data-bs-toggle="tab">
+                    <span class="hidden-mobile hidden-tablet" data-bind="text: Fotos.text"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a data-bind="attr: {href : '#tab-canhotos-entrega'+ knockoutId.val }" class="nav-link" data-bs-toggle="tab">
+                    <span class="hidden-mobile hidden-tablet" data-bind="text: Canhotos.text"></span>
+                </a>
+            </li>
+            <li class="nav-item" data-bind="visible: Avaliacao.visible">
+                <a data-bind="attr: {href : '#tab-avaliacao-entrega'+ knockoutId.val }" class="nav-link" data-bs-toggle="tab">
+                    <span class="hidden-mobile hidden-tablet" data-bind="text: Avaliacao.text"></span>
+                </a>
+            </li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active show" data-bind="attr: {id : 'tab-detalhes-entrega'+ knockoutId.val}">
+                <div class="map-container">
+                    <div class="row">
+                        <section class="col col-12">
+                            <label> <b data-bind="text: Numero.text"> </b> <span data-bind="text: Numero.val"> </span> </label>
+                        </section>
+                        <section class="col col-12">
+                            <label> <b data-bind="text: Destinatario.text"> </b> <span data-bind="text: Destinatario.val"> </span> </label>
+                        </section>
+                        <section class="col col-12">
+                            <label> <b data-bind="text: Localidade.text"> </b> <span data-bind="text: Localidade.val"> </span> </label>
+                        </section>
+                        <section class="col col-12">
+                            <label> <b data-bind="text: Situacao.text"> </b> <span data-bind="text: Situacao.val"> </span> </label>
+                        </section>
+                        <section class="col col-12" data-bind="visible: JanelaDescarga.visible">
+                            <label> <b data-bind="text: JanelaDescarga.text"> </b> <span data-bind="text: JanelaDescarga.val"> </span> </label>
+                        </section>
+                        <section class="col col-12" data-bind="visible: DataPrevisaoEntrega.visible">
+                            <label> <b data-bind="text: DataPrevisaoEntrega.text"> </b> <span data-bind="text: DataPrevisaoEntrega.val"> </span> </label>
+                        </section>
+                        <section class="col col-12" data-bind="visible: DataEntrega.visible">
+                            <label> <b data-bind="text: DataEntrega.text"> </b> <span data-bind="text: DataEntrega.val"> </span> </label>
+                        </section>
+                        <section class="col col-12" data-bind="visible: DataRejeitado.visible">
+                            <label> <b data-bind="text: DataRejeitado.text"> </b> <span data-bind="text: DataRejeitado.val"> </span> </label>
+                        </section>
+
+                        <section class="col col-12">
+                            <label> <b data-bind="text: NotasFiscais.text"> </b> <span data-bind="text: NotasFiscais.val"> </span> </label>
+                        </section>
+                        <section class="col col-12" data-bind="visible: Transportador.visible">
+                            <label> <b data-bind="text: Transportador.text"> </b> <span data-bind="text: Transportador.val"> </span> </label>
+                        </section>
+                        <section class="col col-12" data-bind="visible: Veiculo.visible">
+                            <label> <b data-bind="text: Veiculo.text"> </b> <span data-bind="text: Veiculo.val"> </span> </label>
+                        </section>
+                        <section class="col col-12" data-bind="visible: Motorista.visible">
+                            <label> <b data-bind="text: Motorista.text"> </b> <span data-bind="text: Motorista.val"> </span> </label>
+                        </section>
+                        <section class="col col-12">
+                            <label> <b data-bind="text: ModeloVeiculo.text"> </b> <span data-bind="text: ModeloVeiculo.val"> </span> </label>
+                        </section>
+                        <section class="col col-12">
+                            <label>
+                                <b data-bind="text: Observacao.text"> </b>
+                                <span style="display: block" data-bind="html: Observacao.val"> </span>
+                            </label>
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade padding-10 no-padding-bottom" data-bind="attr: {id : 'tab-local-entrega'+ knockoutId.val}">
+                <div class="map-container">
+                    <div data-bind="attr: {id : 'map-local-entrega'+ knockoutId.val}" style="width:100%; height:550px"> </div>
+                    <div data-bind="text: LocalEntrega.val" style="margin-top: 10px; font-weight: bold"> </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade padding-10 no-padding-bottom" data-bind="attr: {id : 'tab-fotos-entrega'+ knockoutId.val}">
+                <div class="row imagens-entrega-container">
+                    <!-- ko foreach: { data: Imagens.val, as: 'Imagem' } -->
+                    <div class="col col-sm-4 imagem-entrega">
+                        <div class="imagem-background" data-bind="style: {'background-image': 'url(data:image/png;base64,' + Imagem.Miniatura +')'}"></div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <div class="row imagens-entrega-container" data-bind="visible: Imagens.val().length === 0">
+                    <h5 class="text-center" style="margin-top: 6px;">Nenhum Registro Encontrado</h5>
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade padding-10 no-padding-bottom" data-bind="attr: {id : 'tab-canhotos-entrega'+ knockoutId.val}">
+                <div class="row imagens-entrega-container">
+                    <!-- ko foreach: { data: ImagensCanhoto.val, as: 'Imagem' } -->
+                    <div class="col col-sm-4 imagem-entrega">
+                        <div>
+                            <button type="button" class="btn btn-default btn-xs float-end" data-bind="click: function(e){ $parent.DownloadCanhoto.eventClick(e) }">
+                                <i class="fal fa-download"></i>
+                            </button>
+                        </div>
+                        <br />
+                        <div class="imagem-background" data-bind="style: {'background-image': 'url(data:image/png;base64,' + Imagem.Miniatura +')'}"></div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+
+                <div class="row imagens-entrega-container" data-bind="visible: ImagensCanhoto.val().length === 0">
+                    <h5 class="text-center" style="margin-top: 6px;">Nenhum Registro Encontrado</h5>
+                </div>
+            </div>
+
+            <div class="tab-pane fade padding-10 no-padding-bottom" data-bind="attr: {id : 'tab-avaliacao-entrega'+ knockoutId.val}">
+                <div class="row">
+                    <section class="col col-12">
+                        <label> <b data-bind="text: DataAvaliacao.text"> </b> <span data-bind="text: DataAvaliacao.val"> </span> </label>
+                    </section>
+                    <div class="col col-12">
+                        <label class="pull-left">
+                            <b data-bind="text: Avaliacao.text"> </b>
+                        </label>
+
+                        <div class="rating pull-left" style="margin-left: 10px;margin-top: -4px;">
+                            <input type="radio" disabled="disabled" data-bind="value: 5, attr: { checked: Avaliacao.val() == 5 }" />
+                            <label class="full"></label>
+
+                            <input type="radio" disabled="disabled" data-bind="value: 4, attr: { checked: Avaliacao.val() == 4 }" />
+                            <label class="full"></label>
+
+                            <input type="radio" disabled="disabled" data-bind="value: 3, attr: { checked: Avaliacao.val() == 3 }" />
+                            <label class="full"></label>
+
+                            <input type="radio" disabled="disabled" data-bind="value: 2, attr: { checked: Avaliacao.val() == 2 }" />
+                            <label class="full"></label>
+
+                            <input type="radio" disabled="disabled" data-bind="value: 1, attr: { checked: Avaliacao.val() == 1 }" />
+                            <label class="full"></label>
+                        </div>
+                    </div>
+                    <div class="col col-12">
+                        <label>
+                            <b data-bind="text: ObservacaoAvaliacao.text"> </b>
+                            <span style="display: block" data-bind="html: ObservacaoAvaliacao.val"> </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

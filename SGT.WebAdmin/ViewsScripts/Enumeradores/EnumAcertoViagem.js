@@ -1,0 +1,16 @@
+﻿var EnumEtapasAcertoViagem = {
+    Acerto: 1,
+    Cargas: 2,
+    Ocorrencias: 21,
+    Abastecimentos: 3,
+    Pedagios: 4,
+    OutrasDespesas: 5,
+    Diarias: 51,
+    Fechamento: 6
+}
+
+var EnumSituacoesAcertoViagem = {
+    EmAndamento: 1,
+    Fechado: 2,
+    Cancelado: 3
+}

@@ -1,0 +1,48 @@
+﻿<script type="text/html" id="carga-entrega-template">
+    <div class="container-fluxo-entrega-previsao">
+        <div class="row">
+            <div class="col-12 col-md-2 identificao-fluxo fluxo-col">
+                <div data-bind="click: Carga.eventClick, css: {'identificao': true, 'fluxo-carga-cancelada': CargaCancelada.val}">
+                    <span data-bind="visible: CargaCancelada.val" class="tag-cancelada">Cancelada</span>
+                    <div><strong data-bind="text: NumeroCarregamento.val"></strong></div>
+                    <div>
+                        <strong>
+                            <span data-bind="text: Remetente.val"></span>
+                            <span data-bind="text: ' x ' + Destinatario.val(), visible: Destinatario.val() != ''"></span>
+                        </strong>
+                    </div>
+                    <div data-bind="text: TipoOperacao.val"></div>
+                    <div data-bind="text: Transportador.val"></div>
+                    <div data-bind="text: Placas.val"></div>
+                </div>
+            </div>
+            <div class="col-12 col-md-10 etapas-scroll fluxo-col">
+                <div class="etapas-fluxo">
+                    <div class="etapa-container col etapa-placeholder" data-bind="style: {width: (100 / (KnoutEtapas.val().length + 1)) + '%'}">
+                        <div class="nome-etapa"></div>
+                        <div class="tempo-real">Real</div>
+                        <div class="tempo-reprogramado">Reprogramado</div>
+                        <div class="tempo-previsto">Previsto</div>
+                        <div class="bolinha-etapa"></div>
+                        <div class="tempo-atraso">Atraso</div>
+                    </div>
+                    <!-- ko foreach: { data: KnoutEtapas.val, as: 'Etapa' } -->
+                    <div class="etapa-container col" data-bind="style: {width: (100 / ($parent.KnoutEtapas.val().length + 1)) + '%'}">
+                        <div class="nome-etapa" data-bind="text: Etapa.text"></div>
+                        <div class="tempo-real"><span data-bind="text: Etapa.dataRealizada"></span></div>
+                        <div class="tempo-reprogramado"><span data-bind="text: Etapa.dataReprogramada"></span></div>
+                        <div class="tempo-previsto"><span data-bind="text: Etapa.dataPrevista"></span></div>
+
+                        <div class="bolinha-etapa step-container">
+                            <a href="#tabFluxo" data-bind="click: Etapa.eventClick" data-toggle="tab">
+                                <span rel="popover-hover" data-placement="top" data-bind="css: 'step ' + Etapa.cssClass(), attr: {'data-content' : Etapa.tooltip, 'data-original-title' : Etapa.text }"></span>
+                            </a>
+                        </div>
+                        <div class="tempo-atraso"><span data-bind="text: Etapa.tempoAtraso"></span></div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

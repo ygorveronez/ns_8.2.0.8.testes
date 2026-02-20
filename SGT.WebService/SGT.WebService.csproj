@@ -1,0 +1,138 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<OutputPath>bin\</OutputPath>
+		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+	</PropertyGroup>
+
+	<!-- Inclusão automática de arquivos .svc e seus .cs -->
+	<ItemGroup>
+		<Content Include="**\*.svc" />
+		<Compile Update="**\*.svc.cs">
+			<DependentUpon>$([System.IO.Path]::GetFileNameWithoutExtension('%(Filename)')).svc</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<!-- Arquivos adicionais -->
+	<ItemGroup>
+		<Content Include="Global.asax" />
+		<Compile Update="Global.asax.cs">
+			<DependentUpon>Global.asax</DependentUpon>
+		</Compile>
+		<Content Include="lib\log4net.dll" />
+	</ItemGroup>
+
+	<!-- Configuração específica para Debug -->
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<None Update="DebugConfig.txt" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
+	<!-- Referências de projetos -->
+	<ItemGroup>
+		<ProjectReference Include="..\AdminMultisoftware\AdminMultisoftware\AdminMultisoftware.csproj" />
+		<ProjectReference Include="..\Dominio\Dominio.csproj" />
+		<ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+		<ProjectReference Include="..\Localization\Localization.csproj" />
+		<ProjectReference Include="..\MultiSoftware.CTe\MultiSoftware.CTe.csproj" />
+		<ProjectReference Include="..\MultiSoftware.MDFe\MultiSoftware.MDFe.csproj" />
+		<ProjectReference Include="..\Repositorio\Repositorio.csproj" />
+		<ProjectReference Include="..\Servicos\Servicos.csproj" />
+		<ProjectReference Include="..\Utilidades\Utilidades.csproj" />
+		<ProjectReference Include="..\Zeus\Zeus.csproj" />
+	</ItemGroup>
+
+	<!-- Serviços conectados -->
+	<ItemGroup>
+		<WCFMetadata Include="Connected Services\" />
+	</ItemGroup>
+
+	<!-- Referências a pacotes NuGet -->
+	<ItemGroup>
+		<PackageReference Include="Antlr3.Runtime" Version="3.5.2-rc1" />
+		<PackageReference Include="Apache.Avro" Version="1.11.3" />
+		<PackageReference Include="Azure.Core" Version="1.44.1" />
+		<PackageReference Include="Azure.Identity" Version="1.13.0-beta.1" />
+		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.6.0" />
+		<PackageReference Include="CoreWCF.Http" Version="1.5.2" />
+		<PackageReference Include="CoreWCF.Primitives" Version="1.5.2" />
+		<PackageReference Include="Google.Protobuf" Version="3.28.0-rc2" />
+		<PackageReference Include="Hangfire" Version="1.8.14" />
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.8.14" />
+		<PackageReference Include="Hangfire.Mongo" Version="1.10.8" />
+		<PackageReference Include="Iesi.Collections" Version="4.2.0-ci.10" />
+		<PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters" Version="1.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters.Abstractions" Version="1.4.0" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="Microsoft.Configuration.ConfigurationBuilders.Base" Version="3.0.0" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.11.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.63.0" />
+		<PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.63.0" />
+		<PackageReference Include="Microsoft.IdentityModel.Abstractions" Version="8.0.1" />
+		<PackageReference Include="MSMQ.Messaging" Version="1.0.4" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Remotion.Linq" Version="2.2.0" />
+		<PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
+		<PackageReference Include="Serilog" Version="4.0.2-dev-02220" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+		<PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+		<PackageReference Include="System.ClientModel" Version="1.2.1" />
+		<PackageReference Include="System.CodeDom" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="System.DirectoryServices" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="System.Drawing.Common" Version="9.0.0-preview.6.24327.6" />
+		<PackageReference Include="System.Linq.Dynamic" Version="1.0.8" />
+		<PackageReference Include="System.Management" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="System.Memory.Data" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+		<PackageReference Include="System.Security.AccessControl" Version="6.0.1" />
+		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
+		<PackageReference Include="System.ServiceModel.Federation" Version="8.0.0" />
+		<PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
+		<PackageReference Include="System.ServiceModel.NetTcp" Version="8.0.0" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
+		<PackageReference Include="System.ServiceModel.Security" Version="6.0.0" />
+		<PackageReference Include="System.Text.Encodings.Web" Version="9.0.0-preview.6.24327.7" />
+		<PackageReference Include="System.Text.Json" Version="9.0.0-preview.6.24327.7" />
+	</ItemGroup>
+
+	<!-- Configuração dos appsettings removidos do deploy -->
+	<ItemGroup>
+		<Content Remove="appsettings.json" />
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="appsettings.Development.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<!-- Configuração do Visual Studio -->
+	<ProjectExtensions>
+		<VisualStudio>
+			<FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+				<WebProjectProperties>
+					<UseIIS>False</UseIIS>
+					<AutoAssignPort>True</AutoAssignPort>
+					<DevelopmentServerPort>5146</DevelopmentServerPort>
+					<DevelopmentServerVPath>/</DevelopmentServerVPath>
+					<IISUrl>http://localhost:3226/</IISUrl>
+					<NTLMAuthentication>False</NTLMAuthentication>
+					<UseCustomServer>False</UseCustomServer>
+					<CustomServerUrl></CustomServerUrl>
+					<SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+				</WebProjectProperties>
+			</FlavorProperties>
+		</VisualStudio>
+	</ProjectExtensions>
+
+</Project>

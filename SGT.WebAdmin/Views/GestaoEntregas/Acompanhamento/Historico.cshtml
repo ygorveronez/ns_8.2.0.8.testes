@@ -1,0 +1,79 @@
+﻿@model Dominio.ObjetosDeValor.Embarcador.GestaoEntregas.EntregaView
+<div class="row">
+    <div class="container-historico col">
+        @if (Model.Historico != null && Model.Historico.Any())
+        {
+            @for (int i = 0; i < Model.Historico.Count; i++)
+            {
+                var historico = Model.Historico[i];
+                bool isLast = (i == Model.Historico.Count - 1);
+
+                if (isLast)
+                {
+                    <div class="historico-etapa-03 row">
+                        <div class="bullet-etapa col-1">
+                            <img src="/img/rastreio-entrega/bullet-on.svg" alt="">
+                        </div>
+                        <div class="status-etapa col-md-11 col-lg-11">
+                            <p>@historico.Descricao</p>
+                            <p class="font-italic"><small>@historico.Data</small></p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="historico-etapa-02 row">
+                        <div class="bullet-etapa col-1">
+                            <img src="/img/rastreio-entrega/bullet-on.svg" alt="">
+                        </div>
+                        <div class="status-etapa col-md-11 col-lg-11">
+                            <p>@historico.Descricao</p>
+                            <p class="font-italic"><small>@historico.Data</small></p>
+                        </div>
+                    </div>
+                }
+            }
+
+        }
+        else
+        {
+            @if (!string.IsNullOrWhiteSpace(Model.DataIncioViagem) && !Model.ClienteExterior)
+            {
+                <div class="historico-etapa-01 row">
+                    <div class="bullet-etapa col-1"><img src="/img/rastreio-entrega/bullet-on.svg" alt=""></div>
+                    <div class="status-etapa col-md-11 col-lg-11">
+                        <p>@Localization.Resources.GestaoEntregas.Acompanhamento.InicioViagem</p>
+                        <p class="font-italic"><small>@Model.DataIncioViagem</small></p>
+                    </div>
+                </div>
+            }
+
+            @if (!Model.ClienteExterior)
+            {
+                if (Model.Entregue)
+                {
+                    // Etapa 03
+                    <div class="historico-etapa-03 row">
+                        <div class="bullet-etapa col-1"><img src="/img/rastreio-entrega/bullet-on.svg" alt=""></div>
+                        <div class="status-etapa col-md-11 col-lg-11">
+                            <p>@Localization.Resources.GestaoEntregas.Acompanhamento.Entregue</p>
+                            <p class="font-italic"><small>@Model.DataEntrega</small></p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    // Etapa 03
+                    <div class="historico-etapa-03 row">
+                        <div class="bullet-etapa col-1"><img src="/img/rastreio-entrega/bullet-off.svg" alt=""></div>
+                        <div class="status-etapa col-md-11 col-lg-11">
+                            <p>@Localization.Resources.GestaoEntregas.Acompanhamento.Entregue</p>
+                            <p class="font-italic"><small></small></p>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+

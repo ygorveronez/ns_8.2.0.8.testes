@@ -1,0 +1,1296 @@
+{
+  "namespace": "com.maersk.customer.smds.commercial.msk",
+  "type": "record",
+  "name": "CustomerMessage",
+  "doc": "The generic avro schema used by publishers to publish events to the enterprise streaming service for Customer interface",
+  "x-mimAdoptionLevel": "Adoption-Level-D",
+  "fields": [
+    {
+      "name": "customerEntity",
+      "doc": "wrapper tag to hold complete Customer information like, customer, tax, CBU, etc. This is variable name in generated class",
+      "type": {
+        "name": "CustomerEntity",
+        "doc": "This is CustomerEntity tag for creating the class which will be used in translating from POJO to JSON",
+        "type": "record",
+        "fields": [
+          {
+            "name": "customerDetails",
+            "type": {
+              "type": "record",
+              "doc": "Customer entity complete information which includes core and extended information",
+              "name": "CustomerDetails",
+              "fields": [
+                {
+                  "name": "customerCoreInformation",
+                  "type": {
+                    "type": "record",
+                    "doc": "Customer entity core information which includes Name and address",
+                    "name": "CustomerCoreInformation",
+                    "fields": [
+                      {
+                        "name": "customerCode",
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "default": null,
+                        "doc": "This is customer CMD code getting published"
+                      },
+                      {
+                        "name": "externalSystemIdentifiers",
+                        "type": [
+                          "null",
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "record",
+                              "name": "ExternalSystemIdentifier",
+                              "fields": [
+                                {
+                                  "name": "externalSystemName",
+                                  "type": "string",
+                                  "doc": "This is customer External system name which is contributing to customer message. Example: BPMA, SFDC etc"
+                                },
+                                {
+                                  "name": "externalSystemReference",
+                                  "type": "string",
+                                  "doc": "This is customer External system reference code by which external system will identify the customer."
+                                },
+                                {
+                                  "name": "isDeletedFlag",
+                                  "type": "boolean",
+                                  "default": false,
+                                  "doc": "This is the status of association between External system reference to CMD customer"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "legalName",
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "default": null,
+                        "doc": "This is customer legal name from BVD source"
+                      },
+                      {
+                        "name": "tradingName",
+                        "type": "string",
+                        "doc": "This is customer trading name"
+                      },
+                      {
+                        "name": "customerType",
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "default": null,
+                        "doc": "This is customer type filed which could be External or Internal customer"
+                      },
+                      {
+                        "name": "url",
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "default": null,
+                        "doc": "This is customer website URL"
+                      },
+                      {
+                        "name": "isSoleProprietor",
+                        "type": "boolean",
+                        "default": false,
+                        "doc": "This field indicate whether customer is sole proprietor or not"
+                      },
+                      {
+                        "name": "isWorkflowPending",
+                        "type": "boolean",
+                        "default": false,
+                        "doc": "This indicate whether the customer is in pending state or not"
+                      },
+                      {
+                        "name": "workflowInformation",
+                        "type": [
+                          "null",
+                          "string"
+                        ],
+                        "default": null,
+                        "doc": "This indicate the workflow information of customer"
+                      },
+                      {
+                        "name": "customerStatus",
+                        "type": [
+                          "null",
+                          {
+                            "type": "record",
+                            "name": "CustomerStatus",
+                            "fields": [
+                              {
+                                "name": "statusCode",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer status code"
+                              },
+                              {
+                                "name": "statusName",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer status name"
+                              },
+                              {
+                                "name": "customerStatusReasons",
+                                "type": [
+                                  "null",
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "name": "CustomerStatusReason",
+                                      "type": "record",
+                                      "fields": [
+                                        {
+                                          "name": "reasonCode",
+                                          "type": [
+                                            "null",
+                                            "int"
+                                          ],
+                                          "default": null,
+                                          "doc": "This is customer suspended reason code"
+                                        },
+                                        {
+                                          "name": "reasonName",
+                                          "type": [
+                                            "null",
+                                            "string"
+                                          ],
+                                          "default": null,
+                                          "doc": "This is customer suspended reason name"
+                                        },
+                                        {
+                                          "name": "reasonDescription",
+                                          "type": [
+                                            "null",
+                                            "string"
+                                          ],
+                                          "default": null,
+                                          "doc": "This is customer suspended reason description"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "telecommunicationNumber",
+                        "type": [
+                          "null",
+                          {
+                            "type": "record",
+                            "name": "TelecommunicationNumber",
+                            "fields": [
+                              {
+                                "name": "phoneNumberType",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer phone number type"
+                              },
+                              {
+                                "name": "phoneCountry",
+                                "type": [
+                                  "null",
+                                  {
+                                    "type": "record",
+                                    "doc": "Customer country code and name",
+                                    "name": "PhoneCountry",
+                                    "fields": [
+                                      {
+                                        "name": "isoCountryCode",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null,
+                                        "doc": "Country ISO code"
+                                      },
+                                      {
+                                        "name": "countryName",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null,
+                                        "doc": "Country name"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "internationalDialingCode",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer phone number country dialing code"
+                              },
+                              {
+                                "name": "extensionNumber",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer phone extension number"
+                              },
+                              {
+                                "name": "number",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer phone number"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "brands",
+                        "type": [
+                          "null",
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "record",
+                              "name": "Brand",
+                              "fields": [
+                                {
+                                  "name": "brandName",
+                                  "type": [
+                                    "null",
+                                    "string"
+                                  ],
+                                  "default": null,
+                                  "doc": "This is customer brand name"
+                                },
+                                {
+                                  "name": "brandCode",
+                                  "type": [
+                                    "null",
+                                    "string"
+                                  ],
+                                  "default": null,
+                                  "doc": "This is customer brand code"
+                                },
+                                {
+                                  "name": "isDeletedFlag",
+                                  "type": "boolean",
+                                  "default": false,
+                                  "doc": "This is the status of customer brand associated with customer, either active or inactive"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "name": "customerAddress",
+                        "type": [
+                          "null",
+                          {
+                            "type": "record",
+                            "name": "CustomerAddress",
+                            "fields": [
+                              {
+                                "name": "streetNumber",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address street number"
+                              },
+                              {
+                                "name": "streetName",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address street name (Address Line1)"
+                              },
+                              {
+                                "name": "poBoxNumber",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address PO Box"
+                              },
+                              {
+                                "name": "apartmentOrFloor",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address apartment or floor number (Address Line2)"
+                              },
+                              {
+                                "name": "subArea",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address Sub area (Address Line3)"
+                              },
+                              {
+                                "name": "district",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address district"
+                              },
+                              {
+                                "name": "cityName",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address city"
+                              },
+                              {
+                                "name": "cityCode",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address GEO application city code"
+                              },
+                              {
+                                "name": "region",
+                                "type": [
+                                  "null",
+                                  {
+                                    "type": "record",
+                                    "doc": "Customer address Region code and name",
+                                    "name": "Region",
+                                    "fields": [
+                                      {
+                                        "name": "regionCode",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null,
+                                        "doc": "Customer address region code"
+                                      },
+                                      {
+                                        "name": "regionName",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null,
+                                        "doc": "Customer address region name"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "postalCode",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address postal code"
+                              },
+                              {
+                                "name": "isoLanguageCode",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address language"
+                              },
+                              {
+                                "name": "country",
+                                "type": [
+                                  "null",
+                                  {
+                                    "type": "record",
+                                    "doc": "Customer country code and name",
+                                    "name": "Country",
+                                    "fields": [
+                                      {
+                                        "name": "isoCountryCode",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null,
+                                        "doc": "Country ISO code"
+                                      },
+                                      {
+                                        "name": "countryName",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null,
+                                        "doc": "Country name"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "latitude",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address latitude"
+                              },
+                              {
+                                "name": "longitude",
+                                "type": [
+                                  "null",
+                                  "string"
+                                ],
+                                "default": null,
+                                "doc": "This is customer address longitude"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "name": "customerExtendedInformation",
+                  "type": [
+                    "null",
+                    {
+                      "type": "record",
+                      "doc": "Customer entity extended information",
+                      "name": "CustomerExtendedInformation",
+                      "fields": [
+                        {
+                          "name": "customerGroupType",
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "default": null,
+                          "doc": "This is customer group type indicator, like SCPI, Non-SCPI etc"
+                        },
+                        {
+                          "name": "invoiceISOLanguageCodePreference",
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "default": null,
+                          "doc": "This is customer invoice language Preference"
+                        },
+                        {
+                          "name": "isBrokerage",
+                          "type": "boolean",
+                          "default": false,
+                          "doc": "This indicates whether brokerage was there or not."
+                        },
+                        {
+                          "name": "isForwardersCompensation",
+                          "type": "boolean",
+                          "default": false,
+                          "doc": "This indicates whether forwarders compensation was there or not"
+                        },
+                        {
+                          "name": "vipNonRoll",
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "default": null,
+                          "doc": "This field indicates rolling protection segment of a customer"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "customerIdentifiers",
+                  "type": [
+                    "null",
+                    {
+                      "type": "array",
+                      "items": {
+                        "name": "CustomerIdentifier",
+                        "doc": "Customer identifier details",
+                        "type": "record",
+                        "fields": [
+                          {
+                            "name": "identifierCountry",
+                            "type": [
+                              "null",
+                              {
+                                "type": "record",
+                                "doc": "Customer country code and name",
+                                "name": "IdentifierCountry",
+                                "fields": [
+                                  {
+                                    "name": "isoCountryCode",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null,
+                                    "doc": "This is country code of TAX ref type to which customer belongs"
+                                  },
+                                  {
+                                    "name": "countryName",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null,
+                                    "doc": "This is country name of TAX ref type to which customer belongs"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "identifierType",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is customer identifier type, either TAX or REF"
+                          },
+                          {
+                            "name": "identifierCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is customer identifier code either TAX or REF type code"
+                          },
+                          {
+                            "name": "identifierValue",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is customer identifier value either TAX or REF type code"
+                          },
+                          {
+                            "name": "identifierDescription",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is customer Identifier description "
+                          },
+                          {
+                            "name": "identifierLocalCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is customer identifier Local Code value "
+                          },
+                          {
+                            "name": "identifierLocalDescription",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is customer Identifier Local description "
+                          },
+                          {
+                            "name": "isDeletedFlag",
+                            "type": "boolean",
+                            "default": false,
+                            "doc": "This indicate customer identifier is active or inactive"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "customerEnrichedInformation",
+                  "type": [
+                    "null",
+                    {
+                      "type": "record",
+                      "doc": "Customer enriched information by third party services",
+                      "name": "CustomerEnrichedInformation",
+                      "fields": [
+                        {
+                          "name": "marketCap",
+                          "type": [
+                            "null",
+                            "long"
+                          ],
+                          "default": null,
+                          "doc": "This is customer market Cap enriched from BVD source"
+                        },
+                        {
+                          "name": "majorSector",
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "default": null,
+                          "doc": "This is customer major Sector enriched from BVD source"
+                        },
+                        {
+                          "name": "operatingRevenueTurnOver",
+                          "type": [
+                            "null",
+                            "long"
+                          ],
+                          "default": null,
+                          "doc": "This is customer operating Revenue Turn Over enriched from BVD source"
+                        },
+                        {
+                          "name": "dateOfAccount",
+                          "type": [
+                            "null",
+                            "long"
+                          ],
+                          "logicalType": "timestamp-millis",
+                          "default": null,
+                          "doc": "This is customer date Of Account enriched from BVD source"
+                        },
+                        {
+                          "name": "profitMarginPercentage",
+                          "type": [
+                            "null",
+                            "double"
+                          ],
+                          "default": null,
+                          "doc": "This is customer profit Margin Percentage code enriched from BVD source"
+                        },
+                        {
+                          "name": "creditRating",
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "default": null,
+                          "doc": "This is customer credit Rating enriched from BVD source"
+                        },
+                        {
+                          "name": "recommendedCreditLimit",
+                          "type": [
+                            "null",
+                            "long"
+                          ],
+                          "default": null,
+                          "doc": "This is customer recommended Credit Limit enriched from BVD source"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "customerHierarchyInformation",
+                  "type": [
+                    "null",
+                    {
+                      "type": "array",
+                      "items": {
+                        "name": "CustomerHierarchyInformation",
+                        "doc": "Customer Global Ultimate Owner and headquarters information enriched by third party services",
+                        "type": "record",
+                        "fields": [
+                          {
+                            "name": "guoCustomerCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is Global Ultimate Owner Customer code"
+                          },
+                          {
+                            "name": "guoLegalName",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is Global Ultimate Owner Customer legal name"
+                          },
+                          {
+                            "name": "hqCustomerCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is Head Quarter Customer code"
+                          },
+                          {
+                            "name": "hqLegalName",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is Head Quarter Customer legal name"
+                          },
+                          {
+                            "name": "hqStatus",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is Head Quarter Status"
+                          },
+                          {
+                            "name": "guoStatus",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is Global Ultimate Owner Status"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "customerSegments",
+                  "type": [
+                    "null",
+                    {
+                      "type": "array",
+                      "items": {
+                        "name": "Segment",
+                        "doc": "Customer segment and segment classification information",
+                        "type": "record",
+                        "fields": [
+                          {
+                            "name": "segmentBrandInformation",
+                            "type": [
+                              "null",
+                              {
+                                "type": "record",
+                                "doc": "Customer brand code and name",
+                                "name": "SegmentBrandInformation",
+                                "fields": [
+                                  {
+                                    "name": "brandCode",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null,
+                                    "doc": "Customer brand code"
+                                  },
+                                  {
+                                    "name": "brandName",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null,
+                                    "doc": "Customer brand name"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "isDeletedFlag",
+                            "type": "boolean",
+                            "default": false,
+                            "doc": "This is the status of the relationship between Customer & Segment"
+                          },
+                          {
+                            "name": "segmentClassifications",
+                            "type": [
+                              "null",
+                              {
+                                "type": "array",
+                                "items": {
+                                  "name": "SegmentClassification",
+                                  "type": "record",
+                                  "fields": [
+                                    {
+                                      "name": "segmentTypeCode",
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "default": null,
+                                      "doc": "This is customer segment Classification code"
+                                    },
+                                    {
+                                      "name": "segmentValueCode",
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "default": null,
+                                      "doc": "This is customer segment Classification value"
+                                    },
+                                    {
+                                      "name": "segmentValueName",
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "default": null,
+                                      "doc": "This is customer segment Classification name"
+                                    },
+                                    {
+                                      "name": "segmentValueDescription",
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "default": null,
+                                      "doc": "This is customer segment Classification description"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "customerRelationships",
+                  "type": [
+                    "null",
+                    {
+                      "type": "array",
+                      "items": {
+                        "name": "CustomerRelationship",
+                        "doc": "Customer relationship details between customers information",
+                        "type": "record",
+                        "fields": [
+                          {
+                            "name": "parentCustomerCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is parent customer code in the relationship"
+                          },
+                          {
+                            "default": null,
+                            "doc": "This is parent customer's SCV code in the relationship",
+                            "name": "parentAlternateCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ]
+                          },
+                          {
+                            "name": "parentCustomerName",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is parent customer name in the relationship"
+                          },
+                          {
+                            "name": "childCustomerCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is child customer code in the relationship"
+                          },
+                          {
+                            "default": null,
+                            "doc": "This is child customer's SCV code in the relationship",
+                            "name": "childAlternateCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ]
+                          },
+                          {
+                            "name": "childCustomerName",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is child customer name in the relationship"
+                          },
+                          {
+                            "name": "parentConcernCustCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is isConcern relationship customer code in customer-concern relationship"
+                          },
+                          {
+                            "default": null,
+                            "doc": "This is IS_CONCRN relationship customer's SCV code in customer-concern relationship",
+                            "name": "parentConcernCustAlternateCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ]
+                          },
+                          {
+                            "name": "relationshipType",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is the relationship type between customers or customer to concern etc."
+                          },
+                          {
+                            "name": "relationshipTypeName",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null,
+                            "doc": "This is the relationship type name between customers or customer to concern etc."
+                          },
+                          {
+                            "name": "isDeletedFlag",
+                            "type": "boolean",
+                            "default": false,
+                            "doc": "This is the status of relationship record between customers or customer to concern etc"
+                          },
+                          {
+                            "name": "validFromDate",
+                            "type": [
+                              "null",
+                              "long"
+                            ],
+                            "logicalType": "timestamp-millis",
+                            "default": null,
+                            "doc": "This is the relationship start date"
+                          },
+                          {
+                            "name": "validThroughDate",
+                            "type": [
+                              "null",
+                              "long"
+                            ],
+                            "logicalType": "timestamp-millis",
+                            "default": null,
+                            "doc": "This is the relationship end date"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "customerWebBillLadings",
+                  "type": [
+                    "null",
+                    {
+                      "type": "array",
+                      "items": {
+                        "name": "CustomerWebBillLading",
+                        "doc": "Customer WebBill information",
+                        "type": "record",
+                        "fields": [
+                          {
+                            "name": "webBillBrandInformation",
+                            "type": [
+                              "null",
+                              {
+                                "type": "record",
+                                "doc": "Customer brand code and name",
+                                "name": "WebBillBrandInformation",
+                                "fields": [
+                                  {
+                                    "name": "brandCode",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null,
+                                    "doc": "Customer brand code"
+                                  },
+                                  {
+                                    "name": "brandName",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null,
+                                    "doc": "Customer brand name"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "isNegotiableBL",
+                            "type": "boolean",
+                            "default": false,
+                            "doc": "This is customer negotiable BL"
+                          },
+                          {
+                            "name": "isNonNegotiableBL",
+                            "type": "boolean",
+                            "default": false,
+                            "doc": "This is customer non Negotiable BL"
+                          },
+                          {
+                            "name": "isDeletedFlag",
+                            "type": "boolean",
+                            "default": false,
+                            "doc": "This indicate customer CustomerWebBillLading record status"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "collectionBusinessUnits",
+                  "type": [
+                    "null",
+                    {
+                      "type": "array",
+                      "items": {
+                        "name": "CollectionBusinessUnit",
+                        "doc": "Customer local & foreign collectionBusinessUnit information",
+                        "type": "record",
+                        "fields": [
+                          {
+                            "name": "cbuBrandInformation",
+                            "type": [
+                              "null",
+                              {
+                                "type": "record",
+                                "doc": "Customer brand code and name",
+                                "name": "CbuBrandInformation",
+                                "fields": [
+                                  {
+                                    "name": "brandCode",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null,
+                                    "doc": "Customer brand code"
+                                  },
+                                  {
+                                    "name": "brandName",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null,
+                                    "doc": "Customer brand name"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "cbuInformation",
+                            "type": [
+                              "null",
+                              {
+                                "type": "array",
+                                "items": {
+                                  "name": "CbuInformation",
+                                  "type": "record",
+                                  "fields": [
+                                    {
+                                      "name": "cbuName",
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "default": null,
+                                      "doc": "This is customer CBU Name"
+                                    },
+                                    {
+                                      "name": "cbuId",
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "default": null,
+                                      "doc": "This is customer CBU Id"
+                                    },
+                                    {
+                                      "name": "cbuTypeCode",
+                                      "type": [
+                                        "null",
+                                        "string"
+                                      ],
+                                      "default": null,
+                                      "doc": "This is customer CBU type, either local or foreign CBU"
+                                    },
+                                    {
+                                      "name": "isDeletedFlag",
+                                      "type": "boolean",
+                                      "default": false,
+                                      "doc": "This is customer and CBU relationship record status"
+                                    },
+                                    {
+                                      "name": "validFromDate",
+                                      "type": [
+                                        "null",
+                                        "long"
+                                      ],
+                                      "logicalType": "timestamp-millis",
+                                      "default": null,
+                                      "doc": "This is the relationship start date"
+                                    },
+                                    {
+                                      "name": "validThroughDate",
+                                      "type": [
+                                        "null",
+                                        "long"
+                                      ],
+                                      "logicalType": "timestamp-millis",
+                                      "default": null,
+                                      "doc": "This is the relationship end date"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "customerAuditData",
+                  "type": [
+                    "null",
+                    {
+                      "type": "record",
+                      "doc": "Customer audit information at customer entity level",
+                      "name": "AuditInfo",
+                      "fields": [
+                        {
+                          "name": "creationUser",
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "default": null,
+                          "doc": "This is user name who is requesting to create customer in CMD system who should have access to create/update data"
+                        },
+                        {
+                          "name": "creationDate",
+                          "type": [
+                            "null",
+                            "long"
+                          ],
+                          "logicalType": "timestamp-millis",
+                          "default": null,
+                          "doc": "This is customer creation date in CMD system"
+                        },
+                        {
+                          "name": "lastUpdateUser",
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "default": null,
+                          "doc": "This is user name who is requesting to update customer in CMD system who should have access to create/update data"
+                        },
+                        {
+                          "name": "lastUpdateDate",
+                          "type": [
+                            "null",
+                            "long"
+                          ],
+                          "logicalType": "timestamp-millis",
+                          "default": null,
+                          "doc": "This is customer update date in CMD system"
+                        },
+                        {
+                          "name": "lastUpdateSourceSystem",
+                          "type": [
+                            "null",
+                            "string"
+                          ],
+                          "default": null,
+                          "doc": "This is source system name who is requesting to create/update customer entity"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "action",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null,
+            "doc": "This is the action for which the message is triggered"
+          }
+        ]
+      }
+    }
+  ]
+}

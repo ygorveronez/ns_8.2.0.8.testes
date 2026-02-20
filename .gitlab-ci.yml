@@ -1,0 +1,2473 @@
+variables:
+  NUGET_PATH: 'C:\GitLab\nuget.exe'
+  MSBUILD_PATH: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\msbuild.exe'
+
+  SOLUTION_PATH: 'EmissaoCTe.sln'
+ 
+  MULTI_PROJECT_PATH: 'SGT.WebAdmin\SGT.WebAdmin.csproj'
+  MULTI_PROJECT_FOLDER: '.\SGT.WebAdmin'
+  MULTI_PUBLISH_FOLDER: '.\SGT.WebAdmin\bin\Release\publish'
+  MULTI_PUBLISH_PROFILE: 'SGT.WebAdmin\Properties\PublishProfiles\GitlabProfile.pubxml'
+ 
+  WEBSERVICE_PROJECT_PATH: 'SGT.WebService\SGT.WebService.csproj'
+  WEBSERVICE_PROJECT_FOLDER: '.\SGT.WebService'
+  WEBSERVICE_PUBLISH_FOLDER: '.\SGT.WebService\bin\Release\publish'
+  WEBSERVICE_PUBLISH_PROFILE: 'SGT.WebService\Properties\PublishProfiles\GitlabProfile.pubxml'
+
+  REPORTSERVICE_PROJECT_PATH: 'SGT.WebAdmin.ReportWindowsService\SGT.WebAdmin.ReportWindowsService.csproj'
+  REPORTSERVICE_PROJECT_FOLDER: '.\SGT.WebAdmin.ReportWindowsService'
+  REPORTSERVICE_PUBLISH_FOLDER: '.\SGT.WebAdmin.ReportWindowsService\bin\Release'
+
+  WEBSERVICEMOBILE_PROJECT_PATH: 'SGT.Mobile\SGT.Mobile.csproj'
+  WEBSERVICEMOBILE_PROJECT_FOLDER: '.\SGT.Mobile'
+  WEBSERVICEMOBILE_PUBLISH_FOLDER: '.\SGT.Mobile\bin\app.publish'
+  WEBSERVICEMOBILE_PUBLISH_PROFILE: 'SGT.Mobile\Properties\PublishProfiles\GitlabProfile.pubxml'
+
+stages: 
+    - build
+    - deploy
+
+# - Configuração dos projetos a serem publicados
+
+"WebAdminProducao":
+  stage: build
+  allow_failure: false
+  when: manual
+  only:
+      - master
+  except:
+    changes:
+      - SGT.WebService/**/*
+  script:
+    - 'xcopy /y /s /h "C:\Gitlab\builds\Migrations\*.*" ".\..\Migrations\"'
+    - '& "$env:NUGET_PATH" restore ".\" -Verbosity detailed'
+    - '& "$env:MSBUILD_PATH" "$env:MULTI_PROJECT_PATH" /verbosity:detailed /property:DeployOnBuild=true /property:Configuration=Release /clp:ErrorsOnly /P:PublishProfile=$env:CI_PROJECT_DIR\$env:MULTI_PUBLISH_PROFILE'
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - "$env:MULTI_PUBLISH_FOLDER\\"
+  tags:
+    - server-local-deploy
+
+"WebAdminHomologacao":
+  stage: build
+  allow_failure: false
+  when: manual
+  only:
+     - /^release\/[0-9].[0-9]?[0-9]/
+  except:
+    changes:
+      - SGT.WebService/**/*
+  script:
+    - 'xcopy /y /s /h "C:\Gitlab\builds\Migrations\*.*" ".\..\Migrations\"'
+    - '& "$env:NUGET_PATH" restore ".\" -Verbosity detailed'
+    - '& "$env:MSBUILD_PATH" "$env:MULTI_PROJECT_PATH" /verbosity:detailed /property:DeployOnBuild=true /property:Configuration=Release /clp:ErrorsOnly /P:PublishProfile=$env:CI_PROJECT_DIR\$env:MULTI_PUBLISH_PROFILE'
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - "$env:MULTI_PUBLISH_FOLDER\\"
+  tags:
+    - server-local-deploy
+
+"WebServiceHomologacao":
+  stage: build
+  allow_failure: false
+  when: manual
+  only:
+    refs:
+      - /^release\/[0-9].[0-9]?[0-9]/
+    changes:
+       - SGT.WebService/**/*
+       - Dominio/**/*
+       - Repositorio/**/*
+       - Servicos/**/*
+  script:
+    - 'xcopy /y /s /h "C:\Gitlab\builds\Migrations\*.*" ".\..\Migrations\"'
+    - '& "$env:NUGET_PATH" restore ".\" -Verbosity detailed'
+    - '& "$env:MSBUILD_PATH" "$env:WEBSERVICE_PROJECT_PATH" /verbosity:detailed /property:DeployOnBuild=true /property:Configuration=Release /clp:ErrorsOnly /P:PublishProfile=$env:CI_PROJECT_DIR\$env:WEBSERVICE_PUBLISH_PROFILE'
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - "$env:WEBSERVICE_PUBLISH_FOLDER\\"
+  tags:
+    - server-local-deploy
+
+"WebServiceProducao":
+  stage: build
+  allow_failure: false
+  when: manual
+  only:
+    refs:
+      - master
+    changes:
+       - SGT.WebService/**/*
+       - Dominio/**/*
+       - Repositorio/**/*
+       - Servicos/**/*
+  script:
+    - 'xcopy /y /s /h "C:\Gitlab\builds\Migrations\*.*" ".\..\Migrations\"'
+    - '& "$env:NUGET_PATH" restore ".\" -Verbosity detailed'
+    - '& "$env:MSBUILD_PATH" "$env:WEBSERVICE_PROJECT_PATH" /verbosity:detailed /property:DeployOnBuild=true /property:Configuration=Release /clp:ErrorsOnly /P:PublishProfile=$env:CI_PROJECT_DIR\$env:WEBSERVICE_PUBLISH_PROFILE'
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - "$env:WEBSERVICE_PUBLISH_FOLDER\\"
+  tags:
+    - server-local-deploy
+
+"ReportServiceProducao":
+  stage: build
+  allow_failure: false
+  when: manual
+  only:
+      - master
+  except:
+    changes:
+      - SGT.WebService/**/*
+  script:
+    - '& "$env:NUGET_PATH" restore ".\" -Verbosity detailed'
+    - '& "$env:MSBUILD_PATH" "$env:REPORTSERVICE_PROJECT_PATH" /verbosity:detailed /property:DeployOnBuild=false /property:Configuration=Release /clp:ErrorsOnly'
+    - 'Remove-Item -Path "$env:REPORTSERVICE_PUBLISH_FOLDER\SGT.WebAdmin.ReportWindowsService.exe.config" -Force'
+  artifacts:
+    expire_in: 2 days
+    paths:
+      - "$env:REPORTSERVICE_PUBLISH_FOLDER\\"
+  tags:
+    - server-local-deploy
+
+# - Configuração Deploys
+
+.deploy_master:
+  stage: deploy
+  allow_failure: false
+  when: manual
+  only:
+    refs: 
+      - master
+    changes:
+      - SGT.WebAdmin/**/*
+      - Dominio/**/*
+      - Repositorio/**/*
+      - Servicos/**/*
+  dependencies:
+    - "WebAdminProducao"
+
+.deploy_release:
+  stage: deploy
+  allow_failure: false
+  when: manual
+  only:
+    refs: 
+      - /^release\/[0-9].[0-9]?[0-9]/
+    changes:
+      - SGT.WebAdmin/**/*
+      - Dominio/**/*
+      - Repositorio/**/*
+      - Servicos/**/*
+  dependencies:
+    - "WebAdminHomologacao"
+
+.deploy_webservice_master:
+  stage: deploy
+  allow_failure: false
+  when: manual
+  only:
+    refs:  
+      - master
+    changes:
+      - SGT.WebService/**/*
+      - Dominio/**/*
+      - Repositorio/**/*
+      - Servicos/**/*
+  dependencies:
+    - "WebServiceProducao"
+
+.deploy_webservice_release:
+  stage: deploy
+  allow_failure: false
+  when: manual
+  only:
+    refs: 
+      - /^release\/[0-9].[0-9]?[0-9]/
+    changes:
+      - SGT.WebService/**/*
+      - Dominio/**/*
+      - Repositorio/**/*
+      - Servicos/**/*
+  dependencies:
+    - "WebServiceHomologacao"
+
+.deploy_reportservice_master:
+  stage: deploy
+  allow_failure: false
+  when: manual
+  only:
+    refs: 
+      - master
+    changes:
+      - SGT.WebAdmin/**/*
+      - Dominio/**/*
+      - Repositorio/**/*
+      - Servicos/**/*
+  dependencies:
+    - "ReportServiceProducao"
+
+# - Configuração deploy de cada pool em cada server
+
+#AMBIENTES DE HOMOLOGAÇÃO
+
+'Homologacão - Agraria - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Agraria\Homologacao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Agraria.Homolog"'
+  tags:
+    - server-decathlon
+
+'Homologação - Agraria - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Agraria\Homologacao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Agraria.Homolog"'
+  tags:
+    - server-decathlon
+
+'Homologação - Aliança - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebAdmin.Alianca.Homolog"'
+  tags:
+    - server-alianca
+
+'Homologação - Aliança - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Alianca.Homolog"'
+  tags:
+    - server-alianca
+
+'Homologação - Aliança Truck - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\AliancaTruck\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebAdmin.AliancaTruck.Homolog"'
+  tags:
+    - server-alianca
+
+'Homologação - Aliança Truck - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\AliancaTruck\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.AliancaTruck.Homolog"'
+  tags:
+    - server-alianca
+
+'Homologação - Angeloni - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebAPPHomologacao"'
+  tags:
+    - server-angeloni
+
+'Homologação - Angeloni - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebServiceHomo"'
+  tags:
+    - server-angeloni
+
+'Homologacão - ArcelorMittal - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\ArcelorMittal\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "ArcelorMittal.SGT.WebApp.Homolog"'
+  tags:
+    - server-arcelormittal
+
+'Homologação - ArcelorMittal - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\ArcelorMittal\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "ArcelorMittal.SGT.WebService.Homolog"'
+  tags:
+    - server-arcelormittal
+
+'Homologação - Assai - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Assai.Homolog"'
+  tags:
+    - server-assai
+
+'Homologação - Assai - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Assai.Homolog"'
+  tags:
+    - server-assai
+
+'Homologação - Aurea - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Aurea\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Aurea.Homolog"'
+  tags:
+    - server-aurea
+
+'Homologação - Aurea - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Aurea\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Aurea.Homolog"'
+  tags:
+    - server-aurea
+
+'Homologação - Autover - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Autover\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Autover.Homolog"'
+  tags:
+    - server-autover
+
+'Homologação - Autover - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Autover\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Autover.Homolog"'
+  tags:
+    - server-autover
+
+'Homologação - BBM - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\BBM\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.BBM.Homolog"'
+  tags:
+    - server-aurea
+
+'Homologação - BBM - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\BBM\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.BBM.Homolog"'
+  tags:
+    - server-aurea
+
+'Homologação - Bitury - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Bitury\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BituryHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-bitury
+
+'Homologação - Bitury - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Bitury\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BituryHomologacao.SGT.WebService"'
+  tags:
+    - server-bitury
+
+'Homologação - Boticario - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Boticario\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Boticario.Homolog"'
+  tags:
+    - server-boticario
+
+'Homologação - Boticario - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Boticario\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Boticario.Homolog"'
+  tags:
+    - server-boticario
+
+'Homologação - Braveo - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Braveo\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Braveo.SGT.WebApp.Homolog"'
+  tags:
+    - server-ninfa
+
+'Homologação - Braveo - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Braveo\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Braveo.SGT.WebService.Homolog"'
+  tags:
+    - server-ninfa
+
+'Homologação - Casa Verde - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\CasaVerde\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "CasaVerdeHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-casaverde
+
+'Homologação - Casa Verde - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\CasaVerde\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "CasaVerdeHomologacao.SGT.WebService"'
+  tags:
+    - server-casaverde
+
+'Homologação - Cobasi - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Cobasi\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Cobasi.Homolog"'
+  tags:
+    - server-cobasi
+
+'Homologação - Cobasi - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Cobasi\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Cobasi.Homolog"'
+  tags:
+    - server-cobasi
+
+'Homologação - Copacol - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Copacol.Homolog"'
+  tags:
+    - server-copacol
+
+'Homologação - Copacol - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Copacol.Homolog"'
+  tags:
+    - server-copacol
+
+'Homologação - Cordenonsi - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Cordenonsi\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "CordenonsiHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-cordenonsi
+
+'Homologação - Cordenonsi - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Cordenonsi\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "CordenonsiHomologacao.SGT.WebService"'
+  tags:
+    - server-cordenonsi
+
+'Homologacão - Danone - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Embarcador\SGT\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Danone.WebAdmin"'
+  tags:
+    - server-homologacao
+
+'Homologação - Danone - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Embarcador\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Danone.WebService"'
+  tags:
+    - server-homologacao
+
+'Homologacão - Decathlon - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Decathlon.Homolog"'
+  tags:
+    - server-decathlon
+
+'Homologação - Decathlon - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Decathlon.Homolog"'
+  tags:
+    - server-decathlon
+
+'Homologacão - DPA - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\DPA\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.DPA.Homolog"'
+  tags:
+    - server-nestle
+
+'Homologação - DPA - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\DPA\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.DPA.Homolog"'
+  tags:
+    - server-nestle
+
+'Homologacão - Dexco/Deca Madeira - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\DecaMadeira\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "DecaMadeira.SGT.WebApp.Homolog"'
+  tags:
+    - server-dexco
+
+'Homologação - Dexco/Deca Madeira - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\DecaMadeira\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "DecaMadeira.SGT.WebService.Homolog"'
+  tags:
+    - server-dexco
+
+'Homologacão - Dexco/RC - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\RC\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "RC.SGT.WebApp.Homolog"'
+  tags:
+    - server-dexco
+
+'Homologação - Dexco/RC - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\RC\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "RC.SGT.WebService.Homolog"'
+  tags:
+    - server-dexco
+
+'Homologação - Fiberglass - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Fiberglass\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Fiberglass.Homolog"'
+  tags:
+    - server-vidrioandino
+
+'Homologação - Fiberglass - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Fiberglass\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Fiberglass.Homolog"'
+  tags:
+    - server-vidrioandino
+
+'Homologação - Framento - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Framento\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "FramentoHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-framento
+
+'Homologação - Framento - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Framento\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "FramentoHomologacao.SGT.WebService"'
+  tags:
+    - server-framento
+
+'Homologação - Frimesa - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Frimesa.Homolog"'
+  tags:
+    - server-frimesa
+
+'Homologação - Frimesa - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Frimesa.Homolog"'
+  tags:
+    - server-frimesa
+
+'Homologação - Gral - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Gral\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "GralHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-gral
+
+'Homologação - Gral - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Gral\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "GralHomologacao.SGT.WebServce"'
+  tags:
+    - server-gral
+
+'Homologação - Grupo Big - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Embarcador\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebAppHomo"'
+  tags:
+    - server-walmart
+
+'Homologação - Grupo Big - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Embarcador\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Homolog"'
+  tags:
+    - server-walmart
+
+'Homologação - Grupo Carrefour - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "F:\GrupoCarrefour\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.GrupoCarrefour.Homolog"'
+  tags:
+    - server-carrefour   
+
+'Homologação - Grupo Carrefour - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "F:\GrupoCarrefour\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.GrupoCarrefour.Homolog"'
+  tags:
+    - server-carrefour
+
+'Homologação - Heineken - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Heineken\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Heineken.Homolog"'
+  tags:
+    - server-heineken
+
+'Homologação - Heineken - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Heineken\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Heineken.Homolog"'
+  tags:
+    - server-heineken
+
+'Homologação - Intercab - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\AliancaIntercab\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "AliancaIntercabHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-jsl
+
+'Homologação - Intercab - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\AliancaIntercab\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "AliancaIntercabHomologacao.SGT.WebService"'
+  tags:
+    - server-jsl
+
+'Homologação - JSL - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\JSL\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "JSLHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-jsl
+
+'Homologação - JSL - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\JSL\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "JSLHomologacao.SGT.WebService"'
+  tags:
+    - server-jsl
+
+'Homologação - Lunardi - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Lunardi\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "LunardiHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-lunardi
+
+'Homologação - Lunardi - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Lunardi\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "LunardiHomologacao.SGT.WebService"'
+  tags:
+    - server-lunardi
+
+'Homologação - Maersk - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Maersk.Homolog"'
+  tags:
+    - server-maersk
+
+'Homologação - Maersk - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Maersk.Homolog"'
+  tags:
+    - server-maersk
+
+'Homologação - Marechal - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Marechal\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MarechalHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-tmt
+
+'Homologação - Marechal - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Marechal\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MarechalHomologacao.SGT.WebService"'
+  tags:
+    - server-tmt
+
+'Homologação - Marfrig - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Homolog"'
+  tags:
+    - server-marfrig
+
+'Homologação - Marfrig - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Homolog"'
+  tags:
+    - server-marfrig
+
+'Homologação - Maroni - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Maroni\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MaroniHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-maroni
+
+'Homologação - Maroni - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Maroni\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MaroniHomologacao.SGT.WebService"'
+  tags:
+    - server-maroni
+
+'Homologação - Mattel - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Mattel\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Mattel.Homolog"'
+  tags:
+    - server-mattel
+
+'Homologação - Mattel - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Mattel\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Mattel.Homolog"'
+  tags:
+    - server-mattel
+
+'Homologação - Moura - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Moura.Homolog"'
+  tags:
+    - server-moura
+
+'Homologação - Moura - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Moura.Homolog"'
+  tags:
+    - server-moura
+
+'Homologação - MZ - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\MZ\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MZHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-transben
+
+'Homologação - MZ - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\MZ\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MZHomologacao.SGT.WebService"'
+  tags:
+    - server-transben
+
+'Homologação - Natal - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\TransNatal\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TransNatalHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-natal
+
+'Homologação - Natal - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\TransNatal\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TransNatalHomologacao.SGT.WebService"'
+  tags:
+    - server-natal
+
+'Homologação - NaturalOne - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.NaturalOne.Homolog"'
+  tags:
+    - server-naturalone
+
+'Homologação - NaturalOne - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.NaturalOne.Homolog"'
+  tags:
+    - server-naturalone
+
+'Homologação - Nestle - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Nestle\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebAppHomo"'
+  tags:
+    - server-nestle
+
+'Homologação - Nestle - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Nestle\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebServiceHomo"'
+  tags:
+    - server-nestle
+
+'Homologação - PPL - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\PPL\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.PPL.Homolog"'
+  tags:
+    - server-autover
+
+'Homologação - PPL - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\PPL\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.PPL.Homolog"'
+  tags:
+    - server-autover
+
+'Homologação - Prodelog - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Prodelog\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "ProdelogHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-prodelog
+
+'Homologação - Prodelog - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Prodelog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "ProdelogHomologacao.SGT.WebService"'
+  tags:
+    - server-prodelog
+
+'Homologação - Rodofly - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Homologacao.SGT.WebAdmin"'
+  tags:
+    - server-rodofly
+
+'Homologação - Rodofly - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Homologacao.SGT.WebService"'
+  tags:
+    - server-rodofly
+
+'Homologação - SG Glass México - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SaintGobainGlassMexico\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.SaintGobainGlassMexico.Homolog"'
+  tags:
+    - server-saintgobainmexico
+
+'Homologação - SG Glass México - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SaintGobainGlassMexico\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.SaintGobainMexico.Homolog"'
+  tags:
+    - server-saintgobainmexico
+
+'Homologação - Settor - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Settor\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SettorHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-framento
+
+'Homologação - Settor - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Settor\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SettorHomologacao.SGT.WebService"'
+  tags:
+    - server-framento
+
+'Homologação - TB - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\BomPreco\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BomPrecoHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-tb
+
+'Homologação - TB - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\BomPreco\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BomPrecoHomologacao.SGT.WebService"'
+  tags:
+    - server-tb
+
+'Homologação - Telhanorte - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.TelhaNorte.Homolog"'
+  tags:
+    - server-telhanorte
+
+'Homologação - Telhanorte - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.TelhaNorte.Homolog"'
+  tags:
+    - server-telhanorte
+
+'Homologação - Tekbond - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Tekbond\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.Webapp.Tekbond.Homolog"'
+  tags:
+    - server-tekbond
+
+'Homologação - Tekbond - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Tekbond\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Tekbond.Homolog"'
+  tags:
+    - server-tekbond
+
+'Homologação - Tirol - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Tirol\Homologacao\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Homolog"'
+  tags:
+    - server-tirol
+
+'Homologação - Tirol - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Tirol\Homologacao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Homolog"'
+  tags:
+    - server-tirol
+
+'Homologação - TMT - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\TMT\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TMTHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-tmt
+
+'Homologação - TMT - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\TMT\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TMTHomologacao.SGT.WebService"'
+  tags:
+    - server-tmt
+
+'Homologação - Tombini - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "STG.Tombini"'
+  tags:
+    - server-homologacao
+
+'Homologação - Tombini - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "STG.Tombini"'
+  tags:
+    - server-homologacao
+
+'Homologação - Transben - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TransbenHomologacao.SGT.WebAdmin"'
+  tags:
+    - server-transben
+
+'Homologação - Transben - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TransbenHomologacao.SGT.WebService"'
+  tags:
+    - server-transben
+
+'Homologação - Tumelero - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\Tumelero\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Tumelero.Homolog"'
+  tags:
+    - server-telhanorte
+
+'Homologação - Unilever - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Unilever\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Unilever.SGT.WebApp.Homolog"'
+  tags:
+    - server-unilever
+
+'Homologação - Unilever - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Unilever\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Unilever.SGT.WebService.Homolog"'
+  tags:
+    - server-unilever
+
+'Homologação - Vidrio Andino - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.VidrioAndino.Homolog"'
+  tags:
+    - server-vidrioandino
+
+'Homologação - Vidrio Andino - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.VidrioAndino.Homolog"'
+  tags:
+    - server-vidrioandino
+
+'Homologação - Vigor - SGT.WebAdmin':
+  extends: .deploy_release
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Vigor.Homolog"'
+  tags:
+    - server-vigor
+
+'Homologação - Vigor - SGT.WebService':
+  extends: .deploy_webservice_release
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homolog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Vigor.Homolog"'
+  tags:
+    - server-vigor
+
+
+
+
+#AMBIENTES DE PRODUÇÃO
+
+'Produção - Agraria - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Agraria\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Agraria\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Agraria\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Agraria"'
+  tags:
+    - server-decathlon
+
+'Produção - Agraria - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Agraria\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Agraria\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Agraria\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Agraria"'
+  tags:
+    - server-decathlon
+
+'Produção - Aliança - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Alianca\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebAdmin.Alianca.Producao"'
+  tags:
+    - server-alianca
+
+'Produção - Aliança - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Alianca\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Alianca.Producao"'
+  tags:
+    - server-alianca
+
+'Produção - Aliança - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Aliança Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Alianca\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Aliança Produção - Gerador de Relatórios"'
+  tags:
+    - server-alianca
+
+'Produção - Aliança Truck - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\AliancaTruck\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\AliancaTruck\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\AliancaTruck\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "AliancaTruckProducao.SGT.WebAdmin"'
+  tags:
+    - server-maersk
+
+'Produção - Aliança Truck - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\AliancaTruck\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\AliancaTruck\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\AliancaTruck\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "AliancaTruckProducao.SGT.WebService"'
+  tags:
+    - server-maersk
+
+'Produção - Aliança Truck - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Aliança Truck Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\AliancaTruck\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Aliança Truck Produção - Gerador de Relatórios"'
+  tags:
+    - server-maersk
+
+'Produção - Americanas - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Americanas\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Americanas\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Americanas\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Americanas"'
+  tags:
+    - server-americanas
+
+'Produção - Americanas - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Americanas\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Americanas\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Americanas\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Americanas"'
+  tags:
+    - server-americanas
+
+'Produção - Angeloni - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Angeloni\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp"'
+  tags:
+    - server-angeloni
+
+'Produção - Angeloni - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Angeloni\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService"'
+  tags:
+    - server-angeloni
+
+'Produção - Aurea - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Aurea\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Aurea\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Aurea\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Aurea"'
+  tags:
+    - server-aurea
+
+'Produção - Aurea - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Aurea\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Aurea\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Aurea\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Aurea"'
+  tags:
+    - server-aurea
+
+'Produção - BBM - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\BBM\Producao\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\BBM\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\BBM\Producao\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BBMProducao.SGT.WebAdmin"'
+  tags:
+    - server-aurea
+
+'Produção - BBM - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\BBM\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\BBM\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\BBM\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BBMProducao.SGT.WebService"'
+  tags:
+    - server-aurea
+
+'Produção - Bitury - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Bitury\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Bitury\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Bitury\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BituryProducao.SGT.WebAdmin"'
+  tags:
+    - server-bitury
+
+'Produção - Bitury - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Bitury\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Bitury\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Bitury\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BituryProducao.SGT.WebService"'
+  tags:
+    - server-bitury
+
+'Produção - Boticario - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Boticario\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Boticario\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Boticario\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.Boticario.Embarcador"'
+  tags:
+    - server-boticario
+
+'Produção - Boticario - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Boticario\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Boticario\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Boticario\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Boticario"'
+  tags:
+    - server-boticario
+
+'Produção - Braveo - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Braveo\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Braveo.SGT.WebApp"'
+  tags:
+    - server-ninfa
+
+'Produção - Braveo - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Braveo\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Braveo.SGT.WebService"'
+  tags:
+    - server-ninfa
+
+'Produção - Carrefour - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Carrefour\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp"'
+  tags:
+    - server-carrefour
+
+'Produção - Carrefour - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Carrefour\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService"'
+  tags:
+    - server-carrefour
+
+'Produção - Casa Verde - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\CasaVerde\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\CasaVerde\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\CasaVerde\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "CasaVerdeProducao.SGT.WebAdmin"'
+  tags:
+    - server-casaverde
+
+'Produção - Casa Verde - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\CasaVerde\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\CasaVerde\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\CasaVerde\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "CasaVerdeProducao.SGT.WebService"'
+  tags:
+    - server-casaverde
+
+'Produção - Cobasi - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Cobasi\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Cobasi\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Cobasi\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Cobasi"'
+  tags:
+    - server-cobasi
+
+'Produção - Cobasi - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Cobasi\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Cobasi\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Cobasi\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Cobasi"'
+  tags:
+    - server-cobasi
+
+'Produção - Copacol - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Copacol\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Copacol"'
+  tags:
+    - server-copacol
+
+'Produção - Copacol - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Copacol\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Copacol"'
+  tags:
+    - server-copacol
+
+'Produção - Cordenonsi - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Cordenonsi\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Cordenonsi\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Cordenonsi\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "CordenonsiProducao.SGT.WebAdmin"'
+  tags:
+    - server-cordenonsi
+
+'Produção - Cordenonsi - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Cordenonsi\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Cordenonsi\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Cordenonsi\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "CordenonsiProducao.SGT.WebService"'
+  tags:
+    - server-cordenonsi
+
+'Produção - Cordenonsi - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Cordenonsi Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Cordenonsi\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Cordenonsi Produção - Gerador de Relatórios"'
+  tags:
+    - server-cordenonsi
+
+'Produção - Danone - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Danone\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Danone\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Danone\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Danone.SGT.WebApp"'
+  tags:
+    - server-danone
+
+'Produção - Danone - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Danone\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Danone\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Danone\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Danone.SGT.WebService"'
+  tags:
+    - server-danone
+
+'Produção - Danone - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Danone Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Danone\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Danone Produção - Gerador de Relatórios"'
+  tags:
+    - server-danone
+
+'Produção - Decathlon - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Decathlon\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Decathlon"'
+  tags:
+    - server-decathlon
+
+'Produção - Decathlon - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Decathlon\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Decathlon"'
+  tags:
+    - server-decathlon
+
+'Produção - Fadel - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Fadel\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Fadel\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Fadel\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "FadelProducao.SGT.WebAdmin"'
+  tags:
+    - server-lunardi
+
+'Produção - Fadel - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Fadel\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Fadel\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Fadel\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "FadelProducao.SGT.WebService"'
+  tags:
+    - server-lunardi
+
+'Produção - Framento - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Framento\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Framento\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Framento\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "FramentoProducao.SGT.WebAdmin"'
+  tags:
+    - server-framento
+
+'Produção - Framento - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Framento\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Framento\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Framento\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "FramentoProducao.SGT.WebService"'
+  tags:
+    - server-framento
+
+'Produção - Framento - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Framento Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Framento\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Framento Produção - Gerador de Relatórios"'
+  tags:
+    - server-framento
+
+'Produção - Frimesa - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Frimesa\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Frimesa"'
+  tags:
+    - server-frimesa
+
+'Produção - Frimesa - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Frimesa\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Frimesa"'
+  tags:
+    - server-frimesa
+
+'Produção - Gral - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Gral\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Gral\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Gral\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "GralProducao.SGT.WebAdmin"'
+  tags:
+    - server-gral
+
+'Produção - Gral - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Gral\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Gral\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Gral\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "GralProducao.SGT.WebService"'
+  tags:
+    - server-gral
+
+'Produção - Gral - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Gral Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Gral\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Gral Produção - Gerador de Relatórios"'
+  tags:
+    - server-gral
+
+'Produção - Grupo Big - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Embarcador\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\GrupoBig\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Embarcador\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp"'
+  tags:
+    - server-walmart
+
+'Produção - Grupo Big - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Embarcador\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\GrupoBig\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Embarcador\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService"'
+  tags:
+    - server-walmart
+
+'Produção - Grupo Big - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Walmart Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Walmart\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Walmart Produção - Gerador de Relatórios"'
+  tags:
+    - server-walmart
+
+'Produção - Grupo Carrefour - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "F:\GrupoCarrefour\Producao\SGT.WebApp\*" "F:\Backup\Producao\GrupoCarrefour\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "F:\GrupoCarrefour\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.GrupoCarrefour"'
+  tags:
+    - server-carrefour   
+
+'Produção - Grupo Carrefour - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "F:\GrupoCarrefour\Producao\SGT.WebService\*" "F:\Backup\Producao\GrupoCarrefour\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "F:\GrupoCarrefour\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.GrupoCarrefour"'
+  tags:
+    - server-carrefour
+
+'Produção - HB - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\HB\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\HB\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\HB\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "HB.SGT.WebAdmin"'
+  tags:
+    - server-hb
+
+'Produção - HB - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\HB\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\HB\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\HB\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "HB.SGT.WebService"'
+  tags:
+    - server-hb
+
+'Produção - Heineken - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Heineken\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Heineken\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Heineken\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Heineken"'
+  tags:
+    - server-heineken
+
+'Produção - Heineken - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Heineken\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Heineken\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Heineken\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Heineken"'
+  tags:
+    - server-heineken
+
+'Produção - Intercab QA - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\AliancaIntercabQA\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "AliancaIntercabQA.SGT.WebAdmin"'
+  tags:
+    - server-jsl
+
+'Produção - Intercab QA - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Homologacao\AliancaIntercabQA\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "AliancaIntercabQA.SGT.WebService"'
+  tags:
+    - server-jsl
+
+'Produção - JSL - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\JSL\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\JSL\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\JSL\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "JSLProducao.SGT.WebAdmin"'
+  tags:
+    - server-jsl
+
+'Produção - JSL - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\JSL\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\JSL\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\JSL\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "JSLProducao.SGT.WebService"'
+  tags:
+    - server-jsl
+
+'Produção - Lunardi - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Lunardi\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Lunardi\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Lunardi\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "LunardiProducao.SGT.WebAdmin"'
+  tags:
+    - server-lunardi
+
+'Produção - Lunardi - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Lunardi\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Lunardi\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Lunardi\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "LunardiProducao.SGT.WebService"'
+  tags:
+    - server-lunardi
+
+'Produção - Lunardi - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Lunardi Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Lunardi\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Lunardi Produção - Gerador de Relatórios"'
+  tags:
+    - server-lunardi
+
+'Produção - Maersk - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Maersk\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Maersk\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Maersk\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Maersk"'
+  tags:
+    - server-maersk
+
+'Produção - Maersk - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Maersk\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Maersk\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Maersk\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Maersk"'
+  tags:
+    - server-maersk
+
+'Produção - Marechal - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Marechal\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Marechal\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Marechal\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MarechalProducao.SGT.WebAdmin"'
+  tags:
+    - server-tmt
+
+'Produção - Marechal - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Marechal\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Marechal\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Marechal\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MarechalProducao.SGT.WebService"'
+  tags:
+    - server-tmt
+
+'Produção - Marfrig - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Marfrig\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp"'
+  tags:
+    - server-marfrig
+
+'Produção - Marfrig - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Marfrig\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService"'
+  tags:
+    - server-marfrig
+
+'Produção - Maroni - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Maroni Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "G:\Producao\Maroni\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Maroni Produção - Gerador de Relatórios"'
+  tags:
+    - server-maroni
+
+'Produção - Maroni - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Maroni\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Maroni\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Maroni\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MaroniProducao.SGT.WebAdmin"'
+  tags:
+    - server-maroni
+
+'Produção - Maroni - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Maroni\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Maroni\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Maroni\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MaroniProducao.SGT.WebService"'
+  tags:
+    - server-maroni
+
+'Produção - Mattel - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Mattel Producao - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Mattel\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Mattel Producao - Gerador de Relatórios"'
+  tags:
+    - server-mattel
+
+'Produção - Mattel - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Mattel\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Mattel\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Mattel\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Mattel"'
+  tags:
+    - server-mattel
+
+'Produção - Mattel - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Mattel\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Mattel\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Mattel\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Mattel"'
+  tags:
+    - server-mattel
+
+'Produção - Minerva - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Minerva\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Minerva\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Minerva\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Minerva"'
+  tags:
+    - server-minerva
+
+'Produção - Minerva - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Minerva\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Minerva\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Minerva\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Minerva"'
+  tags:
+    - server-minerva
+
+'Produção - Moura - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Moura\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Moura"'
+  tags:
+    - server-moura
+
+'Produção - Moura - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Moura\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Moura"'
+  tags:
+    - server-moura
+
+'Produção - MZ - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\MZ\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\MZ\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\MZ\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MZ.SGT.WebAdmin"'
+  tags:
+    - server-transben
+
+'Produção - MZ - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\MZ\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\MZ\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\MZ\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "MZ.SGT.WebService"'
+  tags:
+    - server-transben
+
+'Produção - Natal - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\TransNatal\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\TransNatal\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\TransNatal\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TransNatalProducao.SGT.WebAdmin"'
+  tags:
+    - server-natal
+
+'Produção - Natal - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\TransNatal\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\TransNatal\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\TransNatal\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TransNatalProducao.SGT.WebService"'
+  tags:
+    - server-natal
+
+'Produção - Natal - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Natal Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\TransNatal\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Natal Produção - Gerador de Relatórios"'
+  tags:
+    - server-natal
+
+'Produção - NaturalOne - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\NaturalOne\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.NaturalOne"'
+  tags:
+    - server-naturalone
+
+'Produção - NaturalOne - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\NaturalOne\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.NaturalOne"'
+  tags:
+    - server-naturalone
+
+'Produção - Nestle - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Nestle\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Nestle\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Nestle\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp"'
+  tags:
+    - server-nestle
+
+'Produção - Nestle - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\NestleSGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Nestle\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Nestle\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService"'
+  tags:
+    - server-nestle
+
+'Produção - Ninfa - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Ninfa\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Ninfa\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Ninfa\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Ninfa.SGT.WebApp"'
+  tags:
+    - server-ninfa
+
+'Produção - Ninfa - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Ninfa\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Ninfa\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Ninfa\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Ninfa.SGT.WebService"'
+  tags:
+    - server-ninfa
+
+'Produção - Prodelog - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Prodelog\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Prodelog\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Prodelog\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "ProdelogProducao.SGT.WebAdmin"'
+  tags:
+    - server-prodelog
+
+'Produção - Prodelog - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Prodelog\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Prodelog\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Prodelog\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "ProdelogProducao.SGT.WebService"'
+  tags:
+    - server-prodelog
+
+'Produção - Rodofly - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Rodofly\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Rodofly\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Rodofly\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "RodoFly.SGT.WebAdmin"'
+  tags:
+    - server-rodofly
+
+'Produção - Rodofly - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "RodoFly.SGT.WebService"'
+    - 'Restart-WebAppPool -Name "RodoLog.SGT.WebService"'
+    - 'Restart-WebAppPool -Name "VisaoLog.SGT.WebService"'
+  tags:
+    - server-rodofly
+
+'Produção - Rodolog - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Rodolog\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Rodolog\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Rodolog\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "RodoLog.SGT.WebAdmin"'
+  tags:
+    - server-rodofly
+
+'Produção - SG Glass México - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SaintGobainGlassMexico\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\SaintGobainGlassMexico\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SaintGobainGlassMexico\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.SaintGobainGlassMexico"'
+  tags:
+    - server-saintgobainmexico
+
+'Produção - SG Glass México - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SaintGobainGlassMexico\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\SaintGobainGlassMexico\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SaintGobainGlassMexico\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.SaintGobainMexico"'
+  tags:
+    - server-saintgobainmexico
+
+'Produção - Settor - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Settor\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Settor\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Settor\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SettorProducao.SGT.WebAdmin"'
+  tags:
+    - server-framento
+
+'Produção - Settor - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Settor\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Settor\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Settor\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SettorProducao.SGT.WebService"'
+  tags:
+    - server-framento
+
+'Produção - TB - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\BomPreco\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\BomPreco\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\BomPreco\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BomPrecoProducao.SGT.WebAdmin"'
+  tags:
+    - server-walmart
+
+'Produção - TB - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\BomPreco\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\BomPreco\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\BomPreco\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "BomPrecoProducao.SGT.WebService"'
+  tags:
+    - server-walmart
+
+'Produção - Telhanorte - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Telhanorte\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.TelhaNorte"'
+  tags:
+    - server-telhanorte
+
+'Produção - Telhanorte - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Telhanorte\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.TelhaNorte"'
+  tags:
+    - server-telhanorte
+
+'Produção - Tekbond - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Tekbond\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Tekbond\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Tekbond\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.Tekbond"'
+  tags:
+    - server-tekbond
+
+'Produção - Tekbond - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Tekbond\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Tekbond\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Tekbond\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Tekbond"'
+  tags:
+    - server-tekbond
+
+'Produção - Tirol - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Tirol\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Tirol\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Tirol\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp"'
+  tags:
+    - server-tirol
+
+'Produção - Tirol - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Tirol\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Tirol\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Tirol\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService"'
+  tags:
+    - server-tirol
+
+'Produção - TMT - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\TMT\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\TMT\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\TMT\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TMTProducao.SGT.WebAdmin"'
+  tags:
+    - server-tmt
+
+'Produção - TMT - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\TMT\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\TMT\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\TMT\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TMTProducao.SGT.WebService"'
+  tags:
+    - server-tmt
+
+'Produção - Tombini - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Tombini\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "TMS"'
+  tags:
+    - server-tombini
+
+'Produção - Tombini - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Tombini\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService"'
+  tags:
+    - server-tombini
+
+'Produção - Tombini - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Tombini Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Tombini\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Tombini Produção - Gerador de Relatórios"'
+  tags:
+    - server-tombini
+
+'Produção - Transben - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Transben\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Transben\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Transben\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Transben.SGT.WebAdmin"'
+  tags:
+    - server-transben
+
+'Produção - Transben - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Transben\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Transben\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Transben\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Transben.SGT.WebService"'
+  tags:
+    - server-transben
+
+'Produção - Transben - ReportService':
+  extends: .deploy_reportservice_master
+  script:
+    - 'Stop-Service -Name "Transben Produção - Gerador de Relatórios" -Force'
+    - 'xcopy /y /s /i "$env:REPORTSERVICE_PUBLISH_FOLDER\*" "F:\Producao\Transben\SGT.WebAdmin.ReportWindowsService\"'
+    - 'Start-Service -Name "Transben Produção - Gerador de Relatórios"'
+  tags:
+    - server-transben
+
+'Produção - Tumelero - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Tumelero\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Tumelero\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Tumelero\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.Tumelero"'
+  tags:
+    - server-telhanorte
+
+'Produção - Unilever - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Unilever\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Unilever\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Unilever\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Unilever.SGT.WebApp"'
+  tags:
+    - server-unilever
+
+'Produção - Unilever - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Unilever\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Unilever\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Unilever\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "Unilever.SGT.WebService"'
+  tags:
+    - server-unilever
+
+'Produção - Vidrio Andino - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\VidrioAndino\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp.VidrioAndino"'
+  tags:
+    - server-vidrioandino
+
+'Produção - Vidrio Andino - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\VidrioAndino\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService.VidrioAndino"'
+  tags:
+    - server-vidrioandino
+
+'Produção - Vigor - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SGT.WebApp\*" "C:\inetpub\wwwroot\Backup\Producao\Vigor\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebApp\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebApp"'
+  tags:
+    - server-vigor
+
+'Produção - Vigor - SGT.WebService':
+  extends: .deploy_webservice_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\SGT.WebService\*" "C:\inetpub\wwwroot\Backup\Producao\Vigor\SGT.WebService\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:WEBSERVICE_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\SGT.WebService\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "SGT.WebService"'
+  tags:
+    - server-vigor
+
+'Produção - Visaolog - SGT.WebAdmin':
+  extends: .deploy_master
+  script:
+    - 'xcopy /y /s /i "C:\inetpub\wwwroot\Producao\Visaolog\SGT.WebAdmin\*" "C:\inetpub\wwwroot\Backup\Producao\Visaolog\SGT.WebAdmin\$env:CI_COMMIT_SHORT_SHA\"'
+    - 'xcopy /y /s /i "$env:MULTI_PUBLISH_FOLDER\*" "C:\inetpub\wwwroot\Producao\Visaolog\SGT.WebAdmin\"'
+    - 'Import-Module WebAdministration'
+    - 'Restart-WebAppPool -Name "VisaoLog.SGT.WebAdmin"'
+  tags:
+    - server-rodofly
+
+
+
+
+
+
+
+
+

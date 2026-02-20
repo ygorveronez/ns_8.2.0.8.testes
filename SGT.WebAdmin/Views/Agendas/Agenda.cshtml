@@ -1,0 +1,278 @@
+﻿
+<section id="widget-grid">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Agendas</li>
+        <li class="breadcrumb-item active">Agenda</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class="subheader-icon fal fa-calendar-alt"></i> Agenda
+        </h1>
+    </div>
+
+    <div id="knockoutPesquisaAgenda" class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <i class="fal fa-search"></i>
+                    Pesquisar Tarefas
+                </button>
+                <div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <form class="mt-3">
+                        <div class="row">
+                            <div class="col-12 col-md-2" data-bind="visible: DataAgenda.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataAgenda.text, attr: { for: DataAgenda.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataAgenda.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataAgenda.maxlength, id : DataAgenda.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Status.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Status.text, attr: { for: Status.id }"></label>
+                                    <select class="form-control" data-bind="options: Status.options, optionsText: 'text', optionsValue: 'value', value: Status.val, attr: { id : Status.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-8" data-bind="visible: Observacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id}" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Busca Avancada -->
+                        <div class="row" data-bind="id: BuscaAvancada.idFade, fadeVisible: BuscaAvancada.visibleFade">
+                            <div class="col-12 col-md-6" data-bind="visible: Colaborador.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Colaborador.text, attr: { for: Colaborador.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="value: Colaborador.val, valueUpdate: 'afterkeydown', attr: { maxlength: Colaborador.maxlength, id : Colaborador.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: Colaborador.idBtnSearch}">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: Cliente.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Cliente.text, attr: { for: Cliente.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="value: Cliente.val, valueUpdate: 'afterkeydown', attr: { maxlength: Cliente.maxlength, id : Cliente.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: Cliente.idBtnSearch}">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-default" type="button" data-bind="click: BuscaAvancada.eventClick, attr: { id: BuscaAvancada.id}, visible: BuscaAvancada.id">
+                                <i data-bind="attr: { class: BuscaAvancada.icon}" class="fal fa-plus"></i> <span data-bind="text: BuscaAvancada.text"></span>
+                            </button>
+                            <button class="btn btn-success ms-2" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                                <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="divGeralAgenda" class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <ul class="nav nav-tabs">
+                    <li id="liTabAgenda" class="nav-item">
+                        <a id="btnAgenda" href="#tabAgenda" class="nav-link active" data-bs-toggle="tab">
+                            <i class="fal fa-calendar"></i> <span class="hidden-mobile hidden-tablet">Agenda de Tarefas</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0 p-3">
+                    <div id="tabAgenda" class="tab-pane active">
+                        <div id="knockoutAgenda">
+                            <div class="d-flex justify-content-end mb-3" data-bind="visible: AdicionarNovaTarefa.visible">
+                                <button class="btn btn-success" type="button" data-bind="click: AdicionarNovaTarefa.eventClick, visible: AdicionarNovaTarefa.visible, enable: AdicionarNovaTarefa.enable, text: AdicionarNovaTarefa.text, attr: { id : AdicionarNovaTarefa.id}"></button>
+                            </div>
+                            <div id="divListaAgenda" class="fc fc-ltr fc-unthemed" style="min-height: 600px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="divModalAgendaTarefa" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fal fa-edit"></i>
+                    Cadastrar Tarefa
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="conteudoAgendaTarefa"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/scripts/fullCalendar"></script>
+<script src="/scripts/agenda"></script>
+<script src="/scripts/agendaTarefa"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadAgenda();
+    });
+
+</script>
+
+<link rel="stylesheet" href="/css/legacy" />
+
+<style type="text/css">
+    #divListaAgenda > div > .fc-toolbar,
+    #divListaAgenda > .fc-toolbar {
+        background-color: #eeeeee;
+        margin-bottom: 6px;
+    }
+
+    .fc-event-container > a.fc-event {
+        margin-left: 1px;
+    }
+
+    .fc-state-default.fc-corner-left,
+    .fc-state-default.fc-corner-right {
+        border-radius: 0;
+    }
+
+    .fc-unthemed .fc-today {
+        background: #ffffff;
+    }
+
+    .container-tarefa-pendente {
+        padding-left: 5px !important;
+        padding-right: 0 !important;
+    }
+
+    @@media (max-width: 991px) {
+        .container-tarefa-pendente {
+            margin-top: 20px;
+            padding-left: 0 !important;
+        }
+    }
+
+    .well-tarefa {
+        height: 120px;
+    }
+
+    .table-tarefas {
+        height: 653px;
+        margin: 0 !important;
+        padding: 5px 5px 0px 0px;
+        overflow-y: scroll;
+    }
+
+    .backgroundToleranciaExcessoTempoCalendario {
+        background: #ffb6b6;
+    }
+
+    .backgroundHorarioDisponivelCalendario {
+        background: #b7f3ae;
+    }
+
+    .fc .dataTables_wrapper table button {
+        font-size: 12px;
+        height: auto;
+        padding: 0;
+    }
+
+    .fc-widget-content-table {
+        border: none;
+        padding: 10px !important;
+    }
+
+        .fc-widget-content-table .widget-body .dataTables_wrapper table {
+            border: 1px solid #dddddd !important;
+        }
+
+            .fc-widget-content-table .widget-body .dataTables_wrapper table tr th:first-child {
+                border-left: none !important;
+            }
+
+            .fc-widget-content-table .widget-body .dataTables_wrapper table tr th:last-child {
+                border-right: none !important;
+            }
+
+        .fc-widget-content-table .widget-body .dataTables_wrapper .dt-toolbar-footer {
+            margin-top: 6px;
+            padding: 5px 10px !important;
+        }
+
+    .fc-time-grid-event:hover {
+        min-height: 150px;
+        z-index: 1501 !important;
+        -webkit-transition: min-height 1s;
+        -moz-transition: min-height 1s;
+        -o-transition: min-height 1s;
+        transition: min-height 1s;
+    }
+
+    .fc-time-grid-event {
+        min-height: 0;
+        -webkit-transition: min-height 1s;
+        -moz-transition: min-height 1s;
+        -o-transition: min-height 1s;
+        transition: min-height 1s;
+    }
+
+    #fdsTarefa > div > div {
+        padding: 10px;
+    }
+
+    .nav-tabs > li > a .badge {
+        padding: 2px 2px 2px 2px;
+        margin-left: 0;
+        margin-top: -3px;
+    }
+
+    @@media (max-width: 600px) {
+        .smart-form .col {
+            float: left;
+        }
+    }
+
+    @@media (max-width: 350px) {
+        .fc-toolbar > .fc-left > h2 {
+            font-size: 20px;
+        }
+    }
+
+    @@media (max-width: 320px) {
+        .fc-toolbar > .fc-left > h2 {
+            font-size: 18px;
+        }
+    }
+
+    .smart-form .fieldset-padding {
+        padding: 25px 0 10px;
+    }
+
+    @@media (min-width: 1500px) {
+        .col-xl-2 {
+            width: 16.66666667%;
+        }
+    }
+</style>

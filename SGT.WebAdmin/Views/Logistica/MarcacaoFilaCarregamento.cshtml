@@ -1,0 +1,296 @@
+﻿
+<style>
+    .imagens-entrega-container .imagem-entrega {
+        height: auto;
+        width: 220px;
+        text-align: center;
+    }
+
+        .imagens-entrega-container .imagem-entrega .imagem-background {
+            width: auto;
+            background-position: center;
+            background-color: #ececec;
+            height: 120px;
+            border-radius: 3px;
+        }
+
+    .img-motorista {
+        height: auto;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        max-width: 100%;
+    }
+
+    .sem-imagem .img-motorista {
+        height: 116px;
+        background-image: url('img/sem_foto.jpg');
+        background-position: center;
+        background-size: contain;
+    }
+
+    .label-fixed-size {
+        text-align: right;
+        width: 135px;
+    }
+
+    .label-fixed-size-percent {
+        min-width: 160px;
+        text-align: right;
+        width: 50%;
+    }
+
+    .text-overflow-hidden {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+        .text-overflow-hidden > label > span {
+            padding-left: 5px;
+        }
+
+    .status-validade-amarelo {
+        color: #cccc00;
+    }
+
+    .status-validade-azul {
+        color: #0040ff;
+    }
+
+    .status-validade-laranja {
+        color: #ff9933;
+    }
+
+    .status-validade-verde {
+        color: #66cc00;
+    }
+
+    .status-validade-vermelho {
+        color: #ff0000;
+    }
+</style>
+
+
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Logística</li>
+    <li class="breadcrumb-item active">Marcação Fila Carregamento</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        Marcação na Fila de Carregamento
+    </h1>
+</div>
+<div class="panel">
+    <div class="panel-container">
+        <div class="panel-hdr">
+            <h3>
+                Informar Chegada do Veículo
+            </h3>
+        </div>
+        <div class="panel-content">
+            <form>
+                <div class="row" id="knockoutMarcacaoFilaCarregamento">
+                    <div class="col-12 col-md-4" data-bind="visible: Veiculo.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: Veiculo.requiredClass, value: Veiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Veiculo.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" data-bind="visible: Motorista.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Motorista.text, attr: { for: Motorista.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: Motorista.requiredClass, value: Motorista.val, valueUpdate: 'afterkeydown', attr: { maxlength: Motorista.maxlength, id : Motorista.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Motorista.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" data-bind="visible: CentroCarregamento.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: CentroCarregamento.text, attr: { for: CentroCarregamento.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: CentroCarregamento.requiredClass, value: CentroCarregamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: CentroCarregamento.maxlength, id : CentroCarregamento.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: CentroCarregamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="knockoutMarcacaoFilaCarregamentoVeiculo">
+                    <div class="col-12 col-md-12 ">
+                        <div class="card" data-bind="visible: PlacaTracao.visible">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <h3 class="card-title">Veículo</h3>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-12 col-md-4">
+                                    <label data-bind="text: PlacaTracao.text"></label>
+                                    <label class="me-2"><span data-bind="text: PlacaTracao.val"></span></label>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label data-bind="text: PlacasReboques.text"></label>
+                                    <label><span data-bind="text: PlacasReboques.val"></span></label>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <label data-bind="text: ModeloVeicular.text"></label>
+                                    <label><span data-bind="text: ModeloVeicular.val"></span></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="knockoutMarcacaoFilaCarregamentoMotorista">
+                    <div class="col-12 col-md-12 mt-3">
+                        <div class="card" data-bind="visible: Codigo.visible">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <h3 class="card-title">Motorista</h3>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-12 col-md-3">
+                                    <div data-bind="css: { 'container-img': true, 'sem-imagem': !FotoMotorista.val() }">
+                                        <!-- ko if: FotoMotorista.val() == "" -->
+                                        <div class="img-motorista"></div>
+                                        <!-- /ko -->
+                                        <!-- ko if: FotoMotorista.val() != "" -->
+                                        @*<div class="img-motorista-container">*@
+                                        <img class="img-motorista" data-bind="attr: { src: 'data:image/png;base64,' + FotoMotorista.val() }" />
+                                        @*</div>*@
+                                        <!-- /ko -->
+                                    </div>
+                                </div>
+                               
+
+                                <div class="col-12 col-md-8 row">
+                                    <div class="col-12 col-md-6">
+                                        <label data-bind="text: Codigo.text"></label>
+                                        <label><span data-bind="text: Codigo.val"></span></label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label data-bind="text: Nome.text"></label>
+                                        <label><span data-bind="text: Nome.val"></span></label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label data-bind="text: ValidadeCnh.text"></label>
+                                        <label><span data-bind="text: ValidadeCnh.val"></span></label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label data-bind="text: StatusValidadeCnh.text"></label>
+                                        <label><span data-bind="text: StatusValidadeCnh.val, css: StatusValidadeCnh.cssClass"></span></label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label data-bind="text: ValidadeGr.text"></label>
+                                        <label><span data-bind="text: ValidadeGr.val"></span></label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label data-bind="text: StatusValidadeGr.text"></label>
+                                        <label><span data-bind="text: StatusValidadeGr.val, css: StatusValidadeGr.cssClass"></span></label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label data-bind="text: CodigoTransportador.text"></label>
+                                        <label><span data-bind="text: CodigoTransportador.val"></span></label>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label data-bind="text: DescricaoTransportador.text"></label>
+                                        <label><span data-bind="text: DescricaoTransportador.val"></span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer id="knockoutCRUDMarcacaoFilaCarregamento">
+                    <div class="row">
+                        <div class="col-6 mt-3">
+                            <button type="button" class="btn btn-labeled btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { id : Cancelar.id}">
+                                <span data-bind="text: Cancelar.text"></span>
+                            </button>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end mt-3">
+                            <button type="button" class="btn btn-labeled btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                                <span data-bind="text: Adicionar.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </footer>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="divModalDetalhesFilaCarregamento" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutDetalhesFilaCarregamento" class="modal-dialog  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalhes da Fila de Carregamento</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body row" id="knockoutDetalhesFilaCarregamento">
+                <table class="table table-clean table-sm align-self-end">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong data-bind="text: CentroCarregamento.text"></strong>
+                                <span data-bind="text: CentroCarregamento.val"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong data-bind="text: PlacaTracao.text"></strong>
+                                <span data-bind="text: PlacaTracao.val"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong data-bind="text: PlacasReboques.text"></strong>
+                                <span data-bind="text: PlacasReboques.val"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong data-bind="text: DataEntrada.text"></strong>
+                                <span data-bind="text: DataEntrada.val"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong data-bind="text: Posicao.text"></strong>
+                                <span data-bind="text: Posicao.val"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/marcacaoFilaCarregamento"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    _CONFIGURACAO_TMS = $.extend({}, _CONFIGURACAO_TMS, @Html.Raw(ViewBag.ConfiguracoesMarcacaoFilaCarregamento));
+
+    $(document).ready(function () {
+        loadMarcacaoFilaCarregamento();
+    });
+
+</script>

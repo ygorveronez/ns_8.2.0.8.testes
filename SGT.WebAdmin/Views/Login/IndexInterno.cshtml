@@ -1,0 +1,333 @@
+﻿@using SGT.WebAdmin
+@using SGT.WebAdmin.Extensions;
+@model SGT.WebAdmin.Models.Login
+
+<!DOCTYPE html>
+<html>
+<head>
+	@if (!System.Diagnostics.Debugger.IsAttached && !string.IsNullOrWhiteSpace(ViewBag.GTAG))
+	{
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=@Html.Raw(ViewBag.GTAG)"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() { dataLayer.push(arguments); }
+			gtag('js', new Date());
+
+			gtag('config', '@Html.Raw(ViewBag.GTAG)');
+		</script>
+	}
+
+	<meta charset="utf-8" />
+	<title>@Html.Raw(ViewBag.Titulo) - Acesso ao Sistema</title>
+	<meta name="description" content="@Html.Raw(ViewBag.Titulo)" />
+	<meta name="author" content="@Html.Raw(ViewBag.Copyright) by nstech" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="msapplication-tap-highlight" content="no" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="shortcut icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon" />
+	<link rel="icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon" />
+	
+	<link rel="stylesheet" href="/css/appBundle" />
+	<link id="mytheme" rel="stylesheet" media="screen, print" href="/css/customTheme7" />
+	<link rel="stylesheet" href="/css/skinBundle" />
+	<link rel="stylesheet" href="/css/retiradaProduto" />
+	<link rel="stylesheet" href="/css/login" />
+</head>
+<body class="@Html.Raw(ViewBag.Layout) @Html.Raw(ViewBag.ClasseCorBotoes) mod-bg-7 mod-nav-link">
+	<script>
+		'use strict';
+		var classHolder = document.getElementsByTagName("BODY")[0],
+			themeSettings = (localStorage.getItem('themeSettings')) ? JSON.parse(localStorage.getItem('themeSettings')) : {},
+			themeURL = themeSettings.themeURL || '',
+			themeOptions = themeSettings.themeOptions || '';
+
+		if (themeSettings.themeOptions)
+			classHolder.className = themeSettings.themeOptions;
+
+		if (themeSettings.themeURL && !document.getElementById('mytheme')) {
+			var cssfile = document.createElement('link');
+			cssfile.id = 'mytheme';
+			cssfile.rel = 'stylesheet';
+			cssfile.href = themeURL;
+			document.getElementsByTagName('head')[0].appendChild(cssfile);
+
+		}
+		else if (themeSettings.themeURL && document.getElementById('mytheme')) {
+			document.getElementById('mytheme').href = themeSettings.themeURL;
+		}
+
+		var saveSettings = function () {
+			themeSettings.themeOptions = String(classHolder.className).split(/[^\w-]+/).filter(function (item) {
+				return /^(nav|header|footer|mod|display)-/i.test(item);
+			}).join(' ');
+			if (document.getElementById('mytheme')) {
+				themeSettings.themeURL = document.getElementById('mytheme').getAttribute("href");
+			};
+			localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
+		}
+
+		var resetSettings = function () {
+			localStorage.setItem("themeSettings", "");
+		}
+	</script>
+	<div class="page-wrapper auth">
+		<div class="page-inner bg-brand-gradient">
+			<div class="page-content-wrapper bg-transparent m-0">
+
+                <div class="height-10 w-100 shadow-lg px-4 bg-brand-gradient">
+                    <div class="d-flex justify-content-between container p-0">
+                        @if (string.IsNullOrEmpty(ViewBag.LogoTerceiroLight) || string.IsNullOrEmpty(ViewBag.LogoTerceiroDark))
+                        {
+                            <div class="page-logo width-mobile-auto m-0 align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 border-0">
+                                <span class="page-logo-text me-1">
+
+									@if(ViewBag.AmbienteKMM){
+										<img src="@ViewBag.LogoDark" alt="@ViewBag.Titulo" style="width: 108px !important; height: 50px !important;" />
+										<img src="@ViewBag.LogoLight" class="light" alt="@ViewBag.Titulo" style="width: 108px !important; height: 50px !important;" />
+									}else {
+										<img src="@ViewBag.LogoDark" alt="@ViewBag.Titulo" />
+										<img src="@ViewBag.LogoLight" class="light" alt="@ViewBag.Titulo" />
+									}
+                                </span>
+                            </div>
+                        }
+                        @if (ViewBag.PossuiLogoCliente)
+                        {
+                            <div class="page-logo width-mobile-auto m-0 align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 border-0">
+                                <a href="@ViewBag.SiteCliente" target="_blank" class="page-logo-link press-scale-down d-flex align-items-center">
+                                    <span class="page-logo-text me-1">
+                                        <img src="@ViewBag.LogoClienteLight" alt="@ViewBag.SiteCliente" style="@ViewBag.HeightLogoCliente" />
+                                        <img src="@ViewBag.LogoCliente" class="light" alt="@ViewBag.SiteCliente" style="@ViewBag.HeightLogoCliente" />
+                                    </span>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="flex-1 px-sm-3" style="background: url(img/svg/pattern-3.svg) no-repeat center bottom fixed; background-size: cover;">
+                    <div class="container py-4 py-lg-5 my-lg-5 px-4 px-sm-0">
+                        <div class="row">
+                            <div class="col col-md-6 col-lg-7 hidden-sm-down d-flex">
+                                <h2 class="fs-xxl fw-500 mt-4 text-white">
+                                    @if (!string.IsNullOrWhiteSpace(ViewBag.LayoutLoginPersonalizado))
+                                    {
+                                        @Html.Raw(ViewBag.LayoutLoginPersonalizado)
+                                    }
+                                    else
+                                    {
+                                        @ViewBag.BoasVindas
+                                        if (string.IsNullOrWhiteSpace(ViewBag.ClasseCorBotoes))
+                                        {
+                                            <small class="h3 fw-300 mt-3 mb-5 text-white opacity-60">
+                                                @ViewBag.IntroducaoProduto
+                                            </small>
+                                        }
+                                        if (string.IsNullOrWhiteSpace(ViewBag.ClasseCorBotoes))
+                                        {
+                                            if (!ViewBag.AmbienteMultiNFe)
+                                            {
+												<a href="@Html.Raw(ViewBag.LinkSaibaMais)" target="_blank" class="fs-lg fw-500 text-white opacity-70">@Localization.Resources.Login.Login.SaibaMais &gt;&gt;</a>
+                                                <div class="d-sm-flex flex-column align-items-center justify-content-center d-md-block">
+                                                    <div class="px-0 py-1 mt-5 text-white fs-nano opacity-50">
+                                                        @Localization.Resources.Login.Login.SiganosNasRedesSociais
+                                                    </div>
+                                                    <div class="d-flex flex-row opacity-70">
+														<a href="@Html.Raw(ViewBag.LinkFacebook)" target="_blank" class="me-2 fs-xxl text-white">
+                                                            <i class="fab fa-facebook-square"></i>
+                                                        </a>
+														<a href="@Html.Raw(ViewBag.LinkInstagram)" target="_blank" class="me-2 fs-xxl text-white">
+                                                            <i class="fab fa-instagram"></i>
+                                                        </a>
+														<a href="@ViewBag.LinkLinkedIn" target="_blank" class="me-2 fs-xxl text-white">
+                                                            <i class="fab fa-linkedin"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <a href="https://www.commerce.inf.br/" target="_blank" class="fs-lg fw-500 text-white opacity-70">@Localization.Resources.Login.Login.SaibaMais &gt;&gt;</a>
+                                            }
+                                        }
+                                    }
+                                </h2>
+							</div>
+
+							<div class="col-sm-12 col-md-6 col-lg-5 col-xl-4 ml-auto">
+								<h1 class="text-white fw-300 mb-3 d-sm-block d-md-none">
+									@Localization.Resources.Login.Login.AutenticacaoSegura
+								</h1>
+								<div>
+									<div>
+										@if (string.IsNullOrWhiteSpace(ViewBag.ClasseCorBotoes))
+										{
+											<div class="page-logo width-mobile-auto m-0 align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 border-0">
+												<a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
+													@if (!string.IsNullOrEmpty(ViewBag.LogoTerceiroLight) || !string.IsNullOrEmpty(ViewBag.LogoTerceiroDark))
+													{
+														<span class="page-logo-text me-1">
+															<img src="@ViewBag.LogoTerceiroDark" class="light" alt="@ViewBag.Titulo" style="height: 100% !important;" />
+															<img src="@ViewBag.LogoTerceiroLight" alt="@ViewBag.Titulo" style="height: 100% !important; " />
+														</span>
+													}
+												</a>
+											</div>
+										}
+										@if (!string.IsNullOrEmpty(ViewBag.LogoTerceiroLight) || !string.IsNullOrEmpty(ViewBag.LogoTerceiroDark))
+										{
+											<div class="mb-4">
+												<h2 class="fs-xxl fw-800 text-white">
+													@Localization.Resources.Login.Login.OlaSejaBemVindo
+												</h2>
+												@if (ViewBag.MensagemBoasVindasPersonalizada != "")
+												{
+													<span class="text-muted" style="font-size: 16px;">@ViewBag.MensagemBoasVindasPersonalizada</span>
+												}
+											</div>
+										}
+									</div>
+
+									<div>
+										@using (Html.BeginForm("ExternalSignIn", "LoginInterno"))
+										{
+											<div id="socialLoginList">
+												@Html.AntiForgeryToken()
+												<div class="d-grid gap-2">
+													<button id="btnAzureAD" type="submit" name="provider" class="btn btn-info btn-block btn-lg waves-effect waves-themed" title="@Localization.Resources.Login.Login.EfetueLoginComSua @ViewBag.DisplaySSO">@ViewBag.DisplaySSO</button>
+												</div>
+												@if (!string.IsNullOrEmpty(ViewBag.ErroLoginSSO))
+												{
+													<div class="alert alert-danger alert-block mt-2">
+														<div>
+															<span>@ViewBag.ErroLoginSSO</span>
+														</div>
+													</div>
+												}
+											</div>
+										}
+									</div>
+								</div>
+							</div>
+							@if (!string.IsNullOrEmpty(ViewBag.LogoTerceiroLight) || !string.IsNullOrEmpty(ViewBag.LogoTerceiroDark))
+							{
+								<div class="d-inline-flex mt-2 text-white text-muted">
+									<p><a class="text-muted" href="#">Política de privacidade</a> </p>
+									<p>
+										<span> | @Localization.Resources.Login.Login.DesenvolvidoPor </span>
+										<img width="20px;" src="@ViewBag.IconeLogoAzul" aria-roledescription="logo" />
+										<b class="text-muted" style="color:black;">Multisoftware</b>
+									</p>
+								</div>
+							}
+						</div>
+					</div>
+
+					@if (!ViewBag.AmbienteMultiNFe)
+					{
+						if (!string.IsNullOrEmpty(ViewBag.LayoutLoginPersonalizado))
+						{
+							<div class="position-absolute pos-bottom pos-left pos-right p-3 text-center text-white">
+								<span class="text-muted"><a href='https://www.nstech.com.br/' class="text-muted" style="text-decoration: none !important;" title='nstech.com.br' target='_blank'><b>nstech</b></a> - @Localization.Resources.Login.Login.NSTechAMaisCompletePlataformaOpenLogisticsDoMundo</span>
+							</div>
+						}
+						else
+						{
+							<div class="position-absolute pos-bottom pos-left pos-right p-3 text-center text-white">
+								@Html.Raw(ViewBag.AnoCorrente) @Html.Raw(ViewBag.DadosEmpresaPai) © @Html.Raw(ViewBag.Copyright) by <a href='https://www.nstech.com.br/' style="color:orange" title='nstech.com.br' target='_blank'>nstech</a>
+							</div>
+						}
+
+					}
+					@if (ViewBag.AmbienteMultiNFe)
+					{
+						<div class="position-absolute pos-bottom pos-left pos-right p-3 text-center text-white">
+							@Html.Raw(ViewBag.AnoCorrente) @Html.Raw(ViewBag.DadosEmpresaPai) © ComNFe by <a href='http://www.commerce.inf.br' style="color:green" title='commerce.inf.br' target='_blank'>Commerce Sistemas</a>
+						</div>
+					}
+				</div>
+			</div>
+			<p id="js-color-profile" class="d-none">
+				<span class="color-primary-50"></span>
+				<span class="color-primary-100"></span>
+				<span class="color-primary-200"></span>
+				<span class="color-primary-300"></span>
+				<span class="color-primary-400"></span>
+				<span class="color-primary-500"></span>
+				<span class="color-primary-600"></span>
+				<span class="color-primary-700"></span>
+				<span class="color-primary-800"></span>
+				<span class="color-primary-900"></span>
+				<span class="color-info-50"></span>
+				<span class="color-info-100"></span>
+				<span class="color-info-200"></span>
+				<span class="color-info-300"></span>
+				<span class="color-info-400"></span>
+				<span class="color-info-500"></span>
+				<span class="color-info-600"></span>
+				<span class="color-info-700"></span>
+				<span class="color-info-800"></span>
+				<span class="color-info-900"></span>
+				<span class="color-danger-50"></span>
+				<span class="color-danger-100"></span>
+				<span class="color-danger-200"></span>
+				<span class="color-danger-300"></span>
+				<span class="color-danger-400"></span>
+				<span class="color-danger-500"></span>
+				<span class="color-danger-600"></span>
+				<span class="color-danger-700"></span>
+				<span class="color-danger-800"></span>
+				<span class="color-danger-900"></span>
+				<span class="color-warning-50"></span>
+				<span class="color-warning-100"></span>
+				<span class="color-warning-200"></span>
+				<span class="color-warning-300"></span>
+				<span class="color-warning-400"></span>
+				<span class="color-warning-500"></span>
+				<span class="color-warning-600"></span>
+				<span class="color-warning-700"></span>
+				<span class="color-warning-800"></span>
+				<span class="color-warning-900"></span>
+				<span class="color-success-50"></span>
+				<span class="color-success-100"></span>
+				<span class="color-success-200"></span>
+				<span class="color-success-300"></span>
+				<span class="color-success-400"></span>
+				<span class="color-success-500"></span>
+				<span class="color-success-600"></span>
+				<span class="color-success-700"></span>
+				<span class="color-success-800"></span>
+				<span class="color-success-900"></span>
+				<span class="color-fusion-50"></span>
+				<span class="color-fusion-100"></span>
+				<span class="color-fusion-200"></span>
+				<span class="color-fusion-300"></span>
+				<span class="color-fusion-400"></span>
+				<span class="color-fusion-500"></span>
+				<span class="color-fusion-600"></span>
+				<span class="color-fusion-700"></span>
+				<span class="color-fusion-800"></span>
+				<span class="color-fusion-900"></span>
+			</p>
+		</div>
+	</div>
+
+	<script src="/scripts/vendorsBundle"></script>
+	<script src="/scripts/toastr"></script>
+	<script src="/scripts/sweetalert2"></script>
+	<script src="/scripts/appBundle"></script>
+
+	<!--[if IE 8]>
+
+		<h1>Seu navegador está desatualizado, por favor atualize-o acessando <a href="http://www.microsoft.com.br/download">www.microsoft.com.br/download</a></h1>
+
+	<![endif]-->
+</body>
+</html>
+<style>
+	.validation-summary-errors ul {
+		margin-bottom: 0;
+	}
+</style>

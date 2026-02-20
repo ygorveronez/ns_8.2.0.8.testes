@@ -1,0 +1,337 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@Html.Raw(ViewBag.Titulo)</title>
+
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="~/css/appBundle" />
+	<link rel="stylesheet" href="~/css/pluginBundle" />
+	<link rel="stylesheet" href="~/css/portalCliente" />
+	<link rel="stylesheet" href="~/css/skinBundle" />
+
+	<link rel="shortcut icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+	<link rel="icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+	<link id="mytheme" rel="stylesheet" media="screen, print" href="/css/customThemePotalCliente" />
+
+	<script src="@Html.Raw(ViewBag.HTTPConnection)://maps.googleapis.com/maps/api/js?key=@Html.Raw(ViewBag.APIKeyGoogle)&libraries=places,geometry,drawing"></script>
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+
+<body>
+	<header class="header">
+		<div class="container">
+			<div class="row align-items-start">
+				<div class="col-lg-3 header-logo">
+					<img src="~/content/portal-cliente/public/@ViewBag.LogoPersonalizada" class="logo" />
+				</div>
+
+                <div class="col-lg-7 search-form">
+                    @if (!@ViewBag.SomenteVisualizacaoBI)
+                    {
+                        <form class="d-flex justify-content-center align-items-center pesquisa-global">
+                            <strong class="search-text text-primary">Consulte&nbsp;sua&nbsp;NFe</strong>
+
+                            <input type="text" placeholder="Nota Fiscal" class="form-control search-input" />
+
+                            <button type="submit" class="btn btn-secondary btn-consultar">Consultar</button>
+                        </form>
+                    }
+                </div>
+
+				<div class="col-lg-2 header-actions dropdown">
+					<a href="#" title="Notificações" class="open-notification">
+						<i class="fal fa-bell"></i>
+					</a>
+
+					<a href="#" title="Usuário - @ViewBag.NomeUsuario" role="button" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fal fa-user"></i>
+					</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item logout-btn" href="#">Sair</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<aside class="notifications" id="knockoutNotificacao" style="display: none">
+		<div class="title">Notificações Pendentes</div>
+		<a href="#" class="close">
+			<i class="fal fa-times"></i>
+		</a>
+
+		<div class="notifications-list" data-bind="foreach: { data: Notificacoes.val(), as: 'notificacao'}, event: { scroll: Total.eventChange }">
+			<a href="#" data-bind="click: (e) => URLPagina.eventClick(e, notificacao)">
+				<div class="notification" data-bind="css: {'notification-unread': notificacao.SituacaoNotificacao.val() == EnumSituacaoNotificacao.Nova}">
+					<div class="row">
+						<div class="col-sm-2">
+							<div class="notification-icon" data-bind="css: 'notification-icon-' + notificacao.StatusVisual.val()">
+								<i class="fal fa-fw fa-2x" data-bind="css: notificacao.Icone.val()"></i>
+							</div>
+						</div>
+						<div class="col-sm-8" data-bind="text: notificacao.Nota.val()"></div>
+						<div class="col-sm-2">
+							<span data-bind="text: notificacao.Data.val()"></span>
+							<br />
+							<span data-bind="text: notificacao.Hora.val()"></span>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+	</aside>
+	<div class="notifications-backdrop" style="display: none"></div>
+
+    <div class="responsive-container">
+        <div class="nav-container">
+            <nav class="main-nav">
+                <ul>
+                    <li>
+                        <a href="#/Home">
+                            <span class="menu-icon">
+                                <i class="fal fa-home"></i>
+                            </span>
+                            <span class="menu-title">Home</span>
+                        </a>
+                    </li>
+                    @if (!@ViewBag.SomenteVisualizacaoBI)
+                    {
+                        <li>
+                            <a href="#/Pedidos/Pedido">
+                                <span class="menu-icon">
+                                    <i class="fal fa-file-archive"></i>
+                                </span>
+                                <span class="menu-title">Pedidos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/Canhotos/Canhoto">
+                                <span class="menu-icon">
+                                    <i class="fal fa-file"></i>
+                                </span>
+                                <span class="menu-title">Canhotos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/Logistica/Monitoramento">
+                                <span class="menu-icon">
+                                    <i class="fal fa-map-marker-alt"></i>
+                                </span>
+                                <span class="menu-title">Tracking</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/Logistica/PosicaoFrota">
+                                <span class="menu-icon">
+                                    <i class="fal fa-truck"></i>
+                                </span>
+                                <span class="menu-title">Frota</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/Cargas/ControleEntrega">
+                                <span class="menu-icon">
+                                    <i class="fal fa-boxes"></i>
+                                </span>
+                                <span class="menu-title">Controle de Entrega</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/Pedidos/AtendimentoCliente">
+                                <span class="menu-icon">
+                                    <i class="fal fa-comments"></i>
+                                </span>
+                                <span class="menu-title">Atendimento</span>
+                            </a>
+                        </li>
+						<li>
+							<a href="#/Pedidos/CotacaoEspecial">
+								<span class="menu-icon">
+									<i class="fa fa-dollar-sign"></i>
+								</span>
+								<span class="menu-title">Cotação Especial</span>
+							</a>
+						</li>
+                    }
+
+                    @if (@ViewBag.CodigoReportMenuBI != null)
+                    {
+                        <li>
+                            <a href="#BusinessIntelligence/BI/Report?ID=@ViewBag.CodigoReportMenuBI">
+                                <span class="menu-icon">
+                                    <i class="fal fa-chart-pie"></i>
+                                </span>
+                                <span class="menu-title">BI</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <ul>
+                    @if (!@ViewBag.SomenteVisualizacaoBI)
+                    {
+
+                        <li>
+                            <a href="#" onclick="abrirSubMenu(this); return false;">
+                                <span class="menu-icon">
+                                    <i class="fal fa-file-chart-pie"></i>
+                                </span>
+                                <span class="menu-title">Relatórios</span>
+                            </a>
+                        </li>
+                        <li class="sub-menu sub-menu-hidden">
+                            <ul>
+                                <li><a href="#/Relatorios/NFe/NFes">NF-es</a></li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+
+		<div class="main-container">
+			<main id="js-page-content" role="main">
+				<div id="content">
+				</div>
+
+				<div class="modal modal-wide fade" id="divModalDetalhesAuditoria" style="z-index:1300" role="dialog" aria-hidden="true" tabindex="-1">
+					<div class="modal-dialog modal-lg" id="knoutModalDetalhesAuditoria">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> &times;</button>
+								<h4 class="modal-title">Detalhes Auditoria</h4>
+							</div>
+							<div class="modal-body">
+								<section class="insideNoPaddignTable">
+									<table width="100%" class="table table-bordered table-hover" id="tableModalDetalheAuditoria"></table>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal modal-wide fade" id="divModalAuditoria" style="z-index:1200" role="dialog" aria-hidden="true" tabindex="-1">
+					<div class="modal-dialog modal-lg" id="knoutModalAuditoria">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> &times;</button>
+								<h4 class="modal-title">Auditoria</h4>
+							</div>
+							<div class="modal-body">
+								<section class="insideNoPaddignTable">
+									<table width="100%" class="table table-bordered table-hover" id="tableModalAuditoria"></table>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+	</div>
+
+	<script>
+		var _CONFIGURACAO_TMS = @Html.Raw(ViewBag.ConfiguracaoPadrao);
+
+		if(_CONFIGURACAO_TMS.DesabilitarIconeNotificacao){
+			document.querySelector('.open-notification').style.display = 'none';
+		}
+
+	</script>
+
+	@*<script>
+	less = {
+	strictImports: false
+	}
+	</script>
+	<script src="//cdn.jsdelivr.net/npm/less@3.13"></script>*@
+
+	@Html.Partial("~/Views/MasterLayout/Modal.cshtml")
+
+	<script src="~/scripts/vendorsBundle"></script>
+	<script src="~/scripts/knockout"></script>
+	<script src="~/scripts/blockUI"></script>
+	<script src="~/scripts/bootstrapSelect"></script>
+	<script src="~/scripts/enumeradores"></script>
+	<script src="~/scripts/consultas"></script>
+	<script src="~/scripts/fileDownload"></script>
+	<script src="~/scripts/select2"></script>
+	<script src="~/scripts/maskedInput"></script>
+	<script src="~/scripts/maskMoney"></script>
+	<script src="~/scripts/promise"></script>
+	<script src="~/scripts/globalize"></script>
+	<script src="~/scripts/localization"></script>
+	<script src="~/scripts/global"></script>
+	<script src="~/scripts/twbsPagination"></script>
+	<script src="~/scripts/sweetalert2"></script>
+	<script src="~/scripts/configuracaoTMS"></script>
+	<script src="~/scripts/dataTables"></script>
+	<script src="~/scripts/componenteImportacao"></script>
+	<script src="~/scripts/moment"></script>
+	<script src="~/scripts/notificacaoGlobal"></script>
+	<script src="~/scripts/portalClienteApp"></script>
+	<script src="~/scripts/monitoramento"></script>
+	<script src="~/relatorios/scripts/relatoriosGlobal"></script>
+	<script src="~/scripts/signalRGlobal"></script>
+	<script src="~/scripts/toastr"></script>
+	<script src="~/scripts/popper"></script>
+	<script src="~/scripts/tempusDominus"></script>
+	<script src="~/scripts/chat"></script>
+	<script src="~/scripts/signalR"></script>
+
+	<script type="text/javascript">
+		var _masterLayoutCarregado = false;
+		var _notificacaoPortal = null;
+		var _IDUsuario = @Html.Raw(ViewBag.IDUsuario);
+
+		$(document).ready(function () {
+			LoadAuditoria();
+
+			loadSignalRhubConnections(function () {
+				LoadConexaoSignalRChat();
+			});
+
+			_notificacaoPortal = new NotificacaoPortalCliente();
+			_notificacaoPortal.Load("knockoutNotificacao");
+
+			_masterLayoutCarregado = true;
+		});
+
+		function abrirSubMenu(e) {
+			var submenu = $(e.parentElement).nextAll(".sub-menu:first");
+
+			if (submenu.hasClass("sub-menu-hidden"))
+				$(e.parentElement).nextAll(".sub-menu:first").removeClass('sub-menu-hidden');
+			else
+				$(e.parentElement).nextAll(".sub-menu:first").addClass('sub-menu-hidden');
+		}
+	</script>
+
+	<script defer>
+		document.addEventListener('DOMContentLoaded', function() {
+			//altera a cor Principal do portal multiclifor
+			var alteraCorPrincipal = '@ViewBag.AlteraCorPrincipalPortal'.toLowerCase() === 'true';
+
+			if(alteraCorPrincipal){
+				// Atualizando a variável CSS do <link rel="stylesheet" href="~/css/portalCliente" />
+				document.documentElement.style.setProperty('--cor-principal', '#166770');
+				document.documentElement.style.setProperty('--cor-notifications-principal', '#166770');
+				//Atualiza addClass cores do thema do <link id="mytheme" rel="stylesheet" media="screen, print" href="/css/customThemePotalCliente" />
+				document.documentElement.style.setProperty('--cor-primaria', '#166770');
+				document.documentElement.style.setProperty('--cor-primaria-botao', '#166770');
+
+				document.querySelectorAll('.text-primary').forEach(function(element) {
+					element.style.setProperty('color', '#166770', 'important');
+				});
+			};
+		});
+	</script>
+
+</body>
+</html>

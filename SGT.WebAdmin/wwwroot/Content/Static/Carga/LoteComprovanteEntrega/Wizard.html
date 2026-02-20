@@ -1,0 +1,143 @@
+﻿<div>
+    <form>
+        <div id="knockoutEtapaLoteComprovanteEntrega">
+            <ul class="nav nav-steps">
+                <li data-target="#step1" data-bind="visible : Etapa1.visible">
+                    <button class="active" data-bs-target="#knockoutDadosComprovanteEtapa" data-bs-toggle="tab" data-bind="attr: {id : Etapa1.idTab }, click : Etapa1.eventClick, visible : Etapa1.visible">
+                        <span class="step" data-bind="attr: {'data-content' : Etapa1.tooltip, 'data-original-title' : Etapa1.tooltipTitle }">
+                            <i class="fal fa-file-alt"></i>
+                        </span>
+                        <span class="title" data-bind="text: Etapa1.text"></span>
+                    </button>
+                </li>
+                <li data-target="#step2" data-bind="visible : Etapa2.visible">
+                    <button data-bs-target="#knockoutIntegracaoEtapa" data-bs-toggle="tab" data-bind="attr: {id : Etapa2.idTab }, click : Etapa2.eventClick">
+                        <span class="step" data-bind="attr: {'data-content' : Etapa2.tooltip, 'data-original-title' : Etapa2.tooltipTitle }">
+                            <i class="fal fa-link"></i>
+                        </span>
+                        <span class="title" data-bind="text: Etapa2.text"></span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <!-- Etapa 1 -->
+            <div id="knockoutDadosComprovanteEtapa" class="tab-pane fade show active">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h3 class="card-title">Dados comprovante de entrega</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-12 col-md-3" data-bind="visible: Codigo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Codigo.text, attr: { for: Codigo.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: Codigo.requiredClass, value: Codigo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Codigo.maxlength, id : Codigo.id}" />
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-4" data-bind="visible: Carga.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Carga.text, attr: { for: Carga.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Carga.requiredClass, value: Carga.val, valueUpdate: 'afterkeydown', attr: { maxlength: Carga.maxlength, id : Carga.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Carga.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Paradas</h3>
+
+                                        <button data-bind="click: AdicionarCargaEntrega.click, enable: Carga.val() && AdicionarCargaEntrega.enable(), attr: { id : AdicionarCargaEntrega.idBtnSearch}" class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button">
+                                            <i class="fal fa-plus"></i><span data-bind="text:AdicionarCargaEntrega.text"></span>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: ListaCargaEntrega.idGrid}" cellspacing="0"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Etapa 2 -->
+            <div id="knockoutIntegracaoEtapa" class="tab-pane fade">
+                <div class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Integração Comprovante de Entrega</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-12 col-md-3" data-bind="visible: Codigo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Codigo.text, attr: { for: Codigo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: Codigo.requiredClass, value: Codigo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Codigo.maxlength, id : Codigo.id}" />
+                                    </div>
+                                </div>
+                                <div data-bind="visible: Situacao.visible" class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                                        <select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}"></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-8 divBotoesIntegracaoCarga justify-content-end mb-2">
+                                    <button data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" class="btn btn-primary me-3" type="button" style="margin-top:27px">
+                                        <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                                    </button>
+                                    <button data-bind="click: ReenviarTodos.eventClick, attr: { id: ReenviarTodos.id}, visible: ReenviarTodos.visible" class="btn btn-default" type="button" style="margin-top:27px">
+                                        <i class="fal fa-mail-forward"></i><span data-bind="text: ReenviarTodos.text"></span>
+                                    </button>
+                                </div>
+
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+
+                                <div class="legends mt-2">
+                                    <div class="badge legend green">
+                                        <b data-bind="text: TotalIntegrado.text">Integrado com Sucesso</b>
+                                        <span data-bind="text: TotalIntegrado.text + ' ' + TotalIntegrado.val()"></span>
+
+                                    </div>
+                                    <button type="button" data-bind="click: ObterTotais.eventClick, attr: { id: ObterTotais.id}" class="btn btn-link p-0 ms-2" style="margin-bottom: 5px"><i class="fal fa-sync"></i></button>
+
+                                    <div class="badge legend red">
+                                        <b data-bind="text: TotalProblemaIntegracao.text">Problemas na Integração</b>
+                                        <span data-bind="text: TotalProblemaIntegracao.text + ' ' + TotalProblemaIntegracao.val()"></span>
+                                    </div>
+                                    <div class="badge legend blue">
+                                        <b data-bind="text: TotalAguardandoIntegracao.text">Aguardando Integração</b>
+                                        <span data-bind="text: TotalAguardandoIntegracao.text + ' ' + TotalAguardandoIntegracao.val()"></span>
+                                    </div>
+                                    <div class="badge legend yellow">
+                                        <b data-bind="text: TotalAguardandoIntegracao.text">Aguardando Retorno</b>
+                                        <span data-bind="text: TotalAguardandoRetorno.text + ' ' + TotalAguardandoRetorno.val()"></span>
+                                    </div>
+                                    <div class="badge legend gray">
+                                        <b data-bind="text: TotalGeral.text">Total: </b>
+                                        <span data-bind="text: TotalGeral.text + ' ' + TotalGeral.val()"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="knockoutCRUDLoteComprovanteEntrega" class="d-flex justify-content-end my-3 me-3">
+                <input type="button" data-loading-text="Aguarde..." data-bind="click: Limpar.eventClick, visible: Limpar.visible, enable: Limpar.enable(), attr: { value: Limpar.text, id : Limpar.id}" class="btn btn-default me-3" />
+                <input type="button" data-loading-text="Aguarde..." data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, enable: Atualizar.enable, attr: { value: Atualizar.text, id : Atualizar.id}" class="btn btn-success me-3" />
+                <input type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, enable: Adicionar.enable, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>

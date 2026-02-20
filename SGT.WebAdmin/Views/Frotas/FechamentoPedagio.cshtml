@@ -1,0 +1,262 @@
+﻿
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Frotas</li>
+        <li class="breadcrumb-item active">Fechamento Pedágio</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            Fechamento de Pedágios
+        </h1>
+        <div class="subheader-help">
+            <button type="button" onclick="iniciarAjuda(458)" data-action="toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Abrir a ajuda da página" aria-label="Abrir a ajuda da página"><i class="fal fa-question-circle"></i></button>
+        </div>
+
+    </div>
+
+    <div id="knockoutPesquisaFechamentoPedagio">
+        <div class="panel">
+            <div class="panel-container">
+                <div class="panel-content">
+                    <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                        <i class="fal fa-search"></i>
+                        Pesquisar Fechamentos
+                    </button>
+                    <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                        <form>
+                            <div class="row">
+
+                                <div class="col-12 col-md-4" data-bind="visible: Veiculo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: Veiculo.requiredClass, value: Veiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Veiculo.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-2" data-bind="visible: DataInicio.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataInicio.text, attr: { for: DataInicio.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataInicio.requiredClass, value: DataInicio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicio.maxlength, id : DataInicio.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-2" data-bind="visible: DataFim.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataFim.text, attr: { for: DataFim.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataFim.requiredClass, value: DataFim.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFim.maxlength, id : DataFim.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4" data-bind="visible: Situacao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                                        <select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}"></select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <div class="d-flex align-items-center justify-content-end mb-3">
+                            <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                            </button>
+                        </div>
+                        <div class="widget-body">
+                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel mt-3" id="wid-id-4" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+        <div class="panel-container">
+            <div class="panel-content">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="nav-item active">
+                        <a href="#knockoutDadosFechamento" class="nav-link active" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Dados do Fechamento</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="liPedagios" style="display:none">
+                        <a href="#knockoutFechamentoPedagio" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Pedágios </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0 p-3" id="myTabContent">
+                    <div class="tab-pane fade active show" id="knockoutDadosFechamento" role="tabpanel">
+                        <form novalidate>
+                            <div class="row">
+
+                                <div class="col-12 col-md-6" data-bind="visible: Veiculo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="enable: Veiculo.enable, css: Veiculo.requiredClass, value: Veiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Veiculo.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-3" data-bind="visible: DataInicio.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataInicio.text, attr: { for: DataInicio.id }"></label>
+                                        <input type="text" class="form-control" data-bind="enable: DataInicio.enable, class: DataInicio.requiredClass, value: DataInicio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicio.maxlength, id : DataInicio.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-3" data-bind="visible: DataFim.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataFim.text, attr: { for: DataFim.id }"></label>
+                                        <input type="text" class="form-control" data-bind="enable: DataFim.enable, class: DataFim.requiredClass, value: DataFim.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFim.maxlength, id : DataFim.id}" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="knockoutFechamentoPedagio" role="tabpanel">
+                        <form>
+                            <div class="row ">
+                                <div class="legends">
+                                    <div class="badge legend red">
+                                        <b>Pedágio Duplicado</b>
+                                    </div>
+                                </div>
+                                <div class="widget-body mt-2">
+                                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pedagios.idGrid}" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <footer id="knockoutCRUDFechamentoPedagio">
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-labeled btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, text: Cancelar.text, attr: { id : Cancelar.id}">
+                                    <i class="fal fa-ban"></i>
+                                </button>
+                            </div>
+                            <div class="col-6 d-flex justify-content-end">
+                                <button type="button" class="btn btn-labeled btn-default ms-2" data-bind="click: GerarNovoFechamento.eventClick, visible: GerarNovoFechamento.visible, text: GerarNovoFechamento.text, attr: { id : GerarNovoFechamento.id}"></button>
+                                <button type="button" class="btn btn-success ms-2" data-bind="click: FinalizarFechamento.eventClick, visible: FinalizarFechamento.visible, text: FinalizarFechamento.text, attr: { id : FinalizarFechamento.id}">
+                                    <i class="fal fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-success ms-2" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, text: Adicionar.text, attr: { id : Adicionar.id}">
+                                    <i class="fal fa-spinner"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="divModalPedagio" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutCadastroPedagio" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Atualizar Pedágio</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Veiculo.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: Veiculo.requiredClass, value: Veiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Veiculo.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3" data-bind="visible: Valor.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Valor.text, attr: { for: Valor.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Valor.requiredClass, value: Valor.val, valueUpdate: 'afterkeydown', attr: { maxlength: Valor.maxlength, id : Valor.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3" data-bind="visible: Data.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Data.text, attr: { for: Data.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Data.requiredClass, value: Data.val, valueUpdate: 'afterkeydown', attr: { maxlength: Data.maxlength, id : Data.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6" data-bind="visible: Praca.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Praca.text, attr: { for: Praca.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Praca.requiredClass, value: Praca.val, valueUpdate: 'afterkeydown', attr: { maxlength: Praca.maxlength, id : Praca.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6" data-bind="visible: Rodovia.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Rodovia.text, attr: { for: Rodovia.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Rodovia.requiredClass, value: Rodovia.val, valueUpdate: 'afterkeydown', attr: { maxlength: Rodovia.maxlength, id : Rodovia.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-12" data-bind="visible: TipoMovimento.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TipoMovimento.text, attr: { for: TipoMovimento.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: TipoMovimento.requiredClass, value: TipoMovimento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimento.maxlength, id : TipoMovimento.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimento.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-default me-2" type="button" data-bind="click: Cancelar.eventClick, attr: { id : Cancelar.id}">
+                        <i class="fal fa-times"></i><span data-bind="text: Cancelar.text"></span>
+                    </button>
+                    <button class="btn btn-success" type="button" data-bind="click: Atualizar.eventClick, attr: { id : Atualizar.id}">
+                        <i class="fal fa-check"></i><span data-bind="text: Atualizar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/fechamentoPedagio"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadFechamentoPedagio();
+    });
+
+</script>
+

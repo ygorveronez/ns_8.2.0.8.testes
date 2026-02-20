@@ -1,0 +1,1913 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+	<li class="breadcrumb-item">Ocorrências</li>
+	<li class="breadcrumb-item active">Tipo Ocorrência</li>
+</ol>
+
+<div class="subheader">
+	<h1 class="subheader-title">
+		<i class=""></i>{Localize::Ocorrencias.TipoOcorrencia.DescricaoTipoOcorrencias}
+	</h1>
+</div>
+
+<div id="knockoutPesquisaTipoOcorrencia">
+	<div class="panel">
+		<div class="panel-container">
+			<div class="panel-content">
+				<button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+					<i class="fal fa-search"></i>
+					{Localize::Ocorrencias.TipoOcorrencia.PesquisarTipoOcorrencias}
+				</button>
+
+				<div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+					<form>
+						<div class="row">
+							<div class="col-12 col-md-3" data-bind="visible: Descricao.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Descricao.text"></label>
+									<input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible : Ativo.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Ativo.text"></label>
+									<select class="form-control" data-bind="options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { id : Ativo.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: TipoOperacao.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoOperacao.text, attr: { for: TipoOperacao.id }"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: TipoOperacao.requiredClass, value: TipoOperacao.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': TipoOperacao.text, maxlength: TipoOperacao.maxlength, id: TipoOperacao.id, name: TipoOperacao.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: TipoOperacao.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: MotivoAtendimento.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: MotivoAtendimento.text, attr: { for: MotivoAtendimento.id }"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: MotivoAtendimento.requiredClass, value: MotivoAtendimento.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': MotivoAtendimento.text, maxlength: MotivoAtendimento.maxlength, id: MotivoAtendimento.id, name: MotivoAtendimento.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: MotivoAtendimento.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-12" data-bind="visible: SomenteTiposDeOcorrenciaUtilizadosControleEntrega.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: SomenteTiposDeOcorrenciaUtilizadosControleEntrega.val, valueUpdate: 'afterkeydown', attr: { name: SomenteTiposDeOcorrenciaUtilizadosControleEntrega.id, id : SomenteTiposDeOcorrenciaUtilizadosControleEntrega.id}">
+										<label class="custom-control-label" data-bind="text: SomenteTiposDeOcorrenciaUtilizadosControleEntrega.text, attr: { for: SomenteTiposDeOcorrenciaUtilizadosControleEntrega.id }"></label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="d-flex align-items-center justify-content-end mb-3">
+						<button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+							<i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+						</button>
+					</div>
+					<table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="panel mt-3" id="wid-id-4" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+	<div class="panel-container">
+		<div class="panel-content">
+			<ul class="nav nav-tabs" id="myTab">
+				<li class="nav-item active">
+					<a href="#tabCadastro" class="nav-link active" data-bs-toggle="tab">
+						<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Detalhes}</span>
+					</a>
+				</li>
+				<li class="nav-item" id="liTabParametros">
+					<a href="#knockoutCanaisDeEntrega" class="nav-link" data-bs-toggle="tab">
+						<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.CanaisEntrega}</span>
+					</a>
+				</li>
+
+				<li class="nav-item" id="liTabParametros">
+					<a href="#knockoutParametros" class="nav-link" data-bs-toggle="tab">
+						<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Parametros}</span>
+					</a>
+				</li>
+				<li class="nav-item" id="liTabGatilho">
+					<a href="#knockoutGatilho" class="nav-link" data-bs-toggle="tab">
+						<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Gatilho}</span>
+					</a>
+				</li>
+				<li class="nav-item" style="display:none;">
+					<a href="#knockoutFiltroPeriodo" class="nav-link" data-bs-toggle="tab">
+						<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.FiltroPeriodo}</span>
+					</a>
+				</li>
+				<li class="nav-item" id="liTabConfiguracao" style="display:none;">
+					<a href="#knockoutConfiguracao" class="nav-link" data-bs-toggle="tab">
+						<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Configuracao}</span>
+					</a>
+				</li>
+				<li class="nav-item" id="liTabNotificacao">
+					<a href="#knockoutNotificacao" class="nav-link" data-bs-toggle="tab">
+						<i class="fa fal-bell"></i>
+						<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Notificacao}</span>
+					</a>
+				</li>
+				<li class="nav-item" id="liTabCausas">
+					<a href="#knockoutCausas" class="nav-link" data-bs-toggle="tab">
+						<i class="fa fal-bell"></i>
+						<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Causa}</span>
+					</a>
+				</li>
+			</ul>
+
+			<div class="tab-content border border-top-0 p-3" id="">
+
+				<!-- Detalhes -->
+				<div class="tab-pane fade active show" id="tabCadastro" role="tabpanel">
+					<form novalidate id="knockoutCadastroTipoOcorrencia">
+						<div class="row">
+							<!-- Primeiros Checkbox -->
+							<div class="col-12 col-md-4" data-bind="visible: TipoOcorrenciaControleEntrega.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: TipoOcorrenciaControleEntrega.val, attr: { maxlength: TipoOcorrenciaControleEntrega.maxlength, name: TipoOcorrenciaControleEntrega.id, id: TipoOcorrenciaControleEntrega.id }">
+										<label class="custom-control-label" data-bind="text: TipoOcorrenciaControleEntrega.text, attr: { for: TipoOcorrenciaControleEntrega.id }"></label>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: NaoIndicarAoCliente.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: NaoIndicarAoCliente.val, attr: { maxlength: NaoIndicarAoCliente.maxlength, name: NaoIndicarAoCliente.id, id: NaoIndicarAoCliente.id }">
+										<label class="custom-control-label" data-bind="text: NaoIndicarAoCliente.text, attr: { for: NaoIndicarAoCliente.id }"></label>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: TipoOcorrenciaControleEntrega.val() && !MotivoChamado.val()">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: NaoAlterarSituacaoColetaEntrega.val, attr: { maxlength: NaoAlterarSituacaoColetaEntrega.maxlength, name: NaoAlterarSituacaoColetaEntrega.id, id: NaoAlterarSituacaoColetaEntrega.id }">
+										<label class="custom-control-label" data-bind="text: NaoAlterarSituacaoColetaEntrega.text, attr: { for: NaoAlterarSituacaoColetaEntrega.id }"></label>
+									</div>
+								</div>
+							</div>
+							<!-- Primeira linha -->
+							<div class="col-12 col-md-6" data-bind="visible : Descricao.visible, css: TipoOcorrenciaControleEntrega.val() ? 'col-md-3' : 'col-md-6'">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Descricao.text"></label>
+									<input type="text" class="form-control" data-bind="css: Descricao.requiredClass, value: Descricao.val, attr: { maxlength: Descricao.maxlength, id : Descricao.id} " />
+								</div>
+							</div>
+							<div class="col-12 col-md-2" data-bind="visible : CodigoProceda.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: CodigoProceda.text"></label>
+									<input type="text" class="form-control" data-bind="value: CodigoProceda.val, attr: { maxlength: CodigoProceda.maxlength, id : CodigoProceda.id}, enable : CodigoProceda.enable " />
+								</div>
+							</div>
+							<div class="col-12 col-md-2" data-bind="visible: CodigoObservacao.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: CodigoObservacao.text"></label>
+									<input type="text" class="form-control" data-bind="value: CodigoObservacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoObservacao.maxlength, id : CodigoObservacao.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-2" data-bind="visible: TipoCTeIntegracao.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoCTeIntegracao.text"></label>
+									<input type="text" class="form-control" data-bind="value: TipoCTeIntegracao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoCTeIntegracao.maxlength, id : TipoCTeIntegracao.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-2" data-bind="visible : TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoAplicacaoColetaEntrega.text"></label>
+									<select class="form-control" data-bind="options: TipoAplicacaoColetaEntrega.options, optionsText: 'text', optionsValue: 'value', value: TipoAplicacaoColetaEntrega.val, attr: { id : TipoAplicacaoColetaEntrega.id}"></select>
+								</div>
+							</div>
+							<!-- Segunda linha -->
+							<div class="col-12 col-md-2" data-bind="visible: FinalidadeTipoOcorrencia.visible() && !TipoOcorrenciaControleEntrega.val(), attr: { class : FinalidadeTipoOcorrencia.cssClass }">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: FinalidadeTipoOcorrencia.text"></label>
+									<select class="form-control" data-bind="options: FinalidadeTipoOcorrencia.options, optionsText: 'text', optionsValue: 'value', value: FinalidadeTipoOcorrencia.val, attr: { id : FinalidadeTipoOcorrencia.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-2" data-bind="visible: OrigemOcorrencia.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: OrigemOcorrencia.text"></label>
+									<select class="form-control" data-bind="options: OrigemOcorrencia.options, optionsText: 'text', optionsValue: 'value', value: OrigemOcorrencia.val, attr: { id : OrigemOcorrencia.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-2" data-bind="visible: TipoIntegracao.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoIntegracao.text, attr: { for: TipoIntegracao.id }"></label>
+									<select class="form-control" data-bind="class: TipoIntegracao.requiredClass, options: TipoIntegracao.options, optionsText: 'text', optionsValue: 'value', selectedOptions: TipoIntegracao.val, attr: { maxlength: TipoIntegracao.maxlength, id : TipoIntegracao.id}" multiple="multiple"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: TipoPessoa.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoPessoa.text"></label>
+									<select class="form-control" data-bind="options: TipoPessoa.options, optionsText: 'text', optionsValue: 'value', value: TipoPessoa.val, attr: { id : TipoPessoa.id}, event : {change : TipoPessoa.eventChange}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: Pessoa.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Pessoa.text, attr: { for: Pessoa.id }"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: Pessoa.requiredClass, value: Pessoa.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Pessoa.text, maxlength: Pessoa.maxlength, id: Pessoa.id, name: Pessoa.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Pessoa.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: GrupoPessoas.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: GrupoPessoas.text, attr: { for: GrupoPessoas.id }"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: GrupoPessoas.requiredClass, value: GrupoPessoas.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': GrupoPessoas.text, maxlength: GrupoPessoas.maxlength, id: GrupoPessoas.id, name: GrupoPessoas.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: GrupoPessoas.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: ComponenteFrete.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: ComponenteFrete.text, attr: { for: ComponenteFrete.id }"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: ComponenteFrete.requiredClass, value: ComponenteFrete.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': ComponenteFrete.text, maxlength: ComponenteFrete.maxlength, id: ComponenteFrete.id, name: ComponenteFrete.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: ComponenteFrete.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Terceira linha -->
+							<div class="col-12 col-md-4" data-bind="visible: ModeloDocumentoFiscal.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: ModeloDocumentoFiscal.text"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: ModeloDocumentoFiscal.requiredClass, value: ModeloDocumentoFiscal.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': ModeloDocumentoFiscal.text, maxlength: ModeloDocumentoFiscal.maxlength, id: ModeloDocumentoFiscal.id, name: ModeloDocumentoFiscal.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: ModeloDocumentoFiscal.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: MotivoChamado.text"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: MotivoChamado.requiredClass, value: MotivoChamado.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': MotivoChamado.text, maxlength: MotivoChamado.maxlength, id: MotivoChamado.id, name: MotivoChamado.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: MotivoChamado.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoOperacaoColeta.text"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: TipoOperacaoColeta.requiredClass, value: TipoOperacaoColeta.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': TipoOperacaoColeta.text, maxlength: TipoOperacaoColeta.maxlength, id: TipoOperacaoColeta.id, name: TipoOperacaoColeta.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: TipoOperacaoColeta.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: TipoEmissaoIntramunicipal.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoEmissaoIntramunicipal.text"></label>
+									<select class="form-control" data-bind="options: TipoEmissaoIntramunicipal.options, optionsText: 'text', optionsValue: 'value', value: TipoEmissaoIntramunicipal.val, attr: { id : TipoEmissaoIntramunicipal.id}, enable: TipoEmissaoIntramunicipal.enable"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: Tipo.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Tipo.text"></label>
+									<select class="form-control" data-bind="options: Tipo.options, optionsText: 'text', optionsValue: 'value', value: Tipo.val, attr: { id : Tipo.id}"></select>
+								</div>
+							</div>
+							<!-- Quarta linha -->
+							<div class="col-12 col-md-3" data-bind="visible : TipoEmissaoDocumentoOcorrencia.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoEmissaoDocumentoOcorrencia.text"></label>
+									<select class="form-control" data-bind="options: TipoEmissaoDocumentoOcorrencia.options, optionsText: 'text', optionsValue: 'value', value: TipoEmissaoDocumentoOcorrencia.val, attr: { id : TipoEmissaoDocumentoOcorrencia.id}"></select>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-3" data-bind="visible : CSTFilialEmissora.visible()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: CSTFilialEmissora.text"></label>
+									<select class="form-control" data-bind="options: CSTFilialEmissora.options, optionsText: 'text', optionsValue: 'value', value: CSTFilialEmissora.val, attr: { id : CSTFilialEmissora.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible : CSTSubContratada.visible()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: CSTSubContratada.text"></label>
+									<select class="form-control" data-bind="options: CSTSubContratada.options, optionsText: 'text', optionsValue: 'value', value: CSTSubContratada.val, attr: { id : CSTSubContratada.id}"></select>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-3" data-bind="visible : TipoInclusaoImpostoComplemento.visible()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoInclusaoImpostoComplemento.text"></label>
+									<select class="form-control" data-bind="options: TipoInclusaoImpostoComplemento.options, optionsText: 'text', optionsValue: 'value', value: TipoInclusaoImpostoComplemento.val, attr: { id : TipoInclusaoImpostoComplemento.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: Ativo.visible, attr: { class : Ativo.cssClass }">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Ativo.text"></label>
+									<select class="form-control" data-bind="options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { id : Ativo.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: TipoRateio.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoRateio.text"></label>
+									<select class="form-control" data-bind="options: TipoRateio.options, optionsText: 'text', optionsValue: 'value', value: TipoRateio.val, attr: { id : TipoRateio.id}, enable: TipoRateio.enable"></select>
+								</div>
+							</div>
+							<!-- Quinta Linha -->
+							<div class="col-12 col-md-3" data-bind="visible: CaracteristicaAdicionalCTe.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: CaracteristicaAdicionalCTe.text"></label>
+									<input type="text" class="form-control" data-bind="value: CaracteristicaAdicionalCTe.val, valueUpdate: 'afterkeydown', attr: { maxlength: CaracteristicaAdicionalCTe.maxlength, id : CaracteristicaAdicionalCTe.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: PeriodoOcorrencia.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: PeriodoOcorrencia.text"></label>
+									<select class="form-control" data-bind="options: PeriodoOcorrencia.options, optionsText: 'text', optionsValue: 'value', value: PeriodoOcorrencia.val, attr: { id : PeriodoOcorrencia.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: Valor.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Valor.text"></label>
+									<input type="text" class="form-control" data-bind="value: Valor.val, valueUpdate: 'afterkeydown', attr: { maxlength: Valor.maxlength, id : Valor.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: PercentualDoFrete.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: PercentualDoFrete.text, attr: { for: PercentualDoFrete.id }"></label>
+									<input type="text" class="form-control" data-bind="class: PercentualDoFrete.requiredClass, value: PercentualDoFrete.val, valueUpdate: 'afterkeydown', attr: { maxlength: PercentualDoFrete.maxlength, id : PercentualDoFrete.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: Emitente.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Emitente.text"></label>
+									<select class="form-control" data-bind="options: Emitente.options, optionsText: 'text', optionsValue: 'value', value: Emitente.val, attr: { id : Emitente.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: OutroEmitente.visible() && Emitente.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: OutroEmitente.text"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: OutroEmitente.requiredClass, value: OutroEmitente.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': OutroEmitente.text, maxlength: OutroEmitente.maxlength, id: OutroEmitente.id, name: OutroEmitente.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: OutroEmitente.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: Tomador.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Tomador.text"></label>
+									<select class="form-control" data-bind="options: Tomador.options, optionsText: 'text', optionsValue: 'value', value: Tomador.val, attr: { id : Tomador.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-2" data-bind="visible: TipoClassificacaoOcorrencia.visible()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoClassificacaoOcorrencia.text"></label>
+									<select class="form-control" data-bind="options: TipoClassificacaoOcorrencia.options, optionsText: 'text', optionsValue: 'value', value: TipoClassificacaoOcorrencia.val, attr: { id : TipoClassificacaoOcorrencia.id}"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: OutroTomador.visible() && Tomador.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: OutroTomador.text"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: OutroTomador.requiredClass, value: OutroTomador.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': OutroTomador.text, maxlength: OutroTomador.maxlength, id: OutroTomador.id, name: OutroTomador.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: OutroTomador.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Última Linha-->
+							<div class="col-12 col-md-3" data-bind="visible: DiasAprovacaoAutomatica.visible() && !TipoOcorrenciaControleEntrega.val()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: DiasAprovacaoAutomatica.text"></label>
+									<input type="text" class="form-control" data-bind="value: DiasAprovacaoAutomatica.val, valueUpdate: 'afterkeydown', attr: { maxlength: DiasAprovacaoAutomatica.maxlength, id : DiasAprovacaoAutomatica.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: PrazoSolicitacaoOcorrencia.visible()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: PrazoSolicitacaoOcorrencia.text"></label>
+									<input type="text" class="form-control" data-bind="value: PrazoSolicitacaoOcorrencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: PrazoSolicitacaoOcorrencia.maxlength, id : PrazoSolicitacaoOcorrencia.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: HorasSemFranquia.visible()">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: HorasSemFranquia.text, attr: { for: HorasSemFranquia.id }"></label>
+									<input type="text" class="form-control" data-bind="class: HorasSemFranquia.requiredClass, value: HorasSemFranquia.val, valueUpdate: 'afterkeydown', attr: { maxlength: HorasSemFranquia.maxlength, id : HorasSemFranquia.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: GrupoOcorrencia.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: GrupoOcorrencia.text"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: GrupoOcorrencia.requiredClass, value: GrupoOcorrencia.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': GrupoOcorrencia.text, maxlength: GrupoOcorrencia.maxlength, id: GrupoOcorrencia.id, name: GrupoOcorrencia.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: GrupoOcorrencia.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: InformarMotivoNaAprovacao.val">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: JustificativaPadraoAprovacao.text"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: JustificativaPadraoAprovacao.requiredClass, value: JustificativaPadraoAprovacao.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': JustificativaPadraoAprovacao.text, maxlength: JustificativaPadraoAprovacao.maxlength, id: JustificativaPadraoAprovacao.id, name: JustificativaPadraoAprovacao.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: JustificativaPadraoAprovacao.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: UtilizarEntradaSaidaDoRaioCargaEntrega.val">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: HorasToleranciaEntradaSaidaRaio.text"></label>
+									<input type="text" class="form-control" data-bind="value: HorasToleranciaEntradaSaidaRaio.val, valueUpdate: 'afterkeydown', attr: { maxlength: HorasToleranciaEntradaSaidaRaio.maxlength, id : HorasToleranciaEntradaSaidaRaio.id}" />
+								</div>
+							</div>
+
+							<div class="col-12 col-md-3" data-bind="visible: DescricaoAuxiliar.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: DescricaoAuxiliar.text"></label>
+									<input type="text" class="form-control" data-bind="class: DescricaoAuxiliar.requiredClass, value: DescricaoAuxiliar.val, valueUpdate: 'afterkeydown', attr: { maxlength: DescricaoAuxiliar.maxlength, id : DescricaoAuxiliar.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: CodigoIntegracaoAuxiliar.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: CodigoIntegracaoAuxiliar.text"></label>
+									<input type="text" class="form-control" data-bind="class: CodigoIntegracaoAuxiliar.requiredClass, value: CodigoIntegracaoAuxiliar.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoIntegracaoAuxiliar.maxlength, id : CodigoIntegracaoAuxiliar.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-3" data-bind="visible: FreeTime.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: FreeTime.text"></label>
+									<input type="text" class="form-control" data-bind="class: FreeTime.requiredClass, value: FreeTime.val, valueUpdate: 'afterkeydown', attr: { maxlength: FreeTime.maxlength, id : FreeTime.id}" />
+								</div>
+							</div>
+
+							<div class="col-12 col-md-12" data-bind="visible: TipoOcorrenciaControleEntrega.val">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: DescricaoPortal.text"></label>
+									<textarea type="text" rows="5" class="form-control" data-bind="value: DescricaoPortal.val, valueUpdate: 'afterkeydown', enable: DescricaoPortal.enable, attr: { maxlength: DescricaoPortal.maxlength, id : DescricaoPortal.id}"></textarea>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-2" data-bind="visible: TipoProposta.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoProposta.text"></label>
+									<select class="form-control" data-bind="options: TipoProposta.options, optionsText: 'text', optionsValue: 'value', value: TipoProposta.val, attr: { id : TipoProposta.id}"></select>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-2" data-bind="visible: TipoReceita.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoReceita.text"></label>
+									<select class="form-control" data-bind="options: TipoReceita.options, optionsText: 'text', optionsValue: 'value', value: TipoReceita.val, attr: { id : TipoReceita.id}"></select>
+								</div>
+							</div>
+
+							<div class="col-12 col-md-3" data-bind="visible: RemarkSped.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: RemarkSped.text, attr: { for: RemarkSped.id }"></label>
+									<select class="form-control" data-bind="class: RemarkSped.requiredClass, options: RemarkSped.options, optionsText: 'text', optionsValue: 'value', value: RemarkSped.val, attr: { maxlength: RemarkSped.maxlength, id : RemarkSped.id}"></select>
+								</div>
+							</div>
+
+							<!-- Tags -->
+							<div class="col-12 col-md-12" data-bind="visible: TipoOcorrenciaControleEntrega.val">
+								<span>Tags: </span>
+								<input class="border btn-light" type="button" data-bind="click: TagNumeroCarga.eventClick, enable: TagNumeroCarga.enable, visible: TagNumeroCarga.visible, attr: { value: TagNumeroCarga.text, id : TagNumeroCarga.id}" />
+								<input class="border btn-light" type="button" data-bind="click: TagNomeCliente.eventClick, enable: TagNomeCliente.enable, visible: TagNomeCliente.visible, attr: { value: TagNomeCliente.text, id : TagNomeCliente.id}" />
+								<input class="border btn-light" type="button" data-bind="click: TagNomeRemetente.eventClick, enable: TagNomeRemetente.enable, visible: TagNomeRemetente.visible, attr: { value: TagNomeRemetente.text, id : TagNomeRemetente.id}" />
+								<input class="border btn-light" type="button" data-bind="click: TagCidadeOrigem.eventClick, enable: TagCidadeOrigem.enable, visible: TagCidadeOrigem.visible, attr: { value: TagCidadeOrigem.text, id : TagCidadeOrigem.id}" />
+								<input class="border btn-light" type="button" data-bind="click: TagCidadeDestino.eventClick, enable: TagCidadeDestino.enable, visible: TagCidadeDestino.visible, attr: { value: TagCidadeDestino.text, id : TagCidadeDestino.id}" />
+								<input class="border btn-light" type="button" data-bind="click: TagMotivoOcorrencia.eventClick, enable: TagMotivoOcorrencia.enable, visible: TagMotivoOcorrencia.visible, attr: { value: TagMotivoOcorrencia.text, id : TagMotivoOcorrencia.id}" />
+							</div>
+						</div>
+
+						<!-- Tabs Inferiores-->
+						<div class="panel-container">
+							<div class="panel-content">
+								<ul class="nav nav-tabs">
+									<li class="nav-item active">
+										<a href="#tabConfiguracoes" class="nav-link active" data-bs-toggle="tab">
+											<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Configuracoes}</span>
+										</a>
+									</li>
+									<li class="nav-item" id="liTabEmissao">
+										<a href="#tabEmissao" class="nav-link" data-bs-toggle="tab">
+											<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Emissao}</span>
+										</a>
+									</li>
+									<li class="nav-item" id="liTabConfiguracoes">
+										<a href="#tabPermissoes" class="nav-link" data-bs-toggle="tab">
+											<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Permissoes}</span>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a href="#tabIntegracao" class="nav-link" data-bs-toggle="tab">
+											<span class="hidden-mobile hidden-tablet">{Localize::Ocorrencias.TipoOcorrencia.Integracao}</span>
+										</a>
+									</li>
+									<li class="nav-item" id="liTabNeokohm">
+										<a href="#tabNeokohm" class="nav-link" data-bs-toggle="tab">
+											<span class="hidden-mobile hidden-tablet"> Neokohm </span>
+										</a>
+									</li>
+									<li class="nav-item" id="liTabComprovei">
+										<a href="#tabComprovei" class="nav-link" data-bs-toggle="tab">
+											<span class="hidden-mobile hidden-tablet"> Comprovei </span>
+										</a>
+									</li>
+									<li class="nav-item" id="liTabSuperAppTrizy">
+										<a href="#tabSuperAppTrizy" class="nav-link" data-bs-toggle="tab">
+											<span class="hidden-mobile hidden-tablet">Super App Trizy</span>
+										</a>
+									</li>
+								</ul>
+								<div class="tab-content border border-top-0 p-3">
+
+									<!-- Configurações-->
+									<div class="tab-pane fade active show" id="tabConfiguracoes" role="tabpanel">
+										<div class="row">
+											<div class="col-12 col-md-6" data-bind="visible : TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: UsadoParaMotivoRejeicaoColetaEntrega.val, attr: { maxlength: UsadoParaMotivoRejeicaoColetaEntrega.maxlength, name: UsadoParaMotivoRejeicaoColetaEntrega.id, id: UsadoParaMotivoRejeicaoColetaEntrega.id }">
+														<label class="custom-control-label" data-bind="text: UsadoParaMotivoRejeicaoColetaEntrega.text, attr: { for: UsadoParaMotivoRejeicaoColetaEntrega.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : !TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarValor.val, attr: { maxlength: PermiteInformarValor.maxlength, name: PermiteInformarValor.id, id: PermiteInformarValor.id }">
+														<label class="custom-control-label" data-bind="text: PermiteInformarValor.text, attr: { for: PermiteInformarValor.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: PermiteSelecionarTomador.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermiteSelecionarTomador.val, attr: { maxlength: PermiteSelecionarTomador.maxlength, name: PermiteSelecionarTomador.id, id: PermiteSelecionarTomador.id }">
+														<label class="custom-control-label" data-bind="text: PermiteSelecionarTomador.text, attr: { for: PermiteSelecionarTomador.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: FiltrarCargasPeriodo.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: FiltrarCargasPeriodo.val, attr: { maxlength: FiltrarCargasPeriodo.maxlength, name: FiltrarCargasPeriodo.id, id: FiltrarCargasPeriodo.id }">
+														<label class="custom-control-label" data-bind="text: FiltrarCargasPeriodo.text, attr: { for: FiltrarCargasPeriodo.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: PermitirReabrirOcorrenciaEmCasoDeRejeicao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermitirReabrirOcorrenciaEmCasoDeRejeicao.val, attr: { maxlength: PermitirReabrirOcorrenciaEmCasoDeRejeicao.maxlength, name: PermitirReabrirOcorrenciaEmCasoDeRejeicao.id, id: PermitirReabrirOcorrenciaEmCasoDeRejeicao.id }">
+														<label class="custom-control-label" data-bind="text: PermitirReabrirOcorrenciaEmCasoDeRejeicao.text, attr: { for: PermitirReabrirOcorrenciaEmCasoDeRejeicao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: EmitirDocumentoParaFilialEmissoraComPreCTe.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: EmitirDocumentoParaFilialEmissoraComPreCTe.val, attr: { maxlength: EmitirDocumentoParaFilialEmissoraComPreCTe.maxlength, name: EmitirDocumentoParaFilialEmissoraComPreCTe.id, id: EmitirDocumentoParaFilialEmissoraComPreCTe.id }">
+														<label class="custom-control-label" data-bind="text: EmitirDocumentoParaFilialEmissoraComPreCTe.text, attr: { for: EmitirDocumentoParaFilialEmissoraComPreCTe.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: BloqueiaOcorrenciaDuplicada.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: BloqueiaOcorrenciaDuplicada.val, attr: { maxlength: BloqueiaOcorrenciaDuplicada.maxlength, name: BloqueiaOcorrenciaDuplicada.id, id: BloqueiaOcorrenciaDuplicada.id }">
+														<label class="custom-control-label" data-bind="text: BloqueiaOcorrenciaDuplicada.text, attr: { for: BloqueiaOcorrenciaDuplicada.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: TodosCTesSelecionados.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: TodosCTesSelecionados.val, attr: { maxlength: TodosCTesSelecionados.maxlength, name: TodosCTesSelecionados.id, id: TodosCTesSelecionados.id }">
+														<label class="custom-control-label" data-bind="text: TodosCTesSelecionados.text, attr: { for: TodosCTesSelecionados.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: NaoPermiteSelecionarTodosCTes.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: NaoPermiteSelecionarTodosCTes.val, attr: { maxlength: NaoPermiteSelecionarTodosCTes.maxlength, name: NaoPermiteSelecionarTodosCTes.id, id: NaoPermiteSelecionarTodosCTes.id }">
+														<label class="custom-control-label" data-bind="text: NaoPermiteSelecionarTodosCTes.text, attr: { for: NaoPermiteSelecionarTodosCTes.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: OcorrenciaComplementoValorFreteCarga.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaComplementoValorFreteCarga.val, attr: { maxlength: OcorrenciaComplementoValorFreteCarga.maxlength, name: OcorrenciaComplementoValorFreteCarga.id, id: OcorrenciaComplementoValorFreteCarga.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaComplementoValorFreteCarga.text, attr: { for: OcorrenciaComplementoValorFreteCarga.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: OcorrenciaComVeiculo.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaComVeiculo.val, attr: { maxlength: OcorrenciaComVeiculo.maxlength, name: OcorrenciaComVeiculo.id, id: OcorrenciaComVeiculo.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaComVeiculo.text, attr: { for: OcorrenciaComVeiculo.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: NaoGerarIntegracao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: NaoGerarIntegracao.val, attr: { maxlength: NaoGerarIntegracao.maxlength, name: NaoGerarIntegracao.id, id: NaoGerarIntegracao.id }">
+														<label class="custom-control-label" data-bind="text: NaoGerarIntegracao.text, attr: { for: NaoGerarIntegracao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: OcorrenciaDestinadaFranquias.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaDestinadaFranquias.val, attr: { maxlength: OcorrenciaDestinadaFranquias.maxlength, name: OcorrenciaDestinadaFranquias.id, id: OcorrenciaDestinadaFranquias.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaDestinadaFranquias.text, attr: { for: OcorrenciaDestinadaFranquias.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: OcorrenciaPorQuantidade.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaPorQuantidade.val, attr: { maxlength: OcorrenciaPorQuantidade.maxlength, name: OcorrenciaPorQuantidade.id, id: OcorrenciaPorQuantidade.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaPorQuantidade.text, attr: { for: OcorrenciaPorQuantidade.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: OcorrenciaPorPercentualDoFrete.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaPorPercentualDoFrete.val, attr: { maxlength: OcorrenciaPorPercentualDoFrete.maxlength, name: OcorrenciaPorPercentualDoFrete.id, id: OcorrenciaPorPercentualDoFrete.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaPorPercentualDoFrete.text, attr: { for: OcorrenciaPorPercentualDoFrete.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: CalcularValorCTEComplementarPeloValorCTESemImposto.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: CalcularValorCTEComplementarPeloValorCTESemImposto.val, attr: { maxlength: CalcularValorCTEComplementarPeloValorCTESemImposto.maxlength, name: CalcularValorCTEComplementarPeloValorCTESemImposto.id, id: CalcularValorCTEComplementarPeloValorCTESemImposto.id }">
+														<label class="custom-control-label" data-bind="text: CalcularValorCTEComplementarPeloValorCTESemImposto.text, attr: { for: CalcularValorCTEComplementarPeloValorCTESemImposto.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: EntregaRealizada.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: EntregaRealizada.val, attr: { maxlength: EntregaRealizada.maxlength, name: EntregaRealizada.id, id: EntregaRealizada.id }">
+														<label class="custom-control-label" data-bind="text: EntregaRealizada.text, attr: { for: EntregaRealizada.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: CalculaValorPorTabelaFrete.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: CalculaValorPorTabelaFrete.val, attr: { maxlength: CalculaValorPorTabelaFrete.maxlength, name: CalculaValorPorTabelaFrete.id, id: CalculaValorPorTabelaFrete.id }">
+														<label class="custom-control-label" data-bind="text: CalculaValorPorTabelaFrete.text, attr: { for: CalculaValorPorTabelaFrete.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: ExigirChamadoParaAbrirOcorrencia.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: ExigirChamadoParaAbrirOcorrencia.val, attr: { maxlength: ExigirChamadoParaAbrirOcorrencia.maxlength, name: ExigirChamadoParaAbrirOcorrencia.id, id: ExigirChamadoParaAbrirOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: ExigirChamadoParaAbrirOcorrencia.text, attr: { for: ExigirChamadoParaAbrirOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: ExigirInformarObservacao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: ExigirInformarObservacao.val, attr: { maxlength: ExigirInformarObservacao.maxlength, name: ExigirInformarObservacao.id, id: ExigirInformarObservacao.id }">
+														<label class="custom-control-label" data-bind="text: ExigirInformarObservacao.text, attr: { for: ExigirInformarObservacao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : AnexoObrigatorio.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: AnexoObrigatorio.val, attr: { maxlength: AnexoObrigatorio.maxlength, name: AnexoObrigatorio.id, id: AnexoObrigatorio.id }">
+														<label class="custom-control-label" data-bind="text: AnexoObrigatorio.text, attr: { for: AnexoObrigatorio.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : OcorrenciaExclusivaParaIntegracao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaExclusivaParaIntegracao.val, attr: { maxlength: OcorrenciaExclusivaParaIntegracao.maxlength, name: OcorrenciaExclusivaParaIntegracao.id, id: OcorrenciaExclusivaParaIntegracao.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaExclusivaParaIntegracao.text, attr: { for: OcorrenciaExclusivaParaIntegracao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : UsarMobile.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: UsarMobile.val, attr: { maxlength: UsarMobile.maxlength, name: UsarMobile.id, id: UsarMobile.id }">
+														<label class="custom-control-label" data-bind="text: UsarMobile.text, attr: { for: UsarMobile.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : AdicionarPISCOFINS.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: AdicionarPISCOFINS.val, attr: { maxlength: AdicionarPISCOFINS.maxlength, name: AdicionarPISCOFINS.id, id: AdicionarPISCOFINS.id }">
+														<label class="custom-control-label" data-bind="text: AdicionarPISCOFINS.text, attr: { for: AdicionarPISCOFINS.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: AdicionarPISCOFINSBaseCalculoICMS.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: AdicionarPISCOFINSBaseCalculoICMS.val, attr: { maxlength: AdicionarPISCOFINSBaseCalculoICMS.maxlength, name: AdicionarPISCOFINSBaseCalculoICMS.id, id: AdicionarPISCOFINSBaseCalculoICMS.id }">
+														<label class="custom-control-label" data-bind="text: AdicionarPISCOFINSBaseCalculoICMS.text, attr: { for: AdicionarPISCOFINSBaseCalculoICMS.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : ExibirParcelasNaAprovacao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: ExibirParcelasNaAprovacao.val, attr: { maxlength: ExibirParcelasNaAprovacao.maxlength, name: ExibirParcelasNaAprovacao.id, id: ExibirParcelasNaAprovacao.id }">
+														<label class="custom-control-label" data-bind="text: ExibirParcelasNaAprovacao.text, attr: { for: ExibirParcelasNaAprovacao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : OcorrenciaParaCobrancaDePedagio.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaParaCobrancaDePedagio.val, attr: { maxlength: OcorrenciaParaCobrancaDePedagio.maxlength, name: OcorrenciaParaCobrancaDePedagio.id, id: OcorrenciaParaCobrancaDePedagio.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaParaCobrancaDePedagio.text, attr: { for: OcorrenciaParaCobrancaDePedagio.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : OcorrenciaPorAjudante.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaPorAjudante.val, attr: { maxlength: OcorrenciaPorAjudante.maxlength, name: OcorrenciaPorAjudante.id, id: OcorrenciaPorAjudante.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaPorAjudante.text, attr: { for: OcorrenciaPorAjudante.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : UtilizarParcelamentoAutomatico.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: UtilizarParcelamentoAutomatico.val, attr: { maxlength: UtilizarParcelamentoAutomatico.maxlength, name: UtilizarParcelamentoAutomatico.id, id: UtilizarParcelamentoAutomatico.id }">
+														<label class="custom-control-label" data-bind="text: UtilizarParcelamentoAutomatico.text, attr: { for: UtilizarParcelamentoAutomatico.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : FiltrarOcorrenciasPeriodoPorFilial.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: FiltrarOcorrenciasPeriodoPorFilial.val, attr: { maxlength: FiltrarOcorrenciasPeriodoPorFilial.maxlength, name: FiltrarOcorrenciasPeriodoPorFilial.id, id: FiltrarOcorrenciasPeriodoPorFilial.id }">
+														<label class="custom-control-label" data-bind="text: FiltrarOcorrenciasPeriodoPorFilial.text, attr: { for: FiltrarOcorrenciasPeriodoPorFilial.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : GerarApenasUmComplemento.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: GerarApenasUmComplemento.val, attr: { maxlength: GerarApenasUmComplemento.maxlength, name: GerarApenasUmComplemento.id, id: GerarApenasUmComplemento.id }">
+														<label class="custom-control-label" data-bind="text: GerarApenasUmComplemento.text, attr: { for: GerarApenasUmComplemento.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : SomenteCargasFinalizadas.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: SomenteCargasFinalizadas.val, attr: { maxlength: SomenteCargasFinalizadas.maxlength, name: SomenteCargasFinalizadas.id, id: SomenteCargasFinalizadas.id }">
+														<label class="custom-control-label" data-bind="text: SomenteCargasFinalizadas.text, attr: { for: SomenteCargasFinalizadas.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : ExigirMotivoDeDevolucao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: ExigirMotivoDeDevolucao.val, attr: { maxlength: ExigirMotivoDeDevolucao.maxlength, name: ExigirMotivoDeDevolucao.id, id: ExigirMotivoDeDevolucao.id }">
+														<label class="custom-control-label" data-bind="text: ExigirMotivoDeDevolucao.text, attr: { for: ExigirMotivoDeDevolucao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : OcorrenciaTerceiros.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaTerceiros.val, attr: { maxlength: OcorrenciaTerceiros.maxlength, name: OcorrenciaTerceiros.id, id: OcorrenciaTerceiros.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaTerceiros.text, attr: { for: OcorrenciaTerceiros.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: OcorrenciaPorNotaFiscal.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaPorNotaFiscal.val, attr: { maxlength: OcorrenciaPorNotaFiscal.maxlength, name: OcorrenciaPorNotaFiscal.id, id: OcorrenciaPorNotaFiscal.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaPorNotaFiscal.text, attr: { for: OcorrenciaPorNotaFiscal.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible : DisponibilizarDocumentosParaNFsManual.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: DisponibilizarDocumentosParaNFsManual.val, attr: { maxlength: DisponibilizarDocumentosParaNFsManual.maxlength, name: DisponibilizarDocumentosParaNFsManual.id, id: DisponibilizarDocumentosParaNFsManual.id }">
+														<label class="custom-control-label" data-bind="text: DisponibilizarDocumentosParaNFsManual.text, attr: { for: DisponibilizarDocumentosParaNFsManual.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: PermiteAlterarNumeroDocumentoOcorrencia.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermiteAlterarNumeroDocumentoOcorrencia.val, attr: { maxlength: PermiteAlterarNumeroDocumentoOcorrencia.maxlength, name: PermiteAlterarNumeroDocumentoOcorrencia.id, id: PermiteAlterarNumeroDocumentoOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: PermiteAlterarNumeroDocumentoOcorrencia.text, attr: { for: PermiteAlterarNumeroDocumentoOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: OcorrenciaParaQuebraRegraPallet.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaParaQuebraRegraPallet.val, attr: { maxlength: OcorrenciaParaQuebraRegraPallet.maxlength, name: OcorrenciaParaQuebraRegraPallet.id, id: OcorrenciaParaQuebraRegraPallet.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaParaQuebraRegraPallet.text, attr: { for: OcorrenciaParaQuebraRegraPallet.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : OcorrenciaExclusivaParaCanhotosDigitalizados.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaExclusivaParaCanhotosDigitalizados.val, attr: { maxlength: OcorrenciaExclusivaParaCanhotosDigitalizados.maxlength, name: OcorrenciaExclusivaParaCanhotosDigitalizados.id, id: OcorrenciaExclusivaParaCanhotosDigitalizados.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaExclusivaParaCanhotosDigitalizados.text, attr: { for: OcorrenciaExclusivaParaCanhotosDigitalizados.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : !TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarAprovadorResponsavel.val, attr: { maxlength: PermiteInformarAprovadorResponsavel.maxlength, name: PermiteInformarAprovadorResponsavel.id, id: PermiteInformarAprovadorResponsavel.id }">
+														<label class="custom-control-label" data-bind="text: PermiteInformarAprovadorResponsavel.text, attr: { for: PermiteInformarAprovadorResponsavel.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : BuscarCSTQuandoDocumentoOrigemIsento.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: BuscarCSTQuandoDocumentoOrigemIsento.val, attr: { maxlength: BuscarCSTQuandoDocumentoOrigemIsento.maxlength, name: BuscarCSTQuandoDocumentoOrigemIsento.id, id: BuscarCSTQuandoDocumentoOrigemIsento.id }">
+														<label class="custom-control-label" data-bind="text: BuscarCSTQuandoDocumentoOrigemIsento.text, attr: { for: BuscarCSTQuandoDocumentoOrigemIsento.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : BloquearOcorrenciaDuplicadaCargaMesmoMDFe.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: BloquearOcorrenciaDuplicadaCargaMesmoMDFe.val, attr: { maxlength: BloquearOcorrenciaDuplicadaCargaMesmoMDFe.maxlength, name: BloquearOcorrenciaDuplicadaCargaMesmoMDFe.id, id: BloquearOcorrenciaDuplicadaCargaMesmoMDFe.id }">
+														<label class="custom-control-label" data-bind="text: BloquearOcorrenciaDuplicadaCargaMesmoMDFe.text, attr: { for: BloquearOcorrenciaDuplicadaCargaMesmoMDFe.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : BloquearOcorrenciaCargaCanhotoDigitalizadoAprovado.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: BloquearOcorrenciaCargaCanhotoDigitalizadoAprovado.val, attr: { maxlength: BloquearOcorrenciaCargaCanhotoDigitalizadoAprovado.maxlength, name: BloquearOcorrenciaCargaCanhotoDigitalizadoAprovado.id, id: BloquearOcorrenciaCargaCanhotoDigitalizadoAprovado.id }">
+														<label class="custom-control-label" data-bind="text: BloquearOcorrenciaCargaCanhotoDigitalizadoAprovado.text, attr: { for: BloquearOcorrenciaCargaCanhotoDigitalizadoAprovado.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : BloquearAberturaAtendimentoParaVeiculoEmContratoFrete.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: BloquearAberturaAtendimentoParaVeiculoEmContratoFrete.val, attr: { maxlength: BloquearAberturaAtendimentoParaVeiculoEmContratoFrete.maxlength, name: BloquearAberturaAtendimentoParaVeiculoEmContratoFrete.id, id: BloquearAberturaAtendimentoParaVeiculoEmContratoFrete.id }">
+														<label class="custom-control-label" data-bind="text: BloquearAberturaAtendimentoParaVeiculoEmContratoFrete.text, attr: { for: BloquearAberturaAtendimentoParaVeiculoEmContratoFrete.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : NaoPermiteInformarValorDaOcorrenciaAoSelecionarAtendimentos.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: NaoPermiteInformarValorDaOcorrenciaAoSelecionarAtendimentos.val, attr: { maxlength: NaoPermiteInformarValorDaOcorrenciaAoSelecionarAtendimentos.maxlength, name: NaoPermiteInformarValorDaOcorrenciaAoSelecionarAtendimentos.id, id: NaoPermiteInformarValorDaOcorrenciaAoSelecionarAtendimentos.id }">
+														<label class="custom-control-label" data-bind="text: NaoPermiteInformarValorDaOcorrenciaAoSelecionarAtendimentos.text, attr: { for: NaoPermiteInformarValorDaOcorrenciaAoSelecionarAtendimentos.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : InformarMotivoNaAprovacao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: InformarMotivoNaAprovacao.val, attr: { maxlength: InformarMotivoNaAprovacao.maxlength, name: InformarMotivoNaAprovacao.id, id: InformarMotivoNaAprovacao.id }">
+														<label class="custom-control-label" data-bind="text: InformarMotivoNaAprovacao.text, attr: { for: InformarMotivoNaAprovacao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : OcorrenciaProvisionada.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaProvisionada.val, attr: { maxlength: OcorrenciaProvisionada.maxlength, name: OcorrenciaProvisionada.id, id: OcorrenciaProvisionada.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaProvisionada.text, attr: { for: OcorrenciaProvisionada.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : UtilizarEntradaSaidaDoRaioCargaEntrega.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: UtilizarEntradaSaidaDoRaioCargaEntrega.val, attr: { maxlength: UtilizarEntradaSaidaDoRaioCargaEntrega.maxlength, name: UtilizarEntradaSaidaDoRaioCargaEntrega.id, id: UtilizarEntradaSaidaDoRaioCargaEntrega.id }">
+														<label class="custom-control-label" data-bind="text: UtilizarEntradaSaidaDoRaioCargaEntrega.text, attr: { for: UtilizarEntradaSaidaDoRaioCargaEntrega.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : GerarOcorrenciaComMesmoValorCTesAnteriores.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: GerarOcorrenciaComMesmoValorCTesAnteriores.val, attr: { maxlength: GerarOcorrenciaComMesmoValorCTesAnteriores.maxlength, name: GerarOcorrenciaComMesmoValorCTesAnteriores.id, id: GerarOcorrenciaComMesmoValorCTesAnteriores.id }">
+														<label class="custom-control-label" data-bind="text: GerarOcorrenciaComMesmoValorCTesAnteriores.text, attr: { for: GerarOcorrenciaComMesmoValorCTesAnteriores.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : GerarOcorrenciaComValorGrossPedido.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: GerarOcorrenciaComValorGrossPedido.val, attr: { maxlength: GerarOcorrenciaComValorGrossPedido.maxlength, name: GerarOcorrenciaComValorGrossPedido.id, id: GerarOcorrenciaComValorGrossPedido.id }">
+														<label class="custom-control-label" data-bind="text: GerarOcorrenciaComValorGrossPedido.text, attr: { for: GerarOcorrenciaComValorGrossPedido.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : TipoOcorrenciaControleEntrega.val() && MotivoChamado.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: GerarPedidoDevolucaoAutomaticamente.val, attr: { maxlength: GerarPedidoDevolucaoAutomaticamente.maxlength, name: GerarPedidoDevolucaoAutomaticamente.id, id: GerarPedidoDevolucaoAutomaticamente.id }">
+														<label class="custom-control-label" data-bind="text: GerarPedidoDevolucaoAutomaticamente.text, attr: { for: GerarPedidoDevolucaoAutomaticamente.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : OcorrenciaDiferencaValorFechamento.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaDiferencaValorFechamento.val, attr: { maxlength: OcorrenciaDiferencaValorFechamento.maxlength, name: OcorrenciaDiferencaValorFechamento.id, id: OcorrenciaDiferencaValorFechamento.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaDiferencaValorFechamento.text, attr: { for: OcorrenciaDiferencaValorFechamento.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : ImpedirCriarOcorrenciaCasoExistirCanhotosPendentes.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: ImpedirCriarOcorrenciaCasoExistirCanhotosPendentes.val, attr: { maxlength: ImpedirCriarOcorrenciaCasoExistirCanhotosPendentes.maxlength, name: ImpedirCriarOcorrenciaCasoExistirCanhotosPendentes.id, id: ImpedirCriarOcorrenciaCasoExistirCanhotosPendentes.id }">
+														<label class="custom-control-label" data-bind="text: ImpedirCriarOcorrenciaCasoExistirCanhotosPendentes.text, attr: { for: ImpedirCriarOcorrenciaCasoExistirCanhotosPendentes.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: DisponibilizarPedidoParaNovaIntegracao.val, attr: { maxlength: DisponibilizarPedidoParaNovaIntegracao.maxlength, name: DisponibilizarPedidoParaNovaIntegracao.id, id: DisponibilizarPedidoParaNovaIntegracao.id }">
+														<label class="custom-control-label" data-bind="text: DisponibilizarPedidoParaNovaIntegracao.text, attr: { for: DisponibilizarPedidoParaNovaIntegracao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: PermiteInformarSobras.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarSobras.val, attr: { maxlength: PermiteInformarSobras.maxlength, name: PermiteInformarSobras.id, id: PermiteInformarSobras.id }">
+														<label class="custom-control-label" data-bind="text: PermiteInformarSobras.text, attr: { for: PermiteInformarSobras.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: ApresentarValorPesoDaCarga.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: ApresentarValorPesoDaCarga.val, attr: { maxlength: ApresentarValorPesoDaCarga.maxlength, name: ApresentarValorPesoDaCarga.id, id: ApresentarValorPesoDaCarga.id }">
+														<label class="custom-control-label" data-bind="text: ApresentarValorPesoDaCarga.text, attr: { for: ApresentarValorPesoDaCarga.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: DebitaFreeTimeCalculoValorOcorrencia.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: DebitaFreeTimeCalculoValorOcorrencia.val, attr: { maxlength: DebitaFreeTimeCalculoValorOcorrencia.maxlength, name: DebitaFreeTimeCalculoValorOcorrencia.id, id: DebitaFreeTimeCalculoValorOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: DebitaFreeTimeCalculoValorOcorrencia.text, attr: { for: DebitaFreeTimeCalculoValorOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: NovaOcorrenciaAguardandoInformacoes.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: NovaOcorrenciaAguardandoInformacoes.val, attr: { maxlength: NovaOcorrenciaAguardandoInformacoes.maxlength, name: NovaOcorrenciaAguardandoInformacoes.id, id: NovaOcorrenciaAguardandoInformacoes.id }">
+														<label class="custom-control-label" data-bind="text: NovaOcorrenciaAguardandoInformacoes.text, attr: { for: NovaOcorrenciaAguardandoInformacoes.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: ExigirCodigoParaAprovacao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: ExigirCodigoParaAprovacao.val, attr: { maxlength: ExigirCodigoParaAprovacao.maxlength, name: ExigirCodigoParaAprovacao.id, id: ExigirCodigoParaAprovacao.id }">
+														<label class="custom-control-label" data-bind="text: ExigirCodigoParaAprovacao.text, attr: { for: ExigirCodigoParaAprovacao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: CalcularDistanciaPorCTe.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: CalcularDistanciaPorCTe.val, attr: { maxlength: CalcularDistanciaPorCTe.maxlength, name: CalcularDistanciaPorCTe.id, id: CalcularDistanciaPorCTe.id }">
+														<label class="custom-control-label" data-bind="text: CalcularDistanciaPorCTe.text, attr: { for: CalcularDistanciaPorCTe.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: CopiarObservacoesDoCTeDeOrigemAoGerarCTeComplementar.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: CopiarObservacoesDoCTeDeOrigemAoGerarCTeComplementar.val, attr: { maxlength: CopiarObservacoesDoCTeDeOrigemAoGerarCTeComplementar.maxlength, name: CopiarObservacoesDoCTeDeOrigemAoGerarCTeComplementar.id, id: CopiarObservacoesDoCTeDeOrigemAoGerarCTeComplementar.id }">
+														<label class="custom-control-label" data-bind="text: CopiarObservacoesDoCTeDeOrigemAoGerarCTeComplementar.text, attr: { for: CopiarObservacoesDoCTeDeOrigemAoGerarCTeComplementar.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: GerarAtendimentoAutomaticamente.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: GerarAtendimentoAutomaticamente.val, attr: { maxlength: GerarAtendimentoAutomaticamente.maxlength, name: GerarAtendimentoAutomaticamente.id, id: GerarAtendimentoAutomaticamente.id }">
+														<label class="custom-control-label" data-bind="text: GerarAtendimentoAutomaticamente.text, attr: { for: GerarAtendimentoAutomaticamente.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: GerarPedidoDevolucaoAutomaticamente.val()">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: TipoOperacaoDevolucao.text, attr: { for: TipoOperacaoDevolucao.id }"></label>
+													<div class="input-group">
+														<input type="text" data-bind="css: TipoOperacaoDevolucao.requiredClass, value: TipoOperacaoDevolucao.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': TipoOperacaoDevolucao.text, maxlength: TipoOperacaoDevolucao.maxlength, id: TipoOperacaoDevolucao.id, name: TipoOperacaoDevolucao.id }" />
+														<div class="input-group-append">
+															<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: TipoOperacaoDevolucao.idBtnSearch}">
+																<i class="fal fa-search"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: GerarAtendimentoAutomaticamente.val()">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: MotivoChamadoGeracaoAutomatica.text, attr: { for: MotivoChamadoGeracaoAutomatica.id }"></label>
+													<div class="input-group">
+														<input type="text" class="form-control" data-bind="css: MotivoChamadoGeracaoAutomatica.requiredClass, value: MotivoChamadoGeracaoAutomatica.val, valueUpdate: 'afterkeydown', attr: { maxlength: MotivoChamadoGeracaoAutomatica.maxlength, id : MotivoChamadoGeracaoAutomatica.id}" />
+														<div class="input-group-append">
+															<button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: MotivoChamadoGeracaoAutomatica.idBtnSearch}" type="button" aria-label="Buscar">
+																<i class="fal fa-search"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : NaoPermitirValorSuplementoMaiorQueDocumento.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: NaoPermitirValorSuplementoMaiorQueDocumento.val, attr: { maxlength: NaoPermitirValorSuplementoMaiorQueDocumento.maxlength, name: NaoPermitirValorSuplementoMaiorQueDocumento.id, id: NaoPermitirValorSuplementoMaiorQueDocumento.id }">
+														<label class="custom-control-label" data-bind="text: NaoPermitirValorSuplementoMaiorQueDocumento.text, attr: { for: NaoPermitirValorSuplementoMaiorQueDocumento.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: InformarProdutoLancamentoOcorrencia.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: InformarProdutoLancamentoOcorrencia.val, attr: { maxlength: InformarProdutoLancamentoOcorrencia.maxlength, name: InformarProdutoLancamentoOcorrencia.id, id: InformarProdutoLancamentoOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: InformarProdutoLancamentoOcorrencia.text, attr: { for: InformarProdutoLancamentoOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: GerarOcorrenciaAutomaticamenteRejeicaoMobile.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: GerarOcorrenciaAutomaticamenteRejeicaoMobile.val, attr: { maxlength: GerarOcorrenciaAutomaticamenteRejeicaoMobile.maxlength, name: GerarOcorrenciaAutomaticamenteRejeicaoMobile.id, id: GerarOcorrenciaAutomaticamenteRejeicaoMobile.id }">
+														<label class="custom-control-label" data-bind="text: GerarOcorrenciaAutomaticamenteRejeicaoMobile.text, attr: { for: GerarOcorrenciaAutomaticamenteRejeicaoMobile.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: PermitirAlterarDataPrevisaoEntrega.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermitirAlterarDataPrevisaoEntrega.val, attr: { maxlength: PermitirAlterarDataPrevisaoEntrega.maxlength, name: PermitirAlterarDataPrevisaoEntrega.id, id: PermitirAlterarDataPrevisaoEntrega.id }">
+														<label class="custom-control-label" data-bind="text: PermitirAlterarDataPrevisaoEntrega.text, attr: { for: PermitirAlterarDataPrevisaoEntrega.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: ExibirMotivoUltimaAprovacaoPortalTransportador.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: ExibirMotivoUltimaAprovacaoPortalTransportador.val, attr: { maxlength: ExibirMotivoUltimaAprovacaoPortalTransportador.maxlength, name: ExibirMotivoUltimaAprovacaoPortalTransportador.id, id: ExibirMotivoUltimaAprovacaoPortalTransportador.id }">
+														<label class="custom-control-label" data-bind="text: ExibirMotivoUltimaAprovacaoPortalTransportador.text, attr: { for: ExibirMotivoUltimaAprovacaoPortalTransportador.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: EfetuarCalculoValorOcorrenciaBaseadoNotasDevolucao.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: EfetuarCalculoValorOcorrenciaBaseadoNotasDevolucao.val, attr: { maxlength: EfetuarCalculoValorOcorrenciaBaseadoNotasDevolucao.maxlength, name: EfetuarCalculoValorOcorrenciaBaseadoNotasDevolucao.id, id: EfetuarCalculoValorOcorrenciaBaseadoNotasDevolucao.id }">
+														<label class="custom-control-label" data-bind="text: EfetuarCalculoValorOcorrenciaBaseadoNotasDevolucao.text, attr: { for: EfetuarCalculoValorOcorrenciaBaseadoNotasDevolucao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: PermitirSelecionarEssaOcorrenciaNoPortalDoCliente.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermitirSelecionarEssaOcorrenciaNoPortalDoCliente.val, attr: { maxlength: PermitirSelecionarEssaOcorrenciaNoPortalDoCliente.maxlength, name: PermitirSelecionarEssaOcorrenciaNoPortalDoCliente.id, id: PermitirSelecionarEssaOcorrenciaNoPortalDoCliente.id }">
+														<label class="custom-control-label" data-bind="text: PermitirSelecionarEssaOcorrenciaNoPortalDoCliente.text, attr: { for: PermitirSelecionarEssaOcorrenciaNoPortalDoCliente.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: SalvarCausadorDaOcorrenciaNaGestaoDeOcorrencias.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: SalvarCausadorDaOcorrenciaNaGestaoDeOcorrencias.val, attr: { maxlength: SalvarCausadorDaOcorrenciaNaGestaoDeOcorrencias.maxlength, name: SalvarCausadorDaOcorrenciaNaGestaoDeOcorrencias.id, id: SalvarCausadorDaOcorrenciaNaGestaoDeOcorrencias.id }">
+														<label class="custom-control-label" data-bind="text: SalvarCausadorDaOcorrenciaNaGestaoDeOcorrencias.text, attr: { for: SalvarCausadorDaOcorrenciaNaGestaoDeOcorrencias.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : EfetuarOControleQuilometragem.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: EfetuarOControleQuilometragem.val, attr: { maxlength: EfetuarOControleQuilometragem.maxlength, name: EfetuarOControleQuilometragem.id, id: EfetuarOControleQuilometragem.id }">
+														<label class="custom-control-label" data-bind="text: EfetuarOControleQuilometragem.text, attr: { for: EfetuarOControleQuilometragem.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible : PermiteInformarCausadorOcorrencia.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarCausadorOcorrencia.val, attr: { maxlength: PermiteInformarCausadorOcorrencia.maxlength, name: PermiteInformarCausadorOcorrencia.id, id: PermiteInformarCausadorOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: PermiteInformarCausadorOcorrencia.text, attr: { for: PermiteInformarCausadorOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: PermitirInformarGrupoOcorrencia.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermitirInformarGrupoOcorrencia.val, attr: { maxlength: PermitirInformarGrupoOcorrencia.maxlength, name: PermitirInformarGrupoOcorrencia.id, id: PermitirInformarGrupoOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: PermitirInformarGrupoOcorrencia.text, attr: { for: PermitirInformarGrupoOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: PermitirEnviarOcorrenciaSemAprovacaoPreCTe.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermitirEnviarOcorrenciaSemAprovacaoPreCTe.val, attr: { maxlength: PermitirEnviarOcorrenciaSemAprovacaoPreCTe.maxlength, name: PermitirEnviarOcorrenciaSemAprovacaoPreCTe.id, id: PermitirEnviarOcorrenciaSemAprovacaoPreCTe.id }">
+														<label class="custom-control-label" data-bind="text: PermitirEnviarOcorrenciaSemAprovacaoPreCTe.text, attr: { for: PermitirEnviarOcorrenciaSemAprovacaoPreCTe.id }"></label>
+													</div>
+												</div>
+											</div>
+                                            <div class="col-12 col-md-12" data-bind="visible: NaoCalcularValorOcorrenciaAutomaticamente.visible">
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" data-bind="checked: NaoCalcularValorOcorrenciaAutomaticamente.val, attr: { maxlength: NaoCalcularValorOcorrenciaAutomaticamente.maxlength, name: NaoCalcularValorOcorrenciaAutomaticamente.id, id: NaoCalcularValorOcorrenciaAutomaticamente.id }">
+                                                        <label class="custom-control-label" data-bind="text: NaoCalcularValorOcorrenciaAutomaticamente.text, attr: { for: NaoCalcularValorOcorrenciaAutomaticamente.id }"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+										</div>
+									</div>
+
+									<!-- Emissão -->
+
+									<div class="tab-pane fade" id="tabEmissao" role="tabpanel">
+
+										<form novalidate>
+											<div class="row">
+												<div class="col-12 col-md-6" data-bind="visible : NaoGerarDocumento.visible">
+													<div class="form-group">
+														<div class="custom-control custom-checkbox">
+															<input type="checkbox" class="custom-control-input" data-bind="checked: NaoGerarDocumento.val, attr: { maxlength: NaoGerarDocumento.maxlength, name: NaoGerarDocumento.id, id: NaoGerarDocumento.id }">
+															<label class="custom-control-label" data-bind="text: NaoGerarDocumento.text, attr: { for: NaoGerarDocumento.id }"></label>
+														</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-6" data-bind="visible : DataOcorrenciaIgualDataCTeComplementado.visible">
+													<div class="form-group">
+														<div class="custom-control custom-checkbox">
+															<input type="checkbox" class="custom-control-input" data-bind="checked: DataOcorrenciaIgualDataCTeComplementado.val, attr: { maxlength: DataOcorrenciaIgualDataCTeComplementado.maxlength, name: DataOcorrenciaIgualDataCTeComplementado.id, id: DataOcorrenciaIgualDataCTeComplementado.id }">
+															<label class="custom-control-label" data-bind="text: DataOcorrenciaIgualDataCTeComplementado.text, attr: { for: DataOcorrenciaIgualDataCTeComplementado.id }"></label>
+														</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-6" data-bind="visible : GerarNFSeParaComplementosTomadorIgualDestinatario.visible">
+													<div class="form-group">
+														<div class="custom-control custom-checkbox">
+															<input type="checkbox" class="custom-control-input" data-bind="checked: GerarNFSeParaComplementosTomadorIgualDestinatario.val, attr: { maxlength: GerarNFSeParaComplementosTomadorIgualDestinatario.maxlength, name: GerarNFSeParaComplementosTomadorIgualDestinatario.id, id: GerarNFSeParaComplementosTomadorIgualDestinatario.id }">
+															<label class="custom-control-label" data-bind="text: GerarNFSeParaComplementosTomadorIgualDestinatario.text, attr: { for: GerarNFSeParaComplementosTomadorIgualDestinatario.id }"></label>
+														</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-6" data-bind="visible : DataComplementoIgualDataOcorrencia.visible">
+													<div class="form-group">
+														<div class="custom-control custom-checkbox">
+															<input type="checkbox" class="custom-control-input" data-bind="checked: DataComplementoIgualDataOcorrencia.val, attr: { maxlength: DataComplementoIgualDataOcorrencia.maxlength, name: DataComplementoIgualDataOcorrencia.id, id: DataComplementoIgualDataOcorrencia.id }">
+															<label class="custom-control-label" data-bind="text: DataComplementoIgualDataOcorrencia.text, attr: { for: DataComplementoIgualDataOcorrencia.id }"></label>
+														</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-6" data-bind="visible : ModeloDocumentoFiscal.val() != ''">
+													<div class="form-group">
+														<div class="custom-control custom-checkbox">
+															<input type="checkbox" class="custom-control-input" data-bind="checked: PrefixoFaturamentoOutrosModelos.val, attr: { maxlength: PrefixoFaturamentoOutrosModelos.maxlength, name: PrefixoFaturamentoOutrosModelos.id, id: PrefixoFaturamentoOutrosModelos.id }">
+															<label class="custom-control-label" data-bind="text: PrefixoFaturamentoOutrosModelos.text, attr: { for: PrefixoFaturamentoOutrosModelos.id }"></label>
+														</div>
+													</div>
+												</div>
+												<div class="col-12 col-md-2" data-bind="visible: TipoConhecimentoProceda.visible">
+													<div class="form-group">
+														<label class="form-label" data-bind="text: TipoConhecimentoProceda.text"></label>
+														<input type="text" class="form-control" data-bind="value: TipoConhecimentoProceda.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoConhecimentoProceda.maxlength, id : TipoConhecimentoProceda.id}" />
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+
+									<!-- Permissões  -->
+
+									<div class="tab-pane fade" id="tabPermissoes" role="tabpanel">
+										<div class="row">
+											<div class="form-group">
+												<button class="btn btn-primary mb-2" type="button" data-bind="click: AdicionarPerfilAcesso.eventClick, attr: { id: AdicionarPerfilAcesso.idBtnSearch}">
+													<i class="fal fa-plus"></i><span data-bind="text: AdicionarPerfilAcesso.text"></span>
+												</button>
+												<br />
+											</div>
+
+											<table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: GridPermissaoPerfilAcesso.idGrid}" cellspacing="0"></table>
+
+											<div class="col-12 col-md-6" data-bind="visible : BloquearVisualizacaoTipoOcorrenciaTransportador.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: BloquearVisualizacaoTipoOcorrenciaTransportador.val, attr: { maxlength: BloquearVisualizacaoTipoOcorrenciaTransportador.maxlength, name: BloquearVisualizacaoTipoOcorrenciaTransportador.id, id: BloquearVisualizacaoTipoOcorrenciaTransportador.id }">
+														<label class="custom-control-label" data-bind="text: BloquearVisualizacaoTipoOcorrenciaTransportador.text, attr: { for: BloquearVisualizacaoTipoOcorrenciaTransportador.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: BloquearVisualizacaoTipoOcorrenciaTransportador.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermitirConsultarCTesComEsseTipoDeOcorrencia.val, attr: { maxlength: PermitirConsultarCTesComEsseTipoDeOcorrencia.maxlength, name: PermitirConsultarCTesComEsseTipoDeOcorrencia.id, id: PermitirConsultarCTesComEsseTipoDeOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: PermitirConsultarCTesComEsseTipoDeOcorrencia.text, attr: { for: PermitirConsultarCTesComEsseTipoDeOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-12" data-bind="visible: NaoPermitirQueTransportadorSelecioneTipoOcorrencia.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: NaoPermitirQueTransportadorSelecioneTipoOcorrencia.val, attr: { maxlength: NaoPermitirQueTransportadorSelecioneTipoOcorrencia.maxlength, name: NaoPermitirQueTransportadorSelecioneTipoOcorrencia.id, id: NaoPermitirQueTransportadorSelecioneTipoOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: NaoPermitirQueTransportadorSelecioneTipoOcorrencia.text, attr: { for: NaoPermitirQueTransportadorSelecioneTipoOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-12" data-bind="visible: PermitirTransportadorInformarDataInicioFimRaioCarga.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: PermitirTransportadorInformarDataInicioFimRaioCarga.val, attr: { maxlength: PermitirTransportadorInformarDataInicioFimRaioCarga.maxlength, name: PermitirTransportadorInformarDataInicioFimRaioCarga.id, id: PermitirTransportadorInformarDataInicioFimRaioCarga.id }">
+														<label class="custom-control-label" data-bind="text: PermitirTransportadorInformarDataInicioFimRaioCarga.text, attr: { for: PermitirTransportadorInformarDataInicioFimRaioCarga.id }"></label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<!-- Integração -->
+									<div class="tab-pane fade" id="tabIntegracao" role="tabpanel">
+										<div class="row">
+											<div class="col-12 col-md-4" data-bind="visible: QuantidadeReenvioIntegracao.visible">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: QuantidadeReenvioIntegracao.text"></label>
+													<input type="text" class="form-control" data-bind="value: QuantidadeReenvioIntegracao.val, valueUpdate: 'afterkeydown', attr: { maxlength: QuantidadeReenvioIntegracao.maxlength, id : QuantidadeReenvioIntegracao.id}" />
+												</div>
+											</div>
+											<div class="col-12 col-md-4" data-bind="visible: GerarEventoIntegracaoCargaEntregaPorCarga.visible() && TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: CodigoEventoOcorrenciaPrimeiro.text"></label>
+													<input type="text" class="form-control" data-bind="class: CodigoEventoOcorrenciaPrimeiro.requiredClass, value: CodigoEventoOcorrenciaPrimeiro.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoEventoOcorrenciaPrimeiro.maxlength, id : CodigoEventoOcorrenciaPrimeiro.id}" />
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible: GerarEventoIntegracaoCargaEntregaPorCarga.visible() && TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: DescricaoTipoPrevisao.text"></label>
+													<input type="text" class="form-control" data-bind="class: DescricaoTipoPrevisao.requiredClass, value: DescricaoTipoPrevisao.val, valueUpdate: 'afterkeydown', attr: { maxlength: DescricaoTipoPrevisao.maxlength, id : DescricaoTipoPrevisao.id}" />
+												</div>
+											</div>
+											<div class="col-12 col-md-4" data-bind="visible: GerarEventoIntegracaoCargaEntregaPorCarga.visible() && TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: CodigoEventoOcorrenciaSegundo.text"></label>
+													<input type="text" class="form-control" data-bind="class: CodigoEventoOcorrenciaSegundo.requiredClass, value: CodigoEventoOcorrenciaSegundo.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoEventoOcorrenciaSegundo.maxlength, id : CodigoEventoOcorrenciaSegundo.id}" />
+												</div>
+											</div>
+
+											<div class="clearfix"></div>
+											<div class="col-12 col-md-3" data-bind="visible: GerarEventoIntegracaoCargaEntregaPorCarga.visible() && TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: GerarEventoIntegracaoCargaEntregaPorCarga.val, attr: { maxlength: GerarEventoIntegracaoCargaEntregaPorCarga.maxlength, name: GerarEventoIntegracaoCargaEntregaPorCarga.id, id: GerarEventoIntegracaoCargaEntregaPorCarga.id }">
+														<label class="custom-control-label" data-bind="text: GerarEventoIntegracaoCargaEntregaPorCarga.text, attr: { for: GerarEventoIntegracaoCargaEntregaPorCarga.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-4" data-bind="visible: GerarEventoIntegracaoCargaEntregaPorCarga.visible() && TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: RecalcularPrevisaoEntregaPendentes.val, attr: { maxlength: RecalcularPrevisaoEntregaPendentes.maxlength, name: RecalcularPrevisaoEntregaPendentes.id, id: RecalcularPrevisaoEntregaPendentes.id }">
+														<label class="custom-control-label" data-bind="text: RecalcularPrevisaoEntregaPendentes.text, attr: { for: RecalcularPrevisaoEntregaPendentes.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-2" data-bind="visible: GerarEventoIntegracaoCargaEntregaPorCarga.visible() && TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: OcorrenciaFinalizaViagem.val, attr: { maxlength: OcorrenciaFinalizaViagem.maxlength, name: OcorrenciaFinalizaViagem.id, id: OcorrenciaFinalizaViagem.id }">
+														<label class="custom-control-label" data-bind="text: OcorrenciaFinalizaViagem.text, attr: { for: OcorrenciaFinalizaViagem.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-3" data-bind="visible:  GerarEventoIntegracaoCargaEntregaPorCarga.visible() && TipoOcorrenciaControleEntrega.val()">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: EssaOcorrenciaGeraOutraOcorrenciaIntegracao.val, attr: { maxlength: EssaOcorrenciaGeraOutraOcorrenciaIntegracao.maxlength, name: EssaOcorrenciaGeraOutraOcorrenciaIntegracao.id, id: EssaOcorrenciaGeraOutraOcorrenciaIntegracao.id }">
+														<label class="custom-control-label" data-bind="text: EssaOcorrenciaGeraOutraOcorrenciaIntegracao.text, attr: { for: EssaOcorrenciaGeraOutraOcorrenciaIntegracao.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-9"></div>
+											<div class="col-12 col-md-3" data-bind="visible: TipoOcorrenciaIntegracao.visible">
+												<div class="form-group">
+													<div class="input-group">
+														<input type="text" class="form-control" data-bind="css: TipoOcorrenciaIntegracao.requiredClass, value: TipoOcorrenciaIntegracao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoOcorrenciaIntegracao.maxlength, id : TipoOcorrenciaIntegracao.id}" />
+														<div class="input-group-append">
+															<button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoOcorrenciaIntegracao.idBtnSearch}" type="button" aria-label="Buscar">
+																<i class="fal fa-search"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-8" data-bind="visible: AtivarEnvioAutomaticoTipoOcorrencia.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: AtivarEnvioAutomaticoTipoOcorrencia.val, attr: { maxlength: AtivarEnvioAutomaticoTipoOcorrencia.maxlength, name: AtivarEnvioAutomaticoTipoOcorrencia.id, id: AtivarEnvioAutomaticoTipoOcorrencia.id }">
+														<label class="custom-control-label" data-bind="text: AtivarEnvioAutomaticoTipoOcorrencia.text, attr: { for: AtivarEnvioAutomaticoTipoOcorrencia.id }"></label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!--Integração Neokohm-->
+									<div class="tab-pane fade" id="tabNeokohm" role="tabpanel">
+										<div class="row">
+											<div class="col-12 col-md-4" data-bind="visible: TipoEnvio.visible">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: TipoEnvio.text, attr: { for: TipoEnvio.id }"></label>
+													<select class="form-control" data-bind="class: TipoEnvio.requiredClass, options: TipoEnvio.options, optionsText: 'text', optionsValue: 'value', value: TipoEnvio.val, attr: { maxlength: TipoEnvio.maxlength, id : TipoEnvio.id}"></select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!--Integração Comprovei-->
+									<div class="tab-pane fade" id="tabComprovei" role="tabpanel">
+										<div class="row">
+											<div class="col-12 col-md-12" data-bind="visible: AtivarIntegracaoComprovei.visible">
+												<div class="form-group">
+													<div class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" data-bind="checked: AtivarIntegracaoComprovei.val, attr: { maxlength: AtivarIntegracaoComprovei.maxlength, name: AtivarIntegracaoComprovei.id, id: AtivarIntegracaoComprovei.id }">
+														<label class="custom-control-label" data-bind="text: AtivarIntegracaoComprovei.text, attr: { for: AtivarIntegracaoComprovei.id }"></label>
+													</div>
+												</div>
+											</div>
+											<div class="col-12 col-md-6" data-bind="visible: TipoIntegracaoComprovei.visible">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: TipoIntegracaoComprovei.text, attr: { for: TipoIntegracaoComprovei.id }"></label>
+													<select class="form-control" data-bind="class: TipoIntegracaoComprovei.requiredClass, options: TipoIntegracaoComprovei.options, optionsText: 'text', optionsValue: 'value', value: TipoIntegracaoComprovei.val, attr: { maxlength: TipoIntegracaoComprovei.maxlength, id : TipoIntegracaoComprovei.id}"></select>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- Super App Trizy -->
+
+									<div class="tab-pane fade" id="tabSuperAppTrizy" role="tabpanel">
+										<div class="row">
+											<div class="col-12 col-md-4" data-bind="visible: ChecklistSuperApp.visible">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: ChecklistSuperApp.text, attr: { for: ChecklistSuperApp.id }"></label>
+													<div class="input-group">
+														<input type="text" class="form-control" data-bind="css: ChecklistSuperApp.requiredClass, value: ChecklistSuperApp.val, valueUpdate: 'afterkeydown', attr: { maxlength: ChecklistSuperApp.maxlength, id : ChecklistSuperApp.id}, enable: ChecklistSuperApp.enable" />
+														<div class="input-group-append">
+															<button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: ChecklistSuperApp.idBtnSearch}, enable: ChecklistSuperApp.enable" type="button" aria-label="Buscar">
+																<i class="fal fa-search"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-12 col-md-4" data-bind="visible: IdSuperApp.visible">
+												<div class="form-group">
+													<label class="form-label" data-bind="text: IdSuperApp.text"></label>
+													<input type="text" class="form-control" data-bind="enable: IdSuperApp.enable, class: IdSuperApp.requiredClass, value: IdSuperApp.val, valueUpdate: 'afterkeydown', attr: { maxlength: IdSuperApp.maxlength, id : IdSuperApp.id}" />
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- Fim Super App Trizy -->
+								</div>
+							</div>
+						</div>
+
+					</form>
+				</div>
+
+				<!-- Canais De Entrega -->
+
+				<div class="tab-pane fade" id="knockoutCanaisDeEntrega" role="tabpanel">
+					<button type="button" class="btn btn-primary mb-1 waves-effect waves-themed" data-bind="attr: { id: Canal.idBtnSearch}">
+						<i class="fal fa-plus"></i>
+						<span data-bind="text: Canal.text"></span>
+					</button>
+					<table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Grid.id}" cellspacing="0"></table>
+				</div>
+
+				<!-- Parâmetros -->
+				<div class="tab-pane fade" id="knockoutParametros" role="tabpanel">
+
+					<table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: ListaParametro.idGrid}" cellspacing="0"></table>
+
+					<form novalidate>
+						<div class="row">
+							<div class="col-12 col-md-4" data-bind="visible: Parametro.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Parametro.text, attr: { for: Parametro.id }"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: Parametro.requiredClass, value: Parametro.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Parametro.text, maxlength: Parametro.maxlength, id: Parametro.id, name: Parametro.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Parametro.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<footer>
+							<div class="col-6">
+								<button type="button" class="btn btn-labeled btn-success" data-bind=" click: AdicionarParametro.eventClick, visible: AdicionarParametro.visible, attr: { value: AdicionarParametro.text, id : AdicionarParametro.id}">
+									<span data-bind="text: AdicionarParametro.text"></span>
+								</button>
+							</div>
+						</footer>
+					</form>
+				</div>
+
+				<!-- Gatilho -->
+				<div class="tab-pane fade" id="knockoutGatilho" role="tabpanel">
+					<form novalidate>
+						<div class="row">
+							<div class="col-12 col-md-12" data-bind="visible : UtilizarGatilhoGeracaoOcorrencia.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: UtilizarGatilhoGeracaoOcorrencia.val, attr: { maxlength: UtilizarGatilhoGeracaoOcorrencia.maxlength, name: UtilizarGatilhoGeracaoOcorrencia.id, id: UtilizarGatilhoGeracaoOcorrencia.id }">
+										<label class="custom-control-label" data-bind="text: UtilizarGatilhoGeracaoOcorrencia.text, attr: { for: UtilizarGatilhoGeracaoOcorrencia.id }"></label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div data-bind="fadeVisible: UtilizarGatilhoGeracaoOcorrencia.val, id: GerarAutomaticamente.id + '_fade'">
+								<div class="row">
+									<div class="col-12 col-md-4" data-bind="visible : GerarAutomaticamente.visible">
+										<div class="form-group">
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input" data-bind="checked: GerarAutomaticamente.val, attr: { maxlength: GerarAutomaticamente.maxlength, name: GerarAutomaticamente.id, id: GerarAutomaticamente.id }">
+												<label class="custom-control-label" data-bind="text: GerarAutomaticamente.text, attr: { for: GerarAutomaticamente.id }"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-12 col-md-5" data-bind="visible: TipoCobrancaMultimodal.visible">
+										<div class="form-group d-flex">
+											<label class="form-label flex-shrink-0" style="width: auto; padding-right: 5px;" data-bind="text: TipoCobrancaMultimodal.text, attr: { for: TipoCobrancaMultimodal.id }"></label>
+											<select class="form-control" style="margin-top: -7px; max-width: 200px;" data-bind="class: TipoCobrancaMultimodal.requiredClass, options: TipoCobrancaMultimodal.options, optionsText: 'text', optionsValue: 'value', value: TipoCobrancaMultimodal.val, attr: { maxlength: TipoCobrancaMultimodal.maxlength, id : TipoCobrancaMultimodal.id}"></select>
+										</div>
+									</div>
+
+									<div class="col-12 col-md-4" data-bind="visible: GerarAutomaticamente.val">
+										<div class="form-group">
+											<label class="form-label" data-bind="text: Parametro.text, attr: { for: Parametro.id }"></label>
+											<div class="input-group">
+												<input type="text" data-bind="css: Parametro.requiredClass, value: Parametro.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Parametro.text, maxlength: Parametro.maxlength, id: Parametro.id, name: Parametro.id }" />
+												<div class="input-group-append">
+													<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Parametro.idBtnSearch}">
+														<i class="fal fa-search"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-12 col-md-4" data-bind="visible: HorasMinimas.visible">
+										<div class="form-group">
+											<label class="form-label"><b data-bind="visible: !UtilizarTempoCarregamentoComoHoraMinima.val()">*</b><b data-bind="text: HorasMinimas.text"></b></label>
+											<input type="text" class="form-control" data-bind="value: HorasMinimas.val, enable: !UtilizarTempoCarregamentoComoHoraMinima.val(), attr: { maxlength: HorasMinimas.maxlength, id : HorasMinimas.id} " />
+										</div>
+									</div>
+									<div class="col-12 col-md-4 mt-5" data-bind="visible : UtilizarTempoCarregamentoComoHoraMinima.visible">
+										<div class="form-group">
+											<div class="custom-control custom-checkbox">
+												<input type="checkbox" class="custom-control-input" data-bind="checked: UtilizarTempoCarregamentoComoHoraMinima.val, attr: { maxlength: UtilizarTempoCarregamentoComoHoraMinima.maxlength, name: UtilizarTempoCarregamentoComoHoraMinima.id, id: UtilizarTempoCarregamentoComoHoraMinima.id }">
+												<label class="custom-control-label" data-bind="text: UtilizarTempoCarregamentoComoHoraMinima.text, attr: { for: UtilizarTempoCarregamentoComoHoraMinima.id }"></label>
+											</div>
+										</div>
+									</div>
+									<div class="col-12 col-md-4" data-bind="visible : Tipo.visible">
+										<div class="form-group">
+											<label class="form-label" data-bind="text: Tipo.text"></label>
+											<select class="form-control" data-bind="options: Tipo.options, optionsText: 'text', optionsValue: 'value', value: Tipo.val, attr: { id : Tipo.id}"></select>
+										</div>
+									</div>
+									<div class="col-12 col-md-4" data-bind="visible: TipoAplicacaoGatilhoTracking.visible">
+										<div class="form-group">
+											<label class="form-label" data-bind="text: TipoAplicacaoGatilhoTracking.text, attr: { for: TipoAplicacaoGatilhoTracking.id }"></label>
+											<select class="form-control" data-bind="class: TipoAplicacaoGatilhoTracking.requiredClass, options: TipoAplicacaoGatilhoTracking.options, optionsText: 'text', optionsValue: 'value', value: TipoAplicacaoGatilhoTracking.val, attr: { maxlength: TipoAplicacaoGatilhoTracking.maxlength, id : TipoAplicacaoGatilhoTracking.id}"></select>
+										</div>
+									</div>
+									<div class="col-12 col-md-4" data-bind="visible : GatilhoInicialFluxoPatio.visible">
+										<div class="form-group">
+											<label class="form-label" data-bind="text: GatilhoInicialFluxoPatio.text"></label>
+											<select class="form-control" data-bind="valueAllowUnset: true, options: GatilhoInicialFluxoPatio.options, optionsText: 'text', optionsValue: 'value', value: GatilhoInicialFluxoPatio.val, attr: { id : GatilhoInicialFluxoPatio.id}"></select>
+										</div>
+									</div>
+									<div class="col-12 col-md-4" data-bind="visible : GatilhoFinalFluxoPatio.visible">
+										<div class="form-group">
+											<label class="form-label" data-bind="text: GatilhoFinalFluxoPatio.text"></label>
+											<select class="form-control" data-bind="valueAllowUnset: true, options: GatilhoFinalFluxoPatio.options, optionsText: 'text', optionsValue: 'value', value: GatilhoFinalFluxoPatio.val, attr: { id : GatilhoFinalFluxoPatio.id}"></select>
+										</div>
+									</div>
+									<div class="col-12 col-md-4" data-bind="visible: GatilhoInicialTraking.visible">
+										<div class="form-group">
+											<label class="form-label" data-bind="text: GatilhoInicialTraking.text"></label>
+											<select class="form-control" data-bind="valueAllowUnset: true, options: GatilhoInicialTraking.options, optionsText: 'text', optionsValue: 'value', value: GatilhoInicialTraking.val, attr: { id : GatilhoInicialTraking.id}"></select>
+										</div>
+									</div>
+									<div class="col-12 col-md-4" data-bind="visible: GatilhoFinalTraking.visible">
+										<div class="form-group">
+											<label class="form-label" data-bind="text: GatilhoFinalTraking.text"></label>
+											<select class="form-control" data-bind="valueAllowUnset: true, options: GatilhoFinalTraking.options, optionsText: 'text', optionsValue: 'value', value: GatilhoFinalTraking.val, attr: { id : GatilhoFinalTraking.id}"></select>
+										</div>
+									</div>
+                                    <div class="col-12 col-md-4" data-bind="visible: TipoDataAlteracaoGatilho.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: TipoDataAlteracaoGatilho.text, attr: { for: TipoDataAlteracaoGatilho.id }"></label>
+                                            <select class="form-control" data-bind="class: TipoDataAlteracaoGatilho.requiredClass, options: TipoDataAlteracaoGatilho.options, optionsText: 'text', optionsValue: 'value', value: TipoDataAlteracaoGatilho.val, attr: { maxlength: TipoDataAlteracaoGatilho.maxlength, id : TipoDataAlteracaoGatilho.id}"></select>
+                                        </div>
+                                    </div>
+								</div>
+								<div data-bind="visible: GerarAutomaticamente.val">
+									<div class="row">
+										<div class="col-12 col-md-4" data-bind="visible: TipoOperacao.visible">
+											<div class="form-group">
+												<label class="form-label" data-bind="text: TipoOperacao.text, attr: { for: TipoOperacao.id }"></label>
+												<div class="input-group">
+													<input type="text" data-bind="css: TipoOperacao.requiredClass, value: TipoOperacao.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': TipoOperacao.text, maxlength: TipoOperacao.maxlength, id: TipoOperacao.id, name: TipoOperacao.id }" />
+													<div class="input-group-append">
+														<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: TipoOperacao.idBtnSearch}">
+															<i class="fal fa-search"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-md-4" data-bind="visible: Filial.visible">
+											<div class="form-group">
+												<label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+												<div class="input-group">
+													<input type="text" data-bind="css: Filial.requiredClass, value: Filial.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Filial.text, maxlength: Filial.maxlength, id: Filial.id, name: Filial.id }" />
+													<div class="input-group-append">
+														<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Filial.idBtnSearch}">
+															<i class="fal fa-search"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-md-4" data-bind="visible: Transportador.visible">
+											<div class="form-group">
+												<label class="form-label" data-bind="text: Transportador.text, attr: { for: Transportador.id }"></label>
+												<div class="input-group">
+													<input type="text" data-bind="css: Transportador.requiredClass, value: Transportador.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Transportador.text, maxlength: Transportador.maxlength, id: Transportador.id, name: Transportador.id }" />
+													<div class="input-group-append">
+														<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Transportador.idBtnSearch}">
+															<i class="fal fa-search"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-md-12" data-bind="visible : DefinirAutomaticamenteTempoEstadiaPorTempoParadaNoLocalEntrega.visible">
+											<div class="form-group">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input" data-bind="checked: DefinirAutomaticamenteTempoEstadiaPorTempoParadaNoLocalEntrega.val, attr: { maxlength: DefinirAutomaticamenteTempoEstadiaPorTempoParadaNoLocalEntrega.maxlength, name: DefinirAutomaticamenteTempoEstadiaPorTempoParadaNoLocalEntrega.id, id: DefinirAutomaticamenteTempoEstadiaPorTempoParadaNoLocalEntrega.id }">
+													<label class="custom-control-label" data-bind="text: DefinirAutomaticamenteTempoEstadiaPorTempoParadaNoLocalEntrega.text, attr: { for: DefinirAutomaticamenteTempoEstadiaPorTempoParadaNoLocalEntrega.id }"></label>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-md-12" data-bind="visible : ValidarDataAgendadaEntregaVisivel">
+											<div class="form-group">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input" data-bind="checked: ValidarDataAgendadaEntrega.val, attr: { maxlength: ValidarDataAgendadaEntrega.maxlength, name: ValidarDataAgendadaEntrega.id, id: ValidarDataAgendadaEntrega.id }">
+													<label class="custom-control-label" data-bind="text: ValidarDataAgendadaEntrega.text, attr: { for: ValidarDataAgendadaEntrega.id }"></label>
+												</div>
+											</div>
+										</div>
+
+										<div class="col-12 col-md-12" data-bind="visible : NaoPermiteDuplicarOcorrencia.visible">
+											<div class="form-group">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input" data-bind="checked: NaoPermiteDuplicarOcorrencia.val, attr: { maxlength: NaoPermiteDuplicarOcorrencia.maxlength, name: NaoPermiteDuplicarOcorrencia.id, id: NaoPermiteDuplicarOcorrencia.id }">
+													<label class="custom-control-label" data-bind="text: NaoPermiteDuplicarOcorrencia.text, attr: { for: NaoPermiteDuplicarOcorrencia.id }"></label>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 col-md-12" data-bind="visible : AtribuirDataOcorrenciaNaDataAgendamentoTransportador.visible">
+											<div class="form-group">
+												<div class="custom-control custom-checkbox">
+													<input type="checkbox" class="custom-control-input" data-bind="checked: AtribuirDataOcorrenciaNaDataAgendamentoTransportador.val, attr: { maxlength: AtribuirDataOcorrenciaNaDataAgendamentoTransportador.maxlength, name: AtribuirDataOcorrenciaNaDataAgendamentoTransportador.id, id: AtribuirDataOcorrenciaNaDataAgendamentoTransportador.id }">
+													<label class="custom-control-label" data-bind="text: AtribuirDataOcorrenciaNaDataAgendamentoTransportador.text, attr: { for: AtribuirDataOcorrenciaNaDataAgendamentoTransportador.id }"></label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<!-- Filtro de Período -->
+				<div class="tab-pane fade" id="knockoutFiltroPeriodo" role="tabpanel">
+
+					<table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: ListaFiltroPeriodo.idGrid}" cellspacing="0"></table>
+
+					<form novalidate>
+						<div class="row">
+							<div class="col-12 col-md-6" data-bind="visible: Remetente.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Remetente.text, attr: { for: Remetente.id }"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: Remetente.requiredClass, value: Remetente.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Remetente.text, maxlength: Remetente.maxlength, id: Remetente.id, name: Remetente.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Remetente.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-6" data-bind="visible: Destinatario.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Destinatario.text, attr: { for: Destinatario.id }"></label>
+									<div class="input-group">
+										<input type="text" data-bind="css: Destinatario.requiredClass, value: Destinatario.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Destinatario.text, maxlength: Destinatario.maxlength, id: Destinatario.id, name: Destinatario.id }" />
+										<div class="input-group-append">
+											<button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Destinatario.idBtnSearch}">
+												<i class="fal fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<footer>
+							<div class="col-6">
+								<button type="button" class="btn btn-labeled btn-success" data-bind="click: AdicionarFiltro.eventClick, visible: AdicionarFiltro.visible, attr: { value: AdicionarFiltro.text, id : AdicionarFiltro.id}">
+									<span data-bind="text: AdicionarFiltro.text"></span>
+								</button>
+							</div>
+						</footer>
+					</form>
+				</div>
+
+				<!-- Configurações -->
+				<div class="tab-pane fade" id="knockoutConfiguracao" role="tabpanel">
+					<form novalidate>
+						<div class="row">
+							<div class="col-12 col-md-12" data-bind="visible: EnviarEmailGeracaoOcorrencia.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: EnviarEmailGeracaoOcorrencia.val, attr: { maxlength: EnviarEmailGeracaoOcorrencia.maxlength, name: EnviarEmailGeracaoOcorrencia.id, id: EnviarEmailGeracaoOcorrencia.id }">
+										<label class="custom-control-label" data-bind="text: EnviarEmailGeracaoOcorrencia.text, attr: { for: EnviarEmailGeracaoOcorrencia.id }"></label>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-8" data-bind="fadeVisible: EnviarEmailGeracaoOcorrencia.val, id: EnviarEmailGeracaoOcorrencia.id + '_fade'">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: EmailGeracaoOcorrencia.text"></label>
+									<input type="text" class="form-control" data-bind="value: EmailGeracaoOcorrencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: EmailGeracaoOcorrencia.maxlength, id : EmailGeracaoOcorrencia.id}" />
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<!-- Notificações -->
+				<div class="tab-pane fade" id="knockoutNotificacao" role="tabpanel">
+					<form class="mb-3" novalidate>
+						<div class="row">
+							<div class="col-12 col-md-4" data-bind="visible: NotificarTransportadorPorEmail.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: NotificarTransportadorPorEmail.val, attr: { maxlength: NotificarTransportadorPorEmail.maxlength, name: NotificarTransportadorPorEmail.id, id: NotificarTransportadorPorEmail.id }">
+										<label class="custom-control-label" data-bind="text: NotificarTransportadorPorEmail.text, attr: { for: NotificarTransportadorPorEmail.id }"></label>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: NotificarEmail.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: NotificarEmail.val, attr: { maxlength: NotificarEmail.maxlength, name: NotificarEmail.id, id: NotificarEmail.id }">
+										<label class="custom-control-label" data-bind="text: NotificarEmail.text, attr: { for: NotificarEmail.id }"></label>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-4" data-bind="visible: NotificarClientePorEmail.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: NotificarClientePorEmail.val, attr: { maxlength: NotificarClientePorEmail.maxlength, name: NotificarClientePorEmail.id, id: NotificarClientePorEmail.id }">
+										<label class="custom-control-label" data-bind="text: NotificarClientePorEmail.text, attr: { for: NotificarClientePorEmail.id }"></label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" data-bind="visible: NotificarTransportadorPorEmail.val() || NotificarEmail.val() || NotificarClientePorEmail.val()">
+							<div class="col-12 mt-2" data-bind="visible: AssuntoEmail.visible">
+								<div class="form-group mb-1">
+									<label class="form-label" data-bind="text: AssuntoEmail.text"></label>
+									<input type="text" class="form-control" data-bind="class: AssuntoEmail.requiredClass, value: AssuntoEmail.val, valueUpdate: 'afterkeydown', attr: { maxlength: AssuntoEmail.maxlength, id : AssuntoEmail.id}" />
+								</div>
+								<span>Tags: </span>
+								<button class="border btn-light" type="button" data-bind="click: TagAssuntoNumeroOcorrencia.eventClick, visible: TagAssuntoNumeroOcorrencia.visible, text: TagAssuntoNumeroOcorrencia.text, attr: { id : TagAssuntoNumeroOcorrencia.id}"></button>
+								<button class="border btn-light" type="button" data-bind="click: TagAssuntoRazaoTransportador.eventClick, visible: TagAssuntoRazaoTransportador.visible, text: TagAssuntoRazaoTransportador.text, attr: { id : TagAssuntoRazaoTransportador.id}"></button>
+								<button class="border btn-light" type="button" data-bind="click: TagAssuntoCNPJTransportador.eventClick, visible: TagAssuntoCNPJTransportador.visible, text: TagAssuntoCNPJTransportador.text, attr: { id : TagAssuntoCNPJTransportador.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagAssuntoTipoOcorrencia.eventClick, visible: TagAssuntoTipoOcorrencia.visible, text: TagAssuntoTipoOcorrencia.text, attr: { id : TagAssuntoTipoOcorrencia.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagAssuntoValorOcorrencia.eventClick, visible: TagAssuntoValorOcorrencia.visible, text: TagAssuntoValorOcorrencia.text, attr: { id : TagAssuntoValorOcorrencia.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagAssuntoNumeroCarga.eventClick, visible: TagAssuntoNumeroCarga.visible, text: TagAssuntoNumeroCarga.text, attr: { id : TagAssuntoNumeroCarga.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagAssuntoNumeroPedido.eventClick, visible: TagAssuntoNumeroPedido.visible, text: TagAssuntoNumeroPedido.text, attr: { id : TagAssuntoNumeroPedido.id}"></button>
+								<button class="border btn-light" type="button" data-bind="click: TagAssuntoNumeroOrdem.eventClick, visible: TagAssuntoNumeroOrdem.visible, text: TagAssuntoNumeroOrdem.text, attr: { id : TagAssuntoNumeroOrdem.id}"></button>
+							</div>
+							<div class="col-12" data-bind="visible: CorpoEmail.visible">
+								<div class="form-group mb-1">
+									<label class="form-label" style="margin: 10px 0 -4px 0"><b data-bind="text: CorpoEmail.text"></b></label>
+									<div id="corpoEmail"></div>
+								</div>
+								<span>Tags: </span>
+								<button class="border btn-light" type="button" data-bind="click: TagCorpoNumeroOcorrencia.eventClick, visible: TagCorpoNumeroOcorrencia.visible, text: TagCorpoNumeroOcorrencia.text, attr: { id : TagAssuntoNumeroOcorrencia.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagCorpoRazaoTransportador.eventClick, visible: TagCorpoRazaoTransportador.visible, text: TagCorpoRazaoTransportador.text, attr: { id : TagCorpoRazaoTransportador.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagCorpoCNPJTransportador.eventClick, visible: TagCorpoCNPJTransportador.visible, text: TagCorpoCNPJTransportador.text, attr: { id : TagCorpoCNPJTransportador.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagCorpoTipoOcorrencia.eventClick, visible: TagCorpoTipoOcorrencia.visible, text: TagCorpoTipoOcorrencia.text, attr: { id : TagCorpoTipoOcorrencia.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagCorpoValorOcorrencia.eventClick, visible: TagCorpoValorOcorrencia.visible, text: TagCorpoValorOcorrencia.text, attr: { id : TagCorpoValorOcorrencia.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagCorpoNumeroCarga.eventClick, visible: TagCorpoNumeroCarga.visible, text: TagCorpoNumeroCarga.text, attr: { id : TagCorpoNumeroCarga.id}">CNPJ do Emitente</button>
+								<button class="border btn-light" type="button" data-bind="click: TagCorpoNumeroPedido.eventClick, visible: TagCorpoNumeroPedido.visible, text: TagCorpoNumeroPedido.text, attr: { id : TagCorpoNumeroPedido.id}"></button>
+								<button class="border btn-light" type="button" data-bind="click: TagCorpoNumeroOrdem.eventClick, visible: TagCorpoNumeroOrdem.visible, text: TagCorpoNumeroOrdem.text, attr: { id : TagCorpoNumeroOrdem.id}"></button>
+							</div>
+						</div>
+						<div data-bind="visible: NotificarEmail.val">
+							<div class="card mt-3">
+								<div class="card-header">
+									<h4>
+										E-Emails
+									</h4>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Grid.id}" cellspacing="0"></table>
+										<div class="col-12 col-md-12" data-bind="visible: Email.visible">
+											<div class="form-group">
+												<label class="form-label" data-bind="text: Email.text, attr: { for: Email.id }"></label>
+												<input type="text" class="form-control" data-bind="class: Email.requiredClass, value: Email.val, valueUpdate: 'afterkeydown', attr: { maxlength: Email.maxlength, id : Email.id}" />
+											</div>
+										</div>
+									</div>
+									<div class="d-flex justify-content-end">
+										<input type="button" data-bind="click: AdicionarEmail.eventClick, visible: AdicionarEmail.visible, attr: { value: AdicionarEmail.text, id : AdicionarEmail.id}" class="btn btn-success" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<!-- Causas-->
+				<div class="tab-pane fade" id="knockoutCausas" role="tabpanel">
+					<form class="mb-3" novalidate>
+						<table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: GridCausas.id}" cellspacing="0"></table>
+						<div class="row">
+							<div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Descricao.text"></label>
+									<input type="text" class="form-control" data-bind="class: Descricao.requiredClass, required: Descricao.required, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6" data-bind="visible: Ativo.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: Ativo.text, attr: { for: Ativo.id }"></label>
+									<select class="form-control" data-bind="class: Ativo.requiredClass, options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { maxlength: Ativo.maxlength, id : Ativo.id}"></select>
+								</div>
+							</div>
+						</div>
+						<div class="d-flex justify-content-end gap-2">
+							<button class="btn btn-primary" type="button" data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id}, visible: Adicionar.visible">
+								<span data-bind="text: Adicionar.text"></span>
+							</button>
+							<button class="btn btn-default" type="button" data-bind="click: Cancelar.eventClick, attr: { id: Cancelar.id}, visible: Cancelar.visible">
+								<i class="fal fa-ban"></i>
+								<span data-bind="text: Cancelar.text"></span>
+							</button>
+							<button class="btn btn-success" type="button" data-bind="click: Alterar.eventClick, attr: { id: Alterar.id}, visible: Alterar.visible">
+								<span data-bind="text: Alterar.text"></span>
+							</button>
+						</div>
+					</form>
+				</div>
+				<!-- Footer Principal -->
+				<footer id="knockoutCRUDTipoOcorrencia">
+					<div class="row mt-3">
+						<div class="d-flex justify-content-end">
+							<button type="button" class="btn btn-default me-3" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { value: Cancelar.text, id : Cancelar.id}">
+								<i class="fal fa-ban"></i>
+								<span data-bind="text: Cancelar.text"></span>
+							</button>
+							<button type="button" class="btn btn-danger me-3" data-bind="click: Excluir.eventClick, visible: Excluir.visible, attr: { value: Excluir.text, id : Excluir.id}">
+								<i class="fal fa-trash"></i>
+								<span data-bind="text: Excluir.text"></span>
+							</button>
+							<button type="button" class="btn btn-success" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { value: Atualizar.text, id : Atualizar.id}">
+								<i class="fal fa-check"></i>
+								<span data-bind="text: Atualizar.text"></span>
+							</button>
+							<button type="button" class="btn btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}">
+								<span data-bind="text: Adicionar.text"></span>
+							</button>
+						</div>
+					</div>
+				</footer>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<link rel="stylesheet" href="~/css/summernote" />
+<script src="~/scripts/tipoOcorrencia"></script>
+<script src="~/scripts/summernote"></script>
+
+<script type="text/javascript">
+
+	pageSetUp();
+
+	_CONFIGURACAO_TMS = $.extend({}, _CONFIGURACAO_TMS, @Html.Raw(ViewBag.ConfiguracoesTipoOcorrencia));
+
+	$(document).ready(function () {
+		LoadLocalizationResources("Ocorrencias.TipoOcorrencia").then(loadTipoOcorrencia);
+	});
+
+</script>
+

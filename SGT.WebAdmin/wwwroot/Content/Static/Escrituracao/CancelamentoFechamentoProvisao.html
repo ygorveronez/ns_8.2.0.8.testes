@@ -1,0 +1,76 @@
+﻿<header>
+    Resumo do cancelamento de Provisões
+</header>
+<fieldset>
+    <div class="row" id="knockoutPercentualCancelamentoFechamentoProvisao" style="display: none;">
+        <section class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <p>
+                Gerando os movimentos para o cancelamento das provisões, aguarde...
+                <span class="txt-color-purple pull-right"><i class="fa fa-warning"></i> <span data-bind="text: PercentualProcessado.val"></span> concluídos</span>
+            </p>
+            <div class="progress">
+                <div class="progress progress-striped active">
+                    <div class="progress-bar bg-color-darken" role="progressbar" data-bind="attr: {id : PercentualProcessado.id}" style="width: 0%"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="row padding-5" id="divMotivoProblemaFechamento" style="display: none;">
+        <section class="col-sm-12 ">
+            <alert dismissible="true" type="danger">
+                <div role="alert" class="alert alert-danger alert-dismissible ng-star-inserted">
+                    <i class="fa-fw fa fa-times"></i>
+                    <strong>Problema! </strong> <span id="pMotivoProblemaFechamento"></span>
+                </div>
+            </alert>
+        </section>
+    </div>
+    <div class="row padding-5 mb-3 mt-2" id="knoutAprovacaoCancelamento">
+        <!-- ko if: Autorizacao.visible() -->
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Aprovadores</h3>
+                </div>
+                <div class="card-body">
+                    <div data-bind="visible: SemRegraAprovacao.visible">
+                        <div role="alert" class="alert alert-danger alert-dismissible ng-star-inserted mb-0">
+                            <i class="fa-fw fa fa-times"></i>
+                            <strong>Sem regra de autorização</strong>
+                        </div>
+                        <div class="d-flex justify-content-end mb-2 mt-2">
+                            <button type="button" class="btn btn-labeled btn-primary mx-3" data-bind="click: ReprocessarRegras.eventClick, visible: ReprocessarRegras.visible, attr: { value: ReprocessarRegras.text, id : ReprocessarRegras.id}">
+                                <span data-bind="text: ReprocessarRegras.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div data-bind="visible: UsuariosAutorizadores.visible">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: UsuariosAutorizadores.idGrid}" cellspacing="0"></table>
+                        <div class="d-flex justify-content-end gap-3 mt-4">
+                            <button class="btn btn-danger" type="button" data-bind="click: CancelarProcessamento.eventClick, attr: { id: CancelarProcessamento.id}">
+                                <i class="fal fa-x"></i><span data-bind="text: CancelarProcessamento.text"></span>
+                            </button>
+                            <button class="btn btn-primary" type="button" data-bind="click: ReenviarAprovacao.eventClick, attr: { id: ReenviarAprovacao.id}">
+                                <i class="fal fa-sync"></i><span data-bind="text: ReenviarAprovacao.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+
+    <div class="row" id="knoutCancelamentoFechamentoProvisao" style="display: none;">
+        <div class="col-12 col-md-3" data-bind="visible: DataLancamento.visible">
+            <div class="form-group">
+                <label class="form-label" data-bind="text: DataLancamento.text, attr: { for: DataLancamento.id }"></label>
+                <input type="text" class="form-control" data-bind="class: DataLancamento.requiredClass, value: DataLancamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataLancamento.maxlength, id : DataLancamento.id}" />
+            </div>
+        </div>
+        <section class="col col-12 insideNoPaddignTable" style="margin-top:20px">
+            <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Contabilizacao.idGrid}" cellspacing="0"></table>
+        </section>
+    </div>
+</fieldset>

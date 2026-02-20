@@ -1,0 +1,117 @@
+namespace MultiSoftware.NFe.v400.NotaFiscal
+{
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.portalfiscal.inf.br/nfe")]
+public partial class TNFeInfNFeDetImpostoICMSICMS60 {
+    
+    private Torig origField;
+    
+    private TNFeInfNFeDetImpostoICMSICMS60CST cSTField;
+    
+    private string vBCSTRetField;
+    
+    private string pSTField;
+    
+    private string vICMSSTRetField;
+    
+    private string vBCFCPSTRetField;
+    
+    private string pFCPSTRetField;
+    
+    private string vFCPSTRetField;
+    
+    /// <remarks/>
+    public Torig orig {
+        get {
+            return this.origField;
+        }
+        set {
+            this.origField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public TNFeInfNFeDetImpostoICMSICMS60CST CST {
+        get {
+            return this.cSTField;
+        }
+        set {
+            this.cSTField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string vBCSTRet {
+        get {
+            return this.vBCSTRetField;
+        }
+        set {
+            this.vBCSTRetField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string pST {
+        get {
+            return this.pSTField;
+        }
+        set {
+            this.pSTField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string vICMSSTRet {
+        get {
+            return this.vICMSSTRetField;
+        }
+        set {
+            this.vICMSSTRetField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string vBCFCPSTRet {
+        get {
+            return this.vBCFCPSTRetField;
+        }
+        set {
+            this.vBCFCPSTRetField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string pFCPSTRet {
+        get {
+            return this.pFCPSTRetField;
+        }
+        set {
+            this.pFCPSTRetField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string vFCPSTRet {
+        get {
+            return this.vFCPSTRetField;
+        }
+        set {
+            this.vFCPSTRetField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+[System.SerializableAttribute()]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.portalfiscal.inf.br/nfe")]
+public enum TNFeInfNFeDetImpostoICMSICMS60CST {
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlEnumAttribute("60")]
+    Item60 = 60,
+}
+}

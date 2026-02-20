@@ -1,0 +1,280 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Cargas</li>
+    <li class="breadcrumb-item active">Controle Nota Devolução</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        Controle de Notas de Devolução
+    </h1>
+</div>
+<div class="panel">
+    <div class="panel-container">
+        <div class="panel-hdr">
+            <h3>
+                <i class="fal fa-edit"></i>
+                Pesquisar Notas de Devolução
+            </h3>
+        </div>
+        <div class="panel-content">
+            <form>
+                <div class="row" id="knockoutPesquisaControleNotaDevolucao">
+                    <div class="col-12 col-md-4" data-bind="visible: Chave.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Chave.text, attr: { for: Chave.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Chave.requiredClass, value: Chave.val, valueUpdate: 'afterkeydown', attr: { maxlength: Chave.maxlength, id : Chave.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: NumeroCarga.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: NumeroCarga.text, attr: { for: NumeroCarga.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: NumeroCarga.requiredClass, value: NumeroCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroCarga.maxlength, id : NumeroCarga.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: NumeroChamado.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: NumeroChamado.text, attr: { for: NumeroChamado.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: NumeroChamado.requiredClass, value: NumeroChamado.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroChamado.maxlength, id : NumeroChamado.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-2" data-bind="visible: Status.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Status.text, attr: { for: Status.id }"></label>
+                            <select class="form-control" data-bind="class: Status.requiredClass, options: Status.options, optionsText: 'text', optionsValue: 'value', value: Status.val, attr: { maxlength: Status.maxlength, id : Status.id}"></select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: DataEmissaoInicial.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataEmissaoInicial.text, attr: { for: DataEmissaoInicial.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataEmissaoInicial.requiredClass, value: DataEmissaoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoInicial.maxlength, id : DataEmissaoInicial.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: DataEmissaoFinal.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataEmissaoFinal.text, attr: { for: DataEmissaoFinal.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataEmissaoFinal.requiredClass, value: DataEmissaoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoFinal.maxlength, id : DataEmissaoFinal.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: Destinatario.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Destinatario.text, attr: { for: Destinatario.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: Destinatario.requiredClass, value: Destinatario.val, valueUpdate: 'afterkeydown', attr: { maxlength: Destinatario.maxlength, id : Destinatario.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Destinatario.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end mb-2">
+                        <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>               
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>              
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="divModalNotaDevolucao" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Nota de Devolução</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutNotaDevolucao">
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Chave.visible">
+                        <label data-bind="text: Chave.text"><span data-bind="text: Chave.val"></span></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: NotaOrigem.visible">
+                        <label data-bind="text: NotaOrigem.text"><span data-bind="text: NotaOrigem.val"></span></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Numero.visible">
+                        <label data-bind="text: Numero.text"><span data-bind="text: Numero.val"></span></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Serie.visible">
+                        <label data-bind="text: Serie.text"><span data-bind="text: Serie.val"></span></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Destinatario.visible">
+                        <label data-bind="text: Destinatario.text"><span data-bind="text: Destinatario.val"></span></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Carga.visible">
+                        <label data-bind="text: Carga.text"><span data-bind="text: Carga.val"></span></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Atendimento.visible">
+                        <label data-bind="text: Atendimento.text"><span data-bind="text: Atendimento.val"></span></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Motivo.visible && Motivo.val() != ''">
+                        <label data-bind="text: Motivo.text"><span data-bind="text: Motivo.val"></span></label>
+                        <a data-bind="click: VerDetalhesChamado.eventClick, attr: { id : VerDetalhesChamado.id}"></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: ObservacaoMotorista.visible && ObservacaoMotorista.val() != ''">
+                        <label data-bind="text: ObservacaoMotorista.text"><span data-bind="text: ObservacaoMotorista.val"></span></label>
+                    </div>
+                </div>
+                <footer>
+                    <div class="row">
+                        <div class="col-6 mt-2">
+                            <button class="btn btn-primary" type="button" data-bind="visible: DownloadDanfe.visible, click: DownloadDanfe.eventClick, attr: { id: DownloadDanfe.id}">
+                                <span data-bind="text: DownloadDanfe.text"></span>
+                            </button>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end mt-2">
+                            <button class="btn btn-danger me-2" type="button" data-bind="visible: Rejeitar.visible, click: Rejeitar.eventClick, attr: { id: Rejeitar.id}">
+                                <span data-bind="text: Rejeitar.text"></span>
+                            </button>
+                            <button class="btn btn-success" type="button" data-bind="visible: Confirmar.visible, click: Confirmar.eventClick, attr: { id: Confirmar.id}">
+                                <span data-bind="text: Confirmar.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalMotivoRejeitar" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Motivo da Rejeição da Nota</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12 col-md-12" data-bind="visible: Motivo.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Motivo.text, attr: { for: Motivo.id }"></label>
+                        <textarea class="form-control" rows="4" data-bind="value: Motivo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Motivo.maxlength, id : Motivo.id }"></textarea>
+                    </div>
+                </div>
+                <footer>
+                    <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <button class="btn btn-success" type="button" data-bind="click: Rejeitar.eventClick, attr: { id: Rejeitar.id}">
+                                <span data-bind="text: Rejeitar.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalInformarChave" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Informar a Chave da Nota Fiscal</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12 col-md-12" data-bind="visible: Chave.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Chave.text, attr: { for: Chave.id }"></label>
+                        <input type="text" class="form-control" data-bind="class: Chave.requiredClass, value: Chave.val, valueUpdate: 'afterkeydown', attr: { maxlength: Chave.maxlength, id : Chave.id}" />
+                    </div>
+                </div>
+                <footer>
+                    <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <button class="btn btn-success" type="button" data-bind="click: Confirmar.eventClick, attr: { id: Confirmar.id}">
+                                <span data-bind="text: Confirmar.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalChamadoOcorrencia" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Atendimento</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="conteudo-chamado-ocorrencia"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModaisChamado"></div>
+<div id="ModaisCarga"></div>
+<div id="modaisOcorrencia"></div>
+
+<div id="knockoutCRUDValePallet"></div>
+<div id="knockoutEtapasValePallet"></div>
+<div id="knockoutLancamento"></div>
+<div id="knockoutRecolhimento"></div>
+<div id="knockoutResumoValePallet"></div>
+<div id="knockoutDevolucao"></div>
+
+<script src="~/scripts/chamados"></script>
+<script src="~/scripts/valePallet"></script>
+<script src="~/scripts/cargaVeiculoContainer"></script>
+<script src="~/scripts/carga"></script>
+<script src="~/scripts/configuracaoEmissaoCTe"></script>
+<script src="~/scripts/configuracaoComponentesFrete"></script>
+<script src="~/scripts/mapas"></script>
+<script src="~/scripts/ocorrencia"></script>
+<script src="~/scripts/cte"></script>
+<script src="~/scripts/controleSaldo"></script>
+<script src="~/scripts/dropzone"></script>
+
+<script src="~/scripts/controleNotaDevolucao"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    var _PermissaoDelegar = @ViewBag.PermissaoDelegar;
+    _PermissoesPersonalizadasChamado = @Html.Raw(ViewBag.PermissoesPersonalizadasChamado);
+     _PermissoesPersonalizadasCarga = @Html.Raw(ViewBag.PermissoesPersonalizadasCarga);
+     _PermissoesPersonalizadasOcorrencia = @Html.Raw(ViewBag.PermissoesPersonalizadasOcorrencia);
+
+    $(document).ready(function () {
+        LoadLocalizationResources("Cargas.Carga").then(loadControleNotaDevolucao);
+        
+    });
+</script>
+

@@ -1,0 +1,297 @@
+{
+  "type": "record",
+  "name": "ScheduleEvent",
+  "namespace": "com.schedule.dto",
+  "doc": "Schema representing an event related to a vessel's schedule, including details of the vessel, service, and associated port calls.",
+  "fields": [
+    {
+      "name": "header",
+      "type": {
+        "type": "record",
+        "name": "Header",
+        "namespace": "com.schedule.dto",
+        "doc": "Metadata related to the schedule event.",
+        "fields": [
+          {
+            "name": "system",
+            "type": "string",
+            "doc": "System name that generated the event."
+          },
+          {
+            "name": "version",
+            "type": "string",
+            "doc": "Version of the event schema."
+          },
+          {
+            "name": "eventTimestamp",
+            "type": "string",
+            "doc": "Timestamp when the event was created."
+          },
+          {
+            "name": "transactionType",
+            "type": {
+              "type": "enum",
+              "name": "TransactionType",
+              "namespace": "com.schedule.dto",
+              "symbols": [
+                "CREATED",
+                "UPDATED",
+                "DELETED"
+              ]
+            }
+          },
+          {
+            "name": "updateTimestamp",
+            "type": "string",
+            "doc": "Timestamp of the last update."
+          }
+        ]
+      }
+    },
+    {
+      "name": "scheduleID",
+      "type": "string",
+      "doc": "Identifier for the schedule associated with the event."
+    },
+    {
+      "name": "voyage",
+      "type": {
+        "type": "record",
+        "name": "Voyage",
+        "namespace": "com.schedule.dto",
+        "doc": "Voyage information, such as voyage number and direction.",
+        "fields": [
+          {
+            "name": "voyageNumber",
+            "type": "string",
+            "doc": "Voyage number of the vessel."
+          },
+          {
+            "name": "direction",
+            "type": "string",
+            "doc": "Direction of the voyage (e.g., NORTH, WEST)."
+          }
+        ]
+      }
+    },
+    {
+      "name": "vessel",
+      "type": {
+        "type": "record",
+        "namespace": "com.schedule.dto",
+        "name": "Vessel",
+        "doc": "Details of the vessel involved in the schedule event.",
+        "fields": [
+          {
+            "name": "vesselName",
+            "type": "string",
+            "doc": "Name of the vessel."
+          },
+          {
+            "name": "imoNumber",
+            "type": "string",
+            "doc": "IMO number of the vessel."
+          },
+          {
+            "name": "callSign",
+            "type": "string",
+            "doc": "Call sign of the vessel."
+          },
+          {
+            "name": "operatorCode",
+            "type": "string",
+            "doc": "Code of the vessel's operator."
+          },
+          {
+            "name": "operatorName",
+            "type": "string",
+            "doc": "Name of the vessel's operator."
+          },
+          {
+            "name": "flagCountryCode",
+            "type": "string",
+            "doc": "Country code of the vessel's flag state."
+          },
+          {
+            "name": "vesselAlternativeCodes",
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "AlternativeCode",
+                "doc": "Alternative code data.",
+                "namespace": "com.schedule.dto",
+                "fields": [
+                  {
+                    "name": "alternativeCode",
+                    "type": "string",
+                    "doc": "Alternative code value."
+                  },
+                  {
+                    "name": "alternativeCodeType",
+                    "type": "string",
+                    "doc": "Alternative code type."
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "service",
+      "type": {
+        "type": "record",
+        "name": "Service",
+        "namespace": "com.schedule.dto",
+        "doc": "Details of the service associated with the schedule event.",
+        "fields": [
+          {
+            "name": "serviceCode",
+            "type": "string",
+            "doc": "Code of the service."
+          },
+          {
+            "name": "serviceName",
+            "type": "string",
+            "doc": "Name of the service."
+          }
+        ]
+      }
+    },
+    {
+      "name": "portCalls",
+      "type": {
+        "type": "array",
+        "doc": "List of port calls associated with the vessel.",
+        "items": {
+          "name": "PortCall",
+          "type": "record",
+          "namespace": "com.schedule.dto",
+          "doc": "Details of an individual port call.",
+          "fields": [
+            {
+              "name": "vesselPortCallIdentifier",
+              "type": "string",
+              "doc": "Unique identifier for the vessel's port call."
+            },
+            {
+              "name": "sequence",
+              "type": "string",
+              "doc": "Sequence number of the port call in the schedule."
+            },
+            {
+              "name": "portName",
+              "type": "string",
+              "doc": "Name of the port where the vessel is calling."
+            },
+            {
+              "name": "portAlternativeCodes",
+              "type": {
+                "type": "array",
+                "items": "com.schedule.dto.AlternativeCode"
+              }
+            },
+            {
+              "name": "terminalName",
+              "type": "string",
+              "doc": "Name of the terminal where the vessel is calling."
+            },
+            {
+              "name": "terminalAlternativeCodes",
+              "type": {
+                "type": "array",
+                "items": "com.schedule.dto.AlternativeCode"
+              }
+            },
+            {
+              "name": "estimatedTimeOfArrival",
+              "type": "string",
+              "doc": "Estimated time of arrival at the port."
+            },
+            {
+              "name": "estimatedTimeOfDeparture",
+              "type": "string",
+              "doc": "Estimated time of departure from the port."
+            },
+            {
+              "name": "actualTimeOfArrival",
+              "type": "string",
+              "doc": "Actual time of arrival at the port."
+            },
+            {
+              "name": "actualTimeOfDeparture",
+              "type": "string",
+              "doc": "Actual time of departure from the port."
+            },
+            {
+              "name": "cargoDeadline",
+              "type": [
+                "null",
+                "string"
+              ],
+              "doc": "Deadline date of port (format: YYYY-MM-DD HH:mm).",
+              "default": null
+            },
+            {
+              "name": "cutoffs",
+              "type": {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "Cutoff",
+                  "doc": "Cutoff details for the port call operations.",
+                  "fields": [
+                    {
+                      "name": "cutoffType",
+                      "type": {
+                        "type": "enum",
+                        "name": "CutoffType",
+                        "namespace": "com.schedule.dto",
+                        "symbols": [
+                          "LATE_ARRIVAL_DEADLINE",
+                          "DOCUMENTATION_DEADLINE",
+                          "CARGO_DEADLINE"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "cutoffOption",
+                      "type": {
+                        "type": "enum",
+                        "name": "CutoffOption",
+                        "namespace": "com.schedule.dto",
+                        "symbols": [
+                          "FIXED_WEEKDAY",
+                          "HOURS_BEFORE_ETD",
+                          "HOURS_BEFORE_ETB",
+                          "EMPTY"
+                        ]
+                      }
+                    },
+                    {
+                      "name": "cutoffDate",
+                      "type": "string",
+                      "doc": "Date of the cutoff (format: YYYY-MM-DD)."
+                    },
+                    {
+                      "name": "cutoffTime",
+                      "type": "string",
+                      "doc": "Time of the cutoff (format: HH:mm:ss)."
+                    },
+                    {
+                      "name": "cutoffHour",
+                      "type": "string",
+                      "doc": "Hour of the cutoff (format: HH:mm:ss)."
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

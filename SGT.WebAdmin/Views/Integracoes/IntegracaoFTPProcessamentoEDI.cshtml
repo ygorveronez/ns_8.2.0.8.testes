@@ -1,0 +1,152 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Integrações</li>
+    <li class="breadcrumb-item active">Integração FTP Processamento EDI</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        Controle de Importacao EDI - FTP
+    </h1>
+</div>
+<div id="knockoutIntegracaoProcessamentoEDIFTP" class="panel">
+    <div class="panel-container">
+        <div class="panel-hdr">
+            <h3>
+                <i class="fal fa-edit"></i>
+                Pesquisar Arquivo
+            </h3>
+        </div>
+        <div class="panel-content">
+            <form>
+                <div class="row">
+
+                    <div class="col-12 col-md-2" data-bind="visible: DataInicial.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-2" data-bind="visible: DataFinal.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-2" data-bind="visible: NomeArquivo.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: NomeArquivo.text, attr: { for: NomeArquivo.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: NomeArquivo.requiredClass, value: NomeArquivo.val, valueUpdate: 'afterkeydown', attr: { maxlength: NomeArquivo.maxlength, id : NomeArquivo.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3" data-bind="visible: GrupoPessoa.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: GrupoPessoa.text, attr: { for: GrupoPessoa.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: GrupoPessoa.requiredClass, value: GrupoPessoa.val, valueUpdate: 'afterkeydown', attr: { maxlength: GrupoPessoa.maxlength, id : GrupoPessoa.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: GrupoPessoa.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-2" data-bind="visible: Situacao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                            <select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}"></select>
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+            <div class="d-flex align-items-center justify-content-end mb-3">
+                <button class="btn btn-default  waves-effect waves-themed btnPesquisarFiltroPesquisa ms-3" data-bind="click: EnviarArquivo.eventClick, attr: { id: EnviarArquivo.id}, visible: EnviarArquivo.id" type="button">
+                    <i class="fal fa-file"></i><span data-bind="text: EnviarArquivo.text"></span>
+                </button>
+                <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa ms-3" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                    <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                </button>
+            </div>
+            <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+        </div>
+    </div>
+</div>
+
+<div id="divModalEnviarEDI" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutEnvioArquivos" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Envio de Arquivos EDI</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: GrupoPessoaEnvioArquivo.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: GrupoPessoaEnvioArquivo.text, attr: { for: GrupoPessoaEnvioArquivo.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: GrupoPessoaEnvioArquivo.requiredClass, value: GrupoPessoaEnvioArquivo.val, valueUpdate: 'afterkeydown', attr: { maxlength: GrupoPessoaEnvioArquivo.maxlength, id : GrupoPessoaEnvioArquivo.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: GrupoPessoaEnvioArquivo.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6" data-bind="visible: LayoutEDI.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: LayoutEDI.text, attr: { for: LayoutEDI.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: LayoutEDI.requiredClass, value: LayoutEDI.val, valueUpdate: 'afterkeydown', attr: { maxlength: LayoutEDI.maxlength, id : LayoutEDI.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: LayoutEDI.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3" data-bind="visible: Upload.visible">
+
+                    <div class="custom-file-btn">
+                        <label class="btn btn-default" data-bind="attr: { for: Upload.idFile }">
+                            <i data-bind="css: Upload.icon"></i>
+                            <span data-bind="text: Upload.text"></span>
+                        </label>
+                        <input type="file" name="file" data-bind="event: {change: Upload.eventChange}, attr: { id : Upload.idFile, accept: Upload.accept, multiple: true }">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="~/scripts/IntegracaoprocessamentoEDIFTP"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadIntegracaoProcessamentoEDIFTP();
+    });
+
+</script>
+

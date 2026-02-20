@@ -1,0 +1,659 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Logística</li>
+    <li class="breadcrumb-item active">Configuração Rota Frete</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        Configurações de Rotas de Frete
+    </h1>
+</div>
+
+<div id="knockoutPesquisaConfiguracaoRotaFrete">
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <i class="fal fa-search"></i>
+                    Pesquisar Configurações de Rotas de Frete
+                </button>
+
+                <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-9" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-3" data-bind="visible: Ativo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Ativo.text, attr: { for: Ativo.id }"></label>
+                                    <select class="form-control" data-bind="options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { id : Ativo.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex align-items-center justify-content-end mb-3">
+                        <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel mt-3" id="wid-id-4" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+    <div class="panel-container">
+        <div class="panel-content">
+            <ul class="nav nav-tabs pull-left in" id="tabRotaFrete">
+                <li class="active nav-item" id="liTabDetalhes">
+                    <a href="#tabDetalhes" class="nav-link active" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Detalhes</span>
+                    </a>
+                </li>
+                <li id="liTabLocalidadeOrigem" class="nav-item">
+                    <a href="#tabLocalidadeOrigem" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Cidades de Origem</span>
+                    </a>
+                </li>
+
+                <li id="liTabEstado" class="nav-item">
+                    <a href="#tabEstado" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Estados de Destino</span>
+                    </a>
+                </li>
+                <li id="liTabLocalidadeDestino" class="nav-item">
+                    <a href="#tabLocalidadeDestino" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Cidades de Destino</span>
+                    </a>
+                </li>
+
+                <li id="liTabModeloVeicularCarga" class="nav-item">
+                    <a href="#tabModeloVeicularCarga" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Modelos Veiculares de Carga</span>
+                    </a>
+                </li>
+
+                <li id="liTabTipoCarga" class="nav-item">
+                    <a href="#tabTipoCarga" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Tipos de Carga</span>
+                    </a>
+                </li>
+                <li id="liTabEmpresa" class="nav-item">
+                    <a href="#tabEmpresa" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Transportadores</span>
+                    </a>
+                </li>
+
+                <li id="liTabTipoOperacao" class="nav-item">
+                    <a href="#tabTipoOperacao" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Tipo de Operação</span>
+                    </a>
+                </li>
+
+                <li id="liTabGrupoTransportadoresHUBOfertas" class="nav-item">
+                    <a href="#tabGrupoTransportadoresHUBOfertas" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Configurações Grupo de Transportadores</span>
+                    </a>
+                </li>
+
+            </ul>
+            <div id="tabRotaFreteContent" class="tab-content border border-top-0 p-3">
+                <div class="tab-pane active in" id="tabDetalhes" role="tabpanel">
+                    <form novalidate id="knockoutDetalhes">
+                        <div class="row">
+                            <div class="col-12 col-md-5" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-5" data-bind="visible: Filial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" data-bind="css: Filial.requiredClass, value: Filial.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Filial.text, maxlength: Filial.maxlength, id: Filial.id, name: Filial.id }" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Filial.idBtnSearch}">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-2" data-bind="visible: Ativo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Ativo.text, attr: { for: Ativo.id }"></label>
+                                    <select class="form-control" data-bind="options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { id : Ativo.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card border mb-4">
+                            <div class="card-header">
+                                Configurações de Envio para Transportador
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 col-lg-3" data-bind="visible: HoraEnvioTransportadorRota.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: HoraEnvioTransportadorRota.text, attr: { for: HoraEnvioTransportadorRota.id }"></label>
+                                            <input type="text" class="form-control" data-bind="value: HoraEnvioTransportadorRota.val, valueUpdate: 'afterkeydown', attr: { maxlength: HoraEnvioTransportadorRota.maxlength, id : HoraEnvioTransportadorRota.id}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-lg-3" data-bind="visible: HoraEnvioTransportadorRota.val() != ''">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: DiasAntecedenciaEnvioTransportadorRota.text, attr: { for: DiasAntecedenciaEnvioTransportadorRota.id }"></label>
+                                            <input type="text" class="form-control" data-bind="value: DiasAntecedenciaEnvioTransportadorRota.val, valueUpdate: 'afterkeydown', attr: { maxlength: DiasAntecedenciaEnvioTransportadorRota.maxlength, id : DiasAntecedenciaEnvioTransportadorRota.id}" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" data-bind="visible: HoraEnvioTransportadorRota.val() != ''">
+                                    <div class="col-4 col-md-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaSegunda.val, attr: { name: EnviarTransportadorRotaSegunda.id, id: EnviarTransportadorRotaSegunda.id }">
+                                            <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaSegunda.text, attr: { for: EnviarTransportadorRotaSegunda.id }"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaTerca.val, attr: { name: EnviarTransportadorRotaTerca.id, id: EnviarTransportadorRotaTerca.id }">
+                                            <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaTerca.text, attr: { for: EnviarTransportadorRotaTerca.id }"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaQuarta.val, attr: { name: EnviarTransportadorRotaQuarta.id, id: EnviarTransportadorRotaQuarta.id }">
+                                            <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaQuarta.text, attr: { for: EnviarTransportadorRotaQuarta.id }"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaQuinta.val, attr: { name: EnviarTransportadorRotaQuinta.id, id: EnviarTransportadorRotaQuinta.id }">
+                                            <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaQuinta.text, attr: { for: EnviarTransportadorRotaQuinta.id }"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaSexta.val, attr: { name: EnviarTransportadorRotaSexta.id, id: EnviarTransportadorRotaSexta.id }">
+                                            <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaSexta.text, attr: { for: EnviarTransportadorRotaSexta.id }"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaSabado.val, attr: { name: EnviarTransportadorRotaSabado.id, id: EnviarTransportadorRotaSabado.id }">
+                                            <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaSabado.text, attr: { for: EnviarTransportadorRotaSabado.id }"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaDomingo.val, attr: { name: EnviarTransportadorRotaDomingo.id, id: EnviarTransportadorRotaDomingo.id }">
+                                            <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaDomingo.text, attr: { for: EnviarTransportadorRotaDomingo.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="tabLocalidadeOrigem">
+                    <form id="knockoutLocalidadeOrigem">
+                        <div class="row">
+                            <div class="d-flex mb-3">
+                                <button class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button" data-bind="click: LocalidadeOrigem.eventClick, attr: { id: LocalidadeOrigem.idBtnSearch}">
+                                    <i class="fal fa-plus"></i><span data-bind="text: LocalidadeOrigem.text"></span>
+                                </button>
+                            </div>
+
+                            <div class="widget-body">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: LocalidadeOrigem.idGrid}" cellspacing="0"></table>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="tabEstado">
+                    <form id="knockoutEstado">
+                        <div class="row">
+                            <div class="d-flex mb-3">
+                                <button class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button" data-bind="click: Estado.eventClick, attr: { id: Estado.idBtnSearch}">
+                                    <i class="fal fa-plus"></i><span data-bind="text: Estado.text"></span>
+                                </button>
+                            </div>
+
+                            <div class="widget-body">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Estado.idGrid}" cellspacing="0"></table>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="tabLocalidadeDestino">
+                    <form id="knockoutLocalidadeDestino">
+                        <div class="row">
+                            <div class="d-flex mb-3">
+                                <button class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button" data-bind="click: LocalidadeDestino.eventClick, attr: { id: LocalidadeDestino.idBtnSearch}">
+                                    <i class="fal fa-plus"></i><span data-bind="text: LocalidadeDestino.text"></span>
+                                </button>
+                            </div>
+
+                            <div class="widget-body">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: LocalidadeDestino.idGrid}" cellspacing="0"></table>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="tabModeloVeicularCarga">
+                    <form id="knockoutModeloVeicularCarga">
+                        <div class="row">
+                            <div class="d-flex mb-3">
+                                <button class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button" data-bind="click: ModeloVeicularCarga.eventClick, attr: { id: ModeloVeicularCarga.idBtnSearch}">
+                                    <i class="fal fa-plus"></i><span data-bind="text: ModeloVeicularCarga.text"></span>
+                                </button>
+                            </div>
+
+                            <div class="widget-body">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: ModeloVeicularCarga.idGrid}" cellspacing="0"></table>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="tabTipoCarga">
+                    <form id="knockoutTipoCarga">
+                        <div class="row">
+                            <div class="d-flex mb-3">
+                                <button class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button" data-bind="click: TipoCarga.eventClick, attr: { id: TipoCarga.idBtnSearch }">
+                                    <i class="fal fa-plus"></i><span data-bind="text: TipoCarga.text"></span>
+                                </button>
+                            </div>
+
+                            <div class="widget-body">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: TipoCarga.idGrid}" cellspacing="0"></table>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="tabEmpresa">
+                    <form id="knockoutEmpresa">
+                        <div class="row">
+                            <div class="d-flex mb-3">
+                                <button class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button" data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id}">
+                                    <i class="fal fa-plus"></i><span data-bind="text: Adicionar.text"></span>
+                                </button>
+                            </div>
+
+                            <div class="widget-body">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: ListaEmpresa.idGrid}" cellspacing="0"></table>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="tabTipoOperacao">
+                    <form id="knockoutTipoOperacao">
+                        <div class="row">
+                            <div class="d-flex mb-3">
+                                <button class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button" data-bind="click: TipoOperacao.eventClick, attr: { id: TipoOperacao.idBtnSearch }">
+                                    <i class="fal fa-plus"></i><span data-bind="text: TipoOperacao.text"></span>
+                                </button>
+                            </div>
+
+                            <div class="widget-body">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: TipoOperacao.idGrid}" cellspacing="0"></table>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="tab-pane" id="tabGrupoTransportadoresHUBOfertas" data-bind="visible: GrupoTransportadoresHUBOfertas.visible">
+                    <form id="knockoutGrupoTransportadoresHUBOfertas">
+                        <div class="row">
+                            <div class="col-12 d-flex flex-wrap align-items-end mb-3">
+                                <div class="me-3" style="min-width: 250px;" data-bind="visible: TipoOferta.visible">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label" data-bind="text: TipoOferta.text, attr: { for: TipoOferta.id }"></label>
+                                        <select class="form-control"
+                                                data-bind="class: TipoOferta.requiredClass, options: TipoOferta.options, optionsText: 'text', optionsValue: 'value', value: TipoOferta.val, attr: { maxlength: TipoOferta.maxlength, id : TipoOferta.id}, enable: TipoOferta.enable"></select>
+                                    </div>
+                                </div>
+
+                                <div class="me-3" style="min-width: 200px;">
+                                    <div class="custom-control custom-switch mb-0">
+                                        <input type="checkbox" class="custom-control-input"
+                                               data-bind="checked: LiberarSpotAbertoAposTempoLimiteGrupos.val, attr: { name: LiberarSpotAbertoAposTempoLimiteGrupos.id, id: LiberarSpotAbertoAposTempoLimiteGrupos.id }">
+                                        <label class="custom-control-label"
+                                               data-bind="text: LiberarSpotAbertoAposTempoLimiteGrupos.text, attr: { for: LiberarSpotAbertoAposTempoLimiteGrupos.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="me-3" style="max-width: 200px;" data-bind="visible: HoraEnvioOfertaHUBOfertas.visible">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label" data-bind="text: HoraEnvioOfertaHUBOfertas.text, attr: { for: HoraEnvioOfertaHUBOfertas.id }"></label>
+                                        <input type="text" class="form-control"
+                                               data-bind="value: HoraEnvioOfertaHUBOfertas.val, valueUpdate: 'afterkeydown', attr: { maxlength: HoraEnvioOfertaHUBOfertas.maxlength, id : HoraEnvioOfertaHUBOfertas.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="me-3" style="max-width: 200px;" data-bind="visible: HoraEnvioOfertaHUBOfertas.val() != ''">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label" data-bind="text: DiasAntecedenciaHUBOfertas.text, attr: { for: DiasAntecedenciaHUBOfertas.id }"></label>
+                                        <input type="text" class="form-control"
+                                               data-bind="value: DiasAntecedenciaHUBOfertas.val, valueUpdate: 'afterkeydown', attr: { maxlength: DiasAntecedenciaHUBOfertas.maxlength, id : DiasAntecedenciaHUBOfertas.id}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" data-bind="visible: HoraEnvioOfertaHUBOfertas.val() != ''" style="margin:5px;">
+                                <div class="col-4 col-md-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaSegundaHUB.val, attr: { name: EnviarTransportadorRotaSegundaHUB.id, id: EnviarTransportadorRotaSegundaHUB.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaSegundaHUB.text, attr: { for: EnviarTransportadorRotaSegundaHUB.id }"></label>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaTercaHUB.val, attr: { name: EnviarTransportadorRotaTercaHUB.id, id: EnviarTransportadorRotaTercaHUB.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaTercaHUB.text, attr: { for: EnviarTransportadorRotaTercaHUB.id }"></label>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaQuartaHUB.val, attr: { name: EnviarTransportadorRotaQuartaHUB.id, id: EnviarTransportadorRotaQuartaHUB.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaQuartaHUB.text, attr: { for: EnviarTransportadorRotaQuartaHUB.id }"></label>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaQuintaHUB.val, attr: { name: EnviarTransportadorRotaQuintaHUB.id, id: EnviarTransportadorRotaQuintaHUB.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaQuintaHUB.text, attr: { for: EnviarTransportadorRotaQuintaHUB.id }"></label>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaSextaHUB.val, attr: { name: EnviarTransportadorRotaSextaHUB.id, id: EnviarTransportadorRotaSextaHUB.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaSextaHUB.text, attr: { for: EnviarTransportadorRotaSextaHUB.id }"></label>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaSabadoHUB.val, attr: { name: EnviarTransportadorRotaSabadoHUB.id, id: EnviarTransportadorRotaSabadoHUB.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaSabadoHUB.text, attr: { for: EnviarTransportadorRotaSabadoHUB.id }"></label>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarTransportadorRotaDomingoHUB.val, attr: { name: EnviarTransportadorRotaDomingoHUB.id, id: EnviarTransportadorRotaDomingoHUB.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarTransportadorRotaDomingoHUB.text, attr: { for: EnviarTransportadorRotaDomingoHUB.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-3" style="margin-top:5px;">
+                                <button class="btn btn-primary botaoAdiconarMultiplosRegistros" type="button"
+                                        data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id }">
+                                    <i class="fal fa-plus"></i>
+                                    <span data-bind="text: Adicionar.text"></span>
+                                </button>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="widget-body">
+                                    <table width="100%" class="table table-bordered table-hover"
+                                           data-bind="attr: { id: ListaGrupo.idGrid }" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+
+                <footer id="knockoutCRUDConfiguracaoRotaFrete" class="mt-2">
+                    <div class="row">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-labeled btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { id : Cancelar.id}">
+                                <i class="fal fa-ban"></i>
+                                <span data-bind="text: Cancelar.text"></span>
+                            </button>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <button type="button" class="btn btn-labeled btn-danger mx-3" data-bind="click: Excluir.eventClick, visible: Excluir.visible, attr: { id : Excluir.id}">
+                                <i class="fal fa-trash"></i>
+                                <span data-bind="text: Excluir.text"></span>
+                            </button>
+                            <button type="button" class="btn btn-labeled btn-success" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { id : Atualizar.id}">
+                                <i class="fal fa-check"></i>
+                                <span data-bind="text: Atualizar.text"></span>
+                            </button>
+                            <button type="button" class="btn btn-labeled btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                                <span data-bind="text: Adicionar.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalCadastroEmpresa" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Transportador</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutCadastroEmpresa">
+                <div class="col-12 col-md-12" data-bind="visible: Empresa.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Empresa.text, attr: { for: Empresa.id }"></label>
+                        <div class="input-group">
+                            <input type="text" data-bind="enable: Empresa.enable, css: Empresa.requiredClass, value: Empresa.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': Empresa.text, maxlength: Empresa.maxlength, id: Empresa.id, name: Empresa.id }" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="enable: Empresa.enable, attr: { id: Empresa.idBtnSearch}">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-12" data-bind="visible: ModeloVeicularCarga.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: ModeloVeicularCarga.text, attr: { for: ModeloVeicularCarga.id }"></label>
+                        <div class="input-group">
+                            <input type="text" data-bind="enable: ModeloVeicularCarga.enable, css: ModeloVeicularCarga.requiredClass, value: ModeloVeicularCarga.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': ModeloVeicularCarga.text, maxlength: ModeloVeicularCarga.maxlength, id: ModeloVeicularCarga.id, name: ModeloVeicularCarga.id }" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="enable: ModeloVeicularCarga.enable, attr: { id: ModeloVeicularCarga.idBtnSearch}">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-12" data-bind="visible: PercentualCargasDaRota.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: PercentualCargasDaRota.text, attr: { for: PercentualCargasDaRota.id }"></label>
+                        <input type="text" class="form-control" data-bind="value: PercentualCargasDaRota.val, valueUpdate: 'afterkeydown', attr: { maxlength: PercentualCargasDaRota.maxlength, id : PercentualCargasDaRota.id}" />
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-12" data-bind="visible: Prioridade.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Prioridade.text, attr: { for: Prioridade.id }"></label>
+                        <input type="text" class="form-control" data-bind="value: Prioridade.val, valueUpdate: 'afterkeydown', attr: { maxlength: Prioridade.maxlength, id : Prioridade.id}" />
+                    </div>
+                </div>
+
+                <footer class="mt-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-labeled btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, text: Cancelar.text, attr: { id : Cancelar.id}">
+                                <i class="fal fa-ban"></i>
+                            </button>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger mx-1 mx-sm-2" data-bind="click: Excluir.eventClick, visible: Excluir.visible, text: Excluir.text, attr: { id : Excluir.id}">
+                                <i class="fal fa-trash"></i>
+                            </button>
+                            <button type="button" class="btn btn-success" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, text: Atualizar.text, attr: { id : Atualizar.id}">
+                                <i class="fal fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, text: Adicionar.text, attr: { id : Adicionar.id}">
+                                <i class="fal fa-spinner"></i>
+                            </button>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalCadastroGrupoTransportadoresHUBOfertas" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Grupo de Transportadores</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutCadastroGrupoTransportadoresHUBOfertas">
+                <div class="info-box" style="font-size: 11px;">
+                    <div>Exclusiva: oferta para cada grupo até seu tempo esgotar</div>
+                    <div>Adiciona: oferta segue ativa após tempo limite do grupo e é liberada para os demais</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 col-md-6" data-bind="visible: TempoDeixarDeOfertarAntesDoCarregamento.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TempoDeixarDeOfertarAntesDoCarregamento.text, attr: { for: TempoDeixarDeOfertarAntesDoCarregamento.id }"></label>
+                            <input type="text" class="form-control" data-bind="value: TempoDeixarDeOfertarAntesDoCarregamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TempoDeixarDeOfertarAntesDoCarregamento.maxlength, id : TempoDeixarDeOfertarAntesDoCarregamento.id}" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6" data-bind="visible: SequenciaOferta.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: SequenciaOferta.text, attr: { for: SequenciaOferta.id }"></label>
+                            <select class="form-control" data-bind="class: SequenciaOferta.requiredClass, options: SequenciaOferta.options, optionsText: 'text', optionsValue: 'value', value: SequenciaOferta.val, attr: { maxlength: SequenciaOferta.maxlength, id : SequenciaOferta.id}, enable: SequenciaOferta.enable"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-12" data-bind="visible: TempoOfertarExclusivamenteParaGrupo.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TempoOfertarExclusivamenteParaGrupo.text, attr: { for: TempoOfertarExclusivamenteParaGrupo.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: TempoOfertarExclusivamenteParaGrupo.requiredClass, value: TempoOfertarExclusivamenteParaGrupo.val, valueUpdate: 'afterkeydown', attr: { maxlength: TempoOfertarExclusivamenteParaGrupo.maxlength, id : TempoOfertarExclusivamenteParaGrupo.id}" />
+                        </div>
+                    </div>
+
+                    <div class="row mb-8">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Empresa.text, attr: { for: Empresa.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Empresa.requiredClass, value: Empresa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Empresa.maxlength, id: Empresa.id, name: Empresa.id }" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: Empresa.idBtnSearch }">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="col-1 col-md-2 d-flex justify-content-center justify-content-md-end">
+                                        <button type="button" class="btn btn-primary" data-bind="click: AdicionarTransportador.eventClick, attr: { id: AdicionarTransportador.id }">
+                                            <i class="fal fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table data-bind="attr: { id: ListaTransportadores.idGrid }" class="table table-striped table-bordered table-hover">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="mt-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-labeled btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, text: Cancelar.text, attr: { id : Cancelar.id}">
+                                <i class="fal fa-ban"></i>
+                            </button>
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <button type="button" class="btn btn-danger mx-1 mx-sm-2" data-bind="click: Excluir.eventClick, visible: Excluir.visible, text: Excluir.text, attr: { id : Excluir.id}">
+                                <i class="fal fa-trash"></i>
+                            </button>
+                            <button type="button" class="btn btn-success" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, text: Atualizar.text, attr: { id : Atualizar.id}">
+                                <i class="fal fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, text: Adicionar.text, attr: { id : Adicionar.id}">
+                                <i class="fal fa-spinner"></i>
+                            </button>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="~/scripts/configuracaoRotaFrete"></script>
+
+<script type="text/javascript">
+
+    _CONFIGURACAO_TMS = $.extend({}, _CONFIGURACAO_TMS, @Html.Raw(ViewBag.ConfiguracaoRotaFrete));
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadConfiguracaoRotaFrete();
+    });
+
+</script>
+

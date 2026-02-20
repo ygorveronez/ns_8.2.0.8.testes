@@ -1,0 +1,63 @@
+﻿<!-- ko foreach: Categorias -->
+<div class="well container-checklist">
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-hdr">
+                <h3 data-bind="text: $data.Descricao"></h3>
+            </div>
+            <div class="panel-content">
+                <form>
+                    <div class="row">
+                        <!-- ko foreach: { data: $data.Perguntas, as: 'Pergunta' } -->
+                        <!-- ko if: Pergunta.Tipo == 1 -->
+                        <div class="col-12 col-md-6 simnao-container">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Pergunta.Descricao"></label>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" value="true" data-bind="checked: Pergunta.Opcao, attr: { name: 'simnao_' + Pergunta.Codigo, id : 'sim_' + Pergunta.Codigo }" />
+                                    <label class="custom-control-label" data-bind="attr: { for: 'sim_' + Pergunta.Codigo }">Sim</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input" type="radio" value="false" data-bind="checked: Pergunta.Opcao, attr: { name: 'simnao_' + Pergunta.Codigo, id : 'nao_' + Pergunta.Codigo }" />
+                                    <label class="custom-control-label" data-bind="attr: { for: 'nao_' + Pergunta.Codigo }">Não</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: Pergunta.Tipo == 2 -->
+                        <div class="col-12">
+                            <label class="form-label" data-bind="text: Pergunta.Descricao"></label>
+                            <div class="form-group">
+                                <!-- ko foreach: { data: Pergunta.Alternativas, as: 'Alternativa' } -->
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input class="custom-control-input" type="checkbox" data-bind="checked: Alternativa.Marcado, valueUpdate: 'afterkeydown', attr: { name: Pergunta.Codigo + '_' + $index(), id : Pergunta.Codigo + '_' + $index()}" />
+                                    <label class="custom-control-label" data-bind="text: Alternativa.Descricao, attr: { for: Pergunta.Codigo + '_' + $index() }"></label>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: Pergunta.Tipo == 3 -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Pergunta.Descricao"></label>
+                                <input class="form-control" type="text" data-bind="value: Pergunta.Resposta, valueUpdate: 'afterkeydown', attr: { id : Pergunta.Codigo}" />
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: Pergunta.Tipo == 4 -->                        
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Pergunta.Descricao"></label>
+                                <select class="form-control" data-bind="options: Pergunta.Opcoes, optionsText: 'text', optionsValue: 'value', value: Pergunta.Resposta, attr: { name: Pergunta.Codigo + '_' + $index(), id : Pergunta.Codigo + '_' + $index()}"></select>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /ko -->

@@ -1,0 +1,322 @@
+﻿<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Configurações</li>
+    <li class="breadcrumb-item active">Outras Alíquotas</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i></i> Outras Alíquotas
+    </h1>
+</div>
+
+
+<div class="panel">
+    <div class="panel-container">
+        <div class="panel-content">
+            <form id="knockoutPesquisaOutrasAliquotas">
+
+                <footer>
+                    <div class="row">
+                        <div class="d-flex align-items-center justify-content-end mb-3">
+                            <button class="btn waves-effect waves-themed btnAdicionarConfiguracaoes"
+                                    style="background-color: #007E4F; border-color: #007E4F; color: white;"
+                                    data-bind="click: AdicionarConfiguracoes.eventClick, attr: { id: AdicionarConfiguracoes.id}"
+                                    type="button">
+                                Adicionar Configurações
+                            </button>
+                        </div>
+
+                    </div>
+                </footer>
+
+                <div class="widget-body">
+                    <table width="100%" class="table table-bordered table-hover" id="grid-outras-aliquotas" cellspacing="0"></table>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalAdicionarConfiguracoes" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: fit-content;">
+        <div class="modal-content" id="knockoutOutrasAliquotas">
+            <div class="modal-header" style="margin-bottom: -25px;">
+                <h3 class="modal-title" id="modalLabel" style="font-weight: bold; color:#787878;" data-bind="text: TituloModal.text"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-12 col-md-2">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: CST.text"></label>
+                            <input type="text" class="form-control" data-bind="css: CST.requiredClass, value: CST.val, valueUpdate: 'afterkeydown', attr: { maxlength: CST.maxlength, id : CST.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: CodigoClassificacaoTributaria.text"></label>
+                            <input type="text" class="form-control" data-bind="css: CodigoClassificacaoTributaria.requiredClass, value: CodigoClassificacaoTributaria.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoClassificacaoTributaria.maxlength, id : CodigoClassificacaoTributaria.id}" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TipoOperacao.text, attr: { for: TipoOperacao.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: TipoOperacao.requiredClass, value: TipoOperacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoOperacao.maxlength, id : TipoOperacao.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoOperacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: CodigoIndicadorOperacao.text"></label>
+                            <input type="text" class="form-control" data-bind="css: CodigoIndicadorOperacao.requiredClass, value: CodigoIndicadorOperacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoIndicadorOperacao.maxlength, id : CodigoIndicadorOperacao.id}" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" data-bind="visible: CalcularImpostoDocumento.visible">
+                            <div class="custom-control custom-switch mb-3">
+                                <input type="checkbox" class="custom-control-input" data-bind="checked: CalcularImpostoDocumento.val, attr: { name: CalcularImpostoDocumento.id, id: CalcularImpostoDocumento.id }">
+                                <label class="custom-control-label" data-bind="text: CalcularImpostoDocumento.text, attr: { for: CalcularImpostoDocumento.id }"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-auto me-1" data-bind="visible: AtivoInativo.visible">
+                        <div class="custom-control custom-switch mb-2">
+                            <input type="checkbox" class="custom-control-input" data-bind="checked: AtivoInativo.val, attr: { name: AtivoInativo.id, id: AtivoInativo.id }">
+                            <label class="custom-control-label" data-bind="text: AtivoInativo.text, attr: { for: AtivoInativo.id }"></label>
+                        </div>
+                    </div>
+                    <div class="col-auto me-1" data-bind="visible: ZerarBase.visible">
+                        <div class="custom-control custom-switch mb-2">
+                            <input type="checkbox" class="custom-control-input" data-bind="checked: ZerarBase.val, attr: { name: ZerarBase.id, id: ZerarBase.id }">
+                            <label class="custom-control-label" data-bind="text: ZerarBase.text, attr: { for: ZerarBase.id }"></label>
+                        </div>
+                    </div>
+                    <div class="col-auto" data-bind="visible: Exportacao.visible">
+                        <div class="custom-control custom-switch mb-2">
+                            <input type="checkbox" class="custom-control-input" data-bind="checked: Exportacao.val, attr: { name: Exportacao.id, id: Exportacao.id }">
+                            <label class="custom-control-label" data-bind="text: Exportacao.text, attr: { for: Exportacao.id }"></label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="d-flex align-items-center justify-content-end mb-3">
+                    <button class="btn waves-effect waves-themed btnConfirmar"
+                            type="button"
+                            style="background-color: #007E4F; border-color: #007E4F; color: white;"
+                            data-bind="visible: Confirmar.visible, click: Confirmar.eventClick, attr: { id: Confirmar.id}">
+                        <span data-bind="visible: Confirmar.visible, text: Confirmar.text"></span>
+                    </button>
+                    <button class="btn waves-effect waves-themed btnConfirmar"
+                            type="button"
+                            style="background-color: #007E4F; border-color: #007E4F; color: white;"
+                            data-bind="visible: Atualizar.visible, click: Atualizar.eventClick, attr: { id: Confirmar.id}">
+                        <span data-bind="visible: Atualizar.visible, text: Atualizar.text"></span>
+                    </button>
+                    <button class="btn btn-danger btnExcluir ms-2"
+                            type="button"
+                            data-bind="click: Excluir_Aliquota.eventClick, visible: Excluir_Aliquota.visible, attr: { value: Excluir_Aliquota.text, id : Excluir_Aliquota.id}">
+                        <span data-bind="text: Excluir_Aliquota.text"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row" data-bind="visible: ExibirEditar.visible">
+                <div class="modal-footer">
+                    <div class="alert alert-warning m-0 p-2 w-100" role="alert"
+                         style="font-size: 0.950rem; margin-top: -1rem !important; margin-right: 15px !important; margin-left: 15px !important;">
+                        <i class="fal fa-info-circle me-2"></i>
+                        Ao inativar a configuração, todos os impostos vinculados também serão inativados.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalVincularImposto" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: fit-content;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalLabel" data-bind="text: TituloModal.text">Vincular Imposto</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="knockoutVincularImposto">
+
+                <div class="row">
+                    <div class="col-12 col-md-3" data-bind="visible: TipoImposto.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TipoImposto.text, attr: { for: TipoImposto.id }"></label>
+                            <select class="form-control" data-bind="class: TipoImposto.requiredClass, options: TipoImposto.options, optionsText: 'text', optionsValue: 'value', value: TipoImposto.val, attr: { maxlength: TipoImposto.maxlength, id : TipoImposto.id}, enable: TipoImposto.enable"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-2" data-bind="visible: ExibirCBS.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Aliquota.text"></label>
+                            <input type="text" class="form-control" data-bind="css: Aliquota.requiredClass, value: Aliquota.val, valueUpdate: 'afterkeydown', attr: { maxlength: Aliquota.maxlength, id : Aliquota.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-2" data-bind="visible: ExibirCBS.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Reducao.text"></label>
+                            <input type="text" class="form-control" data-bind="value: Reducao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Reducao.maxlength, id : Reducao.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-2" data-bind="visible: ExibirIBS.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: AliquotaUF.text"></label>
+                            <input type="text" class="form-control" data-bind="css: AliquotaUF.requiredClass, value: AliquotaUF.val, valueUpdate: 'afterkeydown', attr: { maxlength: AliquotaUF.maxlength, id : AliquotaUF.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: ExibirIBS.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: AliquotaMunicipio.text"></label>
+                            <input type="text" class="form-control" data-bind="value: AliquotaMunicipio.val, valueUpdate: 'afterkeydown', attr: { maxlength: AliquotaMunicipio.maxlength, id : AliquotaMunicipio.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: DataVigenciaInicio.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataVigenciaInicio.text"></label>
+                            <input type="text" class="form-control" data-bind="class: DataVigenciaInicio.requiredClass, value: DataVigenciaInicio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataVigenciaInicio.maxlength, id : DataVigenciaInicio.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: DataVigenciaFinal.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataVigenciaFinal.text"></label>
+                            <input type="text" class="form-control" data-bind="class: DataVigenciaFinal.requiredClass, value: DataVigenciaFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataVigenciaFinal.maxlength, id : DataVigenciaFinal.id}" />
+                        </div>
+                    </div>
+                </div>
+                <div data-bind="visible: ExibirIBS.visible">
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: UF.text, attr: { for: UF.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: UF.requiredClass, value: UF.val, valueUpdate: 'afterkeydown', attr: { maxlength: UF.maxlength, id : UF.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: UF.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Municipio.text, attr: { for: Municipio.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: Municipio.val, valueUpdate: 'afterkeydown', attr: { maxlength: Municipio.maxlength, id : Municipio.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Municipio.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ReducaoUF.text"></label>
+                                <input type="text" class="form-control" data-bind="value: ReducaoUF.val, valueUpdate: 'afterkeydown', attr: { maxlength: ReducaoUF.maxlength, id : ReducaoUF.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ReducaoMunicipio.text"></label>
+                                <input type="text" class="form-control" data-bind="value: ReducaoMunicipio.val, valueUpdate: 'afterkeydown', attr: { maxlength: ReducaoMunicipio.maxlength, id : ReducaoMunicipio.id}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button class="btn waves-effect waves-themed btnConfirmar me-2"
+                                type="button"
+                                style="background-color: #007E4F; border-color: #007E4F; color: white;"
+                                data-bind="click: Confirmar.eventClick, attr: { id: Confirmar.id}">
+                            <span data-bind="text: Confirmar.text"></span>
+                        </button>
+                        <button class="btn btn-danger btnExcluir"
+                                type="button"
+                                data-bind="click: Excluir.eventClick, visible: Excluir.visible, attr: { value: Excluir.text, id : Excluir.id}">
+                            <span data-bind="text: Excluir.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="align-items-center justify-content-end mb-3" style="margin-right:75px">
+                        <div class="alert alert-info m-0 p-2" role="alert" style="font-size: 0.950rem">
+                            <i class="fal fa-info-circle me-2"></i>
+                            Selecione o Tipo de Imposto para preencher as informações.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalListarImpostosVinculados" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" style="min-width:1000px; max-width:1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalLabel">Impostos Vinculados</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="knockoutListarImpostosVinculados">
+
+                <div class="row">
+                    <div class="col-12 col-md-3" data-bind="visible: TipoImposto.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TipoImposto.text, attr: { for: TipoImposto.id }"></label>
+                            <select class="form-control" data-bind="class: TipoImposto.requiredClass, options: TipoImposto.options, optionsText: 'text', optionsValue: 'value', value: TipoImposto.val, attr: { maxlength: TipoImposto.maxlength, id : TipoImposto.id}"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="widget-body">
+                        <table width="100%" class="table table-bordered table-hover" id="grid-impostos-vinculados" cellspacing="0"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="alert alert-info m-0 p-2" role="alert" style="font-size: 0.950rem ;margin-top: -1rem !important">
+    <i class="fal fa-info-circle me-2"></i>
+    Nova interface para adequação à Reforma Tributária.
+</div>
+
+
+<script src="~/scripts/outrasAliquotas"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadOutrasAliquotas();
+    });
+
+</script>

@@ -1,0 +1,1446 @@
+﻿<section id="widget-grid">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Cargas</li>
+        <li class="breadcrumb-item active">Controle de Entregas</li>
+    </ol>
+
+    <div id="knockoutConfiguracaoExibicoesControleEntrega">
+        <h3 class="mb-0 d-flex align-items-center">
+            <i class="far fa-file-alt me-1"></i>
+            Controle de Coleta e Entrega
+        </h3>
+        <div style="margin: 20px 0;"></div>
+        <div class="row">
+            <div class="col-12 col-md-6 d-flex align-items-center gap-2">
+                <div class="w-100" style="max-width: 150px;">
+                    <select class="form-control"
+                            data-bind="options: PesquisaTermo.options,
+                    optionsText: 'text',
+                    optionsValue: 'value',
+                    value: PesquisaTermo.val,
+                    attr: { maxlength: PesquisaTermo.maxlength, id: PesquisaTermo.id }">
+                    </select>
+                </div>
+                <div class="input-group w-100">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Pesquisar por Carga, Nota Fiscal ou Pedido"
+                           data-bind="value: PesquisarPor.val,
+                  valueUpdate: 'afterkeydown',
+                  attr: {
+                      placeholder: PesquisaTermo.val() == '-1' ?
+                          'Pesquisar por Carga, Nota Fiscal ou Pedido' :
+                          'Pesquisa por ' + (ko.utils.arrayFirst(PesquisaTermo.options, function(item) {
+                              return item.value == PesquisaTermo.val();
+                          }) || {}).text || 'Pesquisar por...',
+                      maxlength: PesquisarPor.maxlength,
+                      id: PesquisarPor.id
+                  }" />
+
+                    <button class="btn btn-primary"
+                            type="button"
+                            data-bind="click: PesquisaRapida.eventClick, attr: { id: PesquisaRapida.id }">
+                        <i class="fal fa-search"></i>
+                    </button>
+
+                    <button class="btn btn-outline-secondary" style="margin-left: 8px;"
+                            type="button"
+                            data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id"
+                            title="Filtros">
+                        <i class="fal fa-filter"></i> Filtros
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 d-flex justify-content-end align-items-center gap-2">
+                <button class="btn btn-secondary"
+                        type="button"
+                        data-bind="click: ExibirLegenda.eventClick"
+                        title="Legenda">
+                    Legenda
+                </button>
+
+                <button class="btn btn-outline-secondary"
+                        type="button"
+                        data-bind="click: ConfiguracaoWidget.eventClick"
+                        title="Configurações">
+                    <i class="fal fa-cog"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="aviso-filtragem-dados" style="display:none;">
+        <div>
+            <i class="fal fa-filter"></i>
+        </div>
+        <span class="fs-1 info-title">{Localize::Cargas.ControleEntrega.MensagemFiltragem}</span>
+    </div>
+
+    <div id="controle-entrega-conteudo-container" style="display: none">
+        <div class="panel controle-entrega-conteudo" style="margin-top: 8px;">
+            <div class="panel-hdr">
+                <h2>{Localize::Cargas.ControleEntrega.ControleDeColetaEntregas}</h2>
+                <button class="btn btn-primary exibir-atentimento me-3 d-none" title="Exibir">
+                    <i class="fal fa-users"></i>
+                </button>
+            </div>
+            <div class="panel-container">
+                <div class="panel-content">
+                    <div id="knoutContainerControleEntrega">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div class="d-flex">
+                                <span data-bind='component: {name: "import-file", params: { ko: ImportacaoCargaFluvial }}'></span>
+                                <button class="btn btn-dark mb-2" type="button" data-bind="visible: AssumirMonitoramentos.visible, click: AssumirMonitoramentos.eventClick">
+                                    <span style="color: white" data-bind="text: AssumirMonitoramentos.text"></span>
+                                </button>
+                                <div class="d-flex">
+                                    <button style="margin-right:5px;" class="btn btn-outline-dark ms-2" type="button" data-bind="visible: CancelarAcaoMonitoramentos.visible, text: CancelarAcaoMonitoramentos.text, click: CancelarAcaoMonitoramentos.eventClick">
+                                    </button>
+                                    <div class="dropdown" data-bind="visible: CancelarAcaoMonitoramentos.visible">
+                                        <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" type="button" data-bind="enable: DelegarCargas.enable" aria-expanded="false" id="dropdownMenuButton1">
+                                            <i class="fal fa-download"></i>{Localize::Cargas.ControleEntrega.Acoes}<span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <a class="dropdown-item" data-bind="visible: AssumirCargas.visible, enable: AssumirCargas.enable, click: AssumirCargas.eventClick, attr: { id: AssumirCargas.id}">
+                                                    <i class="fal fa-solid fa-file-code"></i><span class="ms-2" data-bind="text: AssumirCargas.text, enable: AssumirCargas.enable"></span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" data-bind="visible: DelegarCargas.visible, enable: DelegarCargas.enable, click: DelegarCargas.eventClick, attr: { id: DelegarCargas.id}">
+                                                    <i class="fal fa-solid fa-file-code"></i><span class="ms-2" data-bind="text: DelegarCargas.text, enable: DelegarCargas.enable"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-3" data-bind="visible: SelecionarTodosCheckbox.visible">
+                            <div class="custom-control custom-checkbox" style="margin-left: 12px; padding-left: 0px !important">
+                                <input type="checkbox" name="checkbox-toggle" data-bind="checked: SelecionarTodosCheckbox.val, attr: { name: SelecionarTodosCheckbox.id, id: SelecionarTodosCheckbox.id }">
+                                <label data-bind="attr: { for: SelecionarTodosCheckbox.id }" style="font-size: 14px; margin-left: 5px;">{Localize::Gerais.Geral.SelecionarTodos}</label>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <!-- ko foreach: { data: Entregas.val, as: 'Entrega' } -->
+                            <!-- ko component: {name: "carga-entrega", params: Entrega } --><!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                        <div id="paginacao-controle-entrega"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel controle-entrega-atendimento d-none">
+            <div class="panel-hdr">
+                <h2>{Localize::Cargas.ControleEntrega.MotoristasAguardandoAtendimento}</h2>
+            </div>
+            <div class="panel-container">
+                <div class="panel-content">
+                    <div id="knoutContainerAtendimentos">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="checkbox-toggle" data-bind="checked: VisualizarAtendimentosOperadorResponsavel.val, attr: { name: VisualizarAtendimentosOperadorResponsavel.id, id: VisualizarAtendimentosOperadorResponsavel.id }">
+                            <i data-swchon-text="Sim" data-swchoff-text="Não"></i>
+                            <label class="custom-control-label" data-bind="html: VisualizarAtendimentosOperadorResponsavel.text, attr: { for: VisualizarAtendimentosOperadorResponsavel.id }"></label>
+                        </div>
+
+                        <div class="atendimentos-container">
+                            <!-- ko foreach: { data: Atendimentos.view, as: 'Atendimento' } -->
+                            <div class="row atendimento">
+                                <div class="col col-xs-10 col-sm-10 container-chamado" data-bind="click: () => $parent.Atendimentos.eventClick(Atendimento)">
+                                    <div class="row">
+                                        <div class="col col-xs-3 col-sm-3 atendimento-date">
+                                            <div class="date-container">
+                                                <span data-bind="text: Atendimento.Hora"></span>
+                                                <span data-bind="text: Atendimento.Data"></span>
+                                                <div style="margin-top: 6px" data-bind="text: Atendimento.Numero"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col col-xs-9 col-sm-9 atendimento-name">
+                                            <span data-bind="text: Atendimento.NomeMotorista"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col col-xs-2 col-sm-2 atendimento-message container-chat">
+                                    <span class="icon" data-bind="click: () => $parent.Chat.eventClick(Atendimento)">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if: Atendimentos.val().length == 0 -->
+                            <div class="atendimentos-vazio">
+                                {Localize::Cargas.ControleEntrega.NenhumAtendimentoDisponivel}
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="divModalChamadoOcorrencia" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Cargas.ControleEntrega.Atendimento}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="conteudo-chamado-ocorrencia"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalFiltrosPesquisa" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" id="knoutPesquisaControleEntrega">
+            <div class="modal-header">
+                <h4 class="modal-title">Filtrar</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px">
+                        <div>
+                            <button class="btn button-ghost me-2" data-bind="click: LimparFiltros.eventClick, attr: { id: LimparFiltros.id}" type="button">
+                                <span data-bind="text: LimparFiltros.text"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a href="#tabDatas" id="liTabDatas" class="nav-link" data-bs-toggle="tab">
+                                    <span class="hidden-mobile hidden-tablet">Datas</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tabCarga" id="liTabCarga" class="nav-link" data-bs-toggle="tab">
+                                    <span class="hidden-mobile hidden-tablet">Carga</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tabFlags" id="liTabFlags" class="nav-link" data-bs-toggle="tab">
+                                    <span class="hidden-mobile hidden-tablet">Flags</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#tabEntregas" id="litabEntregas" class="nav-link" data-bs-toggle="tab">
+                                    <span class="hidden-mobile hidden-tablet">Entregas</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content border border-top-0 p-3 mb-4">
+                        <div id="tabDatas" class="tab-pane fade active show" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12 col-md-3" data-bind="visible: DataInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataEntregaPedidoInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataEntregaPedidoInicial.text, attr: { for: DataEntregaPedidoInicial.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataEntregaPedidoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntregaPedidoInicial.maxlength, id : DataEntregaPedidoInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataEntregaPedidoFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataEntregaPedidoFinal.text, attr: { for: DataEntregaPedidoFinal.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataEntregaPedidoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntregaPedidoFinal.maxlength, id : DataEntregaPedidoFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataPrevisaoEntregaPedidoInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataPrevisaoEntregaPedidoInicial.text, attr: { for: DataPrevisaoEntregaPedidoInicial.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataPrevisaoEntregaPedidoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoEntregaPedidoInicial.maxlength, id : DataPrevisaoEntregaPedidoInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataPrevisaoEntregaPedidoFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataPrevisaoEntregaPedidoFinal.text, attr: { for: DataPrevisaoEntregaPedidoFinal.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataPrevisaoEntregaPedidoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoEntregaPedidoFinal.maxlength, id : DataPrevisaoEntregaPedidoFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataPrevisaoInicioViagemInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataPrevisaoInicioViagemInicial.text, attr: { for: DataPrevisaoInicioViagemInicial.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataPrevisaoInicioViagemInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoInicioViagemInicial.maxlength, id : DataPrevisaoInicioViagemInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataPrevisaoInicioViagemFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataPrevisaoInicioViagemFinal.text, attr: { for: DataPrevisaoInicioViagemFinal.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataPrevisaoInicioViagemFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoInicioViagemFinal.maxlength, id : DataPrevisaoInicioViagemFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataInicioViagemInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataInicioViagemInicial.text"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataInicioViagemInicial.requiredClass, value: DataInicioViagemInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioViagemInicial.maxlength, id : DataInicioViagemInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataInicioViagemFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataInicioViagemFinal.text"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataInicioViagemFinal.requiredClass, value: DataInicioViagemFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioViagemFinal.maxlength, id : DataInicioViagemFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataProgramadaDescargaInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataProgramadaDescargaInicial.text, attr: { for: DataProgramadaDescargaInicial.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataProgramadaDescargaInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataProgramadaDescargaInicial.maxlength, id : DataProgramadaDescargaInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataProgramadaDescargaFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataProgramadaDescargaFinal.text, attr: { for: DataProgramadaDescargaFinal.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataProgramadaDescargaFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataProgramadaDescargaFinal.maxlength, id : DataProgramadaDescargaFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataAgendamentoInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataAgendamentoInicial.text, attr: { for: DataAgendamentoInicial.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataAgendamentoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataAgendamentoInicial.maxlength, id : DataAgendamentoInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataAgendamentoFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataAgendamentoFinal.text, attr: { for: DataAgendamentoFinal.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataAgendamentoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataAgendamentoFinal.maxlength, id : DataAgendamentoFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataProgramadaColetaInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataProgramadaColetaInicial.text, attr: { for: DataProgramadaColetaInicial.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataProgramadaColetaInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataProgramadaColetaInicial.maxlength, id : DataProgramadaColetaInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataProgramadaColetaFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataProgramadaColetaFinal.text, attr: { for: DataProgramadaColetaFinal.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataProgramadaColetaFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataProgramadaColetaFinal.maxlength, id : DataProgramadaColetaFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataCarregamentoCargaInicial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataCarregamentoCargaInicial.text"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataCarregamentoCargaInicial.requiredClass, value: DataCarregamentoCargaInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataCarregamentoCargaInicial.maxlength, id : DataCarregamentoCargaInicial.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataCarregamentoCargaFinal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataCarregamentoCargaFinal.text"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataCarregamentoCargaFinal.requiredClass, value: DataCarregamentoCargaFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataCarregamentoCargaFinal.maxlength, id : DataCarregamentoCargaFinal.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataInicioAbate.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataInicioAbate.text"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataInicioAbate.requiredClass, value: DataInicioAbate.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioAbate.maxlength, id : DataInicioAbate.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataFimAbate.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataFimAbate.text"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataFimAbate.requiredClass, value: DataFimAbate.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFimAbate.maxlength, id : DataFimAbate.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataEmissaoNotaDe.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataEmissaoNotaDe.text, attr: { for: DataEmissaoNotaDe.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataEmissaoNotaDe.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoNotaDe.maxlength, id : DataEmissaoNotaDe.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataEmissaoNotaAte.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataEmissaoNotaAte.text, attr: { for: DataEmissaoNotaAte.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataEmissaoNotaAte.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoNotaAte.maxlength, id : DataEmissaoNotaAte.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataEmissaoCTeDe.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataEmissaoCTeDe.text, attr: { for: DataEmissaoCTeDe.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataEmissaoCTeDe.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoCTeDe.maxlength, id : DataEmissaoCTeDe.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: DataEmissaoCTeAte.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataEmissaoCTeAte.text, attr: { for: DataEmissaoCTeAte.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataEmissaoCTeAte.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoCTeAte.maxlength, id : DataEmissaoCTeAte.id}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabCarga" class="tab-pane fade" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12 col-md-3" data-bind="visible: CodigoCargaEmbarcador.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CodigoCargaEmbarcador.text, attr: { for: CodigoCargaEmbarcador.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: CodigoCargaEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoCargaEmbarcador.maxlength, id : CodigoCargaEmbarcador.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroPedidoCliente.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroPedidoCliente.text, attr: { for: NumeroPedidoCliente.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroPedidoCliente.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroPedidoCliente.maxlength, id : NumeroPedidoCliente.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroPedidoEmbarcador.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroPedidoEmbarcador.text, attr: { for: NumeroPedidoEmbarcador.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroPedidoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroPedidoEmbarcador.maxlength, id : NumeroPedidoEmbarcador.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroSolicitacao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroSolicitacao.text, attr: { for: NumeroSolicitacao.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroSolicitacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroSolicitacao.maxlength, id : NumeroSolicitacao.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroPedidoCF.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroPedidoCF.text, attr: { for: NumeroPedidoCF.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroPedidoCF.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroPedidoCF.maxlength, id : NumeroPedidoCF.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: CodigoSap.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CodigoSap.text, attr: { for: CodigoSap.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: CodigoSap.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoSap.maxlength, id : CodigoSap.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroOrdemPedido.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroOrdemPedido.text, attr: { for: NumeroOrdemPedido.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroOrdemPedido.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroOrdemPedido.maxlength, id : NumeroOrdemPedido.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: Pedido.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Pedido.text, attr: { for: Pedido.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: Pedido.val, valueUpdate: 'afterkeydown', attr: { maxlength: Pedido.maxlength, id : Pedido.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: SerieNota.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: SerieNota.text, attr: { for: SerieNota.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: SerieNota.val, valueUpdate: 'afterkeydown', attr: { maxlength: SerieNota.maxlength, id : SerieNota.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroCTeDe.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroCTeDe.text, attr: { for: NumeroCTeDe.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroCTeDe.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroCTeDe.maxlength, id : NumeroCTeDe.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroCTeAte.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroCTeAte.text, attr: { for: NumeroCTeAte.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroCTeAte.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroCTeAte.maxlength, id : NumeroCTeAte.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: SerieCTe.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: SerieCTe.text, attr: { for: SerieCTe.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: SerieCTe.val, valueUpdate: 'afterkeydown', attr: { maxlength: SerieCTe.maxlength, id : SerieCTe.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: RotaFrete.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: RotaFrete.text, attr: { for: RotaFrete.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: RotaFrete.requiredClass, value: RotaFrete.val, valueUpdate: 'afterkeydown', attr: { maxlength: RotaFrete.maxlength, id : RotaFrete.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: TipoMercadoria.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoMercadoria.text, attr: { for: TipoMercadoria.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: TipoMercadoria.requiredClass, value: TipoMercadoria.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMercadoria.maxlength, id : TipoMercadoria.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: EquipeVendas.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: EquipeVendas.text, attr: { for: EquipeVendas.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: EquipeVendas.requiredClass, value: EquipeVendas.val, valueUpdate: 'afterkeydown', attr: { maxlength: EquipeVendas.maxlength, id : EquipeVendas.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: EscritorioVenda.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: EscritorioVenda.text, attr: { for: EscritorioVenda.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: EscritorioVenda.requiredClass, value: EscritorioVenda.val, valueUpdate: 'afterkeydown', attr: { maxlength: EscritorioVenda.maxlength, id : EscritorioVenda.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: Matriz.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Matriz.text, attr: { for: Matriz.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: Matriz.requiredClass, value: Matriz.val, valueUpdate: 'afterkeydown', attr: { maxlength: Matriz.maxlength, id : Matriz.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroNota.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroNota.text, attr: { for: NumeroNota.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: NumeroNota.requiredClass, value: NumeroNota.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroNota.maxlength, id : NumeroNota.id}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider-hr"></div>
+                            <div class="row">
+                                <div class="col-12 col-md-3" data-bind="visible: SituacaoCarga.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: SituacaoCarga.text, attr: { for: SituacaoCarga.id }"></label>
+                                        <select class="form-control" data-bind="class: SituacaoCarga.requiredClass, options: SituacaoCarga.options, optionsText: 'text', optionsValue: 'value', selectedOptions: SituacaoCarga.val, attr: { maxlength: SituacaoCarga.maxlength, id : SituacaoCarga.id}" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: StatusDaViagem.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: StatusDaViagem.text, attr: { for: StatusDaViagem.id }"></label>
+                                        <select class="form-control" data-bind="class: StatusDaViagem.requiredClass, options: StatusDaViagem.options, optionsText: 'text', optionsValue: 'value', selectedOptions: StatusDaViagem.val, attr: { maxlength: StatusDaViagem.maxlength, id : StatusDaViagem.id}" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: StatusViagem.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: StatusViagem.text, attr: { for: StatusViagem.id }"></label>
+                                        <select class="form-control" data-bind="options: StatusViagem.options, optionsText: 'text', optionsValue: 'value', selectedOptions: StatusViagem.val, attr: { id : StatusViagem.id}" multiple="multiple" data-actions-box="false" data-selected-text-format="count > 2" title="Todos"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: MonitoramentoStatus.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: MonitoramentoStatus.text, attr: { for: MonitoramentoStatus.id }"></label>
+                                        <select class="form-control" data-bind="class: MonitoramentoStatus.requiredClass, options: MonitoramentoStatus.options, optionsText: 'text', optionsValue: 'value', selectedOptions: MonitoramentoStatus.val, attr: { maxlength: MonitoramentoStatus.maxlength, id : MonitoramentoStatus.id}" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: TipoCobrancaMultimodal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoCobrancaMultimodal.text, attr: { for: TipoCobrancaMultimodal.id }"></label>
+                                        <select class="form-control" data-bind="class: TipoCobrancaMultimodal.requiredClass, options: TipoCobrancaMultimodal.options, optionsText: 'text', optionsValue: 'value', value: TipoCobrancaMultimodal.val, attr: { maxlength: TipoCobrancaMultimodal.maxlength, id : TipoCobrancaMultimodal.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: Parqueada.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Parqueada.text, attr: { for: Parqueada.id }"></label>
+                                        <select class="form-control" data-bind="options: Parqueada.options, optionsText: 'text', optionsValue: 'value', value: Parqueada.val, attr: { id : Parqueada.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: CargasComEstadiasGeradas.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CargasComEstadiasGeradas.text, attr: { for: CargasComEstadiasGeradas.id }"></label>
+                                        <select class="form-control" data-bind="options: CargasComEstadiasGeradas.options, optionsText: 'text', optionsValue: 'value', value: CargasComEstadiasGeradas.val, attr: { id : CargasComEstadiasGeradas.id}"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider-hr"></div>
+                            <div class="row">
+                                <div class="col-12 col-md-4" data-bind="visible: CodigoCargaEmbarcadorMulti.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CodigoCargaEmbarcadorMulti.text, attr: { for: CodigoCargaEmbarcadorMulti.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: CodigoCargaEmbarcadorMulti.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoCargaEmbarcadorMulti.maxlength, id : CodigoCargaEmbarcadorMulti.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: CodigoCargaEmbarcadorMulti.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: NumeroNotaFiscal.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroNotaFiscal.text, attr: { for: NumeroNotaFiscal.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: NumeroNotaFiscal.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroNotaFiscal.maxlength, id : NumeroNotaFiscal.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: NumeroNotaFiscal.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: TipoAlerta.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoAlerta.text, attr: { for: TipoAlerta.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: TipoAlerta.requiredClass, value: TipoAlerta.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoAlerta.maxlength, id : TipoAlerta.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoAlerta.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: CanalEntrega.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CanalEntrega.text, attr: { for: CanalEntrega.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: CanalEntrega.val, valueUpdate: 'afterkeydown', attr: { maxlength: CanalEntrega.maxlength, id : CanalEntrega.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: CanalEntrega.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: CanalVenda.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CanalVenda.text, attr: { for: CanalVenda.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: CanalVenda.val, valueUpdate: 'afterkeydown', attr: { maxlength: CanalVenda.maxlength, id : CanalVenda.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: CanalVenda.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: TipoCarga.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoCarga.text, attr: { for: TipoCarga.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: TipoCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoCarga.maxlength, id : TipoCarga.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: TipoCarga.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: TipoOperacao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoOperacao.text, attr: { for: TipoOperacao.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: TipoOperacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoOperacao.maxlength, id : TipoOperacao.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: TipoOperacao.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: TipoTrecho.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoTrecho.text, attr: { for: TipoTrecho.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: TipoTrecho.requiredClass, value: TipoTrecho.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoTrecho.maxlength, id : TipoTrecho.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoTrecho.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Vendedor.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Vendedor.text, attr: { for: Vendedor.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Vendedor.val, valueUpdate: 'afterkeydown', attr: { maxlength: Vendedor.maxlength, id : Vendedor.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Vendedor.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Supervisor.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Supervisor.text, attr: { for: Supervisor.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Supervisor.val, valueUpdate: 'afterkeydown', attr: { maxlength: Supervisor.maxlength, id : Supervisor.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Supervisor.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Gerente.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Gerente.text, attr: { for: Gerente.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Gerente.val, valueUpdate: 'afterkeydown', attr: { maxlength: Gerente.maxlength, id : Gerente.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Gerente.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: GrupoPessoa.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: GrupoPessoa.text, attr: { for: GrupoPessoa.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: GrupoPessoa.val, valueUpdate: 'afterkeydown', attr: { maxlength: GrupoPessoa.maxlength, id : GrupoPessoa.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: GrupoPessoa.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: CentroCarregamento.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CentroCarregamento.text, attr: { for: CentroCarregamento.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: CentroCarregamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: CentroCarregamento.maxlength, id : CentroCarregamento.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: CentroCarregamento.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: CentroResultado.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CentroResultado.text, attr: { for: CentroResultado.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: CentroResultado.requiredClass, value: CentroResultado.val, valueUpdate: 'afterkeydown', attr: { maxlength: CentroResultado.maxlength, id : CentroResultado.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: CentroResultado.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Filial.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: Filial.requiredClass, value: Filial.val, valueUpdate: 'afterkeydown', attr: { maxlength: Filial.maxlength, id : Filial.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Filial.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: FilialVenda.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: FilialVenda.text, attr: { for: FilialVenda.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: FilialVenda.val, valueUpdate: 'afterkeydown', attr: { maxlength: FilialVenda.maxlength, id : FilialVenda.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: FilialVenda.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Veiculos.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Veiculos.text, attr: { for: Veiculos.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Veiculos.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculos.maxlength, id : Veiculos.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Veiculos.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Transportador.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Transportador.text, attr: { for: Transportador.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Transportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: Transportador.maxlength, id : Transportador.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Transportador.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Motorista.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Motorista.text, attr: { for: Motorista.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Motorista.val, valueUpdate: 'afterkeydown', attr: { maxlength: Motorista.maxlength, id : Motorista.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Motorista.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Destinatario.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Destinatario.text, attr: { for: Destinatario.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Destinatario.val, valueUpdate: 'afterkeydown', attr: { maxlength: Destinatario.maxlength, id : Destinatario.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Destinatario.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Remetente.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Remetente.text, attr: { for: Remetente.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Remetente.val, valueUpdate: 'afterkeydown', attr: { maxlength: Remetente.maxlength, id : Remetente.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Remetente.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Emitente.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Emitente.text, attr: { for: Emitente.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Emitente.val, valueUpdate: 'afterkeydown', attr: { maxlength: Emitente.maxlength, id : Emitente.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Emitente.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Expedidor.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Expedidor.text, attr: { for: Expedidor.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Expedidor.val, valueUpdate: 'afterkeydown', attr: { maxlength: Expedidor.maxlength, id : Expedidor.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Expedidor.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: CidadeOrigem.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CidadeOrigem.text, attr: { for: CidadeOrigem.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: CidadeOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: CidadeOrigem.maxlength, id : CidadeOrigem.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: CidadeOrigem.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: CidadeDestino.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CidadeDestino.text, attr: { for: CidadeDestino.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: CidadeDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: CidadeDestino.maxlength, id : CidadeDestino.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: CidadeDestino.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: EstadoOrigem.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: EstadoOrigem.text, attr: { for: EstadoOrigem.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: EstadoOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: EstadoOrigem.maxlength, id : EstadoOrigem.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: EstadoOrigem.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: EstadoDestino.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: EstadoDestino.text, attr: { for: EstadoDestino.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: EstadoDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: EstadoDestino.maxlength, id : EstadoDestino.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: EstadoDestino.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: EmpresaDestino.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: EmpresaDestino.text, attr: { for: EmpresaDestino.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: EmpresaDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: EmpresaDestino.maxlength, id : EmpresaDestino.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: EmpresaDestino.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: MesoRegiao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: MesoRegiao.text, attr: { for: MesoRegiao.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: MesoRegiao.requiredClass, value: MesoRegiao.val, valueUpdate: 'afterkeydown', attr: { maxlength: MesoRegiao.maxlength, id : MesoRegiao.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: MesoRegiao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Regiao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Regiao.text, attr: { for: Regiao.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: Regiao.requiredClass, value: Regiao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Regiao.maxlength, id : Regiao.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Regiao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabEntregas" class="tab-pane fade" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12 col-md-3" data-bind="visible: TendenciaEntrega.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TendenciaEntrega.text, attr: { for: TendenciaEntrega.id }"></label>
+                                        <select class="form-control" data-bind="class: TendenciaEntrega.requiredClass, options: TendenciaEntrega.options, optionsText: 'text', optionsValue: 'value', value: TendenciaEntrega.val, attr: { maxlength: TendenciaEntrega.maxlength, id : TendenciaEntrega.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: TendenciaColeta.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TendenciaColeta.text, attr: { for: TendenciaColeta.id }"></label>
+                                        <select class="form-control" data-bind="class: TendenciaColeta.requiredClass, options: TendenciaColeta.options, optionsText: 'text', optionsValue: 'value', value: TendenciaColeta.val, attr: { maxlength: TendenciaColeta.maxlength, id : TendenciaColeta.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: OcorrenciaEntrega.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: OcorrenciaEntrega.text, attr: { for: OcorrenciaEntrega.id }"></label>
+                                        <select class="form-control" data-bind="class: OcorrenciaEntrega.requiredClass, options: OcorrenciaEntrega.options, optionsText: 'text', optionsValue: 'value', selectedOptions: OcorrenciaEntrega.val, attr: { maxlength: OcorrenciaEntrega.maxlength, id : OcorrenciaEntrega.id}" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: PossuiRecebedor.text, attr: { for: PossuiRecebedor.id }"></label>
+                                        <select class="form-control" data-bind="options: PossuiRecebedor.options, optionsText: 'text', optionsValue: 'value', value: PossuiRecebedor.val, attr: { id : PossuiRecebedor.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: PossuiExpedidor.text, attr: { for: PossuiExpedidor.id }"></label>
+                                        <select class="form-control" data-bind="options: PossuiExpedidor.options, optionsText: 'text', optionsValue: 'value', value: PossuiExpedidor.val, attr: { id : PossuiExpedidor.id}"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider-hr"></div>
+                            <div class="row">
+                                <div class="col-12 col-md-4" data-bind="visible: Recebedor.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Recebedor.text, attr: { for: Recebedor.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Recebedor.val, valueUpdate: 'afterkeydown', attr: { maxlength: Recebedor.maxlength, id : Recebedor.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Recebedor.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: ClienteComplementar.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ClienteComplementar.text, attr: { for: ClienteComplementar.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: ClienteComplementar.requiredClass, value: ClienteComplementar.val, valueUpdate: 'afterkeydown', attr: { maxlength: ClienteComplementar.maxlength, id : ClienteComplementar.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: ClienteComplementar.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: ResponsavelEntrega.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ResponsavelEntrega.text, attr: { for: ResponsavelEntrega.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: ResponsavelEntrega.val, valueUpdate: 'afterkeydown', attr: { maxlength: ResponsavelEntrega.maxlength, id : ResponsavelEntrega.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: ResponsavelEntrega.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: ResponsavelVeiculo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ResponsavelVeiculo.text, attr: { for: ResponsavelVeiculo.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: ResponsavelVeiculo.requiredClass, value: ResponsavelVeiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: ResponsavelVeiculo.maxlength, id : ResponsavelVeiculo.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: ResponsavelVeiculo.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tabFlags" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12 col-md-6" data-bind="visible: ExibirSomenteCargasComVeiculo.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: ExibirSomenteCargasComVeiculo.val, valueUpdate: 'afterkeydown', attr: { name: ExibirSomenteCargasComVeiculo.id, id : ExibirSomenteCargasComVeiculo.id}" />
+                                            <label class="custom-control-label" data-bind="text: ExibirSomenteCargasComVeiculo.text, attr: { for: ExibirSomenteCargasComVeiculo.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: ExibirSomenteCargasComChamadoAberto.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: ExibirSomenteCargasComChamadoAberto.val, valueUpdate: 'afterkeydown', attr: { name: ExibirSomenteCargasComChamadoAberto.id, id : ExibirSomenteCargasComChamadoAberto.id}" />
+                                            <label class="custom-control-label" data-bind="text: ExibirSomenteCargasComChamadoAberto.text, attr: { for: ExibirSomenteCargasComChamadoAberto.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: ExibirSomenteCargasComChatNaoLido.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: ExibirSomenteCargasComChatNaoLido.val, valueUpdate: 'afterkeydown', attr: { name: ExibirSomenteCargasComChatNaoLido.id, id : ExibirSomenteCargasComChatNaoLido.id}" />
+                                            <label class="custom-control-label" data-bind="text: ExibirSomenteCargasComChatNaoLido.text, attr: { for: ExibirSomenteCargasComChatNaoLido.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: ExibirSomenteCargasComReentrega.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: ExibirSomenteCargasComReentrega.val, valueUpdate: 'afterkeydown', attr: { name: ExibirSomenteCargasComReentrega.id, id : ExibirSomenteCargasComReentrega.id}" />
+                                            <label class="custom-control-label" data-bind="text: ExibirSomenteCargasComReentrega.text, attr: { for: ExibirSomenteCargasComReentrega.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: ExibirSomenteCargasComMotoristaAppDesatualizado.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: ExibirSomenteCargasComMotoristaAppDesatualizado.val, valueUpdate: 'afterkeydown', attr: { name: ExibirSomenteCargasComMotoristaAppDesatualizado.id, id : ExibirSomenteCargasComMotoristaAppDesatualizado.id}" />
+                                            <label class="custom-control-label" data-bind="text: ExibirSomenteCargasComMotoristaAppDesatualizado.text, attr: { for: ExibirSomenteCargasComMotoristaAppDesatualizado.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: SomenteCargaComEstadiaConfiguraca.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: SomenteCargaComEstadiaConfiguraca.val, valueUpdate: 'afterkeydown', attr: { name: SomenteCargaComEstadiaConfiguraca.id, id : SomenteCargaComEstadiaConfiguraca.id}" />
+                                            <label class="custom-control-label" data-bind="text: SomenteCargaComEstadiaConfiguraca.text, attr: { for: SomenteCargaComEstadiaConfiguraca.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: SomenteCargasCriticas.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: SomenteCargasCriticas.val, attr: { maxlength: SomenteCargasCriticas.maxlength, name: SomenteCargasCriticas.id, id: SomenteCargasCriticas.id }">
+                                            <label class="custom-control-label" data-bind="text: SomenteCargasCriticas.text, attr: { for: SomenteCargasCriticas.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: SomenteCargasComPesquisaRecebedorPendenteResposta.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: SomenteCargasComPesquisaRecebedorPendenteResposta.val, attr: { maxlength: SomenteCargasComPesquisaRecebedorPendenteResposta.maxlength, name: SomenteCargasComPesquisaRecebedorPendenteResposta.id, id: SomenteCargasComPesquisaRecebedorPendenteResposta.id }">
+                                            <label class="custom-control-label" data-bind="text: SomenteCargasComPesquisaRecebedorPendenteResposta.text, attr: { for: SomenteCargasComPesquisaRecebedorPendenteResposta.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: RetornarInformacoesMonitoramento.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: RetornarInformacoesMonitoramento.val, attr: { maxlength: RetornarInformacoesMonitoramento.maxlength, name: RetornarInformacoesMonitoramento.id, id: RetornarInformacoesMonitoramento.id }">
+                                            <label class="custom-control-label" data-bind="text: RetornarInformacoesMonitoramento.text, attr: { for: RetornarInformacoesMonitoramento.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: RetornarCargasQueMonitoro.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: RetornarCargasQueMonitoro.val, attr: { maxlength: RetornarCargasQueMonitoro.maxlength, name: RetornarCargasQueMonitoro.id, id: RetornarCargasQueMonitoro.id }">
+                                            <label class="custom-control-label" data-bind="text: RetornarCargasQueMonitoro.text, attr: { for: RetornarCargasQueMonitoro.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: OrdernarResultadosPorDataCriacao.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: OrdernarResultadosPorDataCriacao.val, attr: { maxlength: OrdernarResultadosPorDataCriacao.maxlength, name: OrdernarResultadosPorDataCriacao.id, id: OrdernarResultadosPorDataCriacao.id }">
+                                            <label class="custom-control-label" data-bind="text: OrdernarResultadosPorDataCriacao.text, attr: { for: OrdernarResultadosPorDataCriacao.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer justify-content-end">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-end">
+                                <button class="btn btn-primary waves-effect waves-themed" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="submit">
+                                    <span data-bind="text: Pesquisar.text"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="ModaisCarga"></div>
+
+<div id="ModaisChamado"></div>
+
+<div id="modaisOcorrencia"></div>
+
+<div id="chatMotorista"></div>
+
+<div id="ControleEntregaContent"></div>
+
+<div id="ControleEntregaModal"></div>
+
+<div id="ModaisTratativaAlerta"></div>
+
+<div id="ModalDetalhesTorre"></div>
+
+<div class="modal fade" id="divModalLoteComprovanteEntrega" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Cargas.ControleEntrega.LoteDeComprovanteDeEntrega}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="wizardLoteComprovanteEntrega"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalOrdenacaoPedidos" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Cargas.ControleEntrega.OrdenacaoDePedidos}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="knockoutOrdenacaoPedidos">
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr:{id: Pedidos.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="divModalAnexoOcorrencia" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">@Localization.Resources.Cargas.ControleEntrega.Imagens</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="smart-form" id="knockoutAnexoOcorrencia">
+                    <div class="padding-side">
+                        <table width="100%" class="table table-bordered table-hover margin-top-0" data-bind="attr: { id: AnexoOcorrencias.idGrid }" cellspacing="0"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ObservacaoOcorrencias" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Observação</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="smart-form" id="knockoutObservacaoOcorrencia">
+                    <div class="padding-side">
+                        <div class="form-group">
+                            <label class="form-label">Observações:</label>
+                            <textarea class="form-control" rows="4" maxlength="2000" id="ObservacaoOcorrenciaId"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul id="ulMenuControleEntrega" class="menuControleEntrega" style="display:none">
+    <li id="limenuDadosCarga"><a href="javascript:visualizarDadosCargaClick();">{Localize::Cargas.ControleEntrega.DadosDaCarga}</a></li>
+    <li id="limenuVisualizarNoMapa"><a href="javascript:visualizarDadosMapaClick();">{Localize::Cargas.ControleEntrega.VisualizarNoMapa}</a></li>
+    <li id="limenuEventos"><a href="javascript:adicionarEventosClick();">{Localize::Cargas.ControleEntrega.AdicionarEventos}</a></li>
+    <li id="limenuRaioXCarga"><a href="javascript:raioXCargaClick();">{Localize::Cargas.ControleEntrega.RaioXDaCarga}</a></li>
+    <li id="limenuDataAgendamento" style="display:none"><a href="javascript:alterarDataAgendamentoClick();">{Localize::Cargas.ControleEntrega.AlterarDataAgendamento}</a></li>
+    <li id="limenuDataReagendamento" style="display:none"><a href="javascript:alterarDataReagendamentoClick();">{Localize::Cargas.ControleEntrega.AlterarDataReagendamento}</a></li>
+    <li id="liMenuColeta" style="display:none"><a href="javascript:adicionarColetaClick();">{Localize::Cargas.ControleEntrega.AdicionarColeta}</a></li>
+    <li id="liMenuPedidoReentrega" style="display:none"><a href="javascript:adicionarPedidoReentregaClick();">{Localize::Cargas.ControleEntrega.AdicionarPedidoReentrega}</a></li>
+    <li id="liMenuPedidoEntrega" style="display:none"><a href="javascript:adicionarPedidoEntregaClick();">{Localize::Cargas.ControleEntrega.AdicionarPedido}</a></li>
+    <li id="liMenuReordenarEntrega" style="display:none"><a href="javascript:reordenarEntregasClick();">{Localize::Cargas.ControleEntrega.ReordenarEntregas}</a></li>
+    <li id="liMenuHistoricoMonitoramento" style="display:none"><a href="javascript:visualizarHistoricoMonitoramento();">{Localize::Cargas.ControleEntrega.HistoricoMonitoramento}</a></li>
+    <li id="liMenuDemonstrativoEstadia" style="display:none"><a href="javascript:gerarDemonstrativoEstadiaClick();">@Localization.Resources.Cargas.ControleEntrega.DemonstrativoEstadias</a></li>
+    <li id="liMenuDownloadBoletimEmbarque" style="display:none"><a href="javascript:gerarRelatorioBoletimViagem();">@Localization.Resources.Cargas.ControleEntrega.BoletimEmbarque</a></li>
+    <li id="liDetalhesMonitoramento"><a href="javascript:visualizarDetalhesMonitoramento();">@Localization.Resources.Cargas.ControleEntrega.DetalhesDoMonitoramento</a></li>
+    <li id="liDetalhesTorre"><a href="javascript:visualizarDetalhesTorre();">@Localization.Resources.Logistica.Monitoramento.DetalhesTorre</a></li>
+    @*<li id="lichat"><a href="javascript:abrirChatClick();">Chat</a></li>*@
+</ul>
+
+<div id="divModaisLoteComprovanteEntrega"></div>
+
+<style>
+    .disabled-chat {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
+    .destaque-filtro {
+        border: 1px solid #d6a907;
+        border-radius: 50%;
+        padding-left: 1px;
+    }
+
+    .button-filter {
+        width: 38px;
+        height: 38px;
+        margin-left: 0px;
+        padding-right: 20px;
+        cursor: pointer;
+        background-image: url('../../Content/TorreControle/AcompanhamentoCarga/assets/icons/btn_Filter.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 24px;
+        background-color: #FFFFFF;
+        border: 1px solid #DAE5EB;
+        border-radius: 4px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .atendimentos-container {
+        margin-top: 20px;
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+        .atendimentos-container .atendimento {
+            background-color: #d6dde7;
+            margin-bottom: 5px;
+        }
+
+        .atendimentos-container .container-chamado,
+        .atendimentos-container .container-chat {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+    .container-chamado,
+    .container-chat .icon {
+        cursor: pointer;
+    }
+
+    .atendimentos-container .atendimento-date .date-container {
+        padding: 0 10px;
+    }
+
+        .atendimentos-container .atendimento-date .date-container .span {
+            display: block;
+        }
+
+    .atendimentos-container .atendimento-name {
+        font-size: 20px;
+        line-height: 36px;
+    }
+
+    .atendimentos-container .atendimento-message .icon {
+        color: #333;
+        font-size: 20px;
+        line-height: 36px;
+    }
+
+    .atendimentos-container .atendimento:hover {
+        background-color: #a8bcd8;
+    }
+
+    .atendimentos-vazio {
+        background-color: #f4f4f4;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .hide-important {
+        display: none !important;
+    }
+
+    .mod-skin-dark:not(.mod-skin-light) .container-fluxo-entrega .fluxo-entrega .identificao-fluxo {
+        border-right: 2px solid #26272b !important;
+    }
+
+    .mod-skin-dark:not(.mod-skin-light) .etapa-container > div:not(.nome-etapa):not(.bolinha-etapa) {
+        border-right: 2px solid #26272b !important;
+    }
+
+    .mod-skin-dark:not(.mod-skin-light) .col.etapas-scroll.fluxo-col {
+        background-color: #303136 !important;
+    }
+
+    .mod-skin-dark:not(.mod-skin-light) .container-fluxo-entrega .fluxo-entrega .identificao-fluxo .identificao {
+        background-color: rgb(0 0 0) !important;
+    }
+
+    .mod-skin-dark:not(.mod-skin-light) .menuControleEntrega {
+        background-color: #1a1a1a !important;
+    }
+
+        .mod-skin-dark:not(.mod-skin-light) .menuControleEntrega li a:hover {
+            background-color: #1b3a54 !important;
+        }
+
+    .divider-hr {
+        background: #FAFAFA;
+        width: 100%;
+        height: 2px;
+        margin: 4px 0;
+    }
+</style>
+
+<script src="~/scripts/chamados"></script>
+<script src="~/scripts/valePallet"></script>
+<script src="~/scripts/cargaVeiculoContainer"></script>
+<script src="~/scripts/carga"></script>
+<script src="~/scripts/configuracaoEmissaoCTe"></script>
+<script src="~/scripts/configuracaoComponentesFrete"></script>
+<script src="/scripts/configuracaoObservacaoCTe"></script>
+<script src="~/scripts/mapas"></script>
+<script src="~/scripts/ocorrencia"></script>
+<script src="~/scripts/cte"></script>
+<script src="~/scripts/controleSaldo"></script>
+<script src="~/scripts/dropzone"></script>
+<script src="~/scripts/controleEntregaDevolucao"></script>
+<script src="~/scripts/controleEntrega"></script>
+<script src="~/scripts/checkListComponent"></script>
+<script src="~/scripts/tracking"></script>
+<script src="~/scripts/monitoramentoHistorico"></script>
+<script src="~/scripts/loteComprovanteEntrega"></script>
+<script src="~/scripts/fontawesomemarkers"></script>
+<script src="~/scripts/canvg"></script>
+<script src="~/scripts/d3js"></script>
+<script src="~/scripts/chartjs"></script>
+<script src="~/scripts/signaturepad"></script>
+<script src="~/scripts/webcam"></script>
+<script src="~/scripts/tratativaAlerta"></script>
+<script src="~/scripts/monitoramentoDetalhes"></script>
+<script src="~/scripts/detalhesNotaFiscal"></script>
+<script src="~/scripts/detalhesTorre"></script>
+
+@if (ViewBag.ControleEntregaVisaoPrevisao == true)
+{
+    <link rel="stylesheet" href="~/css/controleEntregaPrevisao" />
+}
+else
+{
+    <link rel="stylesheet" href="~/css/controleEntrega" />
+}
+<link rel="stylesheet" href="~/css/conferenciacanhotos" />
+<link rel="stylesheet" href="~/css/tracking" />
+<link rel="stylesheet" href="~/css/signaturepad" />
+<link rel="stylesheet" href="~/css/cabecalhoPadraoTorreControle.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+
+<script type="text/javascript">
+    pageSetUp();
+
+    var _PermissaoDelegar = @ViewBag.PermissaoDelegar;
+
+    _controleEntregaVisaoPrevisao = '@ViewBag.ControleEntregaVisaoPrevisao' == 'True';
+
+    _PermissoesPersonalizadasChamado = @Html.Raw(ViewBag.PermissoesPersonalizadasChamado);
+    _PermissoesPersonalizadasCarga = @Html.Raw(ViewBag.PermissoesPersonalizadasCarga);
+    _PermissoesPersonalizadasControleEntrega = @Html.Raw(ViewBag.PermissoesPersonalizadasControleEntrega);
+    _PermissoesPersonalizadasOcorrencia = @Html.Raw(ViewBag.PermissoesPersonalizadasOcorrencia);
+    _PermissoesPersonalizadasMonitoramento = @Html.Raw(ViewBag.PermissoesPersonalizadasMonitoramento);
+
+    _CONFIGURACAO_TMS.PermitirContatoWhatsApp = @Html.Raw(ViewBag.PermitirContatoWhatsApp);
+    _CONFIGURACAO_TMS.NaoPermitirInformarInicioEFimPreTrip = @Html.Raw(ViewBag.NaoPermitirInformarInicioEFimPreTrip);
+    _CONFIGURACAO_TMS.HabilitarWidgetAtendimento = @Html.Raw(ViewBag.HabilitarWidgetAtendimento);
+    _CONFIGURACAO_TMS.FiltrarWidgetAtendimentoProFiltro = @Html.Raw(ViewBag.FiltrarWidgetAtendimentoProFiltro);
+    _CONFIGURACAO_TMS.HabilitarIconeEntregaAtrasada = @Html.Raw(ViewBag.HabilitarIconeEntregaAtrasada);
+    _CONFIGURACAO_TMS.ExibirPacotesOcorrencia = @Html.Raw(ViewBag.ExibirPacotesOcorrencia);
+    _CONFIGURACAO_TMS.PermitirEnvioCanhotosPeloPortalTransportadorControleEntregas = @Html.Raw(ViewBag.PermitirEnvioCanhotosPeloPortalTransportadorControleEntregas);
+    _CONFIGURACAO_TMS.NaoPermitirFinalizarViagemDetalhesFimViagem = @Html.Raw(ViewBag.NaoPermitirFinalizarViagemDetalhesFimViagem);
+    _InduzirTransportadorSelecionarApenasUmComplementoSolicitacaoComplementos = @Html.Raw(ViewBag.InduzirTransportadorSelecionarApenasUmComplementoSolicitacaoComplementos);
+    _CONFIGURACAO_TMS.ExisteCheckListAtivo = String(@Html.Raw(ViewBag.ExisteCheckListAtivo)).toLowerCase() === "true";
+
+    $(document).ready(function () {
+        LoadLocalizationResources(["Cargas.ControleEntrega", "Cargas.Carga", "Cargas.MonitoramentoHistorico", "Chamado.ChamadoOcorrencia", "Ocorrencias.Ocorrencia", "Ocorrencias.TipoOcorrencia", "Logistica.Monitoramento", "Pessoas.Pessoa"]).then(loadControleEntrega);
+    });
+</script>

@@ -1,0 +1,2920 @@
+{
+	"type": "record",
+	"name": "BillableItemsPostRequest",
+	"namespace": "com.maersk",
+	"doc": "Object defines JSON schema of SAP OTC Billable Items post request",
+	"fields": [
+		{
+			"name": "productSpecification",
+			"type": {
+				"type": "enum",
+				"name": "productSpecificationType",
+				"namespace": "com.maersk.billableitemspostrequest",
+				"symbols": [
+					"Generic"
+				]
+			},
+			"doc": "A discriminator property to identify the schema specifics.Added this field as a part of V3.0"
+		},
+		{
+			"name": "billableHeader",
+			"type": [
+				"null",
+				{
+					"type": "record",
+					"name": "BillableHeader",
+					"namespace": "com.maersk.billableitemspostrequest",
+					"doc": "Billable Item request header",
+					"fields": [
+						{
+							"name": "sourceSystem",
+							"type": "string",
+							"doc": "Upstream System Name.Added this field as a part of V2.0 "
+						},
+						{
+							"name": "sourceTransactionType",
+							"type": [
+								"null",
+								{
+									"type": "enum",
+									"name": "sourceTransactionTypeType",
+									"namespace": "com.maersk.billableitemspostrequest.billableheader",
+									"symbols": [
+										"BOOKING_CONFIRMED",
+										"ISSUE_VERIFY_COPY",
+										"INVOICE",
+										"CREDIT",
+										"CREATE_REV",
+										"UPDATE_REV",
+										"CANCEL_REV",
+										"UPDATE_COST",
+										"CANCEL_COST",
+										"CANCEL_INVOICE"
+									]
+								}
+							],
+							"doc": "Source Transaction Type(O- Booking Confirmed, L- Issue Verify Copy or Pre- Invoice Event, I- Invoice) ",
+							"default": null
+						},
+						{
+							"name": "eventType",
+							"type": [
+								"null",
+								{
+									"type": "enum",
+									"name": "eventTypeType",
+									"namespace": "com.maersk.billableitemspostrequest.billableheader",
+									"symbols": [
+										"AD_HOC",
+										"BATCH"
+									]
+								}
+							],
+							"doc": "Event Type (Ad-hoc, Batch)",
+							"default": null
+						},
+						{
+							"name": "messageCreationDatetime",
+							"type": [
+								"null",
+								"string"
+							],
+							"doc": "Message Creation Timstamp, used for the message synchronizing to ensure message is picked in correct sequence ",
+							"default": null
+						},
+						{
+							"name": "timeZoneCode",
+							"type": [
+								"null",
+								"string"
+							],
+							"doc": "Time Zone, Will be used if needed along-with TimeStamp ",
+							"default": null
+						},
+						{
+							"name": "isBulkProcessing",
+							"type": [
+								"null",
+								"boolean"
+							],
+							"doc": "The field is populated with the value of the batch Indicator, used to differentiate mass messages sent from Upstream so in SAP it can be processed seperately and not distubing the normal message processing ",
+							"default": null
+						},
+						{
+							"name": "product",
+							"type": [
+								"null",
+								"string"
+							],
+							"doc": "A discriminator property is obsolete, as productSpecification have been defined in root level as required by discriminator property ",
+							"default": null
+						},
+						{
+							"name": "triggerType",
+							"type": [
+								"null",
+								"string"
+							],
+							"doc": "Trigger Type",
+							"default": null
+						}
+					]
+				}
+			],
+			"doc": "Billable Item request header",
+			"default": null
+		},
+		{
+			"name": "billableItems",
+			"type": [
+				"null",
+				{
+					"type": "array",
+					"items": {
+						"type": "record",
+						"name": "BillableItems",
+						"namespace": "com.maersk.billableitemspostrequest",
+						"doc": "SAP OTC Billable Item",
+						"fields": [
+							{
+								"name": "isCreateCombinedInvoice",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Indicator to determine if multiple Sales Order combined into One single Invoice . Added this field as a part of V2.0",
+								"default": null
+							},
+							{
+								"name": "isCargoStatusBonded",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Indicator to determine if Warehouse bonded or Non bonded ",
+								"default": null
+							},
+							{
+								"name": "billableItemAmount",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Amount of Billable Item",
+								"default": null
+							},
+							{
+								"name": "isoCurrencyCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Currency of Billable Item ",
+								"default": null
+							},
+							{
+								"name": "unitOfMeasurementCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Unit for the Billing Quantity of Billable Items ",
+								"default": null
+							},
+							{
+								"name": "billingQuantity",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Billing Quantity of Billable Item ",
+								"default": null
+							},
+							{
+								"name": "sourceSystemTransactionDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Date of the transaction on Upstream system",
+								"default": null
+							},
+							{
+								"name": "billableItemExternalReference",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "External Reference of Billable Item (32 Places) ",
+								"default": null
+							},
+							{
+								"name": "reversalBillableItem",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Reversal Item for Billable Item",
+								"default": null
+							},
+							{
+								"name": "timeOfOrigin",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Time of the transaction on Upstream system",
+								"default": null
+							},
+							{
+								"name": "externalBusinessPartnerNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Business Partner Number in External System",
+								"default": null
+							},
+							{
+								"name": "companyCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Company Code",
+								"default": null
+							},
+							{
+								"name": "translationDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Translation Date",
+								"default": null
+							},
+							{
+								"name": "exchangeRate",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Exchange rate between contract currency and invoicing currency (commercial)",
+								"default": null
+							},
+							{
+								"name": "sourceSystemTransactionIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Source Transaction Identifier ",
+								"default": null
+							},
+							{
+								"name": "billableItemType",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "billableItemTypeType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"EXPORT",
+											"IMPORT",
+											"LAND_SIDE_SERVICE"
+										]
+									}
+								],
+								"doc": "Export or Import ",
+								"default": null
+							},
+							{
+								"name": "thirdPartyAgent",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Third party agent",
+								"default": null
+							},
+							{
+								"name": "bookingConfirmationDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Booking confirmation date",
+								"default": null
+							},
+							{
+								"name": "billOfLadingVersion",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Version of Bill of Lading",
+								"default": null
+							},
+							{
+								"name": "billOfLadingLineItemsStatus",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "billOfLadingLineItemsStatusType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"I",
+											"C",
+											"Y",
+											"N"
+										]
+									}
+								],
+								"doc": "Bill of Lading Line Item Status ( I-Invoiced, C-Cancelled (After Invoiced), Y-Deleted (after Cancelled or New), N-New)",
+								"default": null
+							},
+							{
+								"name": "isOrderPartialBillOfLading",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Shows that Order comes from partial BLs",
+								"default": null
+							},
+							{
+								"name": "billOfLadingStatus",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "billOfLadingStatusType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"CONFIRMED",
+											"CANCELLED",
+											"DELETED"
+										]
+									}
+								],
+								"doc": "Bill of Lading status",
+								"default": null
+							},
+							{
+								"name": "uniqueBillOfLading",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Unique Bill of Lading",
+								"default": null
+							},
+							{
+								"name": "agreementParty",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Agreement Party)",
+								"default": null
+							},
+							{
+								"name": "consignee",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Ship to Party) ",
+								"default": null
+							},
+							{
+								"name": "shipper",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Shipper) ",
+								"default": null
+							},
+							{
+								"name": "isBundled",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Unbundled Flag",
+								"default": null
+							},
+							{
+								"name": "bundleGroup",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Bundle Performance Obligation",
+								"default": null
+							},
+							{
+								"name": "chargeCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Charge Code ",
+								"default": null
+							},
+							{
+								"name": "chargePayMode",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "chargePayModeType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"PPD",
+											"COL"
+										]
+									}
+								],
+								"doc": "PPD-Prepaid, COL-Collect ",
+								"default": null
+							},
+							{
+								"name": "invoicingIsoCurrencyCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Invoicing currency",
+								"default": null
+							},
+							{
+								"name": "placeOfDelivery",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Place of Destination/Place of Delivery ",
+								"default": null
+							},
+							{
+								"name": "destinationServiceType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Destination Service Type",
+								"default": null
+							},
+							{
+								"name": "estimatedArrivalDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Estimated date of Arrival ",
+								"default": null
+							},
+							{
+								"name": "portOfDischarge",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Port of Discharge ",
+								"default": null
+							},
+							{
+								"name": "equipmentNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Container number",
+								"default": null
+							},
+							{
+								"name": "equipmentInstanceIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "unique ID of TP DOC to Equipment",
+								"default": null
+							},
+							{
+								"name": "bookingNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Booking number",
+								"default": null
+							},
+							{
+								"name": "equipmentSize",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Container size",
+								"default": null
+							},
+							{
+								"name": "equipmentType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "equipment type",
+								"default": null
+							},
+							{
+								"name": "isNftpDeployed",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Countries where invoice document is created by convergent invoicing ",
+								"default": null
+							},
+							{
+								"name": "isChargeInheritedFromBooking",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Flag: Charge inherited from Booking",
+								"default": null
+							},
+							{
+								"name": "previousInvoiceNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Previous Invoice Number",
+								"default": null
+							},
+							{
+								"name": "bookingLineItem",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Booking Line Item",
+								"default": null
+							},
+							{
+								"name": "estimatedDepartureDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Estimated Date of Departure ",
+								"default": null
+							},
+							{
+								"name": "portOfLoading",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Port of Loading ",
+								"default": null
+							},
+							{
+								"name": "isManifested",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Charge is manifested",
+								"default": null
+							},
+							{
+								"name": "nextBookingLineItem",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Next Booking Line Item",
+								"default": null
+							},
+							{
+								"name": "onCarriageEndDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "On-Carriage End Date",
+								"default": null
+							},
+							{
+								"name": "onCarriageStartDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "On-Carriage Start Date",
+								"default": null
+							},
+							{
+								"name": "originServiceType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Origin Service Type",
+								"default": null
+							},
+							{
+								"name": "placeOfReceipt",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Place of Origin/Place of Receipt ",
+								"default": null
+							},
+							{
+								"name": "payToParty",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function (Payer)",
+								"default": null
+							},
+							{
+								"name": "paymentStationIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Bill of Lading Payment Station Identifier",
+								"default": null
+							},
+							{
+								"name": "loadDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Load Date",
+								"default": null
+							},
+							{
+								"name": "receiptDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Receipt Date",
+								"default": null
+							},
+							{
+								"name": "preCarriageEndDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Pre-Carriage End Date",
+								"default": null
+							},
+							{
+								"name": "preCarriageStartDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Pre-Carriage Start Date",
+								"default": null
+							},
+							{
+								"name": "productIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Product Identifier for service offerings",
+								"default": null
+							},
+							{
+								"name": "baseRate",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Base Rate ",
+								"default": null
+							},
+							{
+								"name": "currentBookingNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Original booking number",
+								"default": null
+							},
+							{
+								"name": "serviceContractNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Service Contract Number",
+								"default": null
+							},
+							{
+								"name": "bookingStatus",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "bookingStatusType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"CONFIRMED",
+											"CANCELLED"
+										]
+									}
+								],
+								"doc": "Booking Status",
+								"default": null
+							},
+							{
+								"name": "tariffCurrencyIsoCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Tariff currency",
+								"default": null
+							},
+							{
+								"name": "tariffAmount",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Tariff Amount",
+								"default": null
+							},
+							{
+								"name": "rateApplicabilityDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Price Application Date",
+								"default": null
+							},
+							{
+								"name": "containerServiceTypeOrigin",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "containerServiceTypeOriginType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"CY",
+											"CFS",
+											"SD"
+										]
+									}
+								],
+								"doc": "Container Service Type Mode at origin, e.g. the CY part of CY-SD",
+								"default": null
+							},
+							{
+								"name": "containerServiceTypeDestination",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "containerServiceTypeDestinationType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"CY",
+											"CFS",
+											"SD"
+										]
+									}
+								],
+								"doc": "Container Service Type at destination, e.g. the SD part of CY-SD",
+								"default": null
+							},
+							{
+								"name": "travelMode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Container Service Type",
+								"default": null
+							},
+							{
+								"name": "vesselName",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel Name ",
+								"default": null
+							},
+							{
+								"name": "vesselCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel Code used for either maersk or HamburgSud ",
+								"default": null
+							},
+							{
+								"name": "cardinalDirection",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "cardinalDirectionType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"NORTH",
+											"WEST",
+											"SOUTH",
+											"EAST"
+										]
+									}
+								],
+								"doc": "Cardinal Direction",
+								"default": null
+							},
+							{
+								"name": "voyageNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "A number which is assigned to a round-trip sea voyage intended to transport trade goods along an existing trade route ",
+								"default": null
+							},
+							{
+								"name": "actualEventDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Actual Event Date",
+								"default": null
+							},
+							{
+								"name": "containerLocation",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Container location at the time of sale",
+								"default": null
+							},
+							{
+								"name": "isServiceDeclaration",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Service declaration on the Bill of Lading",
+								"default": null
+							},
+							{
+								"name": "isArticleIndicator",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Indicator whether goods are under Article 157 1 a ref Article 61 customs arrangments. Council",
+								"default": null
+							},
+							{
+								"name": "bookedByCustomer",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function (Sold to Party)",
+								"default": null
+							},
+							{
+								"name": "cargoController",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function (Cargo Controller)",
+								"default": null
+							},
+							{
+								"name": "cargoType",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "cargoTypeType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"DRY",
+											"LIVE_REEFER",
+											"DANGEROUS",
+											"OUT_OF_GAUGE",
+											"BREAK_BULK",
+											"NORMAL",
+											"FLAT_PACK",
+											"MIXED",
+											"GARMENT_ON_HANGERS",
+											"HANGER_ON_FLATPACK",
+											"REEFER"
+										]
+									}
+								],
+								"doc": "Cargo type enum, e.g. NORMAL or GARMENT_ON_HANGERS ",
+								"default": null
+							},
+							{
+								"name": "equipmentSizeType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Container Sub Type",
+								"default": null
+							},
+							{
+								"name": "salesChannel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Sales Channel from Upstream",
+								"default": null
+							},
+							{
+								"name": "containerOwnedBy",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Container Owned By",
+								"default": null
+							},
+							{
+								"name": "footerNote",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Free Text for Notes",
+								"default": null
+							},
+							{
+								"name": "amendCancelIndicator",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "amendCancelIndicatorType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"CANCELLATION",
+											"AMENDMENT",
+											"DELETE"
+										]
+									}
+								],
+								"doc": "Indicator for Amendment or Cancel/Rebill",
+								"default": null
+							},
+							{
+								"name": "isEmbargoed",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Sanction Block for Embargo",
+								"default": null
+							},
+							{
+								"name": "salesOffice",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Sales Office ",
+								"default": null
+							},
+							{
+								"name": "commissionInttraIndicator",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "INTTRA.Com Agent",
+								"default": null
+							},
+							{
+								"name": "estimatedDeliveryDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Estimated Delivery Date",
+								"default": null
+							},
+							{
+								"name": "estimatedReceiptDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Estimated Receipt Date",
+								"default": null
+							},
+							{
+								"name": "billToParty",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Bill To Party) ",
+								"default": null
+							},
+							{
+								"name": "receiptAgent",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Receipt Agent)",
+								"default": null
+							},
+							{
+								"name": "deliveryAgent",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Delivery Agent)",
+								"default": null
+							},
+							{
+								"name": "bookingAgent",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Booking Agent)",
+								"default": null
+							},
+							{
+								"name": "demurrageInvoiceParty",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Demurrage Invoice Party)",
+								"default": null
+							},
+							{
+								"name": "detentionInvoiceParty",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Detention Invoice Party)",
+								"default": null
+							},
+							{
+								"name": "namedAccountCustomer",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Named Account Customer)",
+								"default": null
+							},
+							{
+								"name": "forwarderOut",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Forwarder Out)",
+								"default": null
+							},
+							{
+								"name": "forwarderIn",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Forwarder In)",
+								"default": null
+							},
+							{
+								"name": "vesselCodeFirstMotherVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel Code - First Mother vessel",
+								"default": null
+							},
+							{
+								"name": "vesselNameFirstMotherVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel name - First Mother Vessel ",
+								"default": null
+							},
+							{
+								"name": "voyageCodeFirstMotherVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Voyage Code - First Mother Vessel",
+								"default": null
+							},
+							{
+								"name": "vesselCodeLastMotherVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel Code - Last Mother vessel",
+								"default": null
+							},
+							{
+								"name": "vesselNameLastMotherVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel name - Last Mother Vessel",
+								"default": null
+							},
+							{
+								"name": "voyageCodeLastMotherVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Voyage Code - Last Mother Vessel",
+								"default": null
+							},
+							{
+								"name": "vesselCodeFirstOceanVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel Code - First Ocean vessel",
+								"default": null
+							},
+							{
+								"name": "vesselNameFirstOceanVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel name - First Ocean Vessel",
+								"default": null
+							},
+							{
+								"name": "voyageCodeFirstOceanVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Voyage Code - First Ocean Vessel",
+								"default": null
+							},
+							{
+								"name": "vesselCodeLastOceanVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel Code - Last Ocean vessel",
+								"default": null
+							},
+							{
+								"name": "vesselNameLastOceanVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Vessel name - Last Ocean Vessel",
+								"default": null
+							},
+							{
+								"name": "voyageCodeLastOceanVessel",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Voyage Code - Last Ocean Vessel",
+								"default": null
+							},
+							{
+								"name": "rejectionReason",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Reason for Rejection",
+								"default": null
+							},
+							{
+								"name": "equipmentHeight",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Equipment Height in feet and inches",
+								"default": null
+							},
+							{
+								"name": "invoiceSeparator",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Invoice Separator to identify multiple invoice documents",
+								"default": null
+							},
+							{
+								"name": "collectionBusinessUnit",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Collection Business Unit",
+								"default": null
+							},
+							{
+								"name": "hasDangerousCargo",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Dangerous Cargo Indicator ",
+								"default": null
+							},
+							{
+								"name": "isValueAddedService",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Value added service Indicator",
+								"default": null
+							},
+							{
+								"name": "isCustomsHouseBrokerage",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Custom House Brokerage Indicator",
+								"default": null
+							},
+							{
+								"name": "isSpotBooking",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Spot booking Indicator",
+								"default": null
+							},
+							{
+								"name": "isLinkedShipment",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Shipment Linkage between two related shipments",
+								"default": null
+							},
+							{
+								"name": "isReturnShipment",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Return shipment",
+								"default": null
+							},
+							{
+								"name": "carrierPartnerNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Partner Function(Carrier)in CXED",
+								"default": null
+							},
+							{
+								"name": "reference",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Reference to a customer. Can be either Bill of Lading number/Purchase order number",
+								"default": null
+							},
+							{
+								"name": "purchaseOrderDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Purchase Order date",
+								"default": null
+							},
+							{
+								"name": "freeTimeStartDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Free time Start Date",
+								"default": null
+							},
+							{
+								"name": "freeTimeEndDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Free time End Date",
+								"default": null
+							},
+							{
+								"name": "freeTime",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Free time",
+								"default": null
+							},
+							{
+								"name": "freeTimeUnit",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Free time unit",
+								"default": null
+							},
+							{
+								"name": "rateStartDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Rate time Start Date",
+								"default": null
+							},
+							{
+								"name": "rateEndDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Rate time End Date",
+								"default": null
+							},
+							{
+								"name": "caseVersion",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "DERT Case Version",
+								"default": null
+							},
+							{
+								"name": "caseNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "DERT Case Number",
+								"default": null
+							},
+							{
+								"name": "externalReference",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "External reference for DERT",
+								"default": null
+							},
+							{
+								"name": "invoicingUserIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "User Identifier for DERT",
+								"default": null
+							},
+							{
+								"name": "remarks",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Remarks from DERT",
+								"default": null
+							},
+							{
+								"name": "hireInvoiceNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Hire Invoice number of owner captured in SAP from CHAMPS generated on ad-hoc basis",
+								"default": null
+							},
+							{
+								"name": "instanceIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Instance Identifier",
+								"default": null
+							},
+							{
+								"name": "invoiceVersionNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Invoice version number",
+								"default": null
+							},
+							{
+								"name": "invoicePrepaidVersionNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Invoice version number prepaid",
+								"default": null
+							},
+							{
+								"name": "invoiceCollectionVersionNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Invoice version number collect",
+								"default": null
+							},
+							{
+								"name": "isManualCharge",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Is Manual Charge",
+								"default": null
+							},
+							{
+								"name": "isTariffCharge",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Is Tariff Charge",
+								"default": null
+							},
+							{
+								"name": "agency",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Agency / Booking Office",
+								"default": null
+							},
+							{
+								"name": "bookingLineItemStatus",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "bookingLineItemStatusType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"ACTIVE",
+											"CANCELLED"
+										]
+									}
+								],
+								"doc": "Booking Line Item Status",
+								"default": null
+							},
+							{
+								"name": "countryCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Country Code",
+								"default": null
+							},
+							{
+								"name": "placeOfDeliveryType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "place of delivery type",
+								"default": null
+							},
+							{
+								"name": "amountInContract",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Amount in contract",
+								"default": null
+							},
+							{
+								"name": "invoiceAmount",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Invoice Amount",
+								"default": null
+							},
+							{
+								"name": "dueDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "due date",
+								"default": null
+							},
+							{
+								"name": "revenueDeductionAmount",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Amount in RD Currency",
+								"default": null
+							},
+							{
+								"name": "revenueDeductionIsoCurrencyCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Revenue deduction currency",
+								"default": null
+							},
+							{
+								"name": "bitSourceTransactionIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Billable Item source transaction Identifier for multiple line items per message",
+								"default": null
+							},
+							{
+								"name": "totalInvoiceAmount",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "Total Invoice Amount",
+								"default": null
+							},
+							{
+								"name": "estimatedTimeOfArrival",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Estimated time of arrival",
+								"default": null
+							},
+							{
+								"name": "estimatedTimeOfDeparture",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Estimated time of departure",
+								"default": null
+							},
+							{
+								"name": "productItemIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Product Item Identifier",
+								"default": null
+							},
+							{
+								"name": "previousBookingLineItem",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Previous Booking LIne Item",
+								"default": null
+							},
+							{
+								"name": "billOfLadingExtension",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "BL extention",
+								"default": null
+							},
+							{
+								"name": "calculationTypeMethod",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Calculation Type Method",
+								"default": null
+							},
+							{
+								"name": "revenueDeductionChargeCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Revenue Deduction Charge Code",
+								"default": null
+							},
+							{
+								"name": "costCenter",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Cost Center",
+								"default": null
+							},
+							{
+								"name": "profitCenter",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Profit Center",
+								"default": null
+							},
+							{
+								"name": "distributionChannelCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Distribution Channel Code",
+								"default": null
+							},
+							{
+								"name": "divisionCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Division Code ",
+								"default": null
+							},
+							{
+								"name": "deliveryPlantIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Delivery Plant ID(Own or External) ",
+								"default": null
+							},
+							{
+								"name": "invoiceLogic",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Logic for Invoice",
+								"default": null
+							},
+							{
+								"name": "creditLogic",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Logic for Credit",
+								"default": null
+							},
+							{
+								"name": "collectionBusinessUnitLogic",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Logic for collectionBusinessUnitLogic",
+								"default": null
+							},
+							{
+								"name": "detentionLogic",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Detention/Demurrage Logic",
+								"default": null
+							},
+							{
+								"name": "isCreateInvoice",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Flag to identify whether the request is for invoice create or invoice update ",
+								"default": null
+							},
+							{
+								"name": "invoiceType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Draft Invoice or Final Invoice, mandatory if isCreateInvoice is true",
+								"default": null
+							},
+							{
+								"name": "externalInvoiceNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Operational invoice number ",
+								"default": null
+							},
+							{
+								"name": "vatPartner",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "VAT Partner",
+								"default": null
+							},
+							{
+								"name": "externalUniqueIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Job UNID",
+								"default": null
+							},
+							{
+								"name": "consolUniqueIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Consol UNID ",
+								"default": null
+							},
+							{
+								"name": "salesOrganisation",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Sales Organisation ",
+								"default": null
+							},
+							{
+								"name": "siteCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Site Code",
+								"default": null
+							},
+							{
+								"name": "shipmentServiceTypeOrigin",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Ship type Orgin",
+								"default": null
+							},
+							{
+								"name": "shipmentServiceTypeDestination",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Ship type Destination",
+								"default": null
+							},
+							{
+								"name": "salesPerson",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Sales Person",
+								"default": null
+							},
+							{
+								"name": "actualArrivalDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Actual Arrival Date",
+								"default": null
+							},
+							{
+								"name": "actualDepartureDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Actual Departure Date",
+								"default": null
+							},
+							{
+								"name": "serviceFullfilmentDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Fulfillment Date",
+								"default": null
+							},
+							{
+								"name": "houseBillofLading",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "HBL/HSWB/HAWB Number ShipNumber ",
+								"default": null
+							},
+							{
+								"name": "isMultiCountryConsolidation",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "MCC/MICP Shipment",
+								"default": null
+							},
+							{
+								"name": "isHub",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Flag to identify if HUB shipment scenario applicable ",
+								"default": null
+							},
+							{
+								"name": "isBookingAgent",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Flag to determine either Booking Agent only services done or entire 3PL ",
+								"default": null
+							},
+							{
+								"name": "isOceanTransportIntermediary",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Flag to determine if Ocean Transport Intermediary service is used",
+								"default": null
+							},
+							{
+								"name": "isAir",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Flag to identify if the Transport Mode AIR or Not AIR ",
+								"default": null
+							},
+							{
+								"name": "isPassThrough",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Pass Through is the charge where the Revenue and Cost is identical ",
+								"default": null
+							},
+							{
+								"name": "shipmentType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Shipment type (House/Direct) ",
+								"default": null
+							},
+							{
+								"name": "placeOfConsolidation",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Place of Consolidation",
+								"default": null
+							},
+							{
+								"name": "placeOfDeConsolidation",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Place of De-Consolidation",
+								"default": null
+							},
+							{
+								"name": "actionCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Revenue item token version",
+								"default": null
+							},
+							{
+								"name": "isConference",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Conference Indicator",
+								"default": null
+							},
+							{
+								"name": "shipmentLinkageContextCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Shipment Linkage Context between two related shipments",
+								"default": null
+							},
+							{
+								"name": "invoiceNumber",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "SAP Invoice Number ",
+								"default": null
+							},
+							{
+								"name": "reasonCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Reason Code of cancellation of invoice ",
+								"default": null
+							},
+							{
+								"name": "reasonDescription",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Reason description in detail",
+								"default": null
+							},
+							{
+								"name": "transportMode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Mode of transport ",
+								"default": null
+							},
+							{
+								"name": "chargeTypeName",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Description of the Material from External System",
+								"default": null
+							},
+							{
+								"name": "chargeTypeGroupCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Charge Group of the Material from External System ",
+								"default": null
+							},
+							{
+								"name": "alternativeCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "External system Tax Code",
+								"default": null
+							},
+							{
+								"name": "alternativeCodeType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "External system Tax Code as a constant",
+								"default": null
+							},
+							{
+								"name": "commoditySystemCode",
+								"type": [
+									"null",
+									{
+										"type": "array",
+										"items": {
+											"type": "record",
+											"name": "CommoditySystemCode",
+											"namespace": "com.maersk.billableitemspostrequest.billableitems",
+											"fields": [
+												{
+													"name": "commodityCodingSystemCode",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Type of the commodity Code, like HS or MAERSK",
+													"default": null
+												},
+												{
+													"name": "commodityCode",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Commodity code value based on the commoditySystemCodeType",
+													"default": null
+												}
+											]
+										}
+									}
+								],
+								"default": null
+							},
+							{
+								"name": "isGateway",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "This field indicates whether shipment is a Gateway shipment or not",
+								"default": null
+							},
+							{
+								"name": "isSameLegalEntity",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "This is at LineItem level to share whether that Gateway is present within the Same Legal Entity or Different Legal Entity",
+								"default": null
+							},
+							{
+								"name": "costRevenueLinkIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Revenue to Cost Linkage number",
+								"default": null
+							},
+							{
+								"name": "operationalInfo",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "ILSE numbers",
+								"default": null
+							},
+							{
+								"name": "itemType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Item Type information",
+								"default": null
+							},
+							{
+								"name": "customerBeCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Business Entity code",
+								"default": null
+							},
+							{
+								"name": "rateType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Rate Type",
+								"default": null
+							},
+							{
+								"name": "sourceUniqueIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "SourceUniqueIdentifier",
+								"default": null
+							},
+							{
+								"name": "fcrNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "FCR number",
+								"default": null
+							},
+							{
+								"name": "serviceDeliveryDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Service Delivery date",
+								"default": null
+							},
+							{
+								"name": "billingHeaderText",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Billing Header Text",
+								"default": null
+							},
+							{
+								"name": "proratedItemPercentage",
+								"type": [
+									"null",
+									"double"
+								],
+								"doc": "House to Master Prorate %",
+								"default": null
+							},
+							{
+								"name": "externalBillingItemNote",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "External Billing Item Text",
+								"default": null
+							},
+							{
+								"name": "internalBillingItemNote",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Internal Billing Item Text",
+								"default": null
+							},
+							{
+								"name": "icbManualReference",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Manual Reference Number for ICB",
+								"default": null
+							},
+							{
+								"name": "equipment",
+								"type": [
+									"null",
+									{
+										"type": "array",
+										"items": {
+											"type": "record",
+											"name": "Equipment",
+											"namespace": "com.maersk.billableitemspostrequest.billableitems",
+											"fields": [
+												{
+													"name": "equipmentNumber",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Equipment Number",
+													"default": null
+												},
+												{
+													"name": "equipmentSize",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Container size",
+													"default": null
+												},
+												{
+													"name": "equipmentType",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "equipment type",
+													"default": null
+												},
+												{
+													"name": "equipmentInstanceIdentifier",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "unique ID of TP DOC to Equipment",
+													"default": null
+												},
+												{
+													"name": "quantityRule",
+													"type": [
+														"null",
+														{
+															"type": "enum",
+															"name": "quantityRuleType",
+															"namespace": "com.maersk.billableitemspostrequest.billableitems.equipment",
+															"symbols": [
+																"V",
+																"W"
+															]
+														}
+													],
+													"doc": "Identifier to calculate container level charges",
+													"default": null
+												},
+												{
+													"name": "billingWeight",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Weight of Cargo",
+													"default": null
+												},
+												{
+													"name": "billingVolume",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Volume of Cargo",
+													"default": null
+												},
+												{
+													"name": "billingWeightUnit",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Weight unit of Cargo",
+													"default": null
+												},
+												{
+													"name": "billingVolumeUnit",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Volume unit of Cargo",
+													"default": null
+												},
+												{
+													"name": "grossWeight",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Weight of Equipment",
+													"default": null
+												},
+												{
+													"name": "grossVolume",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Volume of Equipment",
+													"default": null
+												},
+												{
+													"name": "grossWeightUnit",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Weight unit of Equipment",
+													"default": null
+												},
+												{
+													"name": "grossVolumeUnit",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Volume unit of Equipment",
+													"default": null
+												},
+												{
+													"name": "proratedItemQantity",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Quantity of cargo in equipment",
+													"default": null
+												},
+												{
+													"name": "proratedItemQantityUnit",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Unit of Quantity of cargo in equipment",
+													"default": null
+												},
+												{
+													"name": "proratedCargoValue",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Amount of Cargo in equipment",
+													"default": null
+												},
+												{
+													"name": "proratedCargoValueCurrencyUnit",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Unit of Amount of Cargo in equipment",
+													"default": null
+												},
+												{
+													"name": "numberOfContainers",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Number of containers",
+													"default": null
+												},
+												{
+													"name": "cblNumber",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "Carrier Bill of lading number",
+													"default": null
+												},
+												{
+													"name": "numberOfCbls",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Number of CBL's",
+													"default": null
+												},
+												{
+													"name": "hblNumber",
+													"type": [
+														"null",
+														"string"
+													],
+													"doc": "House bill of lading number",
+													"default": null
+												},
+												{
+													"name": "fcrHblQuantity",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "FCR/HBL Count",
+													"default": null
+												},
+												{
+													"name": "cargoWeight",
+													"type": [
+														"null",
+														"double"
+													],
+													"doc": "Cargo weight",
+													"default": null
+												}
+											]
+										}
+									}
+								],
+								"default": null
+							},
+							{
+								"name": "locationCode",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Activity Location Code",
+								"default": null
+							},
+							{
+								"name": "activityStartDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Start date of service",
+								"default": null
+							},
+							{
+								"name": "activityEndDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "End date of service",
+								"default": null
+							},
+							{
+								"name": "carrierPlaceOfDelivery",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Place of Delivery of Carrier",
+								"default": null
+							},
+							{
+								"name": "originTerminal",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Terminal of origin",
+								"default": null
+							},
+							{
+								"name": "layoutType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Invoice Layout Type",
+								"default": null
+							},
+							{
+								"name": "customerReferenceNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Customer's PO reference",
+								"default": null
+							},
+							{
+								"name": "isfinancialIndicator",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "Financial Indicator",
+								"default": null
+							},
+							{
+								"name": "incoTerms",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "incoterms of transport mode",
+								"default": null
+							},
+							{
+								"name": "uniqueIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "This field is used for the RAR process. The field value is generated in Azure Mediation Layer and it represents the combination of booking, charge code, CBU, Payer and Currency",
+								"default": null
+							},
+							{
+								"name": "uniqueIdentifierStatus",
+								"type": [
+									"null",
+									{
+										"type": "enum",
+										"name": "uniqueIdentifierStatusType",
+										"namespace": "com.maersk.billableitemspostrequest.billableitems",
+										"symbols": [
+											"CONF_N",
+											"CONF_U",
+											"CONF_D",
+											"IVC_N",
+											"IVC_U",
+											"IVC_D",
+											"SPIR_N",
+											"SPIR_U",
+											"SPIR_C",
+											"SCIR_N",
+											"SCIR_U",
+											"SCIR_C",
+											"VGM_N",
+											"BCANL_D",
+											"BCANL_N",
+											"CTE_N",
+											"CTE_D",
+											"CTE_C",
+											"CTE_U",
+											"CCTE_N",
+											"CCTE_D",
+											"CCTE_C",
+											"CCTE_U",
+											"SCTE_N",
+											"SCTE_D",
+											"SCTE_C",
+											"SCTE_U",
+											"ETAD_U"
+										]
+									}
+								],
+								"doc": "This field holds the status of the uniqueIdentifier",
+								"default": null
+							},
+							{
+								"name": "cancelledUniqueIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Value of the cancelled uniqueIdentifier",
+								"default": null
+							},
+							{
+								"name": "isOldBooking",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "flag for bookings which are created before Go-Live of the new RAR design or rollout",
+								"default": null
+							},
+							{
+								"name": "isMigratingToUniqueIdentifier",
+								"type": [
+									"null",
+									"boolean"
+								],
+								"doc": "flag for old bookings which are migrated to the new RAR design or rollout",
+								"default": null
+							},
+							{
+								"name": "triggerType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": "Trigger Type",
+								"default": null
+							},
+							{
+								"name": "referenceSourceSystemTransactionIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Ref Source Transaction Identifier",
+								"default": null
+							},
+							{
+								"name": "cteControlNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " CTe Control Number",
+								"default": null
+							},
+							{
+								"name": "cteNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " CT-e number",
+								"default": null
+							},
+							{
+								"name": "fiscalDocumentNumbeLinkedToCTe",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Fiscal Document NumbeTo CTe",
+								"default": null
+							},
+							{
+								"name": "customerReceiver",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Customer Receiver Number",
+								"default": null
+							},
+							{
+								"name": "proposalType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Proposal Type",
+								"default": null
+							},
+							{
+								"name": "jobOrderNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Job Order Number",
+								"default": null
+							},
+							{
+								"name": "iBgeCodeSender",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " IBGE remetente(sender)",
+								"default": null
+							},
+							{
+								"name": "iBgeCodeRecipient",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " IBGE remetente(recipient)",
+								"default": null
+							},
+							{
+								"name": "taxIndicatorCst",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Tax Indicator (CST)",
+								"default": null
+							},
+							{
+								"name": "accessKey",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " unique code to identify the CT-e(Access Key)",
+								"default": null
+							},
+							{
+								"name": "fiscalDocumentNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Document number (fiscal)",
+								"default": null
+							},
+							{
+								"name": "nfSeIssuanceNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " NFS-e Number",
+								"default": null
+							},
+							{
+								"name": "commercialInvoiceNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Commercial Invoice Number",
+								"default": null
+							},
+							{
+								"name": "boletoNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Boleto Number",
+								"default": null
+							},
+							{
+								"name": "invoiceDueDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Invoice Due date",
+								"default": null
+							},
+							{
+								"name": "bundleUniqueIdentifier",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Bundle Unique Identifier",
+								"default": null
+							},
+							{
+								"name": "cancelReason",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " CTE Cancellation Reason",
+								"default": null
+							},
+							{
+								"name": "bundleReference",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Bundle reference ",
+								"default": null
+							},
+							{
+								"name": "referenceCteAccessKeyNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Reference CTE Access Key Number ",
+								"default": null
+							},
+							{
+								"name": "provisionaryReceiptNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " RPS(Provisory Receipt Number) number ",
+								"default": null
+							},
+							{
+								"name": "fiscalDocumentIssueDate",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " fiscal Document Issue Date(CTe, NFSe) ",
+								"default": null
+							},
+							{
+								"name": "triggerDocumentType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Triger Document Type ",
+								"default": null
+							},
+							{
+								"name": "proposalNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Proposal Number ",
+								"default": null
+							},
+							{
+								"name": "bookingMaerskFeederNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Booking Maersk Feeder Number ",
+								"default": null
+							},
+							{
+								"name": "ceNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " CE Number ",
+								"default": null
+							},
+							{
+								"name": "manifestNumber",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Manifest Number ",
+								"default": null
+							},
+							{
+								"name": "pTSpedRemark",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " PT Sped Remark ",
+								"default": null
+							},
+							{
+								"name": "revenueType",
+								"type": [
+									"null",
+									"string"
+								],
+								"doc": " Revenue Type ",
+								"default": null
+							}
+						]
+					}
+				}
+			],
+			"default": null
+		}
+	]
+}

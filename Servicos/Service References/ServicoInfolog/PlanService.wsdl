@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.plan.infolog.pamcary.com.br/" name="PlanService" targetNamespace="http://webservice.plan.infolog.pamcary.com.br/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema targetNamespace="http://webservice.plan.infolog.pamcary.com.br/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="Exception" type="tns:Exception" />
+      <xs:element name="criarPlanoViagem" type="tns:criarPlanoViagem" />
+      <xs:element name="criarPlanoViagemResponse" type="tns:criarPlanoViagemResponse" />
+      <xs:complexType name="criarPlanoViagem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Plano" type="tns:planBean" />
+          <xs:element minOccurs="0" name="Itinerario" type="tns:itineraryBean" />
+          <xs:element minOccurs="0" name="Usuario" type="tns:userBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="planBean">
+        <xs:sequence>
+          <xs:element name="Cabecalho" type="tns:planHeaderBean" />
+          <xs:element name="PlanoStatus" type="tns:planoStatusBean" />
+          <xs:element minOccurs="0" name="PlanoValores" type="tns:planValueBean" />
+          <xs:element minOccurs="0" name="Motoristas" type="tns:driversBean" />
+          <xs:element minOccurs="0" name="Veiculos" type="tns:vehiclesBean" />
+          <xs:element minOccurs="0" name="DispositivosComplementares" type="tns:dispositivosBean" />
+          <xs:element name="Transportadora" type="tns:transportBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="planHeaderBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodigoCliente" type="xs:string" />
+          <xs:element minOccurs="0" name="idUser" type="xs:long" />
+          <xs:element name="NomeProcesso" type="xs:string" />
+          <xs:element name="CodigoOperacao" type="xs:string" />
+          <xs:element minOccurs="0" name="IdentificadorPlano" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="planoStatusBean">
+        <xs:sequence>
+          <xs:element name="TipoPlano" type="xs:string" />
+          <xs:element name="TipoRastreamento" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="planValueBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Observacao" type="xs:string" />
+          <xs:element minOccurs="0" name="IdetificadorTemperatura" type="xs:string" />
+          <xs:element minOccurs="0" name="ValorTotal" type="xs:string" />
+          <xs:element minOccurs="0" name="PesoTotal" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="driversBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PrimeiroMotorista" type="tns:driverBean" />
+          <xs:element minOccurs="0" name="Remover" type="xs:string" />
+          <xs:element minOccurs="0" name="SegundoMotorista" type="tns:driverBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="driverBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Documento" type="tns:documentoBean" />
+          <xs:element minOccurs="0" name="Nome" type="xs:string" />
+          <xs:element minOccurs="0" name="Tipo" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="documentoBean">
+        <xs:sequence>
+          <xs:element name="Numero" type="xs:string" />
+          <xs:element name="Tipo" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="vehiclesBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PrimeiroVeiculos" type="tns:vehicleBean" />
+          <xs:element minOccurs="0" name="Remover" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Carretas" type="tns:vehicleBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="vehicleBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodigoDispositivo" type="xs:string" />
+          <xs:element minOccurs="0" name="Placa" type="xs:string" />
+          <xs:element minOccurs="0" name="NomeProvedor" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="dispositivosBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DispositivoComplementar" type="tns:dispositivoBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="dispositivoBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Fornecedor" type="xs:string" />
+          <xs:element minOccurs="0" name="Classificacao" type="xs:string" />
+          <xs:element minOccurs="0" name="TipoComunicacao" type="xs:string" />
+          <xs:element minOccurs="0" name="Modelo" type="xs:string" />
+          <xs:element minOccurs="0" name="Codigo" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="transportBean">
+        <xs:sequence>
+          <xs:element name="Entidade" type="tns:relationalBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="relationalBean">
+        <xs:sequence>
+          <xs:element name="Documento" type="tns:documentoBean" />
+          <xs:element minOccurs="0" name="CodigoExternoCliente" type="xs:string" />
+          <xs:element minOccurs="0" name="NomeFantasia" type="xs:string" />
+          <xs:element minOccurs="0" name="Nome" type="xs:string" />
+          <xs:element minOccurs="0" name="Latitude" type="xs:string" />
+          <xs:element minOccurs="0" name="Longitude" type="xs:string" />
+          <xs:element minOccurs="0" name="Pais" type="xs:string" />
+          <xs:element minOccurs="0" name="Estado" type="xs:string" />
+          <xs:element minOccurs="0" name="Cidade" type="xs:string" />
+          <xs:element minOccurs="0" name="Ibge" type="xs:string" />
+          <xs:element minOccurs="0" name="Logradouro" type="tns:logradouroBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="logradouroBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Bairro" type="xs:string" />
+          <xs:element minOccurs="0" name="Cep" type="xs:string" />
+          <xs:element minOccurs="0" name="Complemento" type="xs:string" />
+          <xs:element minOccurs="0" name="Endereco" type="xs:string" />
+          <xs:element minOccurs="0" name="Numero" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="itineraryBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Destinos" type="tns:destinationBean" />
+          <xs:element minOccurs="0" name="Origem" type="tns:pointBean" />
+          <xs:element minOccurs="0" name="Processo" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="destinationBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Destino" type="tns:pointBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="pointBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Ordem" type="xs:int" />
+          <xs:element minOccurs="0" name="Descarga" type="xs:string" />
+          <xs:element minOccurs="0" name="Carga" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Documentos" type="tns:fiscalDocumentBean" />
+          <xs:element minOccurs="0" name="Previsao" type="xs:string" />
+          <xs:element minOccurs="0" name="PrevisaoEventos" type="tns:previsaoEventosRoteiroBean" />
+          <xs:element minOccurs="0" name="GrupoNormaMercadorias" type="tns:grupoNormaBean" />
+          <xs:element name="Entidade" type="tns:relationalBean" />
+          <xs:element minOccurs="0" name="Consignatario" type="tns:consiguinatarioBean" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Rotas" type="tns:rotaBean" />
+          <xs:element minOccurs="0" name="NomeRota" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="fiscalDocumentBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Codigo" type="xs:string" />
+          <xs:element minOccurs="0" name="Tipo" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="previsaoEventosRoteiroBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Ch" type="xs:string" />
+          <xs:element minOccurs="0" name="Id" type="xs:string" />
+          <xs:element minOccurs="0" name="Td" type="xs:string" />
+          <xs:element minOccurs="0" name="Ic" type="xs:string" />
+          <xs:element minOccurs="0" name="Tc" type="xs:string" />
+          <xs:element minOccurs="0" name="Iv" type="xs:string" />
+          <xs:element minOccurs="0" name="Fv" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="grupoNormaBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="GrupoNormaMercadoria" type="tns:normaBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="normaBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodigoMercadoria" type="xs:string" />
+          <xs:element minOccurs="0" name="GrupoNorma" type="xs:string" />
+          <xs:element minOccurs="0" name="ValorMercadoria" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="consiguinatarioBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Documento" type="tns:documentoBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rotaBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Cnpj" type="xs:string" />
+          <xs:element minOccurs="0" name="Previsao" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="userBean">
+        <xs:sequence>
+          <xs:element name="Nome" type="xs:string" />
+          <xs:element name="Senha" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="criarPlanoViagemResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Resultado" type="tns:planReturnBean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="planReturnBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CodigoCliente" type="xs:string" />
+          <xs:element minOccurs="0" name="Codigo" type="xs:string" />
+          <xs:element minOccurs="0" name="LinkRotograma" type="xs:string" />
+          <xs:element minOccurs="0" name="Mensagem" type="xs:string" />
+          <xs:element minOccurs="0" name="CodigoOperacao" type="xs:string" />
+          <xs:element minOccurs="0" name="IdentificadorPlano" type="xs:string" />
+          <xs:element minOccurs="0" name="NomeProcesso" type="xs:string" />
+          <xs:element minOccurs="0" name="validacaoRisco" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Exception">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="message" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="suppressed" type="tns:throwable" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="throwable">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="stackTrace" nillable="true" type="tns:stackTraceElement" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="stackTraceElement" final="extension restriction">
+        <xs:sequence />
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="Exception">
+    <part name="Exception" element="tns:Exception" />
+  </message>
+  <message name="PlanWebService_criarPlanoViagemResponse">
+    <part name="criarPlanoViagemResponse" element="tns:criarPlanoViagemResponse" />
+  </message>
+  <message name="PlanWebService_criarPlanoViagem">
+    <part name="criarPlanoViagem" element="tns:criarPlanoViagem" />
+  </message>
+  <portType name="PlanWebService">
+    <operation name="criarPlanoViagem" parameterOrder="criarPlanoViagem">
+      <input message="tns:PlanWebService_criarPlanoViagem" />
+      <output message="tns:PlanWebService_criarPlanoViagemResponse" />
+      <fault name="Exception" message="tns:Exception" />
+    </operation>
+  </portType>
+  <binding name="PlanWebServiceBinding" type="tns:PlanWebService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="criarPlanoViagem">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="Exception">
+        <soap:fault use="literal" name="Exception" namespace="" />
+      </fault>
+    </operation>
+  </binding>
+  <service name="PlanService">
+    <port name="PlanService" binding="tns:PlanWebServiceBinding">
+      <soap:address location="http://preprod.gps-pamcary.com.br/iw-web/PlanWebService" />
+    </port>
+  </service>
+</definitions>

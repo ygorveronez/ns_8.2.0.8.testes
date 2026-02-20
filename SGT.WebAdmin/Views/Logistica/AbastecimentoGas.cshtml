@@ -1,0 +1,246 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Logística</li>
+    <li class="breadcrumb-item active">Abastecimento Gás</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        Abastecimento de Gás
+    </h1>
+</div>
+
+<div id="knockoutPesquisaAbastecimentoGas">
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <button class="btn btn-default waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <i class="fal fa-filter"></i> <span>Pesquisa Abastecimento de Gás</span>
+                </button>
+
+                <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: Base.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Base.text, attr: { for: Base.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Base.requiredClass, value: Base.val, valueUpdate: 'afterkeydown', attr: { maxlength: Base.maxlength, id : Base.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Base.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-2" data-bind="visible: DataSolicitacaoInicial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataSolicitacaoInicial.text, attr: { for: DataSolicitacaoInicial.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataSolicitacaoInicial.requiredClass, value: DataSolicitacaoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataSolicitacaoInicial.maxlength, id : DataSolicitacaoInicial.id}" />
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-2" data-bind="visible: DataSolicitacaoFinal.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataSolicitacaoFinal.text, attr: { for: DataSolicitacaoFinal.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataSolicitacaoFinal.requiredClass, value: DataSolicitacaoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataSolicitacaoFinal.maxlength, id : DataSolicitacaoFinal.id}" />
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-2" data-bind="visible: Situacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                                    <select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}"></select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    <div class="d-flex align-items-center justify-content-end mb-3">
+                        <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-container">
+        <div class="panel-hdr">
+            <h3>
+                <i class="fal fa-edit"></i>
+                Abastecimento de Gás
+            </h3>
+        </div>
+        <div class="panel-content">
+            <form>
+                <div id="knockoutSolicitacaoGasAprovacao">
+                    <div class="row">
+                        <div class="d-flex justify-content-end">
+                            <input type="button" data-bind="visible: (ExibirAprovacao.fadeVisible() && !PossuiRegras.val()), click: ReprocessarRegras.eventClick, attr: { value: ReprocessarRegras.text, id : ReprocessarRegras.id}" class="botaoDentroSmartAdmimForm btn btn-labeled btn-success margin-bottom-10 ms-2" />
+                            <input type="button" data-bind="visible: ExibirAprovacao.visible, click: ExibirAprovacao.eventClick, attr: { value: ExibirAprovacao.text, id : ExibirAprovacao.id}" class="botaoDentroSmartAdmimForm btn btn-labeled btn-default margin-bottom-10 ms-2" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mb-3" data-bind="fadeVisible: ExibirAprovacao.fadeVisible, id: ExibirAprovacao.id + '_fade'">
+                        <div class="col-12 col-md-6">
+                            <div class="card" data-bind="visible: PossuiRegras.val">
+                                <div class="card-header d-flex align-items-center justify-content-between">
+                                    <h3 class="card-title">Detalhes</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row row-cols-1 row-cols-md-2">
+                                        <div class="col">
+                                            <table class="table table-clean table-sm align-self-end">
+                                                <tbody>
+                                                    <tr data-bind="visible: AprovacoesNecessarias.visible">
+                                                        <td>
+                                                            <strong data-bind="text: AprovacoesNecessarias.text"></strong>
+                                                        </td>
+                                                        <td>
+                                                            <span data-bind="text: AprovacoesNecessarias.val"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr data-bind="visible: Aprovacoes.visible">
+                                                        <td>
+                                                            <strong data-bind="text: Aprovacoes.text"></strong>
+                                                        </td>
+                                                        <td>
+                                                            <span data-bind="text: Aprovacoes.val"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr data-bind="visible: Reprovacoes.visible">
+                                                        <td>
+                                                            <strong data-bind="text: Reprovacoes.text"></strong>
+                                                        </td>
+                                                        <td>
+                                                            <span data-bind="text: Reprovacoes.val"></span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr data-bind="visible: DescricaoSituacao.visible">
+                                                        <td>
+                                                            <strong data-bind="text: DescricaoSituacao.text"></strong>
+                                                        </td>
+                                                        <td>
+                                                            <span data-bind="text: DescricaoSituacao.val"></span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="card" data-bind="visible: PossuiRegras.val">
+                                <div class="card-header d-flex align-items-center justify-content-between">
+                                    <h3 class="card-title">Aprovadores</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table id="grid-solicitacao-gas-aprovacao" width="100%" class="table table-bordered table-hover" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col col-xs-12 padding-top-15 margin-bottom-5" data-bind="visible: !PossuiRegras.val()">
+                            <div class="alert alert-warning mb-0">
+                                Não foi encontrada nenhuma regra de aprovação.<br>
+                                O abastecimento de gás ficará pendente até existir alguma regra de aprovação. Clique em reprocessar regras para verificar.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="knockoutAbastecimentoGas">
+                </div>
+            </form>
+            <footer id="knockoutCRUDAbastecimentoGas">
+            </footer>
+        </div>
+    </div>
+</div>
+
+<div id="divModalSolicitacaoGasAprovacao" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutSolicitacaoAbastecimentoAprovacaoDetalhe" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalhes da Autorização</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row row-cols-1 row-cols-md-2">
+                    <div class="col">
+                        <table class="table table-clean table-sm align-self-end">
+                            <tbody>
+                                <tr data-bind="visible: Regra.visible">
+                                    <td>
+                                        <strong data-bind="text: Regra.text"></strong>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: Regra.val"></span>
+                                    </td>
+                                </tr>
+                                <tr data-bind="visible: Situacao.visible">
+                                    <td>
+                                        <strong data-bind="text: Situacao.text"></strong>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: Situacao.val"></span>
+                                    </td>
+                                </tr>
+                                <tr data-bind="visible: Usuario.visible">
+                                    <td>
+                                        <strong data-bind="text: Usuario.text"></strong>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: Usuario.val"></span>
+                                    </td>
+                                </tr>
+                                <tr data-bind="visible: Data.visible && Data.val() != ''">
+                                    <td>
+                                        <strong data-bind="text: Data.text"></strong>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: Data.val"></span>
+                                    </td>
+                                </tr>
+                                <tr data-bind="visible: Motivo.visible && Motivo.val() != ''">
+                                    <td>
+                                        <strong data-bind="text: Motivo.text"></strong>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: Motivo.val"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/abastecimentoGas"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    var _PossuiPermissaoLancarAposHorarioLimite = @Html.Raw(ViewBag.PossuiPermissaoLancarAposHorarioLimite);
+
+    $(document).ready(function () {
+        loadAbastecimentoGas();
+    });
+
+</script>
+

@@ -1,0 +1,480 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@Html.Raw(ViewBag.Titulo)</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="~/css/bootstrap" />
+	<link rel="stylesheet" href="~/css/fontAwesome" />
+	<link rel="stylesheet" href="~/css/plugins" />
+	<link rel="stylesheet" href="~/css/fullCalendar" />
+	<link rel="stylesheet" href="~/css/production" />
+	<link rel="stylesheet" href="~/css/skins" />
+	<link rel="stylesheet" href="~/css/bootstrap-datetimepicker" />
+	<link rel="stylesheet" href="~/css/bootstrapSelect" />
+	<link rel="stylesheet" href="~/css/bootstrapToggle" />
+	<link rel="stylesheet" href="~/css/dataTablesCheckboxes" />
+	<link rel="stylesheet" href="~/css/bootstrap-colorselector" />
+	<link rel="stylesheet" href="~/css/googleMaps" />
+	<link rel="stylesheet" href="~/css/yourStyle" />
+
+	@if (!string.IsNullOrWhiteSpace(ViewBag.ClasseCorBotoes))
+	{
+		<link rel="stylesheet" href="~/css/retiradaProduto" />
+	}
+
+
+	<link rel="shortcut icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+	<link rel="icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+
+	<script>
+		var initMap = function () { };
+	</script>
+
+	<script src="@Html.Raw(ViewBag.HTTPConnection)://maps.googleapis.com/maps/api/js?key=@Html.Raw(ViewBag.APIKeyGoogle)&libraries=places,geometry,drawing&callback=initMap"></script>
+	<script src="@Html.Raw(ViewBag.HTTPConnection)://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/src/markerclusterer.js"></script>
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.2/dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.0.2/dist/MarkerCluster.Default.css" />
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet.markercluster@1.0.2/dist/leaflet.markercluster.js"></script>
+
+</head>
+
+<body class="@Html.Raw(ViewBag.Layout) @Html.Raw(ViewBag.ClasseCorBotoes)">
+	<div style="width: 0 !important; height: 0 !important; opacity: 0 !important; overflow: hidden !important;">
+		<input id="txtValidacaoAutocompleteGoogleChrome11" type="email">
+		<input id="txtValidacaoAutocompleteGoogleChrome22" type="text">
+		<input id="txtValidacaoAutocompleteGoogleChrome33" type="password">
+	</div>
+	<header id="header">
+		<div id="logo-group">
+			<span id="logo"> <img src="@Html.Raw(ViewBag.Logo)" alt="SmartAdmin"> </span>
+			<div id="knoutNotificacaoGlobal">
+				<span id="activity" class="activity-dropdown" data-bind="click: NaoVistas.eventClick, visible: Total.visible"><i class="fa fa-user"></i><b class="badge" data-bind="text: NaoVistas.val">0</b></span>
+				<div class="ajax-dropdown">
+					<div class="ajax-notifications custom-scroll" data-bind="attr: {id : Total.id}, event: { scroll: Total.eventChange }">
+						<ul class="notification-body" data-bind="foreach: Notificacoes">
+							<li>
+								<span data-bind="attr: {class: 'padding-10 ' + ReadClass.val()  }, click: URLPagina.eventClick">
+
+									<em data-bind="attr: {class: 'badge padding-5 no-border-radius ' + IconeCorFundo.val() + ' pull-left margin-right-5' }">
+										<i data-bind="attr: {class: 'fa ' + Icone.val() + ' fa-fw fa-2x'} "></i>
+									</em>
+
+									<span>
+										<span data-bind="text: Nota.val"></span>
+										<br>
+										<span class="pull-right font-xs text-muted"><i data-bind="text: DataNotificacao.val"></i></span>
+									</span>
+
+								</span>
+							</li>
+						</ul>
+						<ul class="notification-body" data-bind="visible: RequisicaoPendente.val">
+							<li class="text-align-center">
+								<a href="javascript:void(0);" class="btn txt-color-blue"><i class="fa fa-gear fa-2x fa-spin"></i> Carregando...</a>
+							</li>
+						</ul>
+					</div>
+					<span>
+						Ver todas as notificações
+						<button type="button" title="ir para notificações" data-bind="click: VerTodasNotificacoes.eventClick" data-loading-text="<i class='fa fa-arrow-right'></i> " class="btn btn-xs btn-default pull-right">
+							<i class="fa fa-arrow-right"></i>
+						</button>
+
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="margin-left-25 hidden-xs hidden-sm">
+			<span class="txt-ellipsis @Html.Raw(ViewBag.ClasseEmpresa)" style="max-width: 300px;">
+				@Html.Raw(ViewBag.NomeEmpresa)
+			</span>
+			<strong class="txt-ellipsis @Html.Raw(ViewBag.ClasseAmbiente)">
+				@Html.Raw(ViewBag.Ambiente)
+			</strong>
+		</div>
+		<div class="pull-right">
+
+			<div id="hide-menu" class="btn-header pull-right">
+				<span> <a href="javascript:void(0);" data-action="toggleMenu" title="Minimizar o Menu"><i class="fa fa-reorder"></i></a> </span>
+			</div>
+			<div id="logout" class="btn-header transparent pull-right">
+				<span> <a href="Login" title="Sair do Sistema" data-action="userLogout" data-logout-msg="Você realmente deseja sair do sistema?"><i class="fa fa-sign-out"></i></a> </span>
+			</div>
+
+			<div id="search-mobile" class="btn-header transparent pull-right">
+				<span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
+			</div>
+			<div class="header-search pull-right">
+				<input id="search-paginas" type="text" placeholder="Pesquisa de Formulários">
+				<button type="submit">
+					<i class="fa fa-search"></i>
+				</button>
+				<a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i class="fa fa-times"></i></a>
+			</div>
+			<div id="fullscreen" class="btn-header transparent pull-right">
+				<span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Tela Cheia"><i class="fa fa-arrows-alt"></i></a> </span>
+			</div>
+			<div id="divAuditoriaGlobal" style="display:none" class="btn-header transparent pull-right">
+				<span style="cursor:pointer"><a href="#" title="Auditar"><i class="fa fa-eye"></i></a></span>
+			</div>
+
+			<ul id="mobile-profile-img" class="header-dropdown-list hidden-xs">
+				<li class="">
+					<div class="btn-header transparent pull-right" data-toggle="dropdown">
+						<span> <a href="javascript:void(0);" data-action="toggleMenu" title="Minimizar o menu"><i class="fa fa-gear"></i></a> </span>
+					</div>
+					<ul class="dropdown-menu pull-right">
+						<li>
+							<a href="#Pessoas/AlterarSenha" id="show-shortcutadeu">
+								<i class="fa fa-edit"></i>
+								<span>
+									Alterar Senha
+								</span>
+							</a>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<a href="Login" title="Sair do Sistema" data-action="userLogout" data-logout-msg="Você realmente deseja sair do sistema?"><i class="fa fa-sign-out"></i>Sair do Sistema</a>
+						</li>
+					</ul>
+					<div class="pull-right @Html.Raw(ViewBag.CorFundoUsuario)" style="margin-top:15px; margin-right:10px;">
+						<span>
+							<span class="txt-ellipsis" style="max-width: 200px;">
+								<i class="fa fa-user"></i>&nbsp;@Html.Raw(ViewBag.NomeUsuario)
+							</span>
+						</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</header>
+
+	<aside id="left-panel">
+
+		<div class="login-info">
+			<div class="login-info">
+				<span>
+					<a href="#Pessoas/AlterarSenha" id="show-shortcut">
+						<i class="fa fa-user"></i>
+						<span>
+							@Html.Raw(ViewBag.NomeUsuario)
+						</span>
+					</a>
+
+				</span>
+			</div>
+		</div>
+
+		<nav>
+			<ul id="ulMenuSistema">
+				@Html.Raw(ViewBag.Menu)
+			</ul>
+		</nav>
+		<span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
+		<div class="pull-right" style="display:none" id="botao-logout"> <a href="Login" title="Sair do Sistema" data-action="userLogout" data-logout-msg="Você realmente deseja sair do sistema?">SAIR <i class="fa fa-sign-out"></i></a> </div>
+	</aside>
+
+	<div id="main" role="main">
+
+		<div id="ribbon" style="display:none">
+
+			<span class="ribbon-button-alignment" style="display:none">
+				<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true" data-reset-msg="Would you like to RESET all your saved widgets and clear LocalStorage?"><i class="fa fa-refresh"></i></span>
+			</span>
+
+			<!-- breadcrumb -->
+			<ol class="breadcrumb" style="display:none">
+				<!-- This is auto generated -->
+			</ol>
+
+		</div>
+		<div class="div-pre-box">
+			<div class="row box-bem-vindo" style="display: none">
+				<section class="col col-lg-12">
+					<img src="../img/Logos/logos-oficiaisV2.png" alt="Quartzolit" class="" /><br />
+					<span><a href="#/Pessoas/AlterarSenha" style="color: #000000">@Html.Raw(ViewBag.NomeUsuario)</a></span>, bem-vindo (a) ao Portal de Agendamentos
+				</section>
+			</div>
+		</div>
+		<div id="content">
+		</div>
+
+		<!-- CHAT CONTAINER -->
+		<div id="chat-container" class="" style="width: 0px; right: 1px;">
+			<span class="chat-list-open-close" style="display: none;"><i class="fa fa-user"></i><b>!</b></span>
+
+			<div id="knoutChatGlobal" style="display: none;">
+				<div class="chat-list-body">
+					<ul id="chat-users">
+						@*<li>
+						<a href="javascript:void(0);" id="chat1"><img src="img/avatars/female.png">Robin Berry <span class="badge badge-inverse">23</span><span class="state"><i class="fa fa-circle txt-color-green pull-right"></i></span></a>
+						</li>
+						<li>
+						<a href="javascript:void(0);" id="chat2"><img src="img/avatars/male.png">Mark Zeukartech <span class="state"><i class="fa fa-circle txt-color-yellow pull-right"></i></span></a>
+						</li>
+						<li>
+						<a href="javascript:void(0);"><img src="img/avatars/male.png">Belmain Dolson <span class="state"><i class="last-online pull-right">45m</i></span></a>
+						</li>
+						<li>
+						<a href="javascript:void(0);"><img src="img/avatars/male.png">Sadi Orlaf <span class="state"><i class="fa fa-circle txt-color-green pull-right"></i></span></a>
+						</li>*@
+					</ul>
+				</div>
+				<div class="chat-list-footer">
+					<div class="control-group">
+						<form class="smart-form">
+							<section>
+								<label class="input">
+									<input type="text" id="filter-chat-list" placeholder="Filtro">
+								</label>
+							</section>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="modal modal-wide fade" id="divModalDetalhesAuditoria" style="z-index:1300" role="dialog" aria-hidden="true" tabindex="-1">
+			<div class="modal-dialog modal-lg" id="knoutModalDetalhesAuditoria">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> &times;</button>
+						<h4 class="modal-title">Detalhes Auditoria</h4>
+					</div>
+					<div class="modal-body">
+						<section class="insideNoPaddignTable">
+							<table width="100%" class="table table-bordered table-hover" id="tableModalDetalheAuditoria"></table>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal modal-wide fade" id="divModalAuditoria" style="z-index:1200" role="dialog" aria-hidden="true" tabindex="-1">
+			<div class="modal-dialog modal-lg" id="knoutModalAuditoria">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> &times;</button>
+						<h4 class="modal-title">Auditoria</h4>
+					</div>
+					<div class="modal-body">
+						<section class="insideNoPaddignTable">
+							<table width="100%" class="table table-bordered table-hover" id="tableModalAuditoria"></table>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="divModalUserHelp" style="z-index:1200" role="dialog" aria-hidden="true" tabindex="-1">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" onclick="fecharAjudaClick()" aria-hidden="true"> &times;</button>
+						<button type="button" class="btn btn-circle" id="btnVoltarAjuda" onclick="voltarAjudaClick()"><i class="fa fa-arrow-left"></i></button> <h4 class="modal-title" id="TituloAjuda" style="margin-left:45px; margin-top:-25px;"></h4>
+					</div>
+					<div class="modal-body">
+						<div>
+
+							<div class="widget-body">
+
+								<div class="tabs-left">
+									<ul class="nav nav-tabs tabs-left" id="demo-pill-nav">
+										<li class="active" id="tabAjudaInfo">
+											<a href="#tab-r1-ajuda" data-toggle="tab">Ajuda</a>
+										</li>
+										<li id="tabVideoAjuda" style="display:none">
+											<a href="#tab-r2-ajuda" data-toggle="tab">Video</a>
+										</li>
+									</ul>
+									<div class="tab-content" style="height:500px;">
+										<div class="tab-pane active" id="tab-r1-ajuda">
+											<p id="contentInformacaoAjuda" style="height:500px; overflow-y:scroll">
+											</p>
+										</div>
+										<div class="tab-pane" id="tab-r2-ajuda">
+											<div class="embed-responsive embed-responsive-16by9">
+												<iframe class="embed-responsive-item" id="iFrameVideoAjuda" src="" style="width:100%; height:480px; border:none;"></iframe>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page-footer">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<span class="txt-color-white"><small> @Html.Raw(ViewBag.Versao)</small>  Multisoftware Development Center © @Html.Raw(ViewBag.AnoCorrente) @Html.Raw(ViewBag.DadosEmpresaPai) <small> | </small> <small><a onclick="buscarAjuda(15376)" href="javascript:void(0);">Política de Privacidade</a> </small> <small> | </small> <small> <a href="mailto:@Html.Raw(ViewBag.EmailDPO)">@Html.Raw(ViewBag.EmailDPO)</a></small> </span>
+			</div>
+			<div class="col-xs-6 col-sm-6 text-right hidden-xs" id="knoutCentralProcessamento">
+				<div class="txt-color-white inline-block">
+					<div data-bind="attr: { class: NadaParaProcessar.cssClass }" style="margin-right:10px;">
+						<button class="btn btn-xs dropdown-toggle bg-color-blue txt-color-white" data-bind="click: NadaParaProcessar.eventClick">
+							<i class="fa fa-gears"></i> <span class="caret"></span>
+						</button>
+
+						<ul class="dropdown-menu pull-right text-left" data-bind="foreach: Processamentos">
+							<li>
+								<div class="padding-5">
+									<p class="txt-color-darken font-sm no-margin" data-bind="text: Descricao.val, attr:{title:Titulo.val}"></p>
+									<div class="progress progress-sm no-margin progress-striped active">
+										<div class="progress-bar progress-bar-success" style="width: 100%;"></div>
+									</div>
+								</div>
+							</li>
+							<li class="divider"></li>
+						</ul>
+						<ul class="dropdown-menu pull-right text-left" data-bind="visible: NadaParaProcessar.val">
+							<li>
+								<div class="padding-5">
+									<p class="txt-color-darken font-sm no-margin text-align-center">Nada para processar</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!-- end btn-group-->
+				</div>
+				<!-- end div-->
+			</div>
+		</div>
+	</div>
+	<div id="shortcut">
+		<ul>
+			<li>
+				<a href="#ajax/inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
+			</li>
+			<li>
+				<a href="#ajax/calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
+			</li>
+			<li>
+				<a href="#ajax/gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a>
+			</li>
+			<li>
+				<a href="#ajax/invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span> </a>
+			</li>
+			<li>
+				<a href="#ajax/gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
+			</li>
+			<li>
+				<a href="#ajax/profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
+			</li>
+		</ul>
+	</div>
+
+	@Html.Partial("~/Views/MasterLayout/Modal.cshtml")
+
+	<script src="~/scripts/jquery"></script>
+	<script src="~/scripts/jqueryUI"></script>
+	<script src="~/scripts/blockUI"></script>
+	<script src="~/scripts/jqueryTouch"></script>
+	<script src="~/scripts/fileDownload"></script>
+	<script src="~/scripts/JarvisWidget"></script>
+	<script src="~/scripts/Wizard"></script>
+	<script src="~/scripts/appConfig"></script>
+	<script src="~/scripts/myAppConfig"></script>
+	<script src="~/scripts/bootstrap"></script>
+	<script src="~/scripts/jqueryValidate"></script>
+	<script src="~/scripts/maskedInput"></script>
+	<script src="~/scripts/jqueryMbBrowser"></script>
+	<script src="~/scripts/smartNotification"></script>
+	<script src="~/scripts/fastClick"></script>
+	<script src="~/scripts/maskMoney"></script>
+	<script src="~/scripts/moment"></script>
+	<script src="~/scripts/fullcalendar"></script>
+	<script src="~/scripts/countdown"></script>
+	<script src="~/scripts/promise"></script>
+	<script src="~/scripts/datetimepicker"></script>
+	<script src="~/scripts/globalize"></script>
+	<script src="~/scripts/localization"></script>
+	<script src="~/scripts/dataTables"></script>
+	<script src="~/scripts/knockout"></script>
+	<script src="~/scripts/global"></script>
+	<script src="~/scripts/twbsPagination"></script>
+	<script src="~/scripts/signalR"></script>
+	<script src="~/scripts/enumeradores"></script>
+	<script src="~/scripts/configuracaoTMS"></script>
+	<script src="~/scripts/consultas"></script>
+	<script src="~/scripts/signalRGlobal"></script>
+	<script src="~/scripts/bootstrapSelect"></script>
+	<script src="~/scripts/bootstrapToggle"></script>
+	<script src="~/scripts/bootstrapColorSelector"></script>
+	<script src="~/scripts/notificacaoGlobal"></script>
+	<script src="~/scripts/centralProcessamentoGlobal"></script>
+	<script src="~/scripts/ajudaUsuario"></script>
+	<script src="~/scripts/componenteImportacao"></script>
+	<script src="~/relatorios/scripts/relatoriosGlobal"></script>
+	<script src="~/scripts/chatManager"></script>
+	<script src="~/scripts/chatUI"></script>
+	<script src="~/scripts/Chat"></script>
+	<script src="~/scripts/app"></script>
+
+	<!--[if IE 8]>
+		<h1>Seu não suporta o Multi Embarcador por favor atualize seu navegador para uma versão mais atual e tente novamente.</h1>
+	<![endif]-->
+
+	<script type="text/javascript">
+		var _masterLayoutCarregado = false;
+		var _CONFIGURACAO_TMS = @Html.Raw(ViewBag.ConfiguracaoPadrao);
+		var _IDUsuario = @Html.Raw(ViewBag.IDUsuario);
+
+		$(document).ready(function () {
+
+			setarConfiguracaoPadrao();
+
+			loadSignalRhubConnections(function () {
+				loadNotificacaoGlobal();
+			});
+
+			LoadAuditoria();
+			loadChatGlobal();
+
+			var optionPaginasMenu = [];
+			ObterListaRecursivaMenu($("#ulMenuSistema"), optionPaginasMenu);
+			$("#search-paginas").autocomplete({
+				source: optionPaginasMenu,
+				select: function (event, ui) {
+					window.location = ui.item.pagina;
+				}
+			});
+
+			$("#search-paginas").blur(function () {
+				$("#search-paginas").val("");
+			});
+			$(document).bind('keydown', function (event) {
+				if (event.which === 90 && event.altKey) {
+					//alt + z
+					$("#search-paginas").focus();
+					event.preventDefault();
+				}
+			});
+
+			_masterLayoutCarregado = true;
+		});
+	</script>
+</body>
+
+
+
+</html>
+

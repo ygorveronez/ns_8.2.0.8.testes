@@ -1,0 +1,105 @@
+﻿<div class="col-12 col-md-12">
+    <div class="card" >
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h3 class="card-title">Fechamento do Pagamento</h3>
+
+        </div>
+        <div class="card-body">
+            <fieldset>
+                <div class="row" id="knockoutPercentualFechamentoPagamento" style="display: none;">
+                    <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <p>
+                            Gerando os movimentos para o pagamento, aguarde...
+                            <span class="txt-color-purple pull-right"><i class="fa fa-warning"></i> <span data-bind="text: PercentualProcessado.val"></span> concluídos</span>
+                        </p>
+                        <div class="progress">
+                            <div class="progress progress-striped active">
+                                <div class="progress-bar bg-color-darken" role="progressbar" data-bind="attr: {id : PercentualProcessado.id}" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="knockoutPagamentoAutorizacao">
+                    <div class="row">
+                        <div class="col col-sm-12 text-right">
+                            <input type="button" data-bind="visible: (ExibirAprovacao.fadeVisible() && !PossuiRegras.val()), click: ReprocessarRegras.eventClick, attr: { value: ReprocessarRegras.text, id : ReprocessarRegras.id}" class="botaoDentroSmartAdmimForm btn btn-labeled btn-success margin-bottom-10" />
+                            <input type="button" data-bind="visible: ExibirAprovacao.visible, click: ExibirAprovacao.eventClick, attr: { value: ExibirAprovacao.text, id : ExibirAprovacao.id}" class="botaoDentroSmartAdmimForm btn btn-labeled btn-default margin-bottom-10" />
+                        </div>
+                    </div>
+
+                    <div class="row" data-bind="fadeVisible: ExibirAprovacao.fadeVisible, id: ExibirAprovacao.id + '_fade'">
+                        <section class="col col-xs-12 col-md-6" data-bind="visible: PossuiRegras.val">
+                            <div class="well">
+                                <header>
+                                    Detalhes
+                                </header>
+                                <fieldset>
+                                    <div class="row">
+                                        <section data-bind="visible: AprovacoesNecessarias.visible" class="col col-xs-12">
+                                            <label><b data-bind="text: AprovacoesNecessarias.text"></b> <span data-bind="text: AprovacoesNecessarias.val"></span></label>
+                                        </section>
+                                        <section data-bind="visible: Aprovacoes.visible" class="col col-xs-12">
+                                            <label><b data-bind="text: Aprovacoes.text"></b> <span data-bind="text: Aprovacoes.val"></span></label>
+                                        </section>
+                                        <section data-bind="visible: Reprovacoes.visible" class="col col-xs-12">
+                                            <label><b data-bind="text: Reprovacoes.text"></b> <span data-bind="text: Reprovacoes.val"></span></label>
+                                        </section>
+                                        <section class="col col-xs-12" data-bind="visible: DescricaoSituacao.visible">
+                                            <label><b>Situação:</b> <span data-bind="text: DescricaoSituacao.val"></span></label>
+                                        </section>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+
+                        <section class="col col-sm-12 col-md-6 col-lg-6" data-bind="visible: PossuiRegras.val">
+                            <div class="well">
+                                <header>
+                                    Aprovadores
+                                </header>
+                                <fieldset>
+                                    <div class="widget-body">
+                                        <section class="insideNoPaddignTable">
+                                            <table id="grid-pagamento-autorizacao" width="100%" class="table table-bordered table-hover" cellspacing="0"></table>
+                                        </section>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+
+                        <section class="col col-xs-12 padding-top-15 margin-bottom-5" data-bind="visible: !PossuiRegras.val()">
+                            <div class="alert alert-warning">
+                                Não foi encontrada nenhuma regra de aprovação.<br>
+                                O pagamento ficará pendente até existir alguma regra de aprovação. Clique em reprocessar regras para verificar.
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="row" id="divMotivoProblemaFechamento" style="display: none;">
+                    <div class="col col-sm-12 ">
+                        <alert dismissible="true" type="danger">
+                            <div role="alert" class="alert alert-danger alert-dismissible ng-star-inserted" style="margin-top: 0px !important;">
+                                <i class="fal fa-times"></i>
+                                <strong>Problema! </strong> <span id="pMotivoProblemaFechamento"></span>
+                            </div>
+                        </alert>
+                    </div>
+                </div>
+
+                <div class="row" id="knoutFechamentoPagamento" style="display: none;">
+                    <section class="col col-12 insideNoPaddignTable">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Contabilizacao.idGrid}" cellspacing="0"></table>
+                    </section>
+                </div>
+            </fieldset>
+            <footer id="knoutCRUDFechamentoPagamento" data-bind="visible: ProcessarNovamente.visible">
+                <input type="button" data-bind="click: ConfirmarPagamento.eventClick, visible: ConfirmarPagamento.visible, attr: { value: ConfirmarPagamento.text, id : ConfirmarPagamento.id}" class="btn ms-2 btn-labeled btn-success" />
+                <input type="button" data-bind="click: ProcessarNovamente.eventClick, visible: ProcessarNovamente.visible, attr: { value: ProcessarNovamente.text, id : ProcessarNovamente.id}" class="btn ms-2 btn-labeled btn-warning" />
+                <input type="button" style="float:left" data-bind="click: CancelarPagamento.eventClick, visible: CancelarPagamento.visible, attr: { value: CancelarPagamento.text, id : CancelarPagamento.id}" class="btn btn-labeled btn-danger" />
+            </footer>
+        </div>
+        
+    </div>
+</div>

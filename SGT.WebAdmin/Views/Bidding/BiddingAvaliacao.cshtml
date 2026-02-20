@@ -1,0 +1,2232 @@
+﻿
+<style>
+    textarea {
+        resize: none;
+        height: 300px;
+    }
+
+    .duvida {
+        margin: 12px;
+        border: 1px solid #E0E0E0;
+        box-shadow: 0 1px 1px #ececec;
+    }
+
+    .duvidaTextArea {
+        resize: none;
+        height: 100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .checklistTextArea {
+        resize: none;
+        height: 80px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .duvidas {
+        height: 400px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+
+    #knockoutCRUDQuestao {
+        background-color: rgba(248, 248, 248, 0.9);
+        margin: 0;
+    }
+
+    #footerQuestao input[type=button] {
+        margin: 15px 0px 15px 5px;
+    }
+
+    .questao {
+        margin-top: 5px;
+        border: 1px solid #dddddd;
+        box-shadow: 0 1px 1px #ececec;
+    }
+
+    .requisito {
+        color: #6699ff;
+    }
+
+    .menor-valor {
+        padding: 6px;
+        background-color: #00A591;
+        color: white;
+        font-weight: 500;
+        border-radius: 4px;
+    }
+
+    /* Estilização do tooltip */
+    .tooltip-inner {
+        background-color: black;
+        color: white;
+        font-size: 16px;
+        border-radius: 4px;
+        padding: 10px;
+        text-align: left;
+        max-width: 200px;
+        border: none;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .tooltip.bs-tooltip-top .arrow::before {
+        border-top-color: black;
+    }
+
+    .tooltip-inner br {
+        content: "";
+        display: block;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .tooltip-inner {
+        white-space: pre-line;
+    }
+
+    .tooltip-custom {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .selecionado {
+        background-color: #2196F3;
+        color: white;
+        padding: 1px;
+        display: block;
+        box-sizing: border-box;
+        border-radius: 3px;
+    }
+
+    #grid-ofertas-fixa tr td {
+        padding-bottom: 14.5px;
+    }
+
+    .destaque-positivo {
+        background-color: #00A591;
+        padding: 6px;
+        color: white;
+        font-weight: 500;
+        border-radius: 4px;
+    }
+
+    .destaque-negativo {
+        background-color: #FF5733;
+        padding: 6px;
+        color: white;
+        font-weight: 500;
+        border-radius: 4px;
+    }
+</style>
+<section id="widget-grid">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Bidding</li>
+        <li class="breadcrumb-item active">Bidding Avaliação</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            Bidding
+        </h1>
+
+    </div>
+
+    <div id="knockoutPesquisaBiddingConvite">
+        <div class="panel">
+            <div class="panel-container">
+                <div class="panel-content">
+                    <div data-widget-colorbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-togglebutton="false">
+                        <button class="btn btn-primary" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                            <i class="fal fa-search"></i> Pesquisar Convite Bidding
+                        </button>
+
+                        <div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade" class="mt-3">
+                            <form>
+                                <div class="row">
+                                    <div class="col-12 col-md-4" data-bind="visible: Descricao.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                            <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-2" data-bind="visible: DataInicio.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: DataInicio.text, attr: { for: DataInicio.id }"></label>
+                                            <input type="text" class="form-control" data-bind="class: DataInicio.requiredClass, value: DataInicio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicio.maxlength, id : DataInicio.id}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-2" data-bind="visible: DataLimite.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: DataLimite.text, attr: { for: DataLimite.id }"></label>
+                                            <input type="text" class="form-control" data-bind="class: DataLimite.requiredClass, value: DataLimite.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataLimite.maxlength, id : DataLimite.id}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-2" data-bind="visible: NumeroBidding.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: NumeroBidding.text"></label>
+                                            <input type="text" class="form-control" data-bind="class: NumeroBidding.requiredClass, value: NumeroBidding.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroBidding.maxlength, id : NumeroBidding.id}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-2" data-bind="visible: Situacao.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                                            <select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', selectedOptions: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}" multiple="multiple" title="Todas"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4" data-bind="visible: Solicitante.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Solicitante.text, attr: { for: Solicitante.id }"></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" data-bind="class: Solicitante.requiredClass, value: Solicitante.val, enable: Solicitante.enable, attr: { maxlength: Solicitante.maxlength, id: Solicitante.id}, event: { blur: Solicitante.eventChange }, valueUpdate: 'afterkeydown'" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="enable : Solicitante.enable, attr: { id: Solicitante.idBtnSearch}">
+                                                        <i class="fal fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4" data-bind="visible: Comprador.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Comprador.text, attr: { for: Comprador.id }"></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" data-bind="class: Comprador.requiredClass, value: Comprador.val, enable: Comprador.enable, attr: { maxlength: Comprador.maxlength, id: Comprador.id}, event: { blur: Comprador.eventChange }, valueUpdate: 'afterkeydown'" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="enable : Comprador.enable, attr: { id: Comprador.idBtnSearch}">
+                                                        <i class="fal fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4" data-bind="visible: TipoBidding.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: TipoBidding.text, attr: { for: TipoBidding.id }"></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" data-bind="css: TipoBidding.requiredClass, value: TipoBidding.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoBidding.maxlength, id : TipoBidding.id}" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoBidding.idBtnSearch}" type="button" aria-label="Buscar">
+                                                        <i class="fal fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6" data-bind="visible: Transportador.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Transportador.text, attr: { for: Transportador.id }"></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" data-bind="class: Transportador.requiredClass, value: Transportador.val, enable: Transportador.enable, attr: { maxlength: Transportador.maxlength, id: Transportador.id}, event: { blur: Transportador.eventChange }, valueUpdate: 'afterkeydown'" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="enable : Transportador.enable, attr: { id: Transportador.idBtnSearch}">
+                                                        <i class="fal fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6" data-bind="visible: FiliaisParticipante.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: FiliaisParticipante.text, attr: { for: FiliaisParticipante.id }"></label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" data-bind="css: FiliaisParticipante.requiredClass, value: FiliaisParticipante.val, valueUpdate: 'afterkeydown', attr: { maxlength: FiliaisParticipante.maxlength, id : FiliaisParticipante.id}" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: FiliaisParticipante.idBtnSearch}" type="button" aria-label="Buscar">
+                                                        <i class="fal fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mb-3">
+                                    <button class="btn btn-primary ms-2" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                                        <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                                    </button>
+                                </div>
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-12" id="knockoutBiddingInfo" data-bind="visible: ExibirResumo.val">
+        <div class="card">
+
+            <div class="card-body">
+                <div class="row">
+                    <section class="col col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <b>Número do Bidding: </b><span data-bind="text: Codigo.val"></span>
+                    </section>
+                    <section class="col col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <b>Situação: </b><span data-bind="text: Situacao.val"></span>
+                    </section>
+                    <section class="col col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <b>Data Limite: </b><span data-bind="text: DataLimite.val"></span>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+
+
+    <div id="wid-id-4" class="panel" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+        <div class="panel-container">
+            <div class="panel-hdr">
+                <h3>
+                    <i class="fal fa-edit"></i>
+                    Bidding
+                </h3>
+            </div>
+            <div class="panel-content">
+                <form>
+                    <div id="knockoutEtapasBidding">
+                        <ul class="nav nav-steps">
+                            <li data-target="#step1" data-bind="visible : Etapa1.visible">
+                                <button class="active" data-bs-target="#tabConvite" data-bs-toggle="tab" data-bind="attr: {id : Etapa1.idTab }, click : Etapa1.eventClick, visible : Etapa1.visible">
+                                    <span class="step" data-bind="attr: {'data-content' : Etapa1.tooltip, 'data-original-title' : Etapa1.tooltipTitle }">
+                                        <i class="fal fa-file-alt"></i>
+                                    </span>
+                                    <span class="title" data-bind="text: Etapa1.text"></span>
+                                </button>
+                            </li>
+                            <li data-target="#step2" data-bind="visible : Etapa2.visible">
+                                <button data-bs-target="#tabChecklist" data-bs-toggle="tab" data-bind="attr: {id : Etapa2.idTab }, click : Etapa2.eventClick">
+                                    <span class="step" data-bind="attr: {'data-content' : Etapa2.tooltip, 'data-original-title' : Etapa2.tooltipTitle }">
+                                        <i class="fal fa-file-check"></i>
+                                    </span>
+                                    <span class="title" data-bind="text: Etapa2.text"></span>
+                                </button>
+                            </li>
+                            <li data-target="#step3" data-bind="visible : Etapa3.visible">
+                                <button data-bs-target="#tabOfertas" data-bs-toggle="tab" data-bind="attr: {id : Etapa3.idTab }, click : Etapa3.eventClick">
+                                    <span class="step" data-bind="attr: {'data-content' : Etapa3.tooltip, 'data-original-title' : Etapa3.tooltipTitle }">
+                                        <i class="fal fa-truck"></i>
+                                    </span>
+                                    <span class="title" data-bind="text: Etapa3.text"></span>
+                                </button>
+                            </li>
+                            <li data-target="#step4" data-bind="visible : Etapa4.visible">
+                                <button data-bs-target="#tabResultado" data-bs-toggle="tab" data-bind="attr: {id : Etapa4.idTab }, click : Etapa4.eventClick">
+                                    <span class="step" data-bind="attr: {'data-content' : Etapa4.tooltip, 'data-original-title' : Etapa4.tooltipTitle }">
+                                        <i class="fal fa-lock"></i>
+                                    </span>
+                                    <span class="title" data-bind="text: Etapa4.text"></span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="myTabContent" class="tab-content">
+                        <div id="tabConvite" class="tab-pane fade show active">
+                            <div class="col-12 col-md-12">
+                                <div class="card" div id="knockoutConvite">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Convites</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div data-bind="visible: (TempoRestante.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>
+                                                <i class="fa fa-clock-o fa-2x"></i> <b style="vertical-align: super;" data-bind="text: TempoRestante.val, style: {color: TempoRestante.color}"></b>
+                                            </label>
+                                        </div>
+                                        <table class="table table-bordered table-hover" data-bind="attr: { id: Convites.id }" cellspacing="0"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabChecklist" class="tab-pane fade">
+                            <div class="col-12 col-md-12">
+                                <div class="card" id="knockoutChecklist">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Checklist</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <section data-bind="visible: (TempoRestante.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>
+                                                <i class="fa fa-clock-o fa-2x"></i> <b style="vertical-align: super;" data-bind="text: TempoRestante.val, style: {color: TempoRestante.color}"></b>
+                                            </label>
+                                        </section>
+
+                                        <div class="row">
+                                            <table class="table table-bordered table-hover" data-bind="attr: { id: Checklist.id }" cellspacing="0"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabOfertas" class="tab-pane fade ">
+                            <div class="col-12 col-md-12">
+                                <div class="card" id="knockoutOfertas">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Ofertas</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div data-bind="visible: (TempoRestante.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label>
+                                                <i class="fa fa-clock-o fa-2x"></i> <b style="vertical-align: super;" data-bind="text: TempoRestante.val, style: {color: TempoRestante.color}"></b>
+                                            </label>
+                                        </div>
+                                        <br />
+                                        <div class="panel">
+                                            <div class="panel-container">
+                                                <div class="panel-content">
+                                                    <div data-widget-colorbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-togglebutton="false">
+                                                        <button class="btn btn-primary" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                                                            <i class="fal fa-search"></i> Pesquisar
+                                                        </button>
+                                                        <button class="btn btn-primary waves-effect waves-themed ml-2" type="button" data-bind="click: LimparFiltros.eventClick, attr: { id: LimparFiltros.id }">
+                                                            <i class="fal fa-recycle"></i><span data-bind="text: LimparFiltros.text"></span>
+                                                        </button>
+                                                        <div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade" class="mt-3">
+                                                            <div class="row">
+                                                                <div class="col-md-3" data-bind="visible: Rotas.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: Rotas.text, attr: { for: Rotas.id }"></label>
+                                                                        <select class="form-control" data-bind="class: Rotas.requiredClass, options: Rotas.options, optionsText: 'text', optionsValue: 'value', value: Rotas.val, attr: { maxlength: Rotas.maxlength, id : Rotas.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: ModeloVeicular.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: ModeloVeicular.text, attr: { for: ModeloVeicular.id }"></label>
+                                                                        <select class="form-control" data-bind="class: ModeloVeicular.requiredClass, options: ModeloVeicular.options, optionsText: 'text', optionsValue: 'value', value: ModeloVeicular.val, attr: { maxlength: ModeloVeicular.maxlength, id : ModeloVeicular.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: Filial.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+                                                                        <select class="form-control" data-bind="class: Filial.requiredClass, options: Filial.options, optionsText: 'text', optionsValue: 'value', value: Filial.val, attr: { maxlength: Filial.maxlength, id : Filial.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: Origem.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: Origem.text, attr: { for: Origem.id }"></label>
+                                                                        <select class="form-control" data-bind="class: Origem.requiredClass, options: Origem.options, optionsText: 'text', optionsValue: 'value', value: Origem.val, attr: { maxlength: Origem.maxlength, id : Origem.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: Destino.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: Destino.text, attr: { for: Destino.id }"></label>
+                                                                        <select class="form-control" data-bind="class: Destino.requiredClass, options: Destino.options, optionsText: 'text', optionsValue: 'value', value: Destino.val, attr: { maxlength: Destino.maxlength, id : Destino.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: MesorregiaoOrigem.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: MesorregiaoOrigem.text, attr: { for: MesorregiaoOrigem.id }"></label>
+                                                                        <select class="form-control" data-bind="class: MesorregiaoOrigem.requiredClass, options: MesorregiaoOrigem.options, optionsText: 'text', optionsValue: 'value', value: MesorregiaoOrigem.val, attr: { maxlength: MesorregiaoOrigem.maxlength, id : MesorregiaoOrigem.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: MesorregiaoDestino.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: MesorregiaoDestino.text, attr: { for: MesorregiaoDestino.id }"></label>
+                                                                        <select class="form-control" data-bind="class: MesorregiaoDestino.requiredClass, options: MesorregiaoDestino.options, optionsText: 'text', optionsValue: 'value', value: MesorregiaoDestino.val, attr: { maxlength: MesorregiaoDestino.maxlength, id : MesorregiaoDestino.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: RegiaoOrigem.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: RegiaoOrigem.text, attr: { for: RegiaoOrigem.id }"></label>
+                                                                        <select class="form-control" data-bind="class: RegiaoOrigem.requiredClass, options: RegiaoOrigem.options, optionsText: 'text', optionsValue: 'value', value: RegiaoOrigem.val, attr: { maxlength: RegiaoOrigem.maxlength, id : RegiaoOrigem.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: RegiaoDestino.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: RegiaoDestino.text, attr: { for: RegiaoDestino.id }"></label>
+                                                                        <select class="form-control" data-bind="class: RegiaoDestino.requiredClass, options: RegiaoDestino.options, optionsText: 'text', optionsValue: 'value', value: RegiaoDestino.val, attr: { maxlength: RegiaoDestino.maxlength, id : RegiaoDestino.id}"></select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-3" data-bind="visible: RotaOrigem.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: RotaOrigem.text, attr: { for: RotaOrigem.id }"></label>
+                                                                        <select class="form-control" data-bind="class: RotaOrigem.requiredClass, options: RotaOrigem.options, optionsText: 'text', optionsValue: 'value', value: RotaOrigem.val, attr: { maxlength: RotaOrigem.maxlength, id : RotaOrigem.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: RotaDestino.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: RotaDestino.text, attr: { for: RotaDestino.id }"></label>
+                                                                        <select class="form-control" data-bind="class: RotaDestino.requiredClass, options: RotaDestino.options, optionsText: 'text', optionsValue: 'value', value: RotaDestino.val, attr: { maxlength: RotaDestino.maxlength, id : RotaDestino.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: ClienteOrigem.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: ClienteOrigem.text, attr: { for: ClienteOrigem.id }"></label>
+                                                                        <select class="form-control" data-bind="class: ClienteOrigem.requiredClass, options: ClienteOrigem.options, optionsText: 'text', optionsValue: 'value', value: ClienteOrigem.val, attr: { maxlength: ClienteOrigem.maxlength, id : ClienteOrigem.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: ClienteDestino.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: ClienteDestino.text, attr: { for: ClienteDestino.id }"></label>
+                                                                        <select class="form-control" data-bind="class: ClienteDestino.requiredClass, options: ClienteDestino.options, optionsText: 'text', optionsValue: 'value', value: ClienteDestino.val, attr: { maxlength: ClienteDestino.maxlength, id : ClienteDestino.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: EstadoOrigem.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: EstadoOrigem.text, attr: { for: EstadoOrigem.id }"></label>
+                                                                        <select class="form-control" data-bind="class: EstadoOrigem.requiredClass, options: EstadoOrigem.options, optionsText: 'text', optionsValue: 'value', value: EstadoOrigem.val, attr: { maxlength: EstadoOrigem.maxlength, id : EstadoOrigem.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: EstadoDestino.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: EstadoDestino.text, attr: { for: EstadoDestino.id }"></label>
+                                                                        <select class="form-control" data-bind="class: EstadoDestino.requiredClass, options: EstadoDestino.options, optionsText: 'text', optionsValue: 'value', value: EstadoDestino.val, attr: { maxlength: EstadoDestino.maxlength, id : EstadoDestino.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: PaisOrigem.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: PaisOrigem.text, attr: { for: PaisOrigem.id }"></label>
+                                                                        <select class="form-control" data-bind="class: PaisOrigem.requiredClass, options: PaisOrigem.options, optionsText: 'text', optionsValue: 'value', value: PaisOrigem.val, attr: { maxlength: PaisOrigem.maxlength, id : PaisOrigem.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: PaisDestino.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: PaisDestino.text, attr: { for: PaisDestino.id }"></label>
+                                                                        <select class="form-control" data-bind="class: PaisDestino.requiredClass, options: PaisDestino.options, optionsText: 'text', optionsValue: 'value', value: PaisDestino.val, attr: { maxlength: PaisDestino.maxlength, id : PaisDestino.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 col-md-3" data-bind="visible: CEPOrigem.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: CEPOrigem.text"></label>
+                                                                        <input type="text" class="form-control" data-bind="value: CEPOrigem.val, valueUpdate: 'blur', attr: { maxlength: CEPOrigem.maxlength, id : CEPOrigem.id}" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 col-md-3" data-bind="visible: CEPDestino.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: CEPDestino.text"></label>
+                                                                        <input type="text" class="form-control" data-bind="value: CEPDestino.val, valueUpdate: 'blur', attr: { maxlength: CEPDestino.maxlength, id : CEPDestino.id}" />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-3" data-bind="visible: QuantidadeEntregas.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: QuantidadeEntregas.text, attr: { for: QuantidadeEntregas.id }"></label>
+                                                                        <select class="form-control" data-bind="class: QuantidadeEntregas.requiredClass, options: QuantidadeEntregas.options, optionsText: 'text', optionsValue: 'value', value: QuantidadeEntregas.val, attr: { maxlength: QuantidadeEntregas.maxlength, id : QuantidadeEntregas.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: QuantidadeAjudantes.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: QuantidadeAjudantes.text, attr: { for: QuantidadeAjudantes.id }"></label>
+                                                                        <select class="form-control" data-bind="class: QuantidadeAjudantes.requiredClass, options: QuantidadeAjudantes.options, optionsText: 'text', optionsValue: 'value', value: QuantidadeAjudantes.val, attr: { maxlength: QuantidadeAjudantes.maxlength, id : QuantidadeAjudantes.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3" data-bind="visible: QuantidadeViagensAno.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: QuantidadeViagensAno.text"></label>
+                                                                        <select class="form-control" data-bind="class: QuantidadeViagensAno.requiredClass, options: QuantidadeViagensAno.options, optionsText: 'text', optionsValue: 'value', value: QuantidadeViagensAno.val, attr: { maxlength: QuantidadeViagensAno.maxlength, id : QuantidadeViagensAno.id}"></select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex col-12 justify-content-end">
+                                            <div>
+                                                <button class="btn btn-success ms-2" type="button" data-bind="click: SelecionarVencendorUnico.eventClick, attr: { id: SelecionarVencendorUnico.id}, visible: SelecionarVencendorUnico.visible">
+                                                    <span data-bind="text: SelecionarVencendorUnico.text"></span>
+                                                </button>
+                                                <button class="btn btn-info ms-2" type="button" data-bind="click: SelecionarVencedores.eventClick, attr: { id: SelecionarVencedores.id}, visible: SelecionarVencedores.visible">
+                                                    <span data-bind="text: SelecionarVencedores.text"></span>
+                                                </button>
+                                                <button class="btn btn-warning ms-2" type="button" data-bind="click: ProporRodadaSelecionados.eventClick, attr: { id: ProporRodadaSelecionados.id}, visible: ProporRodadaSelecionados.visible">
+                                                    <span data-bind="text: ProporRodadaSelecionados.text"></span>
+                                                </button>
+                                                <button class="btn btn-primary ms-2" type="button" data-bind="click: SelecionarTodos.eventClick, attr: { id: SelecionarTodos.id}, visible: SelecionarTodos.visible">
+                                                    <span data-bind="text: SelecionarTodos.text"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="d-flex">
+                                            @* <div class="col-md-4">
+                                                <table class="table table-bordered table-hover col-md-4" id="grid-ofertas-fixa" cellspacing="0"></table>
+                                            </div> *@
+
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-hover col-md-8" data-bind="attr: { id: Ofertas.id }" cellspacing="0"></table>
+                                            </div>
+                                        </div>
+                                        <div class="dt-toolbar-footer d-flex flex-wrap justify-content-between mt-2">
+                                            <div class=" align-self-center">
+                                                <div class="dataTables_info" id="paginacaoOfertasResumo" role="status" aria-live="polite"></div>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <button class="btn btn-sm btn-success waves-effect waves-themed" type="button" data-bind="click: ExportarGridOfertas.eventClick, attr: { id: ExportarGridOfertas.id}">
+                                                    <i class="fal fa-file-excel"></i><span data-bind="text: ExportarGridOfertas.text"></span>
+                                                </button>
+                                            </div>
+                                            <div class="align-self-center">
+                                                <div class="dataTables_paginate paging_simple_numbers" id="paginacaoOfertas">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-12 mt-4">
+                                <div class="card" id="knockoutOfertasComponente" data-bind="visible: OfertaComponente.visible">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Ofertas Componente</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="col-md-12">
+                                                <table class="table table-bordered table-hover col-md-12" id="grid-ofertas-componente" cellspacing="0"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 mt-4">
+                                <div class="card" id="knockoutBiddingRankingOfertas" data-bind="visible: OfertaRanking.visible">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Ranking das três melhores ofertas</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="panel" data-bind="visible: Transportador.visible">
+                                            <div class="panel-container">
+                                                <div class="panel-content">
+                                                    <div data-widget-colorbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-togglebutton="false">
+                                                        <button class="btn btn-primary" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                                                            <i class="fal fa-search"></i> Pesquisar
+                                                        </button>
+                                                        <div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade" class="mt-3">
+                                                            <div class="row">
+                                                                <div class="col-12 col-md-3" data-bind="visible: Transportador.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: Transportador.text, attr: { for: Transportador.id }"></label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" data-bind="css: Transportador.requiredClass, value: Transportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: Transportador.maxlength, id : Transportador.id}" />
+                                                                            <div class="input-group-append">
+                                                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Transportador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                                    <i class="fal fa-search"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-end mb-3">
+                                            <button class="btn btn-default waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="enable: SelecionarTodos.enable, click: SelecionarTodos.eventClick, attr: { id: SelecionarTodos.id}" type="button">
+                                                <i class="fal fa-check"></i><span data-bind="text: SelecionarTodos.text"></span>
+                                            </button>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="col-md-12">
+                                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: OfertaRanking.idGrid}" cellspacing="0"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 mt-4">
+                                <div class="card" id="knockoutBiddingRankingCherryPickingOfertas" data-bind="visible: OfertaRanking.visible">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Ranking das três melhores ofertas por volume de carga</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="panel" data-bind="visible: Transportador.visible">
+                                            <div class="panel-container">
+                                                <div class="panel-content">
+                                                    <div data-widget-colorbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-togglebutton="false">
+                                                        <button class="btn btn-primary" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                                                            <i class="fal fa-search"></i> Pesquisar
+                                                        </button>
+                                                        <div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade" class="mt-3">
+                                                            <div class="row">
+                                                                <div class="col-12 col-md-3" data-bind="visible: Transportador.visible">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" data-bind="text: Transportador.text, attr: { for: Transportador.id }"></label>
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" data-bind="css: Transportador.requiredClass, value: Transportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: Transportador.maxlength, id : Transportador.id}" />
+                                                                            <div class="input-group-append">
+                                                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Transportador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                                    <i class="fal fa-search"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-end mb-3">
+                                            <button class="btn btn-default waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="enable: SelecionarTodos.enable, click: SelecionarTodos.eventClick, attr: { id: SelecionarTodos.id}" type="button">
+                                                <i class="fal fa-check"></i><span data-bind="text: SelecionarTodos.text"></span>
+                                            </button>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="col-md-12">
+                                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: OfertaRanking.idGrid}" cellspacing="0"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabResultado" class="tab-pane fade ">
+                            <div class="col-12 col-md-12">
+                                <div class="card" id="knockoutFechamento">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Ofertas</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-4" data-bind="visible: Rotas.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Rotas.text, attr: { for: Rotas.id }"></label>
+                                                <select class="form-control" data-bind="class: Rotas.requiredClass, options: Rotas.options, optionsText: 'text', optionsValue: 'value', value: Rotas.val, attr: { maxlength: Rotas.maxlength, id : Rotas.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-end mb-3 mt-2">
+                                            <button class="btn btn-info ms-2" data-bind="enable: CriarTabelaFrete.enable, click: CriarTabelaFrete.eventClick, visible: CriarTabelaFrete.visible, attr: { id: CriarTabelaFrete.id}" type="button">
+                                                <span data-bind="text: CriarTabelaFrete.text"></span>
+                                            </button>
+                                            <button class="btn btn-default ms-2 waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="enable: SelecionarTodos.enable, click: SelecionarTodos.eventClick, attr: { id: SelecionarTodos.id}" type="button">
+                                                <i class="fal fa-check"></i><span data-bind="text: SelecionarTodos.text"></span>
+                                            </button>
+                                        </div>
+                                        <table class="table table-bordered table-hover" data-bind="attr: { id: Vencedores.id }" cellspacing="0"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="knockoutCRUDBidding" class="col-12 d-flex justify-content-end mb-3 mt-2">
+                        <button type="button" class="btn btn-info ms-2" data-loading-text="Aguarde..." data-bind="click: RecarregarBidding.eventClick, visible: RecarregarBidding.visible, text: RecarregarBidding.text, attr: { id : RecarregarBidding.id}">
+                            <i class="fal fa-spinner"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary ms-2" data-loading-text="Aguarde..." data-bind="click: NotificarInteressados.eventClick, visible: NotificarInteressados.visible, text: NotificarInteressados.text, attr: { id : NotificarInteressados.id}">
+                            <i class="fal fa-warning"></i>
+                        </button>
+                        <button type="button" class="btn btn-warning ms-2" data-loading-text="Aguarde..." data-bind="click: FinalizarEtapa.eventClick, visible: FinalizarEtapa.visible, text: FinalizarEtapa.text, attr: { id : FinalizarEtapa.id}">
+                            <i class="fal fa-warning"></i>
+                        </button>
+                        <button type="button" class="btn btn-success ms-2" data-loading-text="Aguarde..." data-bind="click: Duvidas.eventClick, visible: Duvidas.visible, text: Duvidas.text, attr: { id : Duvidas.id}">
+                            <i class="fal fa-spinner"></i>
+                        </button>
+                        <button type="button" class="btn btn-success ms-2" data-loading-text="Aguarde..." data-bind="click: FecharBidding.eventClick, visible: FecharBidding.visible, text: FecharBidding.text, attr: { id : FecharBidding.id}">
+                            <i class="fal fa-spinner"></i>
+                        </button>
+
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+
+</section>
+
+
+
+
+
+
+<div id="divModalDetalhesResposta" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" id="knockoutDetalhesRespostas">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> Respostas</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body pt-1">
+                <div class="row">
+                    <!-- ko foreach: Respostas -->
+                    <div class="col-12">
+                        <div class="card mb-2">
+                            <div class="card-header px-2 py-1">
+                                <h3 class="card-title" data-bind="text: Pergunta.val"></h3>
+                                <button type="button" data-bind="click: VerAnexos.eventClick, visible: VerAnexos.visible, text: VerAnexos.text, attr: { id : VerAnexos.id}" class="btn btn-default btn-xs waves-effect waves-themed float-end"></button>
+                            </div>
+                            <div class="card-body px-2 py-1">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <!-- ko ifnot: Resposta == null -->
+                                        <b>Resposta: </b><span data-bind="text: Resposta.val"></span>
+                                        <!-- /ko -->
+                                        <!-- ko if: Resposta == null -->
+                                        <b>Pergunta: </b><span>A pergunta não foi respondida.</span>
+                                        <!-- /ko -->
+                                    </div>
+                                    <div class="col-12">
+                                        <b>Observação: </b><span data-bind="text: Observacao.val"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <div class="col-12" data-bind="visible: Observacao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                            <textarea class="form-control" rows="4" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-end border border-start-0 border-end-0 border-bottom-0">
+                <button class="btn btn-default waves-effect waves-themed me-2" type="button" data-bind="click: Rejeitar.eventClick, attr: { id : Rejeitar.id}">
+                    <i class="fal fa-times"></i><span data-bind="text: Rejeitar.text"></span>
+                </button>
+                <button class="btn btn-success waves-effect waves-themed" type="button" data-bind="click: Aprovar.eventClick, attr: { id : Aprovar.id}">
+                    <i class="fal fa-check"></i><span data-bind="text: Aprovar.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="divModalRespostaAnexos" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutRespostaAnexos" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Anexos</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="padding-side" id="knockoutRespostaAnexos">
+                    <table class="table table-bordered table-hover" data-bind="attr: { id: Anexos.id }" cellspacing="0"></table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalAlterarTitularidade" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutTitularidadeOferta" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Titularidade da Oferta</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12 col-md-12" data-bind="visible: TipoTransportador.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: TipoTransportador.text, attr: { for: TipoTransportador.id }"></label>
+                        <select class="form-control" data-bind="class: TipoTransportador.requiredClass, options: TipoTransportador.options, optionsText: 'text', optionsValue: 'value', value: TipoTransportador.val, attr: { maxlength: TipoTransportador.maxlength, id : TipoTransportador.id}"></select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-success" type="button" data-bind="click: Salvar.eventClick, attr: { id : Salvar.id}">
+                        <i class="fal fa-check"></i><span data-bind="text: Salvar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="divModalDuvidas" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Dúvidas</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="smart-form duvidas" id="knockoutDuvidas">
+                    <!-- ko if: Duvidas.val().length == 0 -->
+                    <div class="padding-side margin-top-10">
+                        <div class="alert alert-info" role="alert">
+                            Nenhuma dúvida encontrada.
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko foreach: { data: Duvidas.val, as: 'Duvida' } -->
+                    <div class="duvida" data-bind="style:{'background-color':Resposta.val() == null ? '#87CEEB' : '#80ff80'}">
+
+                        <div class="row">
+                            <div class="col-12 col-md-12">
+                                <label data-bind="text: Data.val()"></label>
+                            </div>
+                            <div class="padding-side col-md-12">
+                                <label><b data-bind="text: Pergunta.val()"></b></label>
+                                <label><b style="color: chocolate;"><label data-bind="text: Transportador.val()"></label></b></label>
+                            </div>
+                            <!-- ko ifnot: Resposta.val() == null-->
+                            <div class="col-12 col-md-12">
+                                <label data-bind="text: Resposta.val()"></label>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if: Resposta.val() == null -->
+                            <div data-bind="visible: Responder.visible" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label class="label"><b data-bind="text: Responder.text"></b></label>
+                                <label data-bind="attr: { class: Responder.requiredClass}">
+                                    <input type="text" data-bind="value: Responder.val, valueUpdate: 'afterkeydown', attr: { maxlength: Responder.maxlength, id : Responder.id}" />
+                                </label>
+                            </div>
+                            <div class="col-12 col-md-12">
+                                <input type="button" data-loading-text="Aguarde..." data-bind="click: EnviarResposta.eventClick, visible: EnviarResposta.visible, attr: { value: EnviarResposta.text, id : EnviarResposta.id}" class="btn btn-labeled btn-success botaoDentroSmartAdmimForm" />
+                            </div>
+                            <!-- /ko -->
+                        </div>
+
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="divModalOfertaDetalhes" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutDetalhesOferta" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalhes da Oferta</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs ">
+                    <li class="nav-item" id="tabDetalhe1">
+                        <a href="#tab1" class="nav-link active" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Equipamento(Frota Fixa)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="tabDetalhe2">
+                        <a href="#tab2" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Frota Fixa + Km Rodado</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="tabDetalhe3">
+                        <a href="#tab3" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">% sobre a Nota</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="tabDetalhe4">
+                        <a href="#tab4" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Por viagem + adicional por entrega</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="tabDetalhe5">
+                        <a href="#tab5" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Frete por Peso  </span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="tabDetalhe6">
+                        <a href="#tab6" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Frete por Capacidade</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="tabDetalhe7">
+                        <a href="#tab7" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Frete por Viagem</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="tabDetalhe8">
+                        <a href="#tab8" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Frota fixa com franquia de Km </span>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="tabDetalhe9">
+                        <a href="#tab9" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">Frete por Viagem + Entrega + Ajudante</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0 p-3">
+                    <div class="tab-pane fade active show" id="tab1" role="tabpanel">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: Equipamento.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab2" class="tab-pane fade">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: FrotaFixaKm.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab3" class="tab-pane fade">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: PorcentagemSobreNota.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab4" class="tab-pane fade">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: ViagemAdicional.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab5" class="tab-pane fade ">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: FretePorPeso.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab6" class="tab-pane fade ">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: FretePorCapacidade.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab7" class="tab-pane fade ">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: FretePorViagem.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab8" class="tab-pane fade ">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: FrotaFixaFranquia.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab9" class="tab-pane fade active">
+                        <div class="row">
+                            <div data-bind="visible: Rodada.visible" class="col col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                <b>Rodada: </b><span data-bind="text: Rodada.val()"></span>
+                            </div>
+                            <div class="padding-side col col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <table class="table table-bordered table-hover" data-bind="attr: { id: ViagemEntregaAjudante.id }" cellspacing="0"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">Comparação Atual</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: Mes.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Mes.text, attr: { for: Mes.id }"></label>
+                                                    <select class="form-control" data-bind="class: Mes.requiredClass, options: Mes.options, optionsText: 'text', optionsValue: 'value', value: Mes.val, attr: { maxlength: Mes.maxlength, id : Mes.id}"></select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: Ano.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Ano.text, attr: { for: Ano.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Ano.requiredClass, value: Ano.val, valueUpdate: 'afterkeydown', attr: { maxlength: Ano.maxlength, id : Ano.id}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="row row-cols-1 ">
+                                                <div class="col">
+                                                    <table class="table table-clean table-sm align-self-end">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+
+                                                                    <b>Transportadores: </b> <span data-bind="text: Transportador.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Número Viagens: </b> <span data-bind="text: NumeroViagens.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+
+
+                                                                    <b>Volume Transportado: </b> <span data-bind="text: Volume.val"></span>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Total: </b> <span data-bind="text: ValorTotal.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorMedioPorViagem.val"></span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="col-12 col-md-12" data-bind="visible: Oferta.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Oferta.text, attr: { for: Oferta.id }"></label>
+                                                <select class="form-control" data-bind="class: Oferta.requiredClass, options: Oferta.options, optionsText: 'text', optionsValue: 'value', value: Oferta.val, attr: { maxlength: Oferta.maxlength, id : Oferta.id}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col">
+                                                <table class="table table-clean table-sm align-self-end">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Número Viagens: </b> <span data-bind="text: QuantidadeCargaNecessaria.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Total: </b> <span data-bind="text: ValorTotalProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Valor Médio por Viagem: </b> <span data-bind="text: ValorPorViagemProjetado.val"></span>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <b>Variação Percentual: </b> <span data-bind="text: Variacao.val"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Comparar.eventClick, visible: Comparar.visible, attr: { value: Comparar.text, id : Comparar.id}" class="btn btn-labeled btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer id="footerPrincipal" class="row justify-content-end mb-3 mt-3 mx-0 gap-2">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 d-flex justify-content-end align-items-center">
+                            <div class="col-12 col-lg-auto p-0">
+                                <input type="button" class="btn btn-labeled btn-success w-100" data-loading-text="Aguarde..." data-bind="click: Aceitar.eventClick, visible: Aceitar.visible, attr: { value: Aceitar.text, id : Aceitar.id}" />
+                            </div>
+                            <form class="col-12 col-lg-auto p-0 ml-2">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: Target.val, valueUpdate: 'afterkeydown', attr: { class: Target.requiredClass, placeholder: Target.text, maxlength: Target.maxlength, id : Target.id}" />
+                                    <input type="button" class="btn btn-labeled btn-danger" data-loading-text="Aguarde..." data-bind="click: ProporRodada.eventClick, visible: ProporRodada.visible, attr: { value: ProporRodada.text, id : ProporRodada.id}" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalPropostaNovasRodadas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" id="knockoutPropostaNovasRodadas" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Propor Novas Rodadas</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="col-4 col-md-12" data-bind="visible: ProporBaselineOuTarget.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: ProporBaselineOuTarget.text, attr: { for: ProporBaselineOuTarget.id }"></label>
+                        <select class="form-control" data-bind="class: ProporBaselineOuTarget.requiredClass, options: ProporBaselineOuTarget.options, optionsText: 'text', optionsValue: 'value', value: ProporBaselineOuTarget.val, attr: { maxlength: ProporBaselineOuTarget.maxlength, id : ProporBaselineOuTarget.id}"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Baseline.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Baseline.text"></label>
+                            <input type="text" class="form-control" data-bind="enable: Baseline.enable, class: Baseline.requiredClass, value: Baseline.val, valueUpdate: 'afterkeydown', attr: { maxlength: Baseline.maxlength, id : Baseline.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: MenorValor.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: MenorValor.text"></label>
+                            <input type="text" class="form-control" data-bind="enable: MenorValor.enable, class: MenorValor.requiredClass, value: MenorValor.val, valueUpdate: 'afterkeydown', attr: { maxlength: MenorValor.maxlength, id : MenorValor.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: Target.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Target.text"></label>
+                            <input type="text" class="form-control" data-bind="enable: Target.enable, class: Target.requiredClass, value: Target.val, valueUpdate: 'afterkeydown', attr: { maxlength: Target.maxlength, id : Target.id}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer row ">
+                <div class=" d-flex justify-content-end col-12 col-md-3">
+                    <input type="button" class="btn btn-labeled btn-success w-100" data-loading-text="Aguarde..." data-bind="click: Confirmar.eventClick, visible: Confirmar.visible, attr: { value: Confirmar.text, id : Confirmar.id}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalPropostaMultiplasNovasRodadas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" id="knockoutPropostaMultiplasNovasRodadas" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Propor Múltiplas Novas Rodadas</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body row">
+                <div class="col-4 col-md-6" data-bind="visible: ProporBaselineOuMenorValor.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: ProporBaselineOuMenorValor.text, attr: { for: ProporBaselineOuMenorValor.id }"></label>
+                        <select class="form-control" data-bind="class: ProporBaselineOuMenorValor.requiredClass, options: ProporBaselineOuMenorValor.options, optionsText: 'text', optionsValue: 'value', value: ProporBaselineOuMenorValor.val, attr: { maxlength: ProporBaselineOuMenorValor.maxlength, id : ProporBaselineOuMenorValor.id}"></select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6" data-bind="visible: Baseline.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Baseline.text"></label>
+                        <input type="text" class="form-control" data-bind="enable: Baseline.enable, class: Baseline.requiredClass, value: Baseline.val, valueUpdate: 'afterkeydown', attr: { maxlength: Baseline.maxlength, id : Baseline.id}" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-6" data-bind="visible: MenorValor.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: MenorValor.text"></label>
+                        <input type="text" class="form-control" data-bind="enable: MenorValor.enable, class: MenorValor.requiredClass, value: MenorValor.val, valueUpdate: 'afterkeydown', attr: { maxlength: MenorValor.maxlength, id : MenorValor.id}" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer row ">
+                <div class=" d-flex justify-content-end col-12 col-md-3">
+                    <input type="button" class="btn btn-labeled btn-success w-100" data-loading-text="Aguarde..." data-bind="click: Confirmar.eventClick, visible: Confirmar.visible, attr: { value: Confirmar.text, id : Confirmar.id}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="duvida-template" type="text/html">
+    <div class="duvida" data-bind="style:{'background-color':Resposta == null ? '#87CEEB' : '#80ff80'}">
+        <fieldset>
+            <div class="row">
+                <section class="padding-side col-md-12">
+                    <label data-bind="text: Data, style:{color: '#008080'}"></label>
+                </section>
+                <section class="padding-side col-md-12">
+                    <label><b data-bind="text: Pergunta"></b></label>
+                </section>
+                <section class="padding-side col-md-12">
+                    <!-- ko if: Resposta == null -->
+                    <!-- /ko -->
+                    <!-- ko ifnot: Resposta == null -->
+                    <label data-bind="text: Resposta"></label>
+                    <!-- /ko -->
+                </section>
+            </div>
+        </fieldset>
+    </div>
+</script>
+
+
+<div id="divModalSelecionarVencedorUnicoParaTodasRotas" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutSelecionarVencedorUnicoParaTodasRotas" class="modal-dialog modal-sl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Selecionar Vencedor</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: GridSelecaoVencedorUnicoParaTodasRotas.id}" cellspacing="0"></table>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-success" type="button" data-bind="click: Confirmar.eventClick, attr: { id: Confirmar.id}">
+                        <i class="fal fa-check"></i><span data-bind="text: Confirmar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalDetalhesOfertasPorRota" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutModalOfertasComponente" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalhes das Ofertas Componente</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: GridModalOfertasComponente.id}" cellspacing="0"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/biddingAvaliacao"></script>
+
+<script type="text/javascript">
+    pageSetUp();
+
+    _tokenAcessoAvaliacao = @Html.Raw(ViewBag.TokenAcessoAvaliacao);
+    _CONFIGURACAO_TMS = $.extend({}, _CONFIGURACAO_TMS, @Html.Raw(ViewBag.ConfiguracaoBidding));
+
+    layouts.hideNavigation("on")
+    layouts.minifyNavigation("on");
+
+    $(document).ready(function () {
+        LoadBiddingAvaliacao();
+    });
+
+</script>

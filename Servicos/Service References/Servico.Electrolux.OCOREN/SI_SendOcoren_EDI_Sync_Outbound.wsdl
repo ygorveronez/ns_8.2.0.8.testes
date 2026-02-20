@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:p1="http://electrolux.com/SD/OL/Ocoren" name="SI_SendOcoren_EDI_Sync_Outbound" targetNamespace="http://electrolux.com/SD/OL/Ocoren" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation />
+  <wsp:UsingPolicy wsdl:required="true" />
+  <wsp:Policy wsu:Id="OP_SI_SendOcoren_EDI_Sync_Outbound" />
+  <wsdl:types>
+    <xsd:schema xmlns="http://electrolux.com/SD/OL/Common" targetNamespace="http://electrolux.com/SD/OL/Common" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:simpleType name="DT_IdentRegistro_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">PROCEDA: Identificador do registro</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">038c359fe24711ea8c7b000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:integer">
+          <xsd:totalDigits value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="DT_IdentService_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">Identificação no serviço</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">0b8d81cbe30c11ea8989000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="identCarrier">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">754830b2e22811eaacda005056ba0c66</xsd:appinfo>
+              <xsd:documentation>ID de identificação no serviço</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="10" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_Registro000_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">Proceda - Registro 000</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">c0d624dee24711eac9e0000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element default="000" name="identRegistro" type="DT_IdentRegistro_SAP">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">c0b89f0de24711eaaf50005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Identificador do registro</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="identRemetente">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">c0b89f0ee24711ea98fe005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Identificação do remetente</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="35" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="identDest">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">06656b35e24911ea99f8005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Identificação do destinatário</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="35" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="data" type="xsd:date">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">29c58c4be24911eacff7005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Data</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="hora" type="xsd:time">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">36205cd9e24911eaa8e1005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Hora</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="identIntercambio">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">5a2aee97e24911eacdd4005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Identificação do intercâmbio</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="12" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="filler" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">80fdb23be24911ea8496005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Filler</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_ReturnMessage_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">Mensagens de retorno</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">7def82ade24211eacfee000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="status">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">7dce6753e24211eacba5005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Status</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="SUCCESS" />
+                <xsd:enumeration value="ERROR" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="message" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">7dce6754e24211eabc59005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Mensagem</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns:p5="http://electrolux.com/SD/OL/Common" xmlns="http://electrolux.com/SD/OL/Ocoren" targetNamespace="http://electrolux.com/SD/OL/Ocoren" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://electrolux.com/SD/OL/Common" />
+      <xsd:element name="MT_ResultSendOcoren_EDI" type="p1:DT_ReturnSendOcoren" />
+      <xsd:element name="MT_RequestSendOcoren_EDI" type="p1:DT_RequestSendOcoren" />
+      <xsd:element name="FM_SendOcoren_EDI">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="standard" type="p1:ExchangeFaultData" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="DT_ReturnSendOcoren">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">3708ef61e97711ea82ec000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="returnStatus" type="p5:DT_ReturnMessage_SAP" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ExchangeFaultData">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">a6a7da94e9fe11eab268000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="faultText" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">2e781d2ae9ff11ea9a7a005056ba2c82</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="faultUrl" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">2e781d2be9ff11eac3ef005056ba2c82</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="faultDetail" type="p1:ExchangeLogData" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_RequestSendOcoren">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">deccde1ce8a311eacc8a000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="identService" type="p5:DT_IdentService_SAP">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">311062bee8a411eacc60005056ba5570</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="registro000">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">311062c1e8a411ea944a005056ba5570</xsd:appinfo>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="detail" type="p5:DT_Registro000_SAP">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">311062bfe8a411eaa0dc005056ba5570</xsd:appinfo>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs="200" name="registro540">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">311062c0e8a411eaba5f005056ba5570</xsd:appinfo>
+                    <xsd:documentation>Registro 540 - Cabeçalho de Documento</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:complexType>
+                    <xsd:sequence>
+                      <xsd:element default="540" name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">79388340e8a411ea82b6005056ba5570</xsd:appinfo>
+                          <xsd:documentation>Identificador de Registro</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:element>
+                      <xsd:element name="identDocumento">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">c8dfb4e6e93d11eaa9fe005056ba4395</xsd:appinfo>
+                          <xsd:documentation>Identificador doDocumento</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                          <xsd:restriction base="xsd:string">
+                            <xsd:maxLength value="14" />
+                          </xsd:restriction>
+                        </xsd:simpleType>
+                      </xsd:element>
+                      <xsd:element minOccurs="0" name="filler">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">c8dfb4e7e93d11ea9302005056ba4395</xsd:appinfo>
+                          <xsd:documentation>Filler</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                          <xsd:restriction base="xsd:string">
+                            <xsd:maxLength value="233" />
+                          </xsd:restriction>
+                        </xsd:simpleType>
+                      </xsd:element>
+                      <xsd:element name="registro541">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">1bf6e487e93e11ea9873005056ba4395</xsd:appinfo>
+                          <xsd:documentation>Registro 541 - Dados da Transportadora</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                          <xsd:sequence>
+                            <xsd:element default="541" name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">1bf6e486e93e11eac077005056ba4395</xsd:appinfo>
+                                <xsd:documentation>Identificador de Registro</xsd:documentation>
+                              </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="CnpjTransp">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">38b96f03e97211eaa9d5005056ba3978</xsd:appinfo>
+                                <xsd:documentation>CNPJ(CGC) da Transportadora</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                  <xsd:maxLength value="14" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element minOccurs="0" name="RazaoSocTransp">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">38b96f04e97211eaa5f4005056ba3978</xsd:appinfo>
+                                <xsd:documentation>Razão Socila da Transportadora</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                  <xsd:maxLength value="50" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element minOccurs="0" name="filler">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">38b96f05e97211ea809c005056ba3978</xsd:appinfo>
+                                <xsd:documentation>Filler</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                  <xsd:maxLength value="183" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element maxOccurs="9999" name="registro542">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">38b96f13e97211ea9cab005056ba3978</xsd:appinfo>
+                                <xsd:documentation>Registro 542 - Ocorrência na Entrega</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:complexType>
+                                <xsd:sequence>
+                                  <xsd:element name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f06e97211eab234005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Identificador de Registro</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="CnpjEmissorNf">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f07e97211ea97a7005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>CNPJ(CGC) do Emissor da Nf</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="14" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="SerieNf">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f08e97211ea8fc9005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Série da Nota Fiscal</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="3" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="NumeroNf">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f09e97211ea8480005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Número da Nota Fiscal</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="9" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="CodOcorrenciaEnt">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f0ae97211eaa090005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Código de Ocorrência na Entrega</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="3" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="DataOcorrencia" type="xsd:date">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f0be97211eabbef005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Data de Ocorrência</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="HoraOcorrencia" type="xsd:time">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f0ce97211ea8ded005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Hora da Ocorrência</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="CodObservacaoOcEnt">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f0de97211ea9c64005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Código de Observação de Ocorrência na Entrada</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="2" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="NumeroRomaneio">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f0ee97211eaaec1005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Número Romaneio</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="20" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="NumeroSap">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f0fe97211eaa7e4005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Número SAP</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="20" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="OutroNumeroSap1">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f10e97211eac512005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Outro Número SAP</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="20" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="OutroNumeroSap2">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f11e97211eaa561005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Outro Número SAP</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="20" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="FilialEmissoraConhecimento">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">38b96f12e97211ea9934005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Filial Emissora de Conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="10" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="SerieConhecimento">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c37b10c1e97411eab033005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Série do Conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="5" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="NumeroConhecimento">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c37b10c2e97411eabd01005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Número do Conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="12" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="IndicacaoTipoEntrega">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c37b10c3e97411ea90dc005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Indicação do Tipo de Entrega</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="1" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="CodEmpEmissoraNf">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c37b10c4e97411eaab85005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Código da Empresa Emissora da NF</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="5" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="DtChegadaDestinoNf" type="xsd:date">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c37b10c5e97411ea82e7005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Data da Chegada no Destino da NF</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="HrChegadaDestinoNf" type="xsd:time">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c37b10c6e97411eab6a3005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Hora da Chegada no Destino NF</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="DtInicioDescarregaDestino" type="xsd:date">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c37b10c7e97411eac554005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Data do Início do Descarregamento no Destino</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="HrInicioDescarregaDestino" type="xsd:time">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c37b10c8e97411eaa542005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Hora do Início do Descarregamento no Destino</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="DtTerminoDescarregaDestino" type="xsd:date">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">2ff43e4ae97611eac06e005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Data do Término do Descarregamento no Destino</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="HrTerminoDescarregaDestino" type="xsd:time">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">2ff43e4be97611eacaee005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Hora do Término do Descarregamento no Destino</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="DtSaidaDestinoNf" type="xsd:date">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">2ff43e4ce97611eab698005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Data da Saída do Destino da NF</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="HrSaidaDestinoNf" type="xsd:time">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">2ff43e4de97611eaabb4005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Hora da Saída do Destino da NF</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="CnpjEmissorNfDevolucao">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">2ff43e4ee97611ea9d74005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>CNPJ do Emissor da Nota Fiscal de Devolução</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="14" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="SerieNotaFiscalDevolucao">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">2ff43e4fe97611ea8100005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Série da Nota Fiscal de Devolução</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="3" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="NumeroNotaFiscalDevolucao">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">2ff43e50e97611eac7ee005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Número da Nota Fiscal Devolução</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="9" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="filler">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">2ff43e51e97611ea848f005056ba3978</xsd:appinfo>
+                                      <xsd:documentation>Filler</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="12" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                </xsd:sequence>
+                              </xsd:complexType>
+                            </xsd:element>
+                          </xsd:sequence>
+                        </xsd:complexType>
+                      </xsd:element>
+                      <xsd:element name="registro549">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">c9c6b263e97611eac90c005056ba3978</xsd:appinfo>
+                          <xsd:documentation>Registro 549 - Finalizador de Ocorrência</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                          <xsd:sequence>
+                            <xsd:element name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">c9c6b260e97611eaafc8005056ba3978</xsd:appinfo>
+                                <xsd:documentation>Identificador do Registro</xsd:documentation>
+                              </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="NumeroOcorrencia">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">c9c6b261e97611eabde2005056ba3978</xsd:appinfo>
+                                <xsd:documentation>Número de Registro de Ocorrência</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:integer">
+                                  <xsd:totalDigits value="4" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element name="filler">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">c9c6b262e97611eaba9d005056ba3978</xsd:appinfo>
+                                <xsd:documentation>Filler</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                  <xsd:maxLength value="243" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                          </xsd:sequence>
+                        </xsd:complexType>
+                      </xsd:element>
+                    </xsd:sequence>
+                  </xsd:complexType>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ExchangeLogData">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">fa1dcf0be9fe11ea9b00000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="severity" type="xsd:string" />
+          <xsd:element name="text" type="xsd:string" />
+          <xsd:element minOccurs="0" name="url" type="xsd:string" />
+          <xsd:element minOccurs="0" name="id" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="MT_RequestSendOcoren_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="MT_RequestSendOcoren_EDI" element="p1:MT_RequestSendOcoren_EDI" />
+  </wsdl:message>
+  <wsdl:message name="MT_ResultSendOcoren_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="MT_ResultSendOcoren_EDI" element="p1:MT_ResultSendOcoren_EDI" />
+  </wsdl:message>
+  <wsdl:message name="FM_SendOcoren_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="FM_SendOcoren_EDI" element="p1:FM_SendOcoren_EDI" />
+  </wsdl:message>
+  <wsdl:portType name="SI_SendOcoren_EDI_Sync_Outbound">
+    <wsdl:documentation />
+    <wsdl:operation name="SI_SendOcoren_EDI_Sync_Outbound">
+      <wsdl:documentation />
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP_SI_SendOcoren_EDI_Sync_Outbound" />
+      </wsp:Policy>
+      <wsdl:input message="p1:MT_RequestSendOcoren_EDI" />
+      <wsdl:output message="p1:MT_ResultSendOcoren_EDI" />
+      <wsdl:fault name="FM_SendOcoren_EDI" message="p1:FM_SendOcoren_EDI" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SI_SendOcoren_EDI_Sync_OutboundBinding" type="p1:SI_SendOcoren_EDI_Sync_Outbound">
+    <binding transport="http://schemas.xmlsoap.org/soap/http" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    <wsdl:operation name="SI_SendOcoren_EDI_Sync_Outbound">
+      <operation soapAction="http://sap.com/xi/WebService/soap1.1" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <wsdl:input>
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:input>
+      <wsdl:output>
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:output>
+      <wsdl:fault name="FM_SendOcoren_EDI">
+        <fault use="literal" name="FM_SendOcoren_EDI" namespace="" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SI_SendOcoren_EDI_Sync_OutboundService">
+    <wsdl:port name="HTTP_Port" binding="p1:SI_SendOcoren_EDI_Sync_OutboundBinding">
+      <address location="http://r6l.biz.electrolux.com:56300/XISOAPAdapter/MessageServlet?senderParty=CARRIER&amp;senderService=BRSV_SERVICE_EDI&amp;receiverParty=CARRIER&amp;receiverService=BRSV_SERVICE_EDI&amp;interface=SI_SendOcoren_EDI_Sync_Outbound&amp;interfaceNamespace=http%3A%2F%2Felectrolux.com%2FSD%2FOL%2FOcoren" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </wsdl:port>
+    <wsdl:port name="HTTPS_Port" binding="p1:SI_SendOcoren_EDI_Sync_OutboundBinding">
+      <address location="https://r6l.biz.electrolux.com:56301/XISOAPAdapter/MessageServlet?senderParty=CARRIER&amp;senderService=BRSV_SERVICE_EDI&amp;receiverParty=CARRIER&amp;receiverService=BRSV_SERVICE_EDI&amp;interface=SI_SendOcoren_EDI_Sync_Outbound&amp;interfaceNamespace=http%3A%2F%2Felectrolux.com%2FSD%2FOL%2FOcoren" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

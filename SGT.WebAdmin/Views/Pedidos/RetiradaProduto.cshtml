@@ -1,0 +1,458 @@
+﻿
+<style>
+	.info {
+		display: inline;
+	}
+
+	.font-bold {
+		font-weight: bold !important;
+	}
+</style>
+<div class="panel mt-2">
+	<div class="panel-container">
+		<div class="panel-content">
+			<div id="knockoutPesquisaRetiradaProduto">
+			</div>
+
+			<div id="wid-id-4" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+				<div id="knoutRetiradaProdutoTabs" class="menu-retirada">
+					<ul class="nav nav-tabs" id="myTab">
+						<li class="nav-item active" id="tab-DadosBasicos">
+							<a href="#tabDadosBasicos" class="nav-link active" data-bs-toggle="tab">
+								<i class="fal fa-exclamation-circle"></i><span>{Localize::Pedidos.RetiradaProduto.DadosBasicos}</span>
+							</a>
+						</li>
+						<li class="nav-item" id="tab-Pedidos">
+							<a href="#tabPedidos" class="nav-link" data-bs-toggle="tab">
+								<i class="fal fa-list-alt"></i><span>{Localize::Pedidos.RetiradaProduto.DescricaoPedidos}</span>
+							</a>
+						</li>
+						<li class="nav-item" id="tab-DataHora">
+							<a href="#tabDataHora" class="nav-link" data-bs-toggle="tab">
+								<i class="fal fa-clock"></i><span>{Localize::Pedidos.RetiradaProduto.DataHora}</span>
+							</a>
+						</li>
+						<li class="nav-item" id="tab-Confirmacao">
+							<a href="#tabConfirmacao" data-bind="click: Confirmacao.eventClick, attr: {'data-bs-toggle': Confirmacao.enable() ? 'tab' : ''}" class="nav-link">
+								<i class="fal fa-check-square"></i><span>{Localize::Pedidos.RetiradaProduto.Confirmacao}</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="tab-content border border-top-0 p-3" id="tab-content-retirada">
+					<div class="tab-pane fade show active in padding-10 no-padding-bottom" id="tabDadosBasicos">
+						<div id="knockoutRetiradaProduto">
+							<div class="panel-heading">
+								<h4>{Localize::Pedidos.RetiradaProduto.FazerUmAgendamento}</h4>
+							</div>
+
+							<div class="row">
+								<div class="col-12 col-md-4" data-bind="visible: DataRetirada.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: DataRetirada.text"></label>
+										<input type="text" class="form-control" data-bind="class: DataRetirada.requiredClass, value: DataRetirada.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataRetirada.maxlength, id : DataRetirada.id}" />
+									</div>
+								</div>
+
+								<div class="col-12 col-md-4" data-bind="visible: Filial.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+										<select class="form-control" data-bind="class: Filial.requiredClass, options: Filial.options, optionsText: 'text', optionsValue: 'value', value: Filial.val, attr: { maxlength: Filial.maxlength, id : Filial.id}"></select>
+									</div>
+								</div>
+								<div class="col-12 col-md-4" data-bind="visible: TipoOperacao.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: TipoOperacao.text, attr: { for: TipoOperacao.id }"></label>
+										<select class="form-control" data-bind="class: TipoOperacao.requiredClass, options: TipoOperacao.options, optionsText: 'text', optionsValue: 'value', value: TipoOperacao.val, attr: { maxlength: TipoOperacao.maxlength, id : TipoOperacao.id}"></select>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="panel-heading">
+									<h4>{Localize::Pedidos.RetiradaProduto.DadosDoVeiculo}</h4>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-12 col-md-4" data-bind="visible: PlacaVeiculo.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: PlacaVeiculo.text"></label>
+										<input type="text" class="form-control" data-bind="class: PlacaVeiculo.requiredClass, value: PlacaVeiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: PlacaVeiculo.maxlength, id : PlacaVeiculo.id}" />
+									</div>
+								</div>
+								<div class="col-12 col-md-6" data-bind="visible: ModeloVeiculo.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: ModeloVeiculo.text, attr: { for: ModeloVeiculo.id }"></label>
+										<select class="form-control" data-bind="class: ModeloVeiculo.requiredClass, options: ModeloVeiculo.options, optionsText: 'text', optionsValue: 'value', value: ModeloVeiculo.val, attr: { maxlength: ModeloVeiculo.maxlength, id : ModeloVeiculo.id}"></select>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="col-12 col-md-6" data-bind="visible: Transportador.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: Transportador.text, attr: { for: Transportador.id }"></label>
+										<div class="input-group">
+											<input type="text" class="form-control" data-bind="css: Transportador.requiredClass, value: Transportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: Transportador.maxlength, id : Transportador.id}" />
+											<div class="input-group-append">
+												<button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Transportador.idBtnSearch}" type="button" aria-label="Buscar">
+													<i class="fal fa-search"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-md-6" data-bind="visible: NomeTransportadora.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: NomeTransportadora.text"></label>
+										<input type="text" class="form-control" data-bind="class: NomeTransportadora.requiredClass, value: NomeTransportadora.val, valueUpdate: 'afterkeydown', attr: { maxlength: NomeTransportadora.maxlength, id : NomeTransportadora.id}" />
+									</div>
+								</div>
+
+								<div data-bind="visible: BotaoVisualizacaoTransportadora.visible" class="col-12 col-md-4 mt-1">
+									<label class="label mb-2"><b data-bind="text: BotaoVisualizacaoTransportadora.text"></b></label>
+									<div class="form-group">
+										<div class="input-group-btn">
+											<button data-bind="click: BotaoVisualizacaoTransportadora.eventClick, text: '@Localization.Resources.Pedidos.RetiradaProduto.CliqueAqui'" class="btn btn-primary" type="button">
+												<i class="fal fa-search"></i><span data-bind="text: BotaoVisualizacaoTransportadora.text"></span>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+
+								<div class="col-12 col-md-6" data-bind="visible: Motorista.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: Motorista.text, attr: { for: Motorista.id }"></label>
+										<div class="input-group">
+											<input type="text" class="form-control" data-bind="css: Motorista.requiredClass, value: Motorista.val, valueUpdate: 'afterkeydown', attr: { maxlength: Motorista.maxlength, id : Motorista.id}" />
+											<div class="input-group-append">
+												<button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Motorista.idBtnSearch}" type="button" aria-label="Buscar">
+													<i class="fal fa-search"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-12 col-md-6" data-bind="visible: CpfMotorista.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: CpfMotorista.text"></label>
+										<input type="text" class="form-control" data-bind="class: CpfMotorista.requiredClass, value: CpfMotorista.val, valueUpdate: 'afterkeydown', attr: { maxlength: CpfMotorista.maxlength, id : CpfMotorista.id}" />
+									</div>
+								</div>
+
+								<div data-bind="visible: BotaoVisualizacaoMotorista.visible" class="col-12 col-md-4 mt-1">
+									<label class="label mb-2"><b data-bind="text: BotaoVisualizacaoMotorista.text"></b></label>
+									<div class="form-group">
+										<div class="input-group-btn">
+											<button data-bind="click: BotaoVisualizacaoMotorista.eventClick, text: '@Localization.Resources.Pedidos.RetiradaProduto.CliqueAqui'" class="btn btn-primary" type="button">
+												<i class="fal fa-search"></i><span data-bind="text: BotaoVisualizacaoMotorista.text"></span>
+											</button>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="clearfix"></div>
+								<div class="col-12 col-md-6" data-bind="visible: NomeMotorista.visible">
+									<div class="form-group">
+										<label class="form-label" data-bind="text: NomeMotorista.text"></label>
+										<input type="text" class="form-control" data-bind="enable: NomeMotorista.enable, class: NomeMotorista.requiredClass, value: NomeMotorista.val, valueUpdate: 'afterkeydown', attr: { maxlength: NomeMotorista.maxlength, id : NomeMotorista.id}" />
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<footer class="d-flex justify-content-end">
+								<input type="button" data-loading-text={Localize::Gerais.Geral.Aguarde} data-bind="click: Proximo.eventClick, visible: Proximo.visible, attr: { value: Proximo.text, id : Proximo.id}" class="btn btn-labeled btn-success" />
+							</footer>
+						</div>
+					</div>
+
+					<div class="tab-pane fade in padding-10 no-padding-bottom" id="tabPedidos">
+						<div id="knockoutPedido" class="row">
+							<div class="col-md-12 d-flex justify-content-end gap-3 ">
+
+								<div class=" text-center">
+									{Localize::Pedidos.RetiradaProduto.CapacidadeDoVeiculo}: <span data-bind="text : CapacidadeVeiculo.formatado"></span>
+								</div>
+								<div class=" text-center">
+									{Localize::Pedidos.RetiradaProduto.PesoTotal}: <span data-bind="text : PesoTotal.formatado"></span>
+								</div>
+								<div class=" text-center">
+									{Localize::Pedidos.RetiradaProduto.Disponivel}: <span data-bind="text : EspacoDisponivel.formatado"></span>
+								</div>
+								<div class=" text-center align-items-center d-inline-flex">
+									{Localize::Pedidos.RetiradaProduto.Ocupacao}
+									<div class="progress" style="min-width: 5rem; margin-left: 0.3rem">
+										<div id="progress-bar-1" class="progress-bar  bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-bind="text: Ocupacao.val() + '%', style: { width: Ocupacao.width }"></div>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-12">
+								<button class="btn btn-primary mb-3" type="button" data-bind="click: Pedido.eventClick, attr: { id: Pedido.idBtnSearch}">
+									<i class="fal fa-plus"></i>&nbsp;<span data-bind="text:Pedido.text"></span>
+								</button>
+								<div class="insideNoPaddignTable">
+									<table class="table table-hover" data-bind="attr: {id: Grid.id}" cellspacing="0"></table>
+								</div>
+							</div>
+							<div class="col-md-12 d-flex justify-content-end pe-5 my-5">
+								<div class="d-flex flex-column me-5">
+									<div>
+										{Localize::Pedidos.RetiradaProduto.CapacidadeDoVeiculo}: <span data-bind="text : CapacidadeVeiculo.formatado"></span>
+									</div>
+									<div>
+										{Localize::Pedidos.RetiradaProduto.PesoTotal}: <span data-bind="text : PesoTotal.formatado"></span>
+									</div>
+									<div>
+										{Localize::Pedidos.RetiradaProduto.Disponivel}: <span data-bind="text : EspacoDisponivel.formatado"></span>
+									</div>
+									<div class=" d-inline-flex gap-2 align-items-center">
+										{Localize::Pedidos.RetiradaProduto.Ocupacao}
+										<div class="progress" style="width: 5rem; margin-left: 3px">
+											<div id="progress-bar-2" class="progress-bar  bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-bind="text: Ocupacao.val() + '%' , style: { width: Ocupacao.width }"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<footer class="d-flex justify-content-end">
+								<input type="button" data-loading-text={Localize::Gerais.Geral.Aguarde} data-bind="click: Proximo.eventClick, visible: Proximo.visible, attr: { value: Proximo.text, id : Proximo.id}" class="btn btn-labeled btn-success" />
+							</footer>
+						</div>
+					</div>
+
+					<div class="tab-pane fade in padding-10 no-padding-bottom" id="tabDataHora">
+						<div id="knoutAlterarCarregamento">
+							<div class="row">
+								<div class="col-12 d-flex justify-content-center gap-2">
+									<div>
+										<button type="button" data-bind="click: DataCarregamentoDisponibilidade.diminuirData, enable: DataCarregamentoDisponibilidade.enable" style="min-width: 50px" class="btn btn-default botaoDentroSmartAdmimForm">
+											<i class="fal fa-chevron-left"></i>
+										</button>
+									</div>
+									<div class="form-group" data-bind="visible: DataCarregamentoDisponibilidade.visible">
+										<input class="form-control" type="text" data-bind="value: DataCarregamentoDisponibilidade.val, enable: DataCarregamentoDisponibilidade.enable, valueUpdate: 'afterkeydown', attr: { maxlength: DataCarregamentoDisponibilidade.maxlength, class: DataCarregamentoDisponibilidade.requiredClass, id : DataCarregamentoDisponibilidade.id}" maxlength="100">
+									</div>
+
+									<div>
+										<button type="button" data-bind="click: DataCarregamentoDisponibilidade.aumentarData, enable: DataCarregamentoDisponibilidade.enable" style="min-width: 50px" class="btn btn-default botaoDentroSmartAdmimForm">
+											<i class="fal fa-chevron-right"></i>
+										</button>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="insideNoPaddignTable">
+										<table class="table table-hover" data-bind="attr: {id: DataCarregamentoDisponibilidade.idGrid}" cellspacing="0"></table>
+									</div>
+								</div>
+							</div>
+							<footer class="d-flex justify-content-end mt-3">
+								<input type="button" data-loading-text={Localize::Gerais.Geral.Aguarde} data-bind="click: Proximo.eventClick, visible: Proximo.visible, attr: { value: Proximo.text, id : Proximo.id}" class="btn btn-labeled btn-success" />
+								<input type="button" data-loading-text={Localize::Gerais.Geral.Aguarde} data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-labeled btn-success" />
+							</footer>
+						</div>
+					</div>
+					<div class="tab-pane fade in padding-10 no-padding-bottom" id="tabConfirmacao">
+						<div id="knoutConfirmacao">
+							<div class="panel-heading">
+								<h4>@Localization.Resources.Pedidos.RetiradaProduto.ConfiraOsDadosConfirmeSeuAgendamento</h4>
+							</div>
+
+                            <div class="row my-2" data-bind="visible: NumeroCarregamento.visible">
+                                <div class="col-12 col-md-12 mb-1 ">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.NumeroAgendamento</label>
+                                    <span data-bind="text : NumeroCarregamento.val"></span>
+                                </div>
+                                <div class="col-12 col-md-3 col-lg-3 mb-1">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.CentroDistribuicao</label>
+                                    <span data-bind="text : Filial.val"></span>
+                                </div>
+                                <div class="col-12 col-md-3 col-lg-3 mb-1" data-bind="visible: TipoOperacao.visible">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.TipoAgendamento</label>
+                                    <span data-bind="text : TipoOperacao.val"></span>
+                                </div>
+                                <div class="col-12 col-md-3 col-lg-3 mb-1">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.DataHora</label>
+                                    <span data-bind="text : DataRetiradaVisualizacao.val"></span>
+                                </div>
+                                <div class="col-12 col-md-3 col-lg-3 mb-1">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.Doca</label>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div class="col-12">
+                                    <h2 class="font-bold">@Localization.Resources.Pedidos.RetiradaProduto.DadosDoVeiculo</h2>
+                                </div>
+                                <div class="col-12 col-md-4 ">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.Placa</label>
+                                    <span data-bind="text : PlacaVeiculo.val"></span>
+                                </div>
+                                <div class="col-12 col-md-4 ">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.Modelo</label>
+                                    <span data-bind="text : ModeloVeiculo.val"></span>
+                                </div>
+                                <div class="col-12 col-md-4 ">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.NomeTransportadora</label>
+                                    <span data-bind="text : NomeTransportadora.val"></span>
+                                </div>
+                                <div class="col-12 col-md-4 ">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.Documento</label>
+                                    <span data-bind="text : CpfMotorista.val"></span>
+                                </div>
+                                <div class="col-12 col-3 ">
+                                    <label class="label font-bold">@Localization.Resources.Pedidos.RetiradaProduto.Nome</label>
+                                    <span data-bind="text : NomeMotorista.val"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-12">
+                                    <h2 class="font-bold">@Localization.Resources.Pedidos.RetiradaProduto.ItensDoAgendamento</h2>
+                                </div>
+                            </div>
+                            <div class="row my-2">
+                                <div>
+                                    <table width="100%" class="table table-hover" data-bind="attr: { id: GridProduto.idGrid }" cellspacing="0"></table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6" data-bind="visible: EmailNotificacao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: EmailNotificacao.text"></label>
+                                        <input type="text" class="form-control" data-bind="class: EmailNotificacao.requiredClass, value: EmailNotificacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: EmailNotificacao.maxlength, id : EmailNotificacao.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6" data-bind="visible: ObservacaoTransportador.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ObservacaoTransportador.text"></label>
+                                        <input type="text" class="form-control" data-bind="class: ObservacaoTransportador.requiredClass, value: ObservacaoTransportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: ObservacaoTransportador.maxlength, id : ObservacaoTransportador.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="col-12 col-md-12" data-bind="visible: CargaNecessitaLonamento.visible">
+                                            <div class="input-group mb-3 mt-2">
+                                                <div class="input-group-prepend col-md-12">
+                                                    <div class="input-group-text" data-bind="attr: { class: CargaNecessitaLonamento.requiredClass}">
+                                                        <input type="checkbox" data-bind="checked: CargaNecessitaLonamento.val, enable: CargaNecessitaLonamento.enable, attr: { maxlength: CargaNecessitaLonamento.maxlength, name: CargaNecessitaLonamento.id, id: CargaNecessitaLonamento.id }">
+                                                        <label class="label" data-bind="text: CargaNecessitaLonamento.text, attr: { for: CargaNecessitaLonamento.id }"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+										<div class="col-12 col-md-12" data-bind="visible: CargaComplexa.visible">
+											<div class="input-group mb-3 mt-2">
+												<div class="input-group-prepend col-md-12">
+													<div class="input-group-text" data-bind="attr: { class: CargaComplexa.requiredClass}">
+														<input type="checkbox" data-bind="checked: CargaComplexa.val, enable: CargaComplexa.enable, attr: { maxlength: CargaComplexa.maxlength, name: CargaComplexa.id, id: CargaComplexa.id }">
+														<label class="label" data-bind="text: CargaComplexa.text, attr: { for: CargaComplexa.id }"></label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<footer class="d-flex justify-content-between">
+								<div class="alert alert-danger" data-bind="visible: ReenviarIntegracao.visible">
+									<strong>{Localize::Pedidos.RetiradaProduto.FalhaAoIntegrarAgendamentoAoERP}</strong>
+									<div data-bind="text: MensagemProblemaCarregamento.val"></div>
+								</div>
+
+								<input type="button" data-bind="click: Excluir.eventClick, visible: Excluir.visible, attr: { value: Excluir.text, id : Excluir.id}, enable: Excluir.enable" class="btn btn-labeled btn-danger pull-left" />
+								<div>
+									<input type="button" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible() && !ReenviarIntegracao.visible(), attr: { value: Atualizar.text, id : Atualizar.id}, enable: Atualizar.enable" class="btn btn-labeled btn-success" />
+									<input type="button" data-bind="click: ReenviarIntegracao.eventClick, visible: ReenviarIntegracao.visible, attr: { value: ReenviarIntegracao.text, id : ReenviarIntegracao.id}" class="btn btn-labeled btn-success" />
+								</div>
+							</footer>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="divModalSelecaoProdutos" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content retirada-produto" style="padding: 0 !important;">
+			<div class="modal-header">
+				<h5 class="modal-title">{Localize::Pedidos.RetiradaProduto.Produtos}</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fal fa-times"></i></button>
+			</div>
+			<div class="modal-body modal-body-no-padding">
+				<div id="knockoutSelecaoPeriodoCarregamento">
+					<fieldset>
+						<div class="row">
+							<div class="col-12 col-md-12" data-bind="visible: QuantidadeRetiradaCheckBox.visible">
+								<div class="form-group">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" class="custom-control-input" data-bind="checked: QuantidadeRetiradaCheckBox.val, attr: { maxlength: QuantidadeRetiradaCheckBox.maxlength, name: QuantidadeRetiradaCheckBox.id, id: QuantidadeRetiradaCheckBox.id }">
+										<label class="custom-control-label" data-bind="attr: { for: QuantidadeRetiradaCheckBox.id }">@Localization.Resources.Pedidos.RetiradaProduto.QuantidadeRetiradaCheckBox</label>
+									</div>
+								</div>
+							</div>
+							<div class="col col-xs-12 insideNoPaddignTable">
+								<table width="100%" class="table table-hover" data-bind="attr: { id: GridProduto.idGrid }" cellspacing="0"></table>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-md-3" data-bind="visible: QuantidadeRetirada.visible">
+								<div class="form-group">
+									<label class="form-label">@Localization.Resources.Pedidos.RetiradaProduto.QuantidadeRetirada</label>
+									<input type="text" class="form-control" data-bind="class: QuantidadeRetirada.requiredClass, value: QuantidadeRetirada.val, valueUpdate: 'afterkeydown', attr: { maxlength: QuantidadeRetirada.maxlength, id : QuantidadeRetirada.id}" />
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<footer>
+						<input type="button" data-bind="click: Salvar.eventClick, visible: QuantidadeRetirada.visible, attr: { value: Salvar.text, id : Salvar.id}" class="btn btn-labeled btn-success pull-left" />
+					</footer>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.configurations-header {
+		padding: 8px 0;
+		border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+		font-size: 16px;
+		font-weight: 300;
+		color: #232323;
+		margin: 15px 0;
+	}
+
+	.prg-ok {
+		background-color: #57889c !important;
+		color: white !important;
+		text-align: center;
+		border-radius: 10px !important;
+	}
+
+	.prg-excedido {
+		background-color: #f40808 !important;
+		color: white !important;
+		text-align: center;
+		border-radius: 10px !important;
+	}
+</style>
+
+<script src="~/scripts/configuracaoObservacaoCTe"></script>
+<script src="~/scripts/retiradaProduto"></script>
+<script src="~/scripts/configuracaoEmissaoCTe"></script>
+<script src="~/scripts/configuracaoLayoutEDI"></script>
+<script src="~/scripts/configuracaoComponentesFrete"></script>
+
+<script type="text/javascript">
+
+	pageSetUp();
+
+	_CONFIGURACAO_TMS = $.extend({}, _CONFIGURACAO_TMS, @Html.Raw(ViewBag.ConfiguracaoRetiradaProduto));
+
+	$(document).ready(function () {
+		LoadLocalizationResources(["Pedidos.RetiradaProduto", "Pedidos.RetiradaProdutoLista"]).then(loadRetiradaProduto);
+	});
+
+</script>

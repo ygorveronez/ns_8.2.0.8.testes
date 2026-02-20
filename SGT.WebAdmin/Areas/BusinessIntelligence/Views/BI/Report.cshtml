@@ -1,0 +1,169 @@
+﻿
+@using SGT.WebAdmin.Models.BI
+
+@{
+    var data = ViewBag.Message;
+    var UtilizaMenu = ViewBag.UtilizaMenu;
+    var configDesabilitarFiltrosBI = ViewBag.DesabilitarFiltrosBI;
+}
+
+
+
+@if (!string.IsNullOrEmpty(@data.ErrorMessage))
+{
+    <div id="errorWrapper">
+        <h2>
+            Erro
+        </h2>
+        <pre>
+            @data.ErrorMessage
+        </pre>
+    </div>
+
+    return;
+}
+
+
+@if (UtilizaMenu == 1)
+{
+    <div id="embedContainer" style="width: 100%; height: 100%; "></div>
+
+}
+
+<section id="bi" class="no-padding">
+
+
+    <style>
+        #embedContainer {
+            height: 100vh;
+            width: 100%;
+            border-style: none;
+        }
+
+            #embedContainer iframe {
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+    </style>
+
+
+
+    @if (UtilizaMenu == 1)
+    {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    }
+    <script src="/businessIntelligence/scripts/powerbi"></script>
+
+    <script>
+        var accessToken = "@data.EmbedToken.Token";
+
+        var embedUrl = "@Html.Raw(data.EmbedUrl)";
+
+        var embedReportId = "@data.Id";
+
+        var models = window['powerbi-client'].models;
+        var desabilitaFiltrosBI = @configDesabilitarFiltrosBI.ToString().ToLower();
+       
+        var config = {
+            type: 'report',
+            tokenType: models.TokenType.Embed,
+            accessToken: accessToken,
+            embedUrl: embedUrl,
+            id: embedReportId,
+            permissions: models.Permissions.All,
+            settings: {
+                filterPaneEnabled: desabilitaFiltrosBI == true ? false : GetURLParameter("filterPaneEnabled") != null ? false : true,
+                navContentPaneEnabled: true,
+            }
+        };
+
+        var reportContainer = $('#embedContainer')[0];
+
+        var report = powerbi.embed(reportContainer, config);
+
+        if (GetURLParameter("pagination") === "true")
+            $("body").addClass("minified");
+
+
+        var miliseconds = 300000;
+        var time = GetURLParameter("time");
+        if (time != null) {
+            miliseconds = (parseInt(time) * 60) * 1000;
+        }
+
+
+        trocarAbas(1, report);
+
+        function GetURLParameter(sParam) {
+            var sPageURL = window.location.href;
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
+        }
+
+        function trocarAbas(index, report) {
+            var pagination = GetURLParameter("pagination");
+
+            if (pagination === "true") {
+                setTimeout(function () {
+                    report.getPages()
+                        .then(function (pages) {
+
+                            if (index == 0 || (pages.length - 1) == 0)
+                                refreshBI();
+
+                            pages[index].setActive()
+                                .then(function () {
+                                    if (index >= pages.length - 1)
+                                        index = 0;
+                                    else
+                                        index++;
+
+                                    trocarAbas(index, report);
+                                })
+                                .catch(function (errors) {
+                                    Log.log(errors);
+                                });
+                        })
+                        .catch(function (errors) {
+                            Log.log(errors);
+                        });
+                }, miliseconds);
+            }
+        }
+
+        var _quantidade = 0;
+
+        function refreshBI() {
+            if (_quantidade > 0) {
+                _quantidade = 0;
+                document.location.reload(true);
+            } else {
+                _quantidade++;
+                report.refresh()
+                    .then(function (result) {
+                        trocarAbas(1, report);
+                    })
+                    .catch(function (errors) {
+                        trocarAbas(1, report);
+                        //Log.log(errors);
+                    });
+            }
+        }
+
+    </script>
+
+
+
+    <div id="embedContainer"></div>
+
+</section>
+
+
+
+

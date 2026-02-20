@@ -1,0 +1,48 @@
+namespace MultiSoftware.NFe.v400.NotaFiscal
+{
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.portalfiscal.inf.br/nfe")]
+    [System.Xml.Serialization.XmlRootAttribute("NFe", Namespace = "http://www.portalfiscal.inf.br/nfe", IsNullable = false)]
+    public partial class TNFe {
+    
+        private TNFeInfNFe infNFeField;
+    
+        private TNFeInfNFeSupl infNFeSuplField;
+    
+        private Assinatura.SignatureType signatureField;
+    
+        /// <remarks/>
+        public TNFeInfNFe infNFe {
+            get {
+                return this.infNFeField;
+            }
+            set {
+                this.infNFeField = value;
+            }
+        }
+    
+        /// <remarks/>
+        public TNFeInfNFeSupl infNFeSupl {
+            get {
+                return this.infNFeSuplField;
+            }
+            set {
+                this.infNFeSuplField = value;
+            }
+        }
+    
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Namespace="http://www.w3.org/2000/09/xmldsig#")]
+        public Assinatura.SignatureType Signature {
+            get {
+                return this.signatureField;
+            }
+            set {
+                this.signatureField = value;
+            }
+        }
+    }
+}

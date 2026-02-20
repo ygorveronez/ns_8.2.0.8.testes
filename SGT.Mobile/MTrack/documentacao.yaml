@@ -1,0 +1,2036 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: API do MultiMobile
+  description: Descrição das rotas do novo app MultiMobile
+paths:
+  '/MTrack/v1/Autenticacao.svc/Login':
+    post:
+      description: Autentica no server, obtendo o token de sessão para fazer as próximas chamadas
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                CPF:
+                  type: string
+                  example: "00000000001"
+                Senha:
+                  type: string
+                  example: "teste123"
+                UniqueId:
+                  type: string
+                  example: "565436-45646456-345645365436-43565346"
+                VersaoApp:
+                  type: string
+                  example: "1.0.0"
+              required:
+                - CPF
+                - uniqueId
+                - VersaoApp
+      responses:
+        200:
+          description: Login com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Codigo:
+                    type: integer
+                    example: 1001
+                  Token:
+                    type: string
+                    example: "8ed27a2224b64c4bb50f2ae24aed48b4"
+                  Nome: 
+                    type: string
+                    example: Nome do motorista
+                  Empresas:
+                    type: array
+                    items:
+                      properties:
+                        Codigo:
+                          type: integer
+                          example: 1
+                        Descricao:
+                          type: string
+                          example: "Nome da empresa"
+                        UrlEmbarcador: 
+                          type: string
+                          example: "http://localhost:1746"
+                        UrlMobile:
+                          type: string
+                          example: "http://localhost:52952"
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+  
+  '/MTrack/v1/Autenticacao.svc/TestarSessao':
+    get:
+      description: Testa a autenticação no server
+      parameters: 
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+        - in: query
+          name: clienteMultisoftware
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: Confirma a autenticação
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+  
+  '/MTrack/v1/Usuario.svc/ObterImagemMotorista':
+    get:
+      description: Obtém o Base64 da imagem do motorista
+      parameters: 
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+        
+      responses:
+        200:
+          description: Imagem obtida com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Imagem: 
+                    type: string
+                    example: "hf8432fg23764gt2476"
+        
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Mensagem:
+                    type: string
+                    example: Erro
+  
+  '/MTrack/v1/Usuario.svc/ObterImagemMotoristaPorCpf':
+    get:
+      description: Obtém o Base64 da imagem do motorista
+      parameters: 
+        - in: query
+          name: cpf
+          required: true
+          schema:
+            type: string
+            example: "04578544488"
+      responses:
+        200:
+          description: Imagem obtida com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Imagem: 
+                    type: string
+                    example: "hf8432fg23764gt2476"
+        
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Mensagem:
+                    type: string
+                    example: Erro
+  
+  '/MTrack/v1/Cargas.svc/ObterCargas':
+    get:
+      description: Obtém uma lista de cargas que o motorista tem disponível
+      parameters: 
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+        - in: query
+          name: clienteMultisoftware
+          required: true
+          schema:
+            type: integer
+            example: 1
+      
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    Codigo: 
+                      type: integer
+                      format: int32
+                      example: 2169
+                    Configuracoes: 
+                      type: object
+                      properties: 
+                        BloquearRastreamento: 
+                          type: boolean
+                        ControlarTempoEntrega: 
+                          type: boolean
+                        ExibirCalculadoraMobile: 
+                          type: boolean
+                        ExibirRelatorio: 
+                          type: boolean
+                        ForcarPreenchimentoSequencialMobile: 
+                          type: boolean
+                        HabilitarControleFluxoNFeDevolucaoChamado: 
+                          type: boolean
+                        NaoPermiteRejeitarEntrega: 
+                          type: boolean
+                        NaoRetornarColetas: 
+                          type: boolean
+                        ObrigarAssinaturaEntrega: 
+                          type: boolean
+                        ObrigarAssinaturaProdutor: 
+                          type: boolean
+                        ObrigarFotoCanhoto: 
+                          type: boolean
+                        ObrigarFotoNaDevolucao: 
+                          type: boolean
+                        ObrigarJustificativaSolicitacoesForaAreaCliente: 
+                          type: boolean
+                        PermiteCanhotoModoManual: 
+                          type: boolean
+                        PermiteChat: 
+                          type: boolean
+                        PermiteConfirmarEntrega: 
+                          type: boolean
+                        PermiteEntregaParcial: 
+                          type: boolean
+                        PermiteEventos: 
+                          type: boolean
+                        PermiteFotosEntrega: 
+                          type: boolean
+                        PermiteImpressaoMobile: 
+                          type: boolean
+                        PermiteQRCodeMobile: 
+                          type: boolean
+                        PermiteRetificarMobile: 
+                          type: boolean
+                        PermiteSAC: 
+                          type: boolean
+                        QuantidadeMinimasFotosEntrega: 
+                          type: integer
+                          format: int32
+                          example: 0
+                        ServerChatURL: 
+                          type: string
+                          example: ''
+                        PermitirEscanearChavesNfe:
+                          type: boolean
+                        ObrigarEscanearChavesNfe:
+                          type: boolean
+                        
+                    Filial: 
+                      type: object
+                      properties: 
+                        Codigo: 
+                          type: integer
+                          format: int32
+                          example: 1
+                        Nome: 
+                          type: string
+                          example: Nome da filial
+                    NumeroCargaEmbarcador: 
+                      type: string
+                      example: 9441533
+                    Origens: 
+                      type: string
+                      example: SAO JOAO DO OESTE - SC / CAMPO ERE - SC / DESCANSO - SC
+                    Destinos: 
+                      type: string
+                      example: SAO PAULO - SP
+                    Paradas: 
+                      type: array
+                      items: 
+                        type: object
+                        properties: 
+                          Codigo: 
+                            type: integer
+                            format: int32
+                            example: 309265
+                          Coleta: 
+                            type: boolean
+                          DataInicio: 
+                            type: integer
+                            format: int32
+                            example: 1631648958
+                          DataFim: 
+                            type: integer
+                            format: int32
+                            example: 1631648958
+                          DataProgramada: 
+                            type: integer
+                            format: int32
+                            example: 1631648958
+                          DiferencaDevolucao: 
+                            type: boolean
+                          Endereco: 
+                            type: string
+                            example: AREA RURAL AREA RURAL DE CHAPECO S/N  - 
+                          DataEntradaPropriedade: 
+                            type: integer
+                          EstouIndo: 
+                            type: boolean
+                          JanelaDescarga: 
+                            type: string
+                            example: 
+                          Ordem: 
+                            type: integer
+                            format: int32
+                            example: 0
+                          MotivoDevolucao: 
+                            type: object
+                            properties: 
+                              AguardarTratativa: 
+                                type: boolean
+                              Codigo: 
+                                type: integer
+                                format: int32
+                                example: 1063
+                              Devolucao: 
+                                type: boolean
+                              Motivo: 
+                                type: string
+                                example: EXEMPLO MOTIVO REJEIÇÃO
+                              ObrigarFoto: 
+                                type: boolean
+                          MotivoRejeicaoColeta: 
+                            type: object
+                            properties: 
+                              AguardarTratativa: 
+                                type: boolean
+                              Codigo: 
+                                type: integer
+                                format: int32
+                                example: 50
+                              Devolucao: 
+                                type: boolean
+                              Motivo: 
+                                type: string
+                                example: Motivo 1
+                              ObrigarFoto: 
+                                type: boolean
+                          MotivoRetificacaoColeta: 
+                            type: object
+                            properties: 
+                              Codigo: 
+                                type: integer
+                                format: int32
+                                example: 50
+                              Descricao: 
+                                type: string
+                          Canhotos: 
+                            type: array
+                            items: 
+                              type: object
+                              properties: 
+                                Numero: 
+                                  type: integer
+                                  format: int32
+                                  example: 436931
+                                TipoCanhoto: 
+                                  type: integer
+                                  format: int32
+                                  example: 1
+                                DigitalizacaoCanhotoInteiro: 
+                                  type: boolean
+                                Identificacao: 
+                                  type: string
+                                  example: 35210802314041000188550020004369311161569996
+                          Notas: 
+                            type: array
+                            items: 
+                              type: object
+                              properties: 
+                                Codigo: 
+                                  type: integer
+                                  format: int32
+                                  example: 594937
+                                Chave: 
+                                  type: string
+                                  example: 35210802314041000188550020004369311161569996
+                                NumeroNota: 
+                                  type: string
+                                  example: 436931
+                                Devolvida: 
+                                  type: boolean
+                                  example: false
+                                DevolvidaParcial: 
+                                  type: boolean
+                                  example: false
+                          Questionario: 
+                            type: array
+                            items: 
+                              type: object
+                              properties: 
+                                Assunto: 
+                                  type: string
+                                  example: ACESSO
+                                Codigo: 
+                                  type: integer
+                                  format: int32
+                                  example: 883
+                                Perguntas: 
+                                  type: array
+                                  items: 
+                                    type: object
+                                    properties: 
+                                      Alternativas: 
+                                        type: array
+                                        items: 
+                                          type: object
+                                          properties: 
+                                            Codigo: 
+                                              type: integer
+                                              format: int32
+                                              example: 19674
+                                            Descricao: 
+                                              type: string
+                                              example: CONFORME
+                                            Marcado: 
+                                              type: boolean
+                                            Ordem: 
+                                              type: integer
+                                              format: int32
+                                              example: 0
+                                            Valor: 
+                                              type: integer
+                                              format: int32
+                                              example: 0
+                                      Codigo: 
+                                        type: integer
+                                        format: int32
+                                        example: 4027
+                                      Descricao: 
+                                        type: string
+                                        example: Placas identificação produtor
+                                      Obrigatorio: 
+                                        type: boolean
+                                      Ordem: 
+                                        type: integer
+                                        format: int32
+                                        example: 1
+                                      PermiteNaoAplica: 
+                                        type: boolean
+                                      Resposta: 
+                                        type: string
+                                        example: 0
+                                      RespostaNaoSeAplica: 
+                                        type: string
+                                        format: nullable
+                                      RespostaSimNao: 
+                                        type: string
+                                        format: nullable
+                                      Tipo: 
+                                        type: integer
+                                        format: int32
+                                        example: 4
+                                      TipoData: 
+                                        type: boolean
+                                      TipoHora: 
+                                        type: boolean
+                          Cliente: 
+                            type: array
+                            items: 
+                              type: object
+                              properties: 
+                                CodigoIntegracao: 
+                                  type: string
+                                  format: nullable
+                                RaioEmMetros: 
+                                  type: integer
+                                  format: int32
+                                  example: 200
+                                RazaoSocial: 
+                                  type: string
+                                  example: COOPERATIVA CENTRAL AURORA ALIMENTOS (83.310.441/0024-03)
+                                Endereco: 
+                                  type: object
+                                  properties: 
+                                    Cidade: 
+                                      type: string
+                                      example: Chapecó
+                                    Uf: 
+                                      type: string
+                                      example: Santa Catarina
+                                    Latitude: 
+                                      type: string
+                                      example: -27.1009343
+                                    Longitude: 
+                                      type: string
+                                      example: -52.615699
+                                NomeFantasia: 
+                                  type: string
+                                  format: nullable
+                                NaoEObrigatorioInformarNfeNaColeta:
+                                  type: boolean
+                                NaoExigePreenchimentoDeChecklistEntrega:
+                                  type: boolean
+                                Telefone: 
+                                  type: object
+                                  properties: 
+                                    DDD: 
+                                      type: string
+                                      example: 49
+                                    CodigoPais: 
+                                      type: string
+                                      example: 55
+                                    Numero: 
+                                      type: string
+                                      example: 33214404
+                          Pedidos: 
+                            type: array
+                            items: 
+                              type: object
+                              properties: 
+                                Codigo: 
+                                  type: integer
+                                  format: int32
+                                  example: 2127893
+                                NumeroPedido: 
+                                  type: string
+                                  example: 5009728038
+                                Produtos: 
+                                  type: array
+                                  items: 
+                                    type: object
+                                    properties: 
+                                      Codigo: 
+                                        type: string
+                                        example: 000000000002338281
+                                      Descricao: 
+                                        type: string
+                                        example: '*TANK RUN DRY FEM MAUVE 42'
+                                      ImunoPlanejado: 
+                                        type: integer
+                                        format: nullable
+                                      ImunoRealizado: 
+                                        type: integer
+                                        format: nullable
+                                      InformarDadosColeta: 
+                                        type: boolean
+                                      InformarTemperatura: 
+                                        type: boolean
+                                      ObrigatorioGuiaTransporteAnimal: 
+                                        type: boolean
+                                      ObrigatorioNFProdutor: 
+                                        type: boolean
+                                      Observacao: 
+                                        type: string
+                                        format: nullable
+                                      PesoUnitario: 
+                                        type: integer
+                                        format: int32
+                                        example: 0
+                                      NumeroAndares: 
+                                        type: integer
+                                        format: int32
+                                        example: 1
+                                      NumeroLinhas: 
+                                        type: integer
+                                        format: int32
+                                        example: 1
+                                      NumeroColunas: 
+                                        type: integer
+                                        format: int32
+                                        example: 1
+                                      Divisoes: 
+                                        type: array
+                                        items: 
+                                          type: object
+                                          properties: 
+                                            Andar: 
+                                              type: integer
+                                              format: int32
+                                              example: 0
+                                            Linha: 
+                                              type: integer
+                                              format: int32
+                                              example: 0
+                                            Coluna: 
+                                              type: integer
+                                              format: int32
+                                              example: 0
+                                            Quantidade: 
+                                              type: integer
+                                              format: int32
+                                              example: 10
+                                            QuantidadePlanejada: 
+                                              type: integer
+                                              format: int32
+                                              example: 10
+                                            Capacidade: 
+                                              type: integer
+                                              format: int32
+                                              example: 5600
+                                            UnidadeDeMedida: 
+                                              type: object
+                                              properties: 
+                                                Codigo: 
+                                                  type: integer
+                                                  format: int32
+                                                  example: 5
+                                                Descricao: 
+                                                  type: string
+                                                  example: Litros
+                                                UnidadeMedida: 
+                                                  type: integer
+                                                  format: int32
+                                                  example: 4
+                                      Protocolo: 
+                                        type: integer
+                                        format: int32
+                                        example: 6222107
+                                      ProtocoloCargaEntregaProduto: 
+                                        type: integer
+                                        format: int32
+                                        example: 6222107
+                                      Quantidade: 
+                                        type: integer
+                                        format: int32
+                                        example: 1
+                                      QuantidadeCaixa: 
+                                        type: integer
+                                        format: int32
+                                        example: 0
+                                      QuantidadePorCaixaRealizada: 
+                                        type: integer
+                                        format: nullable
+                                      QuantidadeCaixasVazias: 
+                                        type: integer
+                                        format: int32
+                                        example: 0
+                                      QuantidadeCaixasVaziasRealizada: 
+                                        type: integer
+                                        format: int32
+                                        example: 0
+                                      QuantidadeDevolucao: 
+                                        type: integer
+                                        format: int32
+                                        example: 0
+                                      QuantidadePlanejada: 
+                                        type: integer
+                                        format: int32
+                                        example: 0
+                                      Temperatura: 
+                                        type: integer
+                                        format: int32
+                                        example: 0
+                                      UnidadeDeMedida: 
+                                        type: object
+                                        properties: 
+                                          Codigo: 
+                                            type: integer
+                                            format: int32
+                                            example: 0
+                                          Descricao: 
+                                            type: string
+                                            example: 
+                                      MotivoTemperatura: 
+                                        type: integer
+                                        format: int32
+                                        example: 0
+                                      Nota: 
+                                        type: string
+                                        format: nullable
+                          Peso: 
+                            type: number
+                            example: 18297.024
+                          PossuiReentrega: 
+                            type: boolean
+                          Situacao: 
+                            type: integer
+                            format: int32
+                            example: 0
+                          Ocorrencias: 
+                            type: array
+                            items: 
+                              type: object
+                              properties: 
+                                Codigo: 
+                                  type: integer
+                                  format: int32
+                                  example: 1
+                                Numero: 
+                                  type: integer
+                                  format: int32
+                                  example: 1
+                                DevolucaoParcial: 
+                                  type: boolean
+                                  example: true
+                                Situacao: 
+                                  type: integer
+                                  example: 2
+                                Observacao: 
+                                  type: string
+                                  example: Teste
+                                TratativaDevolucao:
+                                  type: string
+                                  example: "Reentregar em outro momento"
+                          ObservacoesPedidos:
+                            type: string
+                            example: "Teste"
+                          DataAgendamento:
+                            type: number
+                            example: 1634925826
+                          ObservacaoAgendamento:
+                            type: string
+                            example: "Teste"
+                          ResponsavelAgendamento:
+                            type: string
+                            example: "Fulano da Silva"
+                          chavesNFe:
+                            type: array
+                            items:
+                              type: string
+                            example: ['113432ewrfwertw23', '12tewrt3546ertg35463465']
+                    Peso: 
+                      type: integer
+                      format: int32
+                      example: 0
+                    Polilinha: 
+                      type: string
+                      example: ........
+                    Situacao: 
+                      type: integer
+                      format: int32
+                      example: 0
+                    TipoCarga: 
+                      type: object
+                      properties: 
+                        Codigo: 
+                          type: integer
+                          format: int32
+                          example: 2
+                        Descricao: 
+                          type: string
+                          example: Leite in natura
+                    TipoOperacao: 
+                      type: object
+                      properties: 
+                        Codigo: 
+                          type: integer
+                          format: int32
+                          example: 2
+                        Descricao: 
+                          type: string
+                          example: Coleta de Leite
+                    Veiculo: 
+                      type: object
+                      properties: 
+                        Placa: 
+                          type: string
+                          example: QJT3736
+                        NumeroAndares: 
+                          type: integer
+                          format: int32
+                          example: 1
+                        NumeroLinhas: 
+                          type: integer
+                          format: int32
+                          example: 1
+                        NumeroColunas: 
+                          type: integer
+                          format: int32
+                          example: 1
+                        Divisoes: 
+                          type: array
+                          items: 
+                            type: object
+                            properties: 
+                              Codigo: 
+                                type: integer
+                                format: int32
+                                example: 1
+                              Andar: 
+                                type: integer
+                                format: int32
+                                example: 1
+                              Linha: 
+                                type: integer
+                                format: int32
+                                example: 1
+                              Coluna: 
+                                type: integer
+                                format: int32
+                                example: 1
+                              Capacidade: 
+                                type: number
+                                format: decimal
+                                example: 10.0
+                              Descricao:
+                                type: string
+                                example: "1"
+                    ViagemIniciada: 
+                      type: boolean
+                    JustificativasTemperatura: 
+                      type: array
+                      items: 
+                        properties:
+                          Codigo:
+                            type: integer
+                          Descricao:
+                            type: string
+                            example: "Justificativa A"
+                    MotivosRejeicaoEntrega: 
+                      type: array
+                      items: 
+                        properties:
+                          Codigo:
+                            type: integer
+                          Descricao:
+                            type: string
+                            example: "Devolução com foto"
+                          AguardarTratativa:
+                            type: boolean
+                          ObrigarFoto:
+                            type: boolean
+                          Devolucao:
+                            type: boolean
+                          NaoAlterarSituacaoColetaEntrega:
+                            type: boolean
+                    MotivosRejeicaoColeta: 
+                      type: array
+                      items: 
+                        properties:
+                          Codigo:
+                            type: integer
+                          Descricao:
+                            type: string
+                            example: "Devolução com foto"
+                          CodigoTipoOperacaoColeta:
+                            type: integer
+                          NaoAlterarSituacaoColetaEntrega:
+                            type: boolean
+                    MotivosRetificacaoColeta: 
+                      type: array
+                      items: 
+                        properties:
+                          Codigo:
+                            type: integer
+                          Descricao:
+                            type: string
+                            example: "Devolução com foto"
+                          TipoOperacao:
+                            type: object
+                            properties:
+                              Codigo:
+                                type: integer
+                              Descricao:
+                                type: string
+                    TiposEventos: 
+                      type: array
+                      items:
+                        properties:
+                          Codigo:
+                            type: integer
+                          Descricao:
+                            type: string
+                            example: "Almoço"
+                    MotivosFalhaGta: 
+                      type: array
+                      items:
+                        properties:
+                          Codigo:
+                            type: integer
+                          Descricao:
+                            type: string
+                            example: "Almoço"
+                    MotivosFalhaNotaFiscal: 
+                      type: array
+                      items:
+                        properties:
+                          Codigo:
+                            type: integer
+                          Descricao:
+                            type: string
+                            example: "Almoço"
+                    RegrasReconhecimentoCanhoto:
+                        type: array
+                        items:
+                          properties:
+                            Codigo:
+                              type: integer
+                            PalavrasChaves:
+                              type: array
+                              example: 
+                                - "NFe"
+                                - "Canhoto"
+                    DataCriacao:
+                      type: number
+                      example: 1634925826
+                    DataPrevisaoInicioViagem:
+                      type: number
+                      example: 1634925826
+                    Temperatura:
+                      type: string
+                      example: "5° a 10°"
+                    DistanciaTotal:
+                      type: number
+                      example: 10.5
+                    Duracao:
+                      type: string
+                      example: "5.3 horas"
+                    VolumeTotal:
+                      type: string
+                      example: "3 unidades"
+                    
+                    
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Mensagem:
+                    type: string
+                    example: Descrição do Erro
+  
+  '/MTrack/v1/Cargas.svc/IniciarViagem':
+    post:
+      description: Envia a informação para o server que o motorista iniciou o percurso de determinada carga
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCarga: 
+                  type: integer
+                  format: int32
+                  example: 78
+                coordenada: 
+                  type: object
+                  properties: 
+                    dataCoordenada: 
+                      type: integer
+                      format: int32
+                      example: 1633720399
+                    latitude: 
+                      type: number
+                      example: -27.32434
+                    longitude: 
+                      type: number
+                      example: -52.32446
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+                        
+  '/MTrack/v1/ColetaEntrega.svc/AtualizarDadosPosicionamento':
+    post:
+      description: Envia a posição do motorista para o server
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCarga: 
+                  type: integer
+                  format: int32
+                  example: 78
+                coordenadas: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id: 
+                        type: integer
+                        format: int32
+                      dataCoordenada: 
+                        type: integer
+                        format: int32
+                        example: 1633720399
+                      latitude: 
+                        type: number
+                        example: -27.32434
+                      longitude: 
+                        type: number
+                        example: -52.32446
+                      velocidade: 
+                        type: number
+                        example: 20.5
+                      nivelBateria: 
+                        type: number
+                        example: 50.6
+                      nivelSinalGPS: 
+                        type: number
+                        example: 99.9
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+  
+  '/MTrack/v1/ColetaEntrega.svc/EnviarImagem':
+    post:
+      description: Envia uma imagem qualquer relativo à uma coleta ou entrega
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCargaEntrega: 
+                  type: integer
+                  format: int32
+                  example: 78
+                coordenada: 
+                  type: object
+                  properties:
+                    dataCoordenada: 
+                      type: integer
+                      format: int32
+                      example: 1633720399
+                    latitude: 
+                      type: number
+                      example: -27.32434
+                    longitude: 
+                      type: number
+                      example: -52.32446
+                imagem: 
+                  type: string
+                  example: "[BASE64]"
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação    
+  
+  '/MTrack/v1/ColetaEntrega.svc/EnviarImagemCanhotoSemVinculo':
+    post:
+      description: Envia uma imagem de um canhoto que ainda não tem vínculo com uma nota fiscal (mas vai ter no futuro)
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCargaEntrega: 
+                  type: integer
+                  format: int32
+                  example: 78
+                imagem: 
+                  type: string
+                  example: "[BASE64]"
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+                  
+  '/MTrack/v1/ColetaEntrega.svc/EnviarCanhoto':
+    post:
+      description: Envia uma imagem de um canhoto para o server
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCanhoto: 
+                  type: integer
+                  format: int32
+                  example: 78
+                requerAprovacao:
+                  type: boolean
+                  example: false
+                devolvido:
+                  type: boolean
+                  example: false
+                observacao:
+                  type: string
+                  example: "Uma observação"
+                imagem: 
+                  type: string
+                  example: "[BASE64]"
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+    
+  '/MTrack/v1/ColetaEntrega.svc/MotoristaACaminho':
+    post:
+      description: Sinaliza que o motorista está a caminho de uma coleta ou entrega. A mesma rota pode ser usado caso o motorista queira cancelar essa ação. Nesse caso, "aCaminho" deve ser false.
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCargaEntrega: 
+                  type: integer
+                  format: int32
+                  example: 78
+                aCaminho: 
+                  type: boolean
+                  example: true
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação  
+  
+  '/MTrack/v1/ColetaEntrega.svc/MotoristaChegouParada':
+    post:
+      description: Sinaliza que o motorista chegou nada parada na data X.
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCargaEntrega: 
+                  type: integer
+                  format: int32
+                  example: 78
+                data: 
+                  type: number
+                  example: 3443565
+                coordenada:
+                  type: object
+                  properties:
+                    latitude:
+                      type: number
+                      example: 123.456
+                    longitude:
+                      type: number
+                      example: 2354.4633
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação  
+  
+  '/MTrack/v1/ColetaEntrega.svc/Confirmar':
+    post:
+      description: Confirma que a coleta/entrega foi realizada com sucesso.
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                codigoCargaEntrega: 
+                  type: integer
+                  format: int32
+                pedidos: 
+                  type: array
+                  items: 
+                    type: object
+                    properties: 
+                      Codigo: 
+                        type: integer
+                        format: int32
+                      Produtos: 
+                        type: array
+                        items: 
+                          type: object
+                          properties: 
+                            Codigo: 
+                              type: string
+                            Divisoes: 
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  Codigo:
+                                    type: integer
+                                    example: 1
+                                    description: É o código da Divisão que vem nas divisões do veículo
+                                  Quantidade:
+                                    type: number
+                                    format: decimal
+                                    example: 10.5
+                                  QuantidadePlanejada:
+                                    type: number
+                                    example: 10.5
+                                      
+                            Quantidade: 
+                              type: integer
+                              format: int32
+                            Temperatura: 
+                              type: number
+                            QuantidadeCaixasVaziasRealizada: 
+                              type: integer
+                              format: int32
+                            MotivoTemperatura: 
+                              type: integer
+                              format: int32
+                            ImunoRealizado: 
+                              type: integer
+                              format: int32
+                            QuantidadePorCaixaRealizada: 
+                              type: integer
+                              format: int32
+                coordenadaConfirmacao: 
+                  type: object
+                  properties: 
+                    data: 
+                      type: integer
+                      format: int32
+                    latitude: 
+                      type: number
+                    longitude: 
+                      type: number
+                observacao: 
+                  type: string
+                justificativaEntregaForaRaio: 
+                  type: string
+                motivoRetificacao: 
+                  type: integer
+                  format: int32
+                dataInicio: 
+                  type: integer
+                  format: int32
+                  description: 'Data de início do carregamento/descarregamento. Se o app não tiver uma forma do motorista dizer explicitamente que o evento foi iniciado, então a data será a mesma que a dataConfirmacao.'
+                dataTermino: 
+                  type: integer
+                  format: int32
+                  description: 'Data de finalização do carregamento/descarregamento. Se o app não tiver uma forma do motorista dizer explicitamente que o evento foi finalizado, então a data será a mesma que a dataConfirmacao.'
+                dataConfirmacao: 
+                  type: integer
+                  format: int32
+                  description: 'Data da finalização de todo o processo da coleta/entrega no app.'
+                motivoFalhaGTA: 
+                  type: integer
+                  format: int32
+                motivoFalhaNotaFiscal:
+                  type: integer
+                  format: int32
+                dadosRecebedor: 
+                  type: object
+                  properties: 
+                    Nome: 
+                      type: string
+                    CPF: 
+                      type: string
+                    DataEntrega: 
+                      type: integer
+                      format: int32
+                    PercentualCompatibilidadeFoto: 
+                      type: number
+                dataConfirmacaoChegada: 
+                  type: integer
+                  format: int32
+                coordenadaConfirmacaoChegada: 
+                  type: object
+                  properties: 
+                    latitude: 
+                      type: number
+                    longitude: 
+                      type: number
+                handlingUnitIds:
+                  type: array
+                  items:
+                    type: string
+                  example: ['123', '123465']
+                chavesNFe:
+                  type: array
+                  items:
+                    type: string
+                  example: ['113432ewrfwertw23', '12tewrt3546ertg35463465']
+                avaliacaoColetaEntrega:
+                  type: integer
+                  example: 5
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação                      
+                        
+  '/MTrack/v1/ColetaEntrega.svc/CriarOcorrencia':
+    post:
+      description: Cria uma ocorrência, que representa alguma coisa errada que tenha acontecido com a coleta/entrega. Normalmente, a devolução de um produto.
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                codigoCargaEntrega: 
+                  type: integer
+                  format: int32
+                codigoMotivoRejeicao: 
+                  type: integer
+                  format: int32
+                devolucaoParcial: 
+                  type: boolean
+                notasFiscais:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      codigo:
+                        type: integer
+                        example: 1
+                      devolucaoTotal:
+                        type: boolean
+                        example: false
+                      devolucaoParcial:
+                        type: boolean
+                        example: true
+                      produtos: 
+                        type: array
+                        items: 
+                          type: object
+                          properties: 
+                            ProtocoloCargaEntregaProduto: 
+                              type: integer
+                              format: int32
+                            QuantidadeDevolucao: 
+                              type: integer
+                              format: int32
+                coordenadaRejeicao: 
+                  type: object
+                  properties: 
+                    data: 
+                      type: integer
+                      format: int32
+                    latitude: 
+                      type: number
+                    longitude: 
+                      type: number
+                observacao: 
+                  type: string
+                motivoRetificacao: 
+                  type: integer
+                  format: int32
+                motivoFalhaGTA: 
+                  type: integer
+                  format: int32
+                dadosRecebedor: 
+                  type: object
+                  properties: 
+                    Nome: 
+                      type: string
+                    CPF: 
+                      type: string
+                    DataEntrega: 
+                      type: integer
+                      format: int32
+                    PercentualCompatibilidadeFoto: 
+                      type: number
+                dataConfirmacaoChegada: 
+                  type: integer
+                  format: int32
+                coordenadaConfirmacaoChegada: 
+                  type: object
+                  properties: 
+                    latitude: 
+                      type: number
+                    longitude: 
+                      type: number
+                dataInicio: 
+                  type: integer
+                  format: int32
+                  description: 'Data de início do carregamento/descarregamento. Se o app não tiver uma forma do motorista dizer explicitamente que o evento foi iniciado, então a data será a mesma que a dataConfirmacao.'
+                imagens:
+                  type: array
+                  items:
+                    type: string
+                    example: "base64 de imagem"
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+                        
+  '/MTrack/v1/Eventos.svc/IniciarEvento':
+    post:
+      description: Inicia um evento na carga
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                codigoCarga: 
+                  type: integer
+                  format: int32
+                codigoTipoEvento: 
+                  type: integer
+                  format: int32
+                coordenada: 
+                  type: object
+                  properties: 
+                    diferencaEmMilissegundos: 
+                      type: integer
+                      format: int32
+                    latitude: 
+                      type: number
+                    longitude: 
+                      type: number
+                observacao: 
+                  type: string
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+                         
+  '/MTrack/v1/Eventos.svc/FinalizarEvento':
+    post:
+      description: Finaliza um evento na carga
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                codigoCarga: 
+                  type: integer
+                  format: int32
+                codigoTipoEvento: 
+                  type: integer
+                  format: int32
+                milisegundosEvento: 
+                  type: integer
+                  format: int32
+                observacao: 
+                  type: string
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação                      
+  
+  '/MTrack/v1/Notificacoes.svc/ObterNotificacoes':
+    get:
+      description: Obtém uma lista de notificações do motorista
+      parameters: 
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+        - in: query
+          name: ultimoCodigoRecebido
+          required: false
+          schema:
+            type: integer
+            example: 0
+      
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    Codigo: 
+                      type: integer
+                      format: int32
+                      example: 1
+                   
+                    Contents: 
+                      type: string
+                      example: "{{\"pt\":\"O chamado da parada $0 está em análise\",\"en\":\"O chamado da parada $0 está em análise\"}}"
+                    Headings: 
+                      type: string
+                      example: "{\"pt\":\"Atualização no chamado\",\"en\":\"Atualização no chamado\"}"
+                    Data: 
+                      type: string
+                      example: "{\"CodigoCarga\":2185,\"CodigoCargaEntrega\":5779,\"CodigoChamado\":982,\"NomeAnalistaChamado\":\"Suporte Multisoftware\"}"
+                    Lida:
+                      type: boolean
+                      example: false
+                    Tipo:
+                      type: integer
+                      example: 4
+                    notificationId:
+                      type: string
+                      example: "844f354b-dee1-4110-bf45-508036f7c05b"
+                      
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Mensagem:
+                    type: string
+                    example: Descrição do Erro
+  
+  '/MTrack/v1/Notificacoes.svc/ConfirmarLeituraNotificacao':
+    post:
+      description: Confirma a leitura de notificações
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codigosNotificacaoes: 
+                  type: array
+                  items: 
+                    type: integer
+                  example: [1, 2]
+              
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro      
+                        
+  '/MTrack/v1/Logs.svc/ArmazenarLogApp':
+    post:
+      description: Envia a informação para o server que o motorista iniciou o percurso de determinada carga
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codigoMotorista:
+                  type: integer
+                  format: int32
+                  example: 1
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                dataRegistroApp: 
+                  type: integer
+                  format: int32
+                  example: 1633720399
+                versaoApp: 
+                  type: string
+                  example: '1.0.1'
+                versaoSistemaOperacional: 
+                  type: string
+                  example: 'Android 12'
+                marcaAparelho: 
+                  type: string
+                  example: 'Samsung'
+                modeloAparelho: 
+                  type: string
+                  example: 'Galaxy S20FE'
+                mensagem: 
+                  type: string
+                  example: 'Confirmação da parada 12345'
+                extra: 
+                  type: string
+                  example: '{"codigoCarga": 23546}'
+                erro: 
+                  type: boolean
+                  example: false
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação
+                        
+  '/MTrack/v1/ColetaEntrega.svc/DeletarGuiaTransporteAnimal':
+    post:
+      description: Deleta uma GTA com código de barras X.
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCargaEntrega: 
+                  type: integer
+                  format: int32
+                  example: 78
+                codigoBarrasGta: 
+                  type: string
+                  example: "47865937485623487956328446"
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação 
+  
+  '/MTrack/v1/ColetaEntrega.svc/AtualizarCheckList':
+    post:
+      description: Atualiza a pesquisa.
+      parameters:
+        - in: header
+          name: Sessao
+          required: true
+          schema:
+            type: string
+            example: '895acacfb4b34b9d9427a82aa79223b2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clienteMultisoftware: 
+                  type: integer
+                  format: int32
+                  example: 1
+                codigoCargaEntrega: 
+                  type: integer
+                  format: int32
+                  example: 78
+                respostas: 
+                  type: object
+                  properties:
+                    Codigo:
+                      type: integer
+                      format: int32
+                      example: 78
+                    Tipo:
+                      type: number
+                    NaoAplica:
+                      type: boolean
+                    Resposta:
+                      type: string
+                    Alternativas:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          Codigo:
+                            type: integer
+                            format: int32
+                            example: 78
+                  
+      responses:
+        200:
+          description: Sucesso na requisição
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Sucesso:
+                    type: boolean
+                    example: true
+        default:
+          description: Qualquer status de erro
+          content:
+            application/json:
+              schema:
+                    type: object
+                    properties:
+                      Mensagem:
+                        type: string
+                        example: Erro na autenticação

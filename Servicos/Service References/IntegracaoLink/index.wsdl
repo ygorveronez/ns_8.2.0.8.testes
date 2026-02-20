@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:wsUltimas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:wsUltimas" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:wsUltimas">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+      <xsd:complexType name="posicao">
+        <xsd:all>
+          <xsd:element name="data_hora" type="xsd:string" />
+          <xsd:element name="data_hora_gravacao" type="xsd:string" />
+          <xsd:element name="latitude" type="xsd:float" />
+          <xsd:element name="longitude" type="xsd:float" />
+          <xsd:element name="velocidade" type="xsd:int" />
+          <xsd:element name="posicao_memoria" type="xsd:int" />
+          <xsd:element name="numero_satelites" type="xsd:int" />
+          <xsd:element name="panico" type="xsd:int" />
+          <xsd:element name="ignicao" type="xsd:int" />
+          <xsd:element name="entradas" type="xsd:int" />
+          <xsd:element name="saidas" type="xsd:int" />
+          <xsd:element name="horimetro" type="xsd:string" />
+          <xsd:element name="odometro" type="xsd:string" />
+          <xsd:element name="logradouro" type="xsd:string" />
+          <xsd:element name="motivo" type="xsd:int" />
+          <xsd:element name="contador" type="xsd:int" />
+          <xsd:element name="placa" type="xsd:string" />
+          <xsd:element name="numero_serie" type="xsd:string" />
+          <xsd:element name="telemetria" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="arrayposicoes">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="SOAP-ENC:Array">
+            <xsd:attribute wsdl:arrayType="tns:posicao[]" ref="SOAP-ENC:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+      <xsd:complexType name="retorno">
+        <xsd:all>
+          <xsd:element name="id" type="xsd:int" />
+          <xsd:element name="erro" type="xsd:string" />
+          <xsd:element name="resposta" type="tns:arrayposicoes" />
+        </xsd:all>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="recebeUltimasRequest">
+    <wsdl:part name="usuario_mapas" type="xsd:string" />
+    <wsdl:part name="senha_mapas" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="recebeUltimasResponse">
+    <wsdl:part name="return" type="tns:retorno" />
+  </wsdl:message>
+  <wsdl:message name="recebeUltimasPlacaRequest">
+    <wsdl:part name="usuario_mapas" type="xsd:string" />
+    <wsdl:part name="senha_mapas" type="xsd:string" />
+    <wsdl:part name="rotulo" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="recebeUltimasPlacaResponse">
+    <wsdl:part name="return" type="tns:retorno" />
+  </wsdl:message>
+  <wsdl:portType name="wsUltimasPortType">
+    <wsdl:operation name="recebeUltimas">
+      <documentation>Recebe Ultimas</documentation>
+      <wsdl:input message="tns:recebeUltimasRequest" />
+      <wsdl:output message="tns:recebeUltimasResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="recebeUltimasPlaca">
+      <documentation>Recebe Ultimas pela placa</documentation>
+      <wsdl:input message="tns:recebeUltimasPlacaRequest" />
+      <wsdl:output message="tns:recebeUltimasPlacaResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsUltimasBinding" type="tns:wsUltimasPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="recebeUltimas">
+      <soap:operation soapAction="urn:wsPosicoes#recebePosicoes" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:wsPosicoes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:wsPosicoes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="recebeUltimasPlaca">
+      <soap:operation soapAction="urn:wsPosicoes#recebePosicoes" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:wsPosicoes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:wsPosicoes" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wsUltimas">
+    <wsdl:port name="wsUltimasPort" binding="tns:wsUltimasBinding">
+      <soap:address location="http://seguro.linkmonitoramento.com.br/monitoramento/servicos/api/ultimas/index.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

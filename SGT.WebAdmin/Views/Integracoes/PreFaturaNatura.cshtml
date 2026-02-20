@@ -1,0 +1,230 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Integrações</li>
+    <li class="breadcrumb-item active">Pré Fatura Natura</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        Pré-fatura da Natura
+    </h1>
+</div>
+<div id="knockoutPreFaturaNatura" class="panel">
+    <div class="panel-container">
+        <div class="panel-hdr">
+            <h3>
+                <i class="fal fa-edit"></i>
+                Pré-fatura da Natura
+            </h3>
+        </div>
+        <div class="panel-content">
+            <form>
+                <div class="row">
+
+                    <div class="col-12 col-md-3" data-bind="visible: NumeroPreFatura.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: NumeroPreFatura.text, attr: { for: NumeroPreFatura.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: NumeroPreFatura.requiredClass, value: NumeroPreFatura.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroPreFatura.maxlength, id : NumeroPreFatura.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3" data-bind="visible: DataInicial.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3" data-bind="visible: DataFinal.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3" data-bind="visible: Situacao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                            <select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6" data-bind="visible: Empresa.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Empresa.text, attr: { for: Empresa.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: Empresa.requiredClass, value: Empresa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Empresa.maxlength, id : Empresa.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Empresa.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="d-flex align-items-center justify-content-end mb-3">
+                <button class="btn btn-default  waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: ConsultarPreFatura.eventClick, attr: { id: ConsultarPreFatura.id}, visible: ConsultarPreFatura.id" type="button">
+                    <i class="fal fa-file-alt"></i><span data-bind="text: ConsultarPreFatura.text"></span>
+                </button>
+                <button class="btn btn-success  waves-effect waves-themed btnPesquisarFiltroPesquisa ms-3" data-bind="click: HistoricoIntegracoes.eventClick, attr: { id: HistoricoIntegracoes.id}, visible: HistoricoIntegracoes.id" type="button">
+                    <i class="fal fa-history"></i><span data-bind="text: HistoricoIntegracoes.text"></span>
+                </button>
+                <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa ms-3" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                    <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                </button>
+            </div>
+            <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+        </div>
+    </div>
+</div>
+
+<div id="divConsultaPreFatura" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Consulta de Pré Fatura</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+
+                        <div class="col-12 col-md-6" data-bind="visible: Empresa.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Empresa.text, attr: { for: Empresa.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Empresa.requiredClass, value: Empresa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Empresa.maxlength, id : Empresa.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Empresa.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" data-bind="visible: NumeroPreFatura.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: NumeroPreFatura.text, attr: { for: NumeroPreFatura.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: NumeroPreFatura.requiredClass, value: NumeroPreFatura.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroPreFatura.maxlength, id : NumeroPreFatura.id}" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4" data-bind="visible: DataInicial.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4" data-bind="visible: DataFinal.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-success" type="button" data-bind="click: ConsultarPreFatura.eventClick, attr: { id : ConsultarPreFatura.id}">
+                        <span data-bind="text: ConsultarPreFatura.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="divModalHistoricoIntegracaoPreFaturaNatura" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Histórico de Integrações da Pré Fatura</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="insideNoPaddignTable">
+                    <table width="100%" class="table table-bordered table-hover" cellspacing="0" id="tblHistoricoIntegracaoPreFaturaNatura"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalHistoricoIntegracaoGeralNatura" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Histórico de Integrações</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%" class="table table-bordered table-hover" cellspacing="0" id="tblHistoricoIntegracaoGeralNatura"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="divModalDocumentosPreFaturaNatura" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Documentos da Pré Fatura</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Numero.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Numero.text, attr: { for: Numero.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Numero.requiredClass, value: Numero.val, valueUpdate: 'afterkeydown', attr: { maxlength: Numero.maxlength, id : Numero.id}" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-danger me-2 btnPesquisarFiltroPesquisa " type="button" data-bind="click: RemoverDocumentosCancelados.eventClick, attr : { id: Pesquisar.id }">
+                        <i class="fal fa-remove"></i><span data-bind="text: RemoverDocumentosCancelados.text"></span>
+                    </button>
+                    <button class="btn btn-primary btnPesquisarFiltroPesquisa" type="button" data-bind="click: Pesquisar.eventClick, attr : { id: Pesquisar.id }">
+                        <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                    </button>
+                </div>
+                <div class="col-12 col-md-12 mt-3">
+                    <div class="card">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <h3 class="card-title">Documentos</h3>
+                        </div>
+                        <div class="card-body">
+                            <table width="100%" class="table table-bordered table-hover" id="tblDocumentosPreFaturaNatura" cellspacing="0"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/scripts/preFaturaNatura"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadPreFaturaNatura();
+    });
+
+</script>

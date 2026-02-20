@@ -1,0 +1,113 @@
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Cargas</li>
+        <li class="breadcrumb-item">Relatórios</li>
+        <li class="breadcrumb-item active">Histórico Janela de Carregamento</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            Relatório de Histórico Janela de Carregamento
+        </h1>
+    </div>
+    <div id="divConteudoRelatorio" class="panel">
+        <div class="panel-container">
+            <div class="panel-hdr">
+                <h3>
+                    <i class="fal fa-search"></i>
+                    Relatório
+                </h3>
+            </div>
+            <div class="panel-content">
+                <form>
+                    <div id="knockoutPesquisaHistoricoJanelaCarregamento">
+                        <div class="row">
+                            <div class="col-12 col-md-2" data-bind="visible: DataInicial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: DataFinal.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: MotivoRecusa.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: MotivoRecusa.text, attr: { for: MotivoRecusa.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="value: MotivoRecusa.val, valueUpdate: 'afterkeydown', attr: { maxlength: MotivoRecusa.maxlength, id : MotivoRecusa.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: MotivoRecusa.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: Carga.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Carga.text, attr: { for: Carga.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Carga.requiredClass, value: Carga.val, valueUpdate: 'afterkeydown', attr: { maxlength: Carga.maxlength, id : Carga.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Carga.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: CentroCarregamento.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: CentroCarregamento.text, attr: { for: CentroCarregamento.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: CentroCarregamento.requiredClass, value: CentroCarregamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: CentroCarregamento.maxlength, id : CentroCarregamento.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: CentroCarregamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row mb-3">
+                    <div id="knockoutCRUDConfiguracaoRelatorio" class="col-12 col-md-6 mb-3 mb-md-0">
+                        <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="enable: ExibirConfiguracoes.enable, click: ExibirConfiguracoes.eventClick, attr: { id: ExibirConfiguracoes.id}" type="button">
+                            <i data-bind="css: ExibirConfiguracoes.icon"></i><span data-bind="text: ExibirConfiguracoes.text"></span>
+                        </button>
+                    </div>
+                    <div id="knockoutCRUDFiltrosPesquisaHistoricoJanelaCarregamento" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                        <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="click: Preview.eventClick, attr: { id: Preview.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Preview.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div id="divConfigRelatorio"></div>
+                <table id="gridPreviewRelatorioHistoricoJanelaCarregamento" class="table table-bordered table-hover table-condensed table-striped" width="100%" cellspacing="0"></table>
+                <div id="knockoutCRUDPesquisaHistoricoJanelaCarregamento" class="d-flex justify-content-center justify-content-md-end mt-3">
+                    <button class="btn btn-success me-3" data-bind="click: GerarRelatorioExcel.eventClick, attr: { id: GerarRelatorioExcel.id}" type="button">
+                        <i class="fal fa-file-excel"></i><span data-bind="text: GerarRelatorioExcel.text"></span>
+                    </button>
+                    <button class="btn btn-success" data-bind="click: GerarRelatorioPDF.eventClick, attr: { id: GerarRelatorioPDF.id}" type="button">
+                        <i class="fal fa-file-pdf"></i><span data-bind="text: GerarRelatorioPDF.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/relatorios/scripts/historicoJanelaCarregamento"></script>
+<script type="text/javascript">
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadHistoricoJanelaCarregamento();
+    });
+
+</script>

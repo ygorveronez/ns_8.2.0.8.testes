@@ -1,0 +1,1436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:p1="http://electrolux.com/SD/OL/Conemb" name="SI_SendConemb_EDI_Sync_Outbound" targetNamespace="http://electrolux.com/SD/OL/Conemb" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation />
+  <wsp:UsingPolicy wsdl:required="true" />
+  <wsp:Policy wsu:Id="OP_SI_SendConemb_EDI_Sync_Outbound" />
+  <wsdl:types>
+    <xsd:schema xmlns="http://electrolux.com/SD/OL/Common" targetNamespace="http://electrolux.com/SD/OL/Common" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:simpleType name="DT_IdentRegistro_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">PROCEDA: Identificador do registro</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">038c359fe24711ea8c7b000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:integer">
+          <xsd:totalDigits value="3" />
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:complexType name="DT_IdentService_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">Identificação no serviço</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">0b8d81cbe30c11ea8989000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="identCarrier">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">754830b2e22811eaacda005056ba0c66</xsd:appinfo>
+              <xsd:documentation>ID de identificação no serviço</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="10" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_Registro000_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">Proceda - Registro 000</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">c0d624dee24711eac9e0000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element default="000" name="identRegistro" type="DT_IdentRegistro_SAP">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">c0b89f0de24711eaaf50005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Identificador do registro</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="identRemetente">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">c0b89f0ee24711ea98fe005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Identificação do remetente</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="35" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="identDest">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">06656b35e24911ea99f8005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Identificação do destinatário</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="35" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="data" type="xsd:date">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">29c58c4be24911eacff7005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Data</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="hora" type="xsd:time">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">36205cd9e24911eaa8e1005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Hora</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="identIntercambio">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">5a2aee97e24911eacdd4005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Identificação do intercâmbio</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="12" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="filler" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">80fdb23be24911ea8496005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Filler</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_ReturnMessage_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">Mensagens de retorno</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">7def82ade24211eacfee000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="status">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">7dce6753e24211eacba5005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Status</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="SUCCESS" />
+                <xsd:enumeration value="ERROR" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element minOccurs="0" name="message" type="xsd:string">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">7dce6754e24211eabc59005056ba5c4d</xsd:appinfo>
+              <xsd:documentation>Mensagem</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns:p5="http://electrolux.com/SD/OL/Common" xmlns="http://electrolux.com/SD/OL/Conemb" targetNamespace="http://electrolux.com/SD/OL/Conemb" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://electrolux.com/SD/OL/Common" />
+      <xsd:element name="MT_ResultSendConemb_EDI" type="p1:DT_ReturnSendConemb" />
+      <xsd:element name="MT_RequestSendConemb_EDI" type="p1:DT_RequestSendConemb" />
+      <xsd:element name="FM_SendConemb_EDI">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="standard" type="p1:ExchangeFaultData" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ExchangeLogData">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">89f5bfcde5ff11eab6e1000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="severity" type="xsd:string" />
+          <xsd:element name="text" type="xsd:string" />
+          <xsd:element minOccurs="0" name="url" type="xsd:string" />
+          <xsd:element minOccurs="0" name="id" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_ReturnSendConemb">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">572b4f4de5ff11eaa54a000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="returnStatus" type="p5:DT_ReturnMessage_SAP">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">56d4dcd9e5ff11ea9d4f005056ba093a</xsd:appinfo>
+              <xsd:documentation>Status de retorno</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ExchangeFaultData">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">89d883d4e5ff11eab8f2000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="faultText" type="xsd:string" />
+          <xsd:element minOccurs="0" name="faultUrl" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="faultDetail" type="p1:ExchangeLogData" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_RequestSendConemb">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">17d84a8fe87611ea88ba000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="identService" type="p5:DT_IdentService_SAP">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">33aeebf5e3d811ea8e36005056ba1c37</xsd:appinfo>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="registro000">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">6931cba2e3d911ea9060005056ba1c37</xsd:appinfo>
+              <xsd:documentation>Registro 000 - Cabeçalho de intercâmbio</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="detail" type="p5:DT_Registro000_SAP">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">6931cb9fe3d911eabab1005056ba1c37</xsd:appinfo>
+                    <xsd:documentation>Dados</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element maxOccurs="200" name="registro520">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">6931cba1e3d911ea9068005056ba1c37</xsd:appinfo>
+                    <xsd:documentation>Registro 520 - Cabeçalho de documento</xsd:documentation>
+                  </xsd:annotation>
+                  <xsd:complexType>
+                    <xsd:sequence>
+                      <xsd:element default="520" name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">6931cba0e3d911eac4ad005056ba1c37</xsd:appinfo>
+                          <xsd:documentation>Identificador do registro</xsd:documentation>
+                        </xsd:annotation>
+                      </xsd:element>
+                      <xsd:element name="identDocumento">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">eeda17dce3d911ea9e4c005056ba1c37</xsd:appinfo>
+                          <xsd:documentation>Identificador do documento</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                          <xsd:restriction base="xsd:string">
+                            <xsd:maxLength value="14" />
+                          </xsd:restriction>
+                        </xsd:simpleType>
+                      </xsd:element>
+                      <xsd:element minOccurs="0" name="filler">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">eeda17dde3d911eaac75005056ba1c37</xsd:appinfo>
+                          <xsd:documentation>Filler</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                          <xsd:restriction base="xsd:string">
+                            <xsd:maxLength value="333" />
+                          </xsd:restriction>
+                        </xsd:simpleType>
+                      </xsd:element>
+                      <xsd:element name="registro521">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">ccc7084de3da11eab8a4005056ba1c37</xsd:appinfo>
+                          <xsd:documentation>Registro 521 - Dados da transportadora</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                          <xsd:sequence>
+                            <xsd:element default="521" name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">ccc70848e3da11eaab4c005056ba1c37</xsd:appinfo>
+                                <xsd:documentation>Identificador do registro</xsd:documentation>
+                              </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="CnpjTransp">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">ccc70849e3da11ea88da005056ba1c37</xsd:appinfo>
+                                <xsd:documentation>CNPJ da transportadora</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                  <xsd:maxLength value="14" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element minOccurs="0" name="NomeTransp">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">ccc7084ae3da11ea82f8005056ba1c37</xsd:appinfo>
+                                <xsd:documentation>Nome da transportadora (razão social)</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                  <xsd:maxLength value="50" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element minOccurs="0" name="Filler">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">ccc7084be3da11eac835005056ba1c37</xsd:appinfo>
+                                <xsd:documentation>Filler</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                  <xsd:maxLength value="283" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element maxOccurs="5000" name="registro522">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">ccc7084ce3da11ea9ce2005056ba1c37</xsd:appinfo>
+                                <xsd:documentation>Registro 522 - Conhecimentos embarcados</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:complexType>
+                                <xsd:sequence>
+                                  <xsd:element default="522" name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de1e3dc11ea99a6005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Identificador do registro</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="FilialEmConhec">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de2e3dc11ea8abb005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Filial emissora do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:integer">
+                                        <xsd:totalDigits value="10" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="SerieConhec">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de3e3dc11ea8203005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Série do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="5" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="NumeroConhec">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de4e3dc11eacc6b005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Número do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:integer">
+                                        <xsd:totalDigits value="12" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="DataEmConhec" type="xsd:date">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de5e3dc11eaa217005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Data de emissão do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="CondFrete">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de6e3dc11eaa7c8005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Condição de frete - C = CIF ou F = FOB</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:enumeration value="C" />
+                                        <xsd:enumeration value="F" />
+                                        <xsd:maxLength value="1" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="CnpjEmConhec">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de7e3dc11eaabae005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Cnpj do local/filial emissora do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="14" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="CnpjEmNf">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de8e3dc11ea944a005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Cnpj do emissor da nota fiscal</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="14" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="CnpjDestConhecDev">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539de9e3dc11ea85b0005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Cnpj do destino do conhecimento de devolução</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="14" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="CnpjDestNfConhec">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539deae3dc11eaa158005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Cnpj do destinatario das notas do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="14" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="CnpjConsignatario">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539debe3dc11ea80ee005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Cnpj do consignatário</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="14" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="CodFiscNatOper">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539dece3dc11eacc0e005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Código fiscal da natureza da operação</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="5" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="PlacaVeiculo">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539dede3dc11eac3cb005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Placa do veiculo</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="9" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="NumCarregamento">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539deee3dc11eac4f0005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Número do carregamento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="20" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="NumPreCalc">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539defe3dc11eab59c005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Número do pré-cálculo</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="20" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="OutroNum1">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539df0e3dc11ea80bf005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Outro número sap, account, etc. (identificação do embarque, carga, etc.) – #2</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="20" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="OutroNum2">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">3b539df1e3dc11eac519005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Outro número sap, account, etc. (identificação do embarque, carga, etc.) – #3</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="20" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="IdDocAutCarreg">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efb4e3dc11eaa64b005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Identificação do documento de autorização de carregamento e transporte da transportadora</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="15" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="ChaveConsDv">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efb5e3dc11ea9771005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Chave de consulta com dv</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="44" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="Protocolo">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efb6e3dc11eabc16005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Protocolo</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="15" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="CodNumChaveAcesso">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efb7e3dc11eabe82005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Código numérico da chave de acesso</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:integer">
+                                        <xsd:totalDigits value="9" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="FilialEmConhecOrig">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efb8e3dc11eab3a8005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Filial emissora do conhecimento originador do conhecimento – transportadora contratante</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="10" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="SerieEmConhecOrig">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efb9e3dc11ea845e005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Série do conhecimento originador do conhecimento – transportadora contratante</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="5" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="NumEmConhecOrig">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efbae3dc11ea8660005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Número do conhecimento originador deste conhecimento – transportadora contratante</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="12" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="TpMeioTransp">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efbbe3dc11eab9b6005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Tipo do meio de transporte</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="5" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="TipoConhec">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efbce3dc11ea918d005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Tipo do conhecimento - somente 'N" - Normal</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:enumeration value="A" />
+                                        <xsd:enumeration value="B" />
+                                        <xsd:enumeration value="C" />
+                                        <xsd:enumeration value="D" />
+                                        <xsd:enumeration value="E" />
+                                        <xsd:enumeration value="F" />
+                                        <xsd:enumeration value="H" />
+                                        <xsd:enumeration value="I" />
+                                        <xsd:enumeration value="M" />
+                                        <xsd:enumeration value="N" />
+                                        <xsd:enumeration value="O" />
+                                        <xsd:enumeration value="P" />
+                                        <xsd:enumeration value="R" />
+                                        <xsd:enumeration value="S" />
+                                        <xsd:enumeration value="T" />
+                                        <xsd:enumeration value="U" />
+                                        <xsd:enumeration value="W" />
+                                        <xsd:enumeration value="X" />
+                                        <xsd:enumeration value="Y" />
+                                        <xsd:enumeration value="Z" />
+                                        <xsd:maxLength value="1" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="TipoFrete">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efbde3dc11eaa390005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Tipo de frete - somente '1' - ( 1 = Normal, 2 = Exportação, 3 = Importação )</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:integer">
+                                        <xsd:enumeration value="1" />
+                                        <xsd:enumeration value="2" />
+                                        <xsd:enumeration value="3" />
+                                        <xsd:totalDigits value="1" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="AcaoDoc">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efbee3dc11eac04b005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Ação do documento - somente 'I' ( I - Incluir, E - Excluir )</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:enumeration value="I" />
+                                        <xsd:enumeration value="E" />
+                                        <xsd:maxLength value="1" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="CalcFreteDif">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efbfe3dc11eac3b4005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>somente 'N' - ( S = Tabela diferente padrão, N = Tabela frete padrão )</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:enumeration value="S" />
+                                        <xsd:enumeration value="N" />
+                                        <xsd:maxLength value="1" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="TabelaFrete">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efc0e3dc11eac689005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Tabela de frete</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="10" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="PlanoCargaRapida">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efc1e3dc11ea9f74005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Plano de carga rápida (S/N)? - Somente 'N'</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:enumeration value="S" />
+                                        <xsd:enumeration value="N" />
+                                        <xsd:maxLength value="1" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="UfEmbarcador">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efc2e3dc11eaada5005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Uf do embarcador – local de coleta</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="2" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="UfUnEmConhec">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efc3e3dc11eab2a6005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Uf da unidade emissora do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="2" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="UfDest">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efc4e3dc11eac175005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Uf do destinatário/local de entrega da mercadoria/nota fiscal</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="2" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element minOccurs="0" name="Filler">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">c792efc5e3dc11eabe73005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Filler</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:simpleType>
+                                      <xsd:restriction base="xsd:string">
+                                        <xsd:maxLength value="10" />
+                                      </xsd:restriction>
+                                    </xsd:simpleType>
+                                  </xsd:element>
+                                  <xsd:element name="registro523">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">d498a6a9e3e011ea8c98005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Registro 523 - Valores do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:complexType>
+                                      <xsd:sequence>
+                                        <xsd:element default="523" name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">d498a6a8e3e011eaa220005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Identificador do registro</xsd:documentation>
+                                          </xsd:annotation>
+                                        </xsd:element>
+                                        <xsd:element name="QtdeTotVolEmb">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75bde3e111eacbff005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Quantidade total de volumes/embalagens</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="8" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element name="PesoTotTransp">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75bee3e111ea9b48005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Peso total transportado (peso bruto)</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="9" />
+                                              <xsd:fractionDigits value="3" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="PesoTotCubado">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75bfe3e111eabdf6005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Peso total cubado (volume x densidade</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="10" />
+                                              <xsd:fractionDigits value="4" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="PesoDensCub">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c0e3e111eaa021005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Peso densidade/cubagem</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="10" />
+                                              <xsd:fractionDigits value="4" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element name="TotalFrete">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c1e3e111ea99a5005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor total do frete</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="FretePesoVol">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c2e3e111eaade5005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor do frete por peso/volume</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="Frete">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c3e3e111eaa58e005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Frete valor</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="FreteAdValorem">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c4e3e111ea9097005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Frete ad valorem</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="SecCat">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c5e3e111eab0a2005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor sec – cat</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="Itr">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c6e3e111ea825f005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor itr</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="Despacho">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c7e3e111ea9b87005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor do despacho</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="Pedagio">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c8e3e111ea89c4005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor do pedágio</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="AdrmeGris">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75c9e3e111eab942005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor ademe/gris</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="TotDespExtra">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75cae3e111ea9e5d005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor total de despesas extras/adicionais</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="DescontoAcrescimo">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75cbe3e111eab9c3005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor do desconto ou do acréscimo</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="IndicDescAcresc">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75cce3e111eabe96005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Indicador de desconto ou acréscimo - A = Acréscimo, D = Desconto, N = Normal</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:enumeration value="A" />
+                                              <xsd:enumeration value="D" />
+                                              <xsd:enumeration value="N" />
+                                              <xsd:maxLength value="1" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="BaseIcms">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75cde3e111eac592005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Base de cálculo para apuração icms</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="RateIcms">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75cee3e111eab110005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>% de taxa do icms</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="5" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="ValueIcms">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75cfe3e111ea97ab005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor do icms</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element name="IcmsStFlag">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d0e3e111eac6c3005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Substituição tributária? - 1 = Sim, 2 = Não, 3 - Isento/Oper.no estado</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:integer">
+                                              <xsd:enumeration value="1" />
+                                              <xsd:enumeration value="2" />
+                                              <xsd:enumeration value="3" />
+                                              <xsd:totalDigits value="1" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="BaseIcmsSt">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d1e3e111ea9bc4005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Base de cálculo icms – substituição tributária</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="RateIcmsSt">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d2e3e111eab7a0005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>% de taxa do icms – substituição tributária</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="5" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="ValueIcmsSt">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d3e3e111eaa1fc005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor do icms – substituição tributária</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="BaseIss">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d4e3e111ea94f6005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Base de calculo do iss</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="RateIss">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d5e3e111eac2f6005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>% de taxa do iss</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="5" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="ValueIss">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d6e3e111ea8a61005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor do iss</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="ValueIr">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d7e3e111ea8cdc005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Valor do ir</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="5" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="DireitoFiscal">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d8e3e111eaa734005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Direito fiscal - IC3 = Exportação, Z23 = Com substribuição tributária, IC0 - Sem substituição tributária</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:enumeration value="IC3" />
+                                              <xsd:enumeration value="Z23" />
+                                              <xsd:enumeration value="IC0" />
+                                              <xsd:maxLength value="3" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="TipoImporto">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75d9e3e111eac854005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Tipo de imposto</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="4" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="Filler">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">fb0f75dae3e111eaaa4d005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Filler</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="16" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                      </xsd:sequence>
+                                    </xsd:complexType>
+                                  </xsd:element>
+                                  <xsd:element maxOccurs="9999" name="registro524">
+                                    <xsd:annotation>
+                                      <xsd:appinfo source="http://sap.com/xi/TextID">a60630fce3e911eac6f1005056ba1c37</xsd:appinfo>
+                                      <xsd:documentation>Registro 524 - Notas componentes do conhecimento</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:complexType>
+                                      <xsd:sequence>
+                                        <xsd:element default="524" name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">a60630fbe3e911eabef5005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Identificador de registro</xsd:documentation>
+                                          </xsd:annotation>
+                                        </xsd:element>
+                                        <xsd:element name="CnpjEmNf">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">bf36c962e3e911ea81b6005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Cnpj do emissor da nota fiscal</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="14" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element name="NumeroNf">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d061e5fc11ea999d005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Número da nota fiscal</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="9" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element name="SerieEmNf">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d062e5fc11ea8107005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Série</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="3" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element name="DataEmNf" type="xsd:date">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d063e5fc11eab961005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Data de emissão da nota fiscal</xsd:documentation>
+                                          </xsd:annotation>
+                                        </xsd:element>
+                                        <xsd:element name="ValorNf">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d064e5fc11ea9f7a005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Valor da nota fiscal</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="15" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element name="QtdeTotVolEmb">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d065e5fc11eaa65f005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Qtde total de volumes/embalagens</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="8" />
+                                              <xsd:fractionDigits value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element name="PesoBrutoTot">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d066e5fc11eac33b005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Peso bruto total da mercadoria/nota</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="9" />
+                                              <xsd:fractionDigits value="3" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="PesoDensCub">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d067e5fc11eac1d4005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Peso densidade/cubagem</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="10" />
+                                              <xsd:fractionDigits value="4" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="PesoCubado">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d068e5fc11ea8f4e005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Peso cubado (volume x densidade)</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:decimal">
+                                              <xsd:totalDigits value="10" />
+                                              <xsd:fractionDigits value="4" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="IdPedido">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d069e5fc11ea995d005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Identificação do pedido do cliente</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="20" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="NumRomaneio">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d06ae5fc11ea9ea4005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Numero romaneio, ordem de coleta, resumo de carga, etc. (identificação do embarque)</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="20" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="NumSap">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d06be5fc11ea9f68005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Número sap, shipment, etc. (identificação do embarque, carga, etc.) – #1</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="20" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="OutroNum1">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d06ce5fc11eaaf84005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Outro número sap, account, etc. (identificação do embarque, carga, etc.) – #2</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="20" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="OutroNum2">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d06de5fc11eab42e005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Outro número sap, account, etc. (identificação do embarque, carga, etc.) – #3</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="20" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="NfDevolucao">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d06ee5fc11eacecd005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Nota fiscal de devolução? - S = Sim, N = Não</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:enumeration value="S" />
+                                              <xsd:enumeration value="N" />
+                                              <xsd:maxLength value="1" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="TipoNf">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d06fe5fc11eac0e1005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Tipo da nota fiscal - 0 = Entrada, 1 = Saída</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:integer">
+                                              <xsd:enumeration value="0" />
+                                              <xsd:enumeration value="1" />
+                                              <xsd:totalDigits value="1" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="IdBonificacao">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d070e5fc11eab259005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Indicação de bonificação - S = Nota com bonificação, N = Não</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:enumeration value="S" />
+                                              <xsd:enumeration value="N" />
+                                              <xsd:maxLength value="1" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="CodFiscOperacao">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">0b69d071e5fc11ea83e0005056ba093a</xsd:appinfo>
+                                            <xsd:documentation>Código fiscal de operação (cfop)</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:integer">
+                                              <xsd:totalDigits value="4" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="UfFatoGerador">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">bf36c963e3e911eacf12005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Sigla do estado (uf) do fato gerador</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="2" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="Desdobro">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">bf36c964e3e911eac5a4005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Desdobro</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="10" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                        <xsd:element minOccurs="0" name="filler">
+                                          <xsd:annotation>
+                                            <xsd:appinfo source="http://sap.com/xi/TextID">bf36c965e3e911eaa15d005056ba1c37</xsd:appinfo>
+                                            <xsd:documentation>Filler</xsd:documentation>
+                                          </xsd:annotation>
+                                          <xsd:simpleType>
+                                            <xsd:restriction base="xsd:string">
+                                              <xsd:maxLength value="142" />
+                                            </xsd:restriction>
+                                          </xsd:simpleType>
+                                        </xsd:element>
+                                      </xsd:sequence>
+                                    </xsd:complexType>
+                                  </xsd:element>
+                                </xsd:sequence>
+                              </xsd:complexType>
+                            </xsd:element>
+                          </xsd:sequence>
+                        </xsd:complexType>
+                      </xsd:element>
+                      <xsd:element name="registro529">
+                        <xsd:annotation>
+                          <xsd:appinfo source="http://sap.com/xi/TextID">a60630fde3e911ea83fa005056ba1c37</xsd:appinfo>
+                          <xsd:documentation>Registro 529 - Total de conhecimentos embarcados</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                          <xsd:sequence>
+                            <xsd:element default="529" name="identRegistro" type="p5:DT_IdentRegistro_SAP">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">bf36c966e3e911eab66d005056ba1c37</xsd:appinfo>
+                                <xsd:documentation>Identificador de registro</xsd:documentation>
+                              </xsd:annotation>
+                            </xsd:element>
+                            <xsd:element name="QtdeTotConhec">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">9d82accde5fd11ea8d76005056ba093a</xsd:appinfo>
+                                <xsd:documentation>Quantidade total de conhecimentos</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:integer">
+                                  <xsd:totalDigits value="4" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element name="ValorTotConhec">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">9d82accee5fd11eaae44005056ba093a</xsd:appinfo>
+                                <xsd:documentation>Valor total dos conhecimentos</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:decimal">
+                                  <xsd:totalDigits value="15" />
+                                  <xsd:fractionDigits value="2" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                            <xsd:element minOccurs="0" name="FILLER">
+                              <xsd:annotation>
+                                <xsd:appinfo source="http://sap.com/xi/TextID">9d82accfe5fd11ea9e09005056ba093a</xsd:appinfo>
+                                <xsd:documentation>Filler</xsd:documentation>
+                              </xsd:annotation>
+                              <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                  <xsd:maxLength value="328" />
+                                </xsd:restriction>
+                              </xsd:simpleType>
+                            </xsd:element>
+                          </xsd:sequence>
+                        </xsd:complexType>
+                      </xsd:element>
+                    </xsd:sequence>
+                  </xsd:complexType>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="MT_RequestSendConemb_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="MT_RequestSendConemb_EDI" element="p1:MT_RequestSendConemb_EDI" />
+  </wsdl:message>
+  <wsdl:message name="MT_ResultSendConemb_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="MT_ResultSendConemb_EDI" element="p1:MT_ResultSendConemb_EDI" />
+  </wsdl:message>
+  <wsdl:message name="FM_SendConemb_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="FM_SendConemb_EDI" element="p1:FM_SendConemb_EDI" />
+  </wsdl:message>
+  <wsdl:portType name="SI_SendConemb_EDI_Sync_Outbound">
+    <wsdl:documentation />
+    <wsdl:operation name="SI_SendConemb_EDI_Sync_Outbound">
+      <wsdl:documentation />
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP_SI_SendConemb_EDI_Sync_Outbound" />
+      </wsp:Policy>
+      <wsdl:input message="p1:MT_RequestSendConemb_EDI" />
+      <wsdl:output message="p1:MT_ResultSendConemb_EDI" />
+      <wsdl:fault name="FM_SendConemb_EDI" message="p1:FM_SendConemb_EDI" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SI_SendConemb_EDI_Sync_OutboundBinding" type="p1:SI_SendConemb_EDI_Sync_Outbound">
+    <binding transport="http://schemas.xmlsoap.org/soap/http" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    <wsdl:operation name="SI_SendConemb_EDI_Sync_Outbound">
+      <operation soapAction="http://sap.com/xi/WebService/soap1.1" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <wsdl:input>
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:input>
+      <wsdl:output>
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:output>
+      <wsdl:fault name="FM_SendConemb_EDI">
+        <fault use="literal" name="FM_SendConemb_EDI" namespace="" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SI_SendConemb_EDI_Sync_OutboundService">
+    <wsdl:port name="HTTP_Port" binding="p1:SI_SendConemb_EDI_Sync_OutboundBinding">
+      <address location="http://r6l.biz.electrolux.com:56300/XISOAPAdapter/MessageServlet?senderParty=CARRIER&amp;senderService=BRSV_SERVICE_EDI&amp;receiverParty=CARRIER&amp;receiverService=BRSV_SERVICE_EDI&amp;interface=SI_SendConemb_EDI_Sync_Outbound&amp;interfaceNamespace=http%3A%2F%2Felectrolux.com%2FSD%2FOL%2FConemb" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </wsdl:port>
+    <wsdl:port name="HTTPS_Port" binding="p1:SI_SendConemb_EDI_Sync_OutboundBinding">
+      <address location="https://r6l.biz.electrolux.com:56301/XISOAPAdapter/MessageServlet?senderParty=CARRIER&amp;senderService=BRSV_SERVICE_EDI&amp;receiverParty=CARRIER&amp;receiverService=BRSV_SERVICE_EDI&amp;interface=SI_SendConemb_EDI_Sync_Outbound&amp;interfaceNamespace=http%3A%2F%2Felectrolux.com%2FSD%2FOL%2FConemb" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

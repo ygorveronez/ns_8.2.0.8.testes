@@ -1,0 +1,467 @@
+﻿
+
+<style>
+    #knockoutRFI textarea {
+        resize: none;
+        height: 155px;
+        border: 1px solid;
+    }
+
+    #AnexosConvidadosDiv {
+        padding-top: 23px;
+    }
+
+    #QuestionariosGridDiv {
+        padding-top: 10px;
+    }
+
+    #divsMargin {
+        margin-bottom: 30px;
+    }
+</style>
+<section id="widget-grid">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">RFI</li>
+        <li class="breadcrumb-item active">RFI Bidding</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class=""></i> RFI Convite
+        </h1>
+    </div>
+    <div id="knockoutPesquisaRFIConvite">
+        <div class="panel">
+            <div class="panel-container">
+                <div class="panel-content">
+                    <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                        <i class="fal fa-search"></i> Pesquisar Convite RFI
+                    </button>
+                    <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Descricao.text"></label>
+                                        <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2" data-bind="visible: DataInicio.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataInicio.text"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataInicio.val, valueUpdate: 'afterkeydown', attr: { id : DataInicio.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2" data-bind="visible: DataLimite.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataLimite.text"></label>
+                                        <input type="text" class="form-control" data-bind="value: DataLimite.val, valueUpdate: 'afterkeydown', attr: { id : DataLimite.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2" data-bind="visible: Situacao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                                        <select class="form-control" data-bind="options: Situacao.options, optionsText: 'text', optionsValue: 'value', selectedOptions: Situacao.val, attr: { id : Situacao.id}" multiple="multiple" data-actions-box="false" data-selected-text-format="count > 3" title="Todas"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="d-flex align-items-center justify-content-end mb-3">
+                            <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                <i class="fal fa-search"></i>
+                                <span data-bind="text: Pesquisar.text"></span>
+                            </button>
+                        </div>
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="wid-id-4" class="panel" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+        <div class="panel-container">
+            <div class="panel-content">
+                <ul class="nav nav-steps" id="knockoutRFIConvite">
+                    <li data-target="#step1" data-bind="visible : Etapa1.visible">
+                        <button class="active" data-bs-target="#knockoutAbertura" data-bs-toggle="tab" data-bind="attr: {id : Etapa1.idTab }, click : Etapa1.eventClick, visible : Etapa1.visible">
+                            <span class="step" data-bind="attr: {'data-content' : Etapa1.tooltip, 'data-original-title' : Etapa1.tooltipTitle }">
+                                <i class="fal fa-file-alt"></i>
+                            </span>
+                            <span class="title" data-bind="text: Etapa1.text"></span>
+                        </button>
+                    </li>
+                    <li data-target="#step2" data-bind="visible : Etapa2.visible">
+                        <button data-bs-target="#knockoutChecklistEtapa" data-bs-toggle="tab" data-bind="attr: {id : Etapa2.idTab }, click : Etapa2.eventClick">
+                            <span class="step" data-bind="attr: {'data-content' : Etapa2.tooltip, 'data-original-title' : Etapa2.tooltipTitle }">
+                                <i class="fal fa-list"></i>
+                            </span>
+                            <span class="title" data-bind="text: Etapa2.text"></span>
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <!-- Etapa 1 -->
+                    <div id="knockoutAbertura" class="tab-pane fade show active">
+                        <div class="panel">
+                            <div class="panel-container">
+                                <div class="panel-content">
+                                    <ul class="nav nav-tabs" id="myTab">
+                                        <li class="nav-item">
+                                            <a href="#tabConvite" class="nav-link active" data-bs-toggle="tab"><span class="hidden-mobile hidden-tablet">Convite</span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#tabChecklist" class="nav-link" data-bs-toggle="tab"><span class="hidden-mobile hidden-tablet">Checklist</span></a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content border border-top-0 p-3">
+                                        <!-- Convite -->
+                                        <div id="tabConvite" class="tab-pane fade active show">
+                                            <form>
+                                                <div class="row" id="knockoutRFI">
+                                                    <div class="col-12 col-md-2" data-bind="visible: Codigo.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: Codigo.text"></label>
+                                                            <input type="text" class="form-control" data-bind="value: Codigo.val, valueUpdate: 'afterkeydown', enable: Codigo.enable, attr: { id : Codigo.id }" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2" data-bind="visible: Situacao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                                                            <select class="form-control" data-bind="enable: Situacao.enable, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { id : Situacao.id}"></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-8" data-bind="visible: Descricao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: Descricao.text"></label>
+                                                            <input type="text" class="form-control" data-bind="enable: Descricao.enable, css: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataInicio.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataInicio.text"></label>
+                                                            <input type="text" class="form-control" data-bind="css: DataInicio.requiredClass, value: DataInicio.val, valueUpdate: 'afterkeydown', attr: { id : DataInicio.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataLimite.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataLimite.text"></label>
+                                                            <input type="text" class="form-control" data-bind="css: DataLimite.requiredClass, value: DataLimite.val, valueUpdate: 'afterkeydown', attr: { id : DataLimite.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2" data-bind="visible: PrazoAceiteConvite.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: PrazoAceiteConvite.text"></label>
+                                                            <input type="text" class="form-control" data-bind="css: PrazoAceiteConvite.requiredClass, value: PrazoAceiteConvite.val, valueUpdate: 'afterkeydown', attr: { id : PrazoAceiteConvite.id}, enable: PrazoAceiteConvite.enable" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-12" data-bind="visible: ExigirPreenchimentoChecklistConvitePeloTransportador.visible">
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" data-bind="checked: ExigirPreenchimentoChecklistConvitePeloTransportador.val, enable: ExigirPreenchimentoChecklistConvitePeloTransportador.enable, attr: { maxlength: ExigirPreenchimentoChecklistConvitePeloTransportador.maxlength, name: ExigirPreenchimentoChecklistConvitePeloTransportador.id, id: ExigirPreenchimentoChecklistConvitePeloTransportador.id }">
+                                                                <label class="custom-control-label" data-bind="text: ExigirPreenchimentoChecklistConvitePeloTransportador.text, attr: { for: ExigirPreenchimentoChecklistConvitePeloTransportador.id }"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-12" data-bind="visible: DescritivoConvite.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DescritivoConvite.text"></label>
+                                                            <textarea class="form-control" rows="5" data-bind="enable: DescritivoConvite.enable, css: DescritivoConvite.requiredClass, value: DescritivoConvite.val, valueUpdate: 'afterkeydown', attr: { maxlength: DescritivoConvite.maxlength, id : DescritivoConvite.id}"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 col-md-6" id="AnexosConvidadosDiv">
+                                                        <div class="card" data-bind="visible: Adicionar.visible" id="knockoutListaAnexos">
+                                                            <div class="card-header d-flex align-items-center justify-content-between">
+                                                                <h4 class="card-title">Anexos</h4>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="col-12 d-flex justify-content-end">
+                                                                    <button class="btn btn-primary waves-effect waves-themed mb-2" data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id: Adicionar.id}" type="button">
+                                                                        <i class="fal fa-plus"></i>
+                                                                        <span data-bind="text: Adicionar.text"></span>
+                                                                    </button>
+                                                                </div>
+                                                                <table width="100%" class="table table-bordered table-hover margin-top-0" data-bind="attr: { id: Anexos.idGrid }" cellspacing="0"></table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" id="AnexosConvidadosDiv">
+                                                        <div class="card" data-bind="visible: Convidado.visible" id="knockoutConvidado">
+                                                            <div class="card-header d-flex align-items-center justify-content-between">
+                                                                <h4 class="card-title">Convidados</h4>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="col-12 d-flex justify-content-end">
+                                                                    <button class="btn btn-primary waves-effect waves-themed mb-2" data-bind="attr: { id: Convidado.idBtnSearch}" type="button">
+                                                                        <i class="fal fa-plus"></i>
+                                                                        <span data-bind="text: Convidado.text"></span>
+                                                                    </button>
+                                                                </div>
+                                                                <table class="table table-bordered table-hover" data-bind="attr:{id: Grid.id}" cellspacing="0"></table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <!-- Checklist -->
+                                        <div id="tabChecklist" class="tab-pane fade">
+                                            <form>
+                                                <div class="row" id="knockoutChecklist">
+                                                    <div class="col-12 col-md-2" data-bind="visible: PrazoChecklist.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: PrazoChecklist.text, attr: { for: PrazoChecklist.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: PrazoChecklist.requiredClass, enable: PrazoChecklist.enable, value: PrazoChecklist.val, valueUpdate: 'afterkeydown', attr: { maxlength: PrazoChecklist.maxlength, id : PrazoChecklist.id}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card" id="knockoutGridQuestionario">
+                                                    <div class="card-body">
+                                                        <div class="card-title">
+                                                            <h4>Questionários</h4>
+                                                            <hr />
+                                                        </div>
+                                                        <table class="table table-bordered table-hover" data-bind="attr:{id: Questionarios.id}" cellspacing="0"></table>
+                                                        <div class="row">
+                                                            <div class="col-12 d-flex justify-content-end mt-3 mb-2">
+                                                                <button class="btn btn-success waves-effect waves-themed" data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id: Adicionar.id}" type="button">
+                                                                    <span data-bind="text: Adicionar.text"></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <footer id="knockoutCRUDRFIConvite" class="d-flex justify-content-between mt-2">
+                                            <div class="d-flex">
+                                                <button class="btn btn-default me-2" type="button" data-bind="click: Limpar.eventClick, visible: Limpar.visible, attr: { value: Limpar.text, id : Limpar.id}">
+                                                    <span data-bind="text: Limpar.text"></span>
+                                                </button>
+                                            </div>
+                                            <div class="d-flex">
+                                                <button class="btn btn-success" type="button" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { id : Atualizar.id}">
+                                                    <span data-bind="text: Atualizar.text"></span>
+                                                </button>
+                                                <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                                                    <span data-bind="text: Adicionar.text"></span>
+                                                </button>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Etapa 2 -->
+                    <div class="tab-pane fade" id="knockoutChecklistEtapa">
+                        <div class="col-12 col-md-12">
+                            <div class="card">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modais -->
+<div class="modal fade" id="divModalAnexo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content" id="knockoutAnexo">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Anexo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-12 col-md-6" style="margin-top:7px" data-bind="visible: Arquivo.visible">
+                        <p class="form-label" data-bind="text: Arquivo.text"></p>
+                        <div class="custom-file-btn" data-bind="visible: Arquivo.visible">
+                            <input type="file" class="custom-file-input" data-bind="value: Arquivo.val, attr: {id: Arquivo.id}" readonly>
+                            <label class="custom-file-label" data-bind="attr: {for: Arquivo.id}, text: Arquivo.val() !=``? Arquivo.val(): `Selecione um arquivo para anexar`"></label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Descricao.text"></label>
+                            <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}">
+                    <span data-bind="text: Adicionar.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="divModalChecklistAnexo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content" id="knockoutChecklistAnexo">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Anexo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-12 col-md-6" style="margin-top:7px" data-bind="visible: Arquivo.visible">
+                        <p class="form-label" data-bind="text: Arquivo.text"></p>
+                        <div class="custom-file-btn" data-bind="visible: Arquivo.visible">
+                            <input type="file" class="custom-file-input" data-bind="value: Arquivo.val, attr: {id: Arquivo.id}" readonly>
+                            <label class="custom-file-label" data-bind="attr: {for: Arquivo.id}, text: Arquivo.val() !=``? Arquivo.val(): `Selecione um arquivo para anexar`"></label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Descricao.text"></label>
+                            <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}">
+                    <span data-bind="text: Adicionar.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="divModalAddQuestionario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Questionário</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="knockoutQuestionario">
+                    <div class="col-12 col-md-12" data-bind="visible: Pergunta.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Pergunta.text"></label>
+                            <input type="text" class="form-control" data-bind="css: Pergunta.requiredClass, value: Pergunta.val, valueUpdate: 'afterkeydown', attr: { maxlength: Pergunta.maxlength, id : Pergunta.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: TipoOpcaoCheckListRFI.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TipoOpcaoCheckListRFI.text, attr: { for: TipoOpcaoCheckListRFI.id }"></label>
+                            <select class="form-control" data-bind="class: TipoOpcaoCheckListRFI.requiredClass, options: TipoOpcaoCheckListRFI.options, optionsText: 'text', optionsValue: 'value', value: TipoOpcaoCheckListRFI.val, attr: { maxlength: TipoOpcaoCheckListRFI.maxlength, id : TipoOpcaoCheckListRFI.id}"></select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: Requisito.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Requisito.text, attr: { for: Requisito.id }"></label>
+                            <select class="form-control" data-bind="options: Requisito.options, optionsText: 'text', optionsValue: 'value', value: Requisito.val, attr: { id : Requisito.id}"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="knockoutChecklistAnexos" data-bind="visible: Anexos.visible">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4>Anexos</h4>
+                            <hr />
+                        </div>
+                        <div class="row" data-bind="visible: Adicionar.visible">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button class="btn btn-primary waves-effect waves-themed mb-2" data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id: Adicionar.id}" type="button">
+                                    <i class="fal fa-plus"></i>
+                                    <span data-bind="text: Adicionar.text"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <table width="100%" class="table table-bordered table-hover margin-top-0" data-bind="attr: { id: Anexos.idGrid }" cellspacing="0"></table>
+                    </div>
+                </div>
+                <div id="knockoutChecklistOpcoes" data-bind="visible: Opcoes.visible">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="align-items-center mb-0">
+                                <i class="fal fa-edit"></i>
+                                Opções
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Opcoes.idGrid}" cellspacing="0"></div>
+                                <div class="col-12 col-md-4" data-bind="visible: DescricaoOpcao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DescricaoOpcao.text, attr: { for: DescricaoOpcao.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: DescricaoOpcao.val, valueUpdate: 'afterkeydown', attr: { maxlength: DescricaoOpcao.maxlength, id : DescricaoOpcao.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4" data-bind="visible: ValorOpcao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorOpcao.text, attr: { for: ValorOpcao.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: ValorOpcao.val, valueUpdate: 'afterkeydown', attr: { maxlength: ValorOpcao.maxlength, id : ValorOpcao.id}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-left">
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-labeled btn-default" data-bind="click: CancelarOpcao.eventClick, visible: CancelarOpcao.visible, attr: { id : CancelarOpcao.id}">
+                                            <i class="fal fa-ban"></i>
+                                            <span data-bind="text: CancelarOpcao.text"></span>
+                                        </button>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-end">
+                                        <button type="button" class="btn btn-labeled btn-danger me-2" data-bind="click: ExcluirOpcao.eventClick, visible: ExcluirOpcao.visible, attr: { id : ExcluirOpcao.id}">
+                                            <i class="fal fa-trash"></i>
+                                            <span data-bind="text: ExcluirOpcao.text"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-labeled btn-success" data-bind="click: AtualizarOpcao.eventClick, visible: AtualizarOpcao.visible, attr: { id : AtualizarOpcao.id}">
+                                            <i class="fal fa-check"></i>
+                                            <span data-bind="text: AtualizarOpcao.text"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-labeled btn-success" data-loading-text="Aguarde..." data-bind="click: AdicionarOpcao.eventClick, visible: AdicionarOpcao.visible, attr: { id : AdicionarOpcao.id}">
+                                            <span data-bind="text: AdicionarOpcao.text"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer" id="knockoutAddQuestionario">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="button" class="btn btn-labeled btn-danger mx-2" data-bind="click: Excluir.eventClick, visible: Excluir.visible, attr: { value: Excluir.text, id : Excluir.id}">
+                            <i class="fal fa-trash"></i>
+                            <span data-bind="text: Excluir.text"></span>
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { value: Atualizar.text, id : Atualizar.id}">
+                            <i class="fal fa-check"></i>
+                            <span data-bind="text: Atualizar.text"></span>
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}">
+                            <span data-bind="text: Adicionar.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/RFIConvite"></script>
+<script type="text/javascript">
+    pageSetUp();
+    $(document).ready(function () {
+        LoadRFI();
+    });
+</script>

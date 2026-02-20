@@ -1,0 +1,159 @@
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage
+
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Relatórios</li>
+    <li class="breadcrumb-item">CTe</li>
+    <li class="breadcrumb-item active">Faturamento Por Grupo Pessoas</li>
+</ol>
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class="subheader-icon fal fa-truck"></i> Relatório de Faturamento de CT-es por Grupo de Pessoas
+    </h1>
+</div>
+
+<div id="divConteudoRelatorio" class="panel">
+    <div class="panel-container">
+        <div class="panel-hdr">
+            <h3>
+                <i class="fal fa-file-alt"></i>
+                Relatórios
+            </h3>
+        </div>
+        <div class="panel-content">
+            <form>
+                <div id="knockoutPesquisaFaturamentoPorGrupoPessoas">
+                    <div class="row">
+                        <div class="col-12 col-md-6" data-bind="visible: TipoRelatorio.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: TipoRelatorio.text, attr: { for: TipoRelatorio.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: TipoRelatorio.requiredClass, value: TipoRelatorio.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoRelatorio.maxlength, id : TipoRelatorio.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoRelatorio.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: DataInicialEmissao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataInicialEmissao.text"></label>
+                                <input type="text" class="form-control" data-bind="value: DataInicialEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicialEmissao.maxlength, id : DataInicialEmissao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: DataFinalEmissao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataFinalEmissao.text"></label>
+                                <input type="text" class="form-control" data-bind="value: DataFinalEmissao.val, attr: { maxlength: DataFinalEmissao.maxlength, id : DataFinalEmissao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: DataInicialAutorizacao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataInicialAutorizacao.text"></label>
+                                <input type="text" class="form-control" data-bind="value: DataInicialAutorizacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicialAutorizacao.maxlength, id : DataInicialAutorizacao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: DataFinalAutorizacao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataFinalAutorizacao.text"></label>
+                                <input type="text" class="form-control" data-bind="value: DataFinalAutorizacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinalAutorizacao.maxlength, id : DataFinalAutorizacao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: PropriedadeVeiculo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: PropriedadeVeiculo.text, attr: { for: PropriedadeVeiculo.id }"></label>
+                                <select class="form-control" data-bind="options: PropriedadeVeiculo.options, optionsText: 'text', optionsValue: 'value', value: PropriedadeVeiculo.val, attr: { id : PropriedadeVeiculo.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: DocumentoFaturavel.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DocumentoFaturavel.text, attr: { for: DocumentoFaturavel.id }"></label>
+                                <select class="form-control" data-bind="options: DocumentoFaturavel.options, optionsText: 'text', optionsValue: 'value', value: DocumentoFaturavel.val, attr: { id : DocumentoFaturavel.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: VinculoCarga.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: VinculoCarga.text, attr: { for: VinculoCarga.id }"></label>
+                                <select class="form-control" data-bind="options: VinculoCarga.options, optionsText: 'text', optionsValue: 'value', value: VinculoCarga.val, attr: { id : VinculoCarga.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-5" data-bind="visible: GruposPessoas.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: GruposPessoas.text, attr: { for: GruposPessoas.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: GruposPessoas.requiredClass, value: GruposPessoas.val, valueUpdate: 'afterkeydown', attr: { maxlength: GruposPessoas.maxlength, id : GruposPessoas.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: GruposPessoas.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-5" data-bind="visible: ModeloDocumentoFiscal.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ModeloDocumentoFiscal.text, attr: { for: ModeloDocumentoFiscal.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: ModeloDocumentoFiscal.requiredClass, value: ModeloDocumentoFiscal.val, valueUpdate: 'afterkeydown', attr: { maxlength: ModeloDocumentoFiscal.maxlength, id : ModeloDocumentoFiscal.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: ModeloDocumentoFiscal.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: TipoProposta.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoProposta.text, attr: { for: TipoProposta.id }"></label>
+                                        <select class="form-control" data-bind="options: TipoProposta.options, optionsText: 'text', optionsValue: 'value', value: TipoProposta.val, attr: { id : TipoProposta.id}"></select>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row mb-3 mt-3">
+                <!-- CRUD Configurações -->
+                <div id="knockoutCRUDConfiguracaoRelatorio" class="col-12 col-md-6 mb-3 mb-md-0">
+                    <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="enable: ExibirConfiguracoes.enable, click: ExibirConfiguracoes.eventClick, attr: { id: ExibirConfiguracoes.id}" type="button">
+                        <i data-bind="css: ExibirConfiguracoes.icon"></i><span data-bind="text: ExibirConfiguracoes.text"></span>
+                    </button>
+                </div>
+                <!-- CRUD Filtro de Pesquisa -->
+                <div id="knockoutCRUDFiltrosPesquisaFaturamento" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                    <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="click: Preview.eventClick, attr: { id: Preview.id}" type="button">
+                        <i class="fal fa-search"></i><span data-bind="text: Preview.text"></span>
+                    </button>
+                </div>
+            </div>
+            <!-- Configurações do Relatório -->
+            <div id="divConfigRelatorio">
+            </div>
+            <!-- GRID de Resultados -->
+            <table id="gridPreviewRelatorio" class="table table-bordered table-hover table-condensed table-striped" width="100%" cellspacing="0"></table>
+            <!-- Botões Inferiores-->
+            <div id="knockoutCRUDPesquisaFaturamentoPorGrupoPessoas" class="d-flex justify-content-center justify-content-md-end mt-3">
+                <button class="btn btn-success me-3" data-bind="click: GerarRelatorioExcel.eventClick, attr: { id: GerarRelatorioExcel.id}" type="button">
+                    <i class="fal fa-file-excel"></i><span data-bind="text: GerarRelatorioExcel.text"></span>
+                </button>
+                <button class="btn btn-success" data-bind="click: GerarRelatorioPDF.eventClick, attr: { id: GerarRelatorioPDF.id}" type="button">
+                    <i class="fal fa-file-pdf"></i><span data-bind="text: GerarRelatorioPDF.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/relatorios/scripts/faturamentoPorGrupoPessoas"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadRelatorioFaturamentoPorGrupoPessoas();
+    });
+
+</script>
+

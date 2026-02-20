@@ -1,0 +1,111 @@
+﻿<div id="#knoutDadosEmissao">
+    <div id="Titulo_#Codigo">
+        <h3>Roteirizador para entregas</h3>
+    </div>
+    <ul class="nav nav-tabs">
+        <li id="RotaEntregas_#Codigo_li" class="nav-item">
+            <a href="#RotaEntregas_#Codigo" class="nav-link active" data-bs-toggle="tab" aria-expanded="true">
+                <i class="fal fa-list"></i>
+                <span class="hidden-mobile hidden-tablet">Rota Entrega</span>
+            </a>
+        </li>
+        <li id="Open_#Codigo_li" class="nav-item" data-bind="visible: Roteirizado.visible">
+            <a href="#Open_#Codigo" class="nav-link" data-bs-toggle="tab" aria-expanded="false" >
+                <i class="fal fa-map-marker"></i>
+                <span class="hidden-mobile hidden-tablet">Mapa</span>
+            </a>
+        </li>
+        <li id="Narativa_#Codigo_li" class="nav-item" data-bind="visible: Roteirizado.visible">
+            <a href="#Narativa_#Codigo" class="nav-link" data-bs-toggle="tab" aria-expanded="false">
+                <i class="fal fa-map-signs"></i>
+                <span class="hidden-mobile hidden-tablet">Narrativa</span>
+            </a>
+        </li>
+        <li id="Blocos_#Codigo_li" class="nav-item" style="display: none">
+            <a href="#Blocos_#Codigo" class="nav-link" data-bs-toggle="tab" aria-expanded="false">
+                <i class="fal fa-cube"></i>
+                <span class="hidden-mobile hidden-tablet">Blocos</span>
+            </a>
+        </li>
+        <li id="SimulacaoFrete_#Codigo_li" class="nav-item" style="display: none">
+            <a href="#SimulacaoFrete_#Codigo" class="nav-link" data-bs-toggle="tab" aria-expanded="false">
+                <i class="fal fa-dollar-sign"></i>
+                <span class="hidden-mobile hidden-tablet">Simulação</span>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content border border-top-0 p-3">
+        <div id="RotaEntregas_#Codigo" class="tab-pane active" style="overflow-y: auto;">
+            <div class="row mb-3" data-bind="visible: Map.visible">
+                <!-- ko ifnot: ModoEdicao.val -->
+                <!--<div class="col-12 col-md-6" data-bind="visible: TipoRota.visible">
+                    <h3><b data-bind="text: TipoRota.text"></b> <span data-bind="text: TipoRota.descricao"></span></h3>
+                </div>-->
+                <div class="col-12 col-md-6" data-bind="visible: TipoUltimoPontoRoteirizacao.visible">
+                    <h3><b data-bind="text: TipoUltimoPontoRoteirizacao.text"></b> <span data-bind="text: TipoUltimoPontoRoteirizacao.descricao"></span></h3>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: ModoEdicao.val -->
+                <!--<div class="col-12 col-md-6" data-bind="visible : TipoRota.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: TipoRota.text, attr: { for: TipoRota.id }"></label>
+                        <select class="form-control" data-bind="options: TipoRota.options, optionsText: 'text', optionsValue: 'value', value: TipoRota.val, attr: { id : TipoRota.id}"></select>
+                    </div>
+                </div>-->
+                <div class="col-12 col-md-6" data-bind="visible : Coletas.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Coletas.text, attr: { for: Coletas.id }"></label>
+                        <select class="form-control" data-bind="options: Coletas.options, optionsText: 'text', enable: Coletas.enable, optionsValue: 'value', value: Coletas.val, attr: { id : Coletas.id}, event: {change: Coletas.eventChange}"></select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6" data-bind="visible : TipoUltimoPontoRoteirizacao.visible">
+                    <civ class="form-group">
+                        <label class="form-label" data-bind="text: TipoUltimoPontoRoteirizacao.text, attr: { for: TipoUltimoPontoRoteirizacao.id }"></label>
+                        <select class="form-control" data-bind="options: TipoUltimoPontoRoteirizacao.options, optionsText: 'text', enable: TipoUltimoPontoRoteirizacao.enable, optionsValue: 'value', value: TipoUltimoPontoRoteirizacao.val, attr: { id : TipoUltimoPontoRoteirizacao.id}"></select>
+                    </civ>
+                </div>
+                <!-- /ko -->
+                <div class="col-12" data-bind="visible: Distancia.visible">
+                    <h4><b data-bind="text: Distancia.text"></b> <span data-bind="text: Distancia.val"></span></h4>
+                </div>
+                <!--<div class="col-12" data-bind="visible: Origem.visible">
+                    <h4><b data-bind="text: Origem.text"></b> <span data-bind="text: Origem.val"></span></h4>
+                </div>-->
+            </div>
+            <table width="100%" class="table table-bordered table-hover table-condensed" data-bind="attr: { id: Map.idGrid }" cellspacing="0"></table>
+            <section class="insideNoPaddignTable" data-bind="visible: SemPontos.visible">
+                <p>Não foi encontrada a Geolocalização para os pontos abaixo, por favor, ajuste a localização manualmente e tente novamente.</p>
+                <table width="100%" data-bind="attr: { id : SemPontos.idGrid}" class="table table-bordered table-hover" cellspacing="0"></table>
+            </section>
+        </div>
+        <div id="Open_#Codigo" class="tab-pane">
+            <div data-bind="attr : { id : Map.id}" class="w-100" style="height:500px;"></div>
+            <div id="chat-container">
+                <!--<button class="btn btn-primary chat-list-open-close" data-bind="click : Map.visibleReorderClick"><i class="fal fa-map-marker"></i></button>
+                <div style="width:700px; position:absolute;" data-bind="visible : Map.visibleReorder">
+                    <h4>Ajustar Pontos</h4>
+                    <div data-bind="attr: { id : Map.idGrid2}"></div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-primary" type="button" data-bind="click: AtualizarRota.eventClick, visible: AtualizarRota.visible, enable: AtualizarRota.enable, text: AtualizarRota.text, attr: { id : AtualizarRota.id}"></button>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+        <div id="Narativa_#Codigo" class="tab-pane" style="max-height: 500px; overflow-y: auto;">
+            <div data-bind="attr: { id : Narativa.id}">
+                <!--<table width="100%" data-bind="attr: { id : Narativa.idGrid}" class="table table-bordered table-hover" cellspacing="0"></table>-->
+            </div>
+        </div>
+        <div id="Blocos_#Codigo" class="tab-pane">
+            <div data-bind="attr: { id : Blocos.id}">
+                <table width="100%" data-bind="attr: { id : Blocos.idGrid}" class="table table-bordered table-hover" cellspacing="0"></table>
+            </div>
+        </div>
+        <div id="SimulacaoFrete_#Codigo" class="tab-pane">
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-default" type="button" data-bind="click: Roteirizar.eventClick, visible: Roteirizar.visible, enable: Roteirizar.enable, text: Roteirizar.text, attr: { id : Roteirizar.id}"></button>
+        <button class="btn btn-success ms-2" type="button" data-bind="click: SalvarRota.eventClick, visible: SalvarRota.visible, enable: SalvarRota.enable, text: SalvarRota.text, attr: { id : SalvarRota.id}"></button>
+    </div>
+</div>

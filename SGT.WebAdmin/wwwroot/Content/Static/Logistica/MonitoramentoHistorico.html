@@ -1,0 +1,250 @@
+﻿<div class="modal fade" id="divModalHistoricos" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Cargas.MonitoramentoHistorico.HistoricoCarga}<span class="title-carga-codigo-embarcador"></span> <span class="title-carga-placa"></span></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body padding-bottom-5">
+                <div class="row jarviswidget">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li id-="liHistoricoMapa" class="nav-item active">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabHistoricoMapa"><span class="hidden-mobile hidden-tablet">{Localize::Cargas.MonitoramentoHistorico.HistoricoCarga}</span></a>
+                        </li>
+                        <li id="liHistoricoPosicao" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabHistoricoPosicao"><span class="hidden-mobile hidden-tablet">{Localize::Cargas.MonitoramentoHistorico.Posicoes}</span></a>
+                        </li>
+                        <li id="liHistoricoParada" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabHistoricoParada"><span class="hidden-mobile hidden-tablet">{Localize::Cargas.MonitoramentoHistorico.Paradas}</span></a>
+                        </li>
+                        <li id="liHistoricoTemperatura" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabHistoricoTemperatura"><span class="hidden-mobile hidden-tablet">{Localize::Cargas.MonitoramentoHistorico.Temperatura}</span></a>
+                        </li>
+                        <li id="liHistoricoVelocidade" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabHistoricoVelocidade"><span class="hidden-mobile hidden-tablet">{Localize::Cargas.MonitoramentoHistorico.Velocidade}</span></a>
+                        </li>
+                    </ul>
+                    <div role="contentinfo" class="smart-form">
+                        <div id="myTabContent" class="tab-content">
+                            <div id="tabHistoricoMapa" class="tab-pane active show" style="margin-bottom:20px">
+                                <div class="row smart-form" id="knockoutPesquisaHistoricosMapa">
+                                    <div class="col-12 col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataInicial.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataFinal.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2 mt-5" data-bind="visible: PosicaoTecnologia.visible">
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" data-bind="checked: PosicaoTecnologia.val, attr: { maxlength: PosicaoTecnologia.maxlength, name: PosicaoTecnologia.id, id: PosicaoTecnologia.id }">
+                                                                <label class="custom-control-label" data-bind="text: PosicaoTecnologia.text, attr: { for: PosicaoTecnologia.id }"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2 mt-5" data-bind="visible: PosicaoMobile.visible">
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" data-bind="checked: PosicaoMobile.val, attr: { maxlength: PosicaoMobile.maxlength, name: PosicaoMobile.id, id: PosicaoMobile.id }">
+                                                                <label class="custom-control-label" data-bind="text: PosicaoMobile.text, attr: { for: PosicaoMobile.id }"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-primary" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                                        <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="smart-form" id="DetalhesMapa" style="padding:2px">
+                                    <div class="legenda-rotas-container">
+                                        <strong>Rotas</strong>
+                                        <ul id="legenda-rotas-mapa" class="legenda">
+                                            <li class="rota-planejada"><span class="linha"></span><span class="descricao">{Localize::Cargas.MonitoramentoHistorico.Planejada}</span><span class="distancia"></span></li>
+                                            <li class="rota-ate-origem"><span class="linha"></span><span class="descricao">{Localize::Cargas.MonitoramentoHistorico.AteOrigem}</span><span class="distancia"></span></li>
+                                            <li class="rota-ate-destino"><span class="linha"></span><span class="descricao">{Localize::Cargas.MonitoramentoHistorico.AteDestino}</span><span class="distancia"></span></li>
+                                            <li class="rota-realizada"><span class="linha"></span><span class="descricao">{Localize::Cargas.MonitoramentoHistorico.Realizada}</span><span class="distancia"></span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="fieldset-no-padding ">
+                                        <div id="mapHistoricos" style="width:100%;height:450px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tabHistoricoPosicao" class="tab-pane">
+                                <div class=" row smart-form " id="knockoutPesquisaHistoricosPosicao">
+                                    <div class="col-12 col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataInicial.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataFinal.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2 mt-5" data-bind="visible: PosicaoTecnologia.visible">
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" data-bind="checked: PosicaoTecnologia.val, attr: { maxlength: PosicaoTecnologia.maxlength, name: PosicaoTecnologia.id, id: PosicaoTecnologia.id }">
+                                                                <label class="custom-control-label" data-bind="text: PosicaoTecnologia.text, attr: { for: PosicaoTecnologia.id }"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2 mt-5" data-bind="visible: PosicaoMobile.visible">
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" data-bind="checked: PosicaoMobile.val, attr: { maxlength: PosicaoMobile.maxlength, name: PosicaoMobile.id, id: PosicaoMobile.id }">
+                                                                <label class="custom-control-label" data-bind="text: PosicaoMobile.text, attr: { for: PosicaoMobile.id }"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-primary" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                                        <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div id="container-grid-historicos-posicao">
+                                        <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-historicos-posicao" cellspacing="0"></table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tabHistoricoParada" class="tab-pane row">
+                                <div class="col-12 col-md-12">
+                                    <div id="container-grid-historicos-paradas">
+                                        <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-historicos-parada" cellspacing="0"></table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tabHistoricoTemperatura" class="tab-pane">
+                                <div class="smart-form row" id="knockoutPesquisaHistoricosTemperatura">
+                                    <div class="col-12 col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataInicial.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataFinal.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-3 mt-5" data-bind="visible: PosicaoTemperaturaValida.visible">
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" data-bind="checked: PosicaoTemperaturaValida.val, attr: { maxlength: PosicaoTemperaturaValida.maxlength, name: PosicaoTemperaturaValida.id, id: PosicaoTemperaturaValida.id }">
+                                                                <label class="custom-control-label" data-bind="text: PosicaoTemperaturaValida.text, attr: { for: PosicaoTemperaturaValida.id }"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-primary" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                                        <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height:300px;padding:15px">
+                                    <canvas id="grafico-temperatura" style="height:300px;width:100%;"></canvas>
+                                </div>
+                            </div>
+
+                            <div id="tabHistoricoVelocidade" class="tab-pane row">
+                                <div class="smart-form " id="knockoutPesquisaHistoricosVelocidade">
+                                    <div class="col-12 col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataInicial.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-2" data-bind="visible: DataFinal.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                                                            <input type="text" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-primary" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                                        <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="height:300px;padding:15px">
+                                    <canvas id="grafico-velocidade" style="height:300px;width:100%;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="divModalMapaPosicao" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Cargas.MonitoramentoHistorico.Posicoes}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockouMapaPosicao">
+                <div class="smart-form" id="DetalhesMapaPosicao" style="padding:2px">
+                    <div class="fieldset-no-padding ">
+                        <div id="mapaPosicaoMonitoramentoHistorico" style="width:100%;height:450px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+﻿var EnumTipoMensagemAlerta = Object.freeze({
+    AlteracaoDadosPreCarga: 1,
+    AlteracaoOrdemEmbarqueNaoIntegrada: 2,
+    CargaSemProdutos: 3,
+    ImportacaoCargaAtrasada: 4,
+    ClienteSemLocalidade: 5,
+    CargaSemVeiculoInformado: 6,
+    CargaNaoAgendada: 7,
+    VeiculoSemRegistroChegada: 8,
+    CargaSemConfirmacaoMotorista: 9,
+    CargaRecusadaMotorista: 10,
+    CargaSemInformacaoContainer: 11,
+    AlteracaoPedidos: 12,
+    NaoPodeHerdarDadosTransporte: 13,
+    ProblemaComTipoOperacao: 14,
+    ProblemaIntegracaoFrete: 15,
+    GerenciadoraRisco: 16,
+    NotaVendaNaoRecebida: 17,
+    AjusteTabelaFreteCliente: 18,
+    ContratoFreteTransportadorNaoAprovado: 19,
+    ProblemaEmissaoCarga: 20,
+    CargaSemSaldoContratoFreteCliente: 25
+});

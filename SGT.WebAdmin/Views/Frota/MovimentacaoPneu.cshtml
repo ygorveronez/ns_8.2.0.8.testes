@@ -1,0 +1,1260 @@
+﻿<style>
+.pneu-section {
+    padding: 15px;
+}
+.border-start {
+    border-left: 1px solid #dee2e6 !important;
+}
+@@media (max-width: 767px) {
+    .border-start {
+        border-left: none !important;
+        border-top: 1px solid #dee2e6 !important;
+        margin-top: 20px;
+        padding-top: 20px;
+    }
+}
+</style>
+
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Frota</li>
+        <li class="breadcrumb-item active">Movimentação de Pneus</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class="subheader-icon fal fa-truck"></i> Movimentação de Pneus
+        </h1>
+    </div>
+
+    <div class="row" id="container-movimentacao-pneu">
+        <div class="col-12 col-md-5">
+            <div id="knockoutPesquisaVeiculo" class="panel">
+                <div class="panel-hdr" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <h2>Pesquisar Veículo</h2>
+                </div>
+                <div class="panel-container" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <div class="panel-content">
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-8" data-bind="visible: Veiculo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Veiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Veiculo.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: NumeroFogo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroFogo.text, attr: { for: NumeroFogo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroFogo.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroFogo.maxlength, id : NumeroFogo.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <div data-bind='component: {name: "import-file", params: { ko: Importar }}' class="me-2"></div>
+                                        <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                                            <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="knockoutDadosVeiculo" class="panel dados-veiculo-container" style="display: none;">
+                <div class="panel-hdr" data-bind="click: ExibirDados.eventClick, id: ExibirDados.id">
+                    <h2>Dados do Veículo</h2>
+                </div>
+                <div class="panel-container" data-bind="id: ExibirDados.idFade, fadeVisible: ExibirDados.visibleFade">
+                    <div class="panel-content">
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-4" data-bind="visible: Hodometro.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Hodometro.text, attr: { for: Hodometro.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: Hodometro.val, enable: Hodometro.enable, attr: { maxlength: Hodometro.maxlength, id : Hodometro.id} , valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: PlacaVeiculo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: PlacaVeiculo.text, attr: { for: PlacaVeiculo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: PlacaVeiculo.val, enable: PlacaVeiculo.enable, attr: { maxlength: PlacaVeiculo.maxlength, id : PlacaVeiculo.id} , valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: FrotaVeiculo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: FrotaVeiculo.text, attr: { for: FrotaVeiculo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: FrotaVeiculo.val, enable: FrotaVeiculo.enable, attr: { maxlength: FrotaVeiculo.maxlength, id : FrotaVeiculo.id} , valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: LiberarVeiculoManutencao.visible">
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: LiberarVeiculoManutencao.eventClick, text: LiberarVeiculoManutencao.text, attr: { id : LiberarVeiculoManutencao.id}"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="knockoutVeiculo" class="panel">
+                <div class="panel-hdr" data-bind="click: ExibirDados.eventClick, id: ExibirDados.id">
+                    <h2>Veículo</h2>
+                </div>
+                <div class="panel-container" data-bind="id: ExibirDados.idFade, fadeVisible: ExibirDados.visibleFade">
+                    <div class="panel-content">
+                        <!-- ko if: Eixos().length > 0 || Estepes().length > 0 -->
+                        <div class="legends mb-2">
+                            <div class="badge legend black">
+                                <b>Com pneu selecionado</b>
+                            </div>
+                            <div class="badge legend gray">
+                                <b>Sem pneu selecionado</b>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <div class="eixos">
+                            <!-- ko foreach: { data: Eixos, as: 'eixo' } -->
+                            <div class="eixo">
+                                <img data-bind="attr: { src: NomeImagem.val }" class="eixo-img">
+
+                                <div class="eixo-numero" data-bind="text: Numero.val"></div>
+
+                                <div class="eixo-pneus esquerdo">
+                                    <!-- ko foreach: EixosPneu -->
+                                    <!-- ko if: !PosicaoLadoDireito.val() -->
+                                    <!-- ko if: CodigoPneu.val() == 0 -->
+                                    <div data-bind="attr: { id: 'eixo-pneu-' + Codigo.val(), 'data-codigo-eixo-pneu': Codigo.val, 'data-codigo-eixo': eixo.Codigo.val, 'data-tipo-container-pneu': 1 }" class="pneu"></div>
+                                    <!-- /ko -->
+                                    <!-- ko if: CodigoPneu.val() > 0 -->
+                                    <div data-bind="attr: { id: 'eixo-pneu-' + Codigo.val(), 'data-codigo-eixo-pneu': Codigo.val, 'data-codigo-eixo': eixo.Codigo.val, 'data-tipo-container-pneu': 1 }" class="pneu eixo-conteudo-pneu container-pneu-cursor">
+                                        <img src="img/Eixos/Pneu.png">
+                                        <span class="pneu-numero" data-bind="text: NumeroFogo.val().substring(0, 5)"></span>
+                                        <div data-bind="attr: { 'data-posicao-pneu': PosicaoPneu.val }" class="pneu-tooltip">
+                                            <div class="pneu-tooltip-conteudo">
+                                                <table>
+                                                    <tbody>
+                                                        @*<tr>
+                                                                <td class="pneu-tooltip-conteudo-texto-label">Almoxarifado: </td>
+                                                                <td data-bind="text: Almoxarifado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                            </tr>*@
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Número Fogo: </td>
+                                                            <td data-bind="text: NumeroFogo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Vida: </td>
+                                                            <td data-bind="text: Vida.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Km Rodado: </td>
+                                                            <td data-bind="text: KmAtualRodado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Marca: </td>
+                                                            <td data-bind="text: Marca.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Modelo: </td>
+                                                            <td data-bind="text: Modelo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Bd Rodagem: </td>
+                                                            <td data-bind="text: BandaRodagem.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Movimentação: </td>
+                                                            <td data-bind="text: DataMovimentacao.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                                <div class="eixo-pneus direito">
+                                    <!-- ko foreach: EixosPneu -->
+                                    <!-- ko if: PosicaoLadoDireito.val() -->
+                                    <!-- ko if: CodigoPneu.val() == 0 -->
+                                    <div data-bind="attr: { id: 'eixo-pneu-' + Codigo.val(), 'data-codigo-eixo-pneu': Codigo.val, 'data-codigo-eixo': eixo.Codigo.val, 'data-tipo-container-pneu': 1 }" class="pneu"></div>
+                                    <!-- /ko -->
+                                    <!-- ko if: CodigoPneu.val() > 0 -->
+                                    <div data-bind="attr: { id: 'eixo-pneu-' + Codigo.val(), 'data-codigo-eixo-pneu': Codigo.val, 'data-codigo-eixo': eixo.Codigo.val, 'data-tipo-container-pneu': 1 }" class="pneu eixo-conteudo-pneu container-pneu-cursor">
+                                        <img src="img/Eixos/Pneu.png">
+                                        <span class="pneu-numero" data-bind="text: NumeroFogo.val().substring(0, 5)"></span>
+                                        <div data-bind="attr: { 'data-posicao-pneu': PosicaoPneu.val }" class="pneu-tooltip">
+                                            <div class="pneu-tooltip-conteudo">
+                                                <table>
+                                                    <tbody>
+                                                        @*<tr>
+                                                                <td class="pneu-tooltip-conteudo-texto-label">Almoxarifado: </td>
+                                                                <td data-bind="text: Almoxarifado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                            </tr>*@
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Número Fogo: </td>
+                                                            <td data-bind="text: NumeroFogo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Vida: </td>
+                                                            <td data-bind="text: Vida.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Km Rodado: </td>
+                                                            <td data-bind="text: KmAtualRodado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Marca: </td>
+                                                            <td data-bind="text: Marca.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Modelo: </td>
+                                                            <td data-bind="text: Modelo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Bd Rodagem: </td>
+                                                            <td data-bind="text: BandaRodagem.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="pneu-tooltip-conteudo-texto-label">Movimentação: </td>
+                                                            <td data-bind="text: DataMovimentacao.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                        <!-- ko if: Estepes().length > 0 -->
+                        <div class="estepes">
+                            <!-- ko foreach: Estepes -->
+                            <!-- ko if: CodigoPneu.val() == 0 -->
+                            <div class="pneu" data-bind="attr: { id: 'estepe-' + Codigo.val(), 'data-codigo-estepe': Codigo.val, 'data-tipo-container-pneu': 2 }">
+                                <img src="/img/Eixos/PneuDesabilitado.png">
+                                <div class="pneu-posicao pneu-numero" data-bind="text: Numero.val"></div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if: CodigoPneu.val() > 0 -->
+                            <div class="pneu" data-bind="attr: { id: 'estepe-' + Codigo.val(), 'data-codigo-estepe': Codigo.val, 'data-tipo-container-pneu': 2 }">
+                                <img src="img/Eixos/Pneu.png">
+                                <div class="pneu-posicao" data-bind="text: Numero.val"></div>
+                                <span class="pneu-numero" data-bind="text: NumeroFogo.val().substring(0, 5)"></span>
+                                <div data-bind="attr: { 'data-posicao-pneu': ($index() + 1) }" class="pneu-tooltip">
+                                    <div class="pneu-tooltip-conteudo">
+                                        <table>
+                                            <tbody>
+                                                @*<tr>
+                                                        <td class="pneu-tooltip-conteudo-texto-label">Almoxarifado: </td>
+                                                        <td data-bind="text: Almoxarifado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                    </tr>*@
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Número Fogo: </td>
+                                                    <td data-bind="text: NumeroFogo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Vida: </td>
+                                                    <td data-bind="text: Vida.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Km Rodado: </td>
+                                                    <td data-bind="text: KmAtualRodado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Marca: </td>
+                                                    <td data-bind="text: Marca.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Modelo: </td>
+                                                    <td data-bind="text: Modelo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Bd Rodagem: </td>
+                                                    <td data-bind="text: BandaRodagem.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Movimentação: </td>
+                                                    <td data-bind="text: DataMovimentacao.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: Eixos().length == 0 && Estepes().length == 0 -->
+                        <div class="col col-sm-12 container-no-padding">
+                            <div class="alert alert-info">
+                                Nenhum veículo encontrado para movimentar pneus.<br />
+                                Pesquise um veículo para realizar a movimentação
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-2">
+            <div id="knockoutAcaoMovimentacaoPneuVeiculo" class="movimentacao">
+                <div id="envio-pneu-estoque" class="movimentar" data-tipo-container-pneu="5">
+                    <div class="movimentar-icone"><i class="fal fa-archive"></i></div>
+                    <h3 class="movimentar-texto">Estoque</h3>
+                </div>
+                <div id="envio-pneu-sucata" class="movimentar" data-tipo-container-pneu="6">
+                    <span class="movimentar-icone"><i class="fal fa-trash"></i></span>
+                    <span class="movimentar-texto">Sucata</span>
+                </div>
+                <div id="envio-pneu-reforma" class="movimentar" data-tipo-container-pneu="7">
+                    <span class="movimentar-icone"><i class="fal fa-cogs"></i></span>
+                    <span class="movimentar-texto">Reforma</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-5">
+            <div id="knockoutPesquisaEstoque" class="panel">
+                <div class="panel-hdr" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <h2>Pesquisar Estoque</h2>
+                </div>
+                <div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade" class="panel-container">
+                    <div class="panel-content">
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-8" data-bind="visible: Almoxarifado.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Almoxarifado.text, attr: { for: Almoxarifado.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Almoxarifado.val, valueUpdate: 'afterkeydown', attr: { maxlength: Almoxarifado.maxlength, id : Almoxarifado.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Almoxarifado.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: NumeroFogo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroFogo.text, attr: { for: NumeroFogo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroFogo.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroFogo.maxlength, id : NumeroFogo.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                                            <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="knockoutEstoque" class="panel">
+                <div class="panel-hdr" data-bind="click: ExibirDados.eventClick, id: ExibirDados.id">
+                    <h2>Estoque</h2>
+                </div>
+                <div class="panel-container" data-bind="id: ExibirDados.idFade, fadeVisible: ExibirDados.visibleFade">
+                    <div class="panel-content">
+                        <!-- ko if: Pneus().length > 0 -->
+                        <div class="listagem-pneus">
+                            <!-- ko foreach: Pneus -->
+                            <div class="pneu" data-bind="attr: { id: 'pneu-estoque-' + CodigoPneu.val(), 'data-codigo-pneu': CodigoPneu.val, 'data-tipo-container-pneu': 3 }, visible: !Removido.val()">
+                                <img src="img/Eixos/Pneu.png">
+                                <span class="pneu-numero" data-bind="text: NumeroFogo.val().substring(0, 5)"></span>
+                                <div data-bind="attr: { 'data-posicao-pneu': ($index() + 1) }" class="pneu-tooltip">
+                                    <div class="pneu-tooltip-conteudo">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Almoxarifado: </td>
+                                                    <td data-bind="text: Almoxarifado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Número Fogo: </td>
+                                                    <td data-bind="text: NumeroFogo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Vida: </td>
+                                                    <td data-bind="text: Vida.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Km Rodado: </td>
+                                                    <td data-bind="text: KmAtualRodado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Marca: </td>
+                                                    <td data-bind="text: Marca.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Modelo: </td>
+                                                    <td data-bind="text: Modelo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Bd Rodagem: </td>
+                                                    <td data-bind="text: BandaRodagem.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Movimentação: </td>
+                                                    <td data-bind="text: DataMovimentacao.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: Pneus().length == 0 -->
+                        <div class="alert alert-info">
+                            Nenhum pneu encontrado para movimentar.<br />
+                            Pesquise o estoque para realizar a movimentação
+                        </div>
+                        <!-- /ko -->
+
+                        <div id="container-paginacao-estoque" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="knockoutPesquisaReforma" class="panel">
+                <div class="panel-hdr" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <h2>Pesquisar Reforma</h2>
+                </div>
+                <div class="panel-container" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <div class="panel-content">
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-8" data-bind="visible: Pneu.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Pneu.text, attr: { for: Pneu.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Pneu.val, valueUpdate: 'afterkeydown', attr: { maxlength: Pneu.maxlength, id : Pneu.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Pneu.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: NumeroFogo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroFogo.text, attr: { for: NumeroFogo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: NumeroFogo.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroFogo.maxlength, id : NumeroFogo.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                                            <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="knockoutReforma" class="panel">
+                <div class="panel-hdr" data-bind="click: ExibirDados.eventClick, id: ExibirDados.id">
+                    <h2>Reforma</h2>
+                </div>
+                <div class="panel-container" data-bind="id: ExibirDados.idFade, fadeVisible: ExibirDados.visibleFade">
+                    <div class="panel-content">
+                        <!-- ko if: Pneus().length > 0 -->
+                        <div class="listagem-pneus">
+                            <!-- ko foreach: Pneus -->
+                            <div class="pneu" data-bind="attr: { id: 'pneu-reforma-' + CodigoPneu.val(), 'data-codigo-pneu': CodigoPneu.val, 'data-tipo-container-pneu': 4 }, visible: !Removido.val()">
+                                <img src="img/Eixos/Pneu.png">
+                                <span class="pneu-numero" data-bind="text: NumeroFogo.val().substring(0, 5)"></span>
+                                <div data-bind="attr: { 'data-posicao-pneu': ($index() + 1) }" class="pneu-tooltip">
+                                    <div class="pneu-tooltip-conteudo">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Almoxarifado: </td>
+                                                    <td data-bind="text: Almoxarifado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Número Fogo: </td>
+                                                    <td data-bind="text: NumeroFogo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Vida: </td>
+                                                    <td data-bind="text: Vida.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Km Rodado: </td>
+                                                    <td data-bind="text: KmAtualRodado.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Marca: </td>
+                                                    <td data-bind="text: Marca.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Modelo: </td>
+                                                    <td data-bind="text: Modelo.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Bd Rodagem: </td>
+                                                    <td data-bind="text: BandaRodagem.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label">Movimentação: </td>
+                                                    <td data-bind="text: DataMovimentacao.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label" data-bind="visible: (LocalManutencao.val() != '')">Local Manutenção: </td>
+                                                    <td data-bind="text: LocalManutencao.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pneu-tooltip-conteudo-texto-label" data-bind="visible: (NumeroOS.val() != '')">Número OS: </td>
+                                                    <td data-bind="text: NumeroOS.val" class="pneu-tooltip-conteudo-texto-descricao"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: Pneus().length == 0 -->
+                        <div class="alert alert-info">
+                            Nenhum pneu em reforma encontrado para movimentar.<br />
+                            Pesquise os pneus para realizar a movimentação
+                        </div>
+                        <!-- /ko -->
+                        <div id="container-paginacao-reforma" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="divModalMovimentacaoPneuParaEstoque" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Envio para Estoque</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="knockoutMovimentacaoPneuParaEstoque">
+                    <div class="row">
+                        <div class="col-12 col-md-8" data-bind="visible: NumeroFogo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: NumeroFogo.text, attr: { for: NumeroFogo.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: NumeroFogo.val, enable: NumeroFogo.enable, attr: { maxlength: NumeroFogo.maxlength, id : NumeroFogo.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataHora.text, attr: { for: DataHora.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: DataHora.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataHora.maxlength, id : DataHora.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12" data-bind="visible: Almoxarifado.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Almoxarifado.text, attr: { for: Almoxarifado.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: Almoxarifado.val, valueUpdate: 'afterkeydown', attr: { maxlength: Almoxarifado.maxlength, id : Almoxarifado.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-default botaosca" type="button" data-bind="attr: { id: Almoxarifado.idBtnSearch}">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" data-bind="visible: UtilizarDadosAdicionais.val">
+                        <div class="col-12 col-md-3" data-bind="visible: SulcoAnterior.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SulcoAnterior.text, attr: { for: SulcoAnterior.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: SulcoAnterior.val, enable: SulcoAnterior.enable, attr: { maxlength: SulcoAnterior.maxlength, id : SulcoAnterior.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: SulcoAtual.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SulcoAtual.text, attr: { for: SulcoAtual.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: SulcoAtual.val, attr: { maxlength: SulcoAtual.maxlength, id : SulcoAtual.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Calibragem.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Calibragem.text, attr: { for: Calibragem.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Calibragem.val, attr: { maxlength: Calibragem.maxlength, id : Calibragem.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: MilimetragemUm.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemUm.text, attr: { for: MilimetragemUm.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemUm.val, attr: { maxlength: MilimetragemUm.maxlength, id : MilimetragemUm.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: MilimetragemDois.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemDois.text, attr: { for: MilimetragemDois.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemDois.val, attr: { maxlength: MilimetragemDois.maxlength, id : MilimetragemDois.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: MilimetragemTres.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemTres.text, attr: { for: MilimetragemTres.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemTres.val, attr: { maxlength: MilimetragemTres.maxlength, id : MilimetragemTres.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: MilimetragemQuatro.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemQuatro.text, attr: { for: MilimetragemQuatro.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemQuatro.val, attr: { maxlength: MilimetragemQuatro.maxlength, id : MilimetragemQuatro.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: MilimetragemMedia.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemMedia.text, attr: { for: MilimetragemMedia.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemMedia.val, enable: MilimetragemMedia.enable, attr: { maxlength: MilimetragemMedia.maxlength, id : MilimetragemMedia.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalMovimentacaoPneuParaReforma" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Envio para Reforma</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="knockoutMovimentacaoPneuParaReforma">
+                    <div class="row">
+                        <div class="col-12 col-md-8" data-bind="visible: NumeroFogo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: NumeroFogo.text, attr: { for: NumeroFogo.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: NumeroFogo.val, enable: NumeroFogo.enable, attr: { maxlength: NumeroFogo.maxlength, id : NumeroFogo.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataHora.text, attr: { for: DataHora.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: DataHora.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataHora.maxlength, id : DataHora.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: Hodometro.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Hodometro.text, attr: { for: Hodometro.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Hodometro.val, enable: Hodometro.enable, attr: { maxlength: Hodometro.maxlength, id : Hodometro.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: SulcoAnterior.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SulcoAnterior.text, attr: { for: SulcoAnterior.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: SulcoAnterior.val, enable: SulcoAnterior.enable, attr: { maxlength: SulcoAnterior.maxlength, id : SulcoAnterior.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: SulcoAtual.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SulcoAtual.text, attr: { for: SulcoAtual.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: SulcoAtual.val, attr: { maxlength: SulcoAtual.maxlength, id : SulcoAtual.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Fornecedor.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Fornecedor.text, attr: { for: Fornecedor.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: Fornecedor.val, valueUpdate: 'afterkeydown', attr: { maxlength: Fornecedor.maxlength, id : Fornecedor.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: Fornecedor.idBtnSearch}">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: ServicoVeiculo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ServicoVeiculo.text, attr: { for: ServicoVeiculo.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: ServicoVeiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: ServicoVeiculo.maxlength, id : ServicoVeiculo.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: ServicoVeiculo.idBtnSearch}">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: CustoEstimado.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: CustoEstimado.text, attr: { for: CustoEstimado.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: CustoEstimado.val, attr: { maxlength: CustoEstimado.maxlength, id : CustoEstimado.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: TipoOrdemServico.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: TipoOrdemServico.text, attr: { for: TipoOrdemServico.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: TipoOrdemServico.requiredClass, value: TipoOrdemServico.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoOrdemServico.maxlength, id : TipoOrdemServico.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoOrdemServico.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" data-bind="visible: Observacao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                <textarea rows="5" class="form-control" type="text" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id}"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalMovimentacaoPneuParaSucata" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Envio para Sucata</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="knockoutMovimentacaoPneuParaSucata">
+                    <div class="row">
+                        <div class="col-12 col-md-8" data-bind="visible: NumeroFogo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: NumeroFogo.text, attr: { for: NumeroFogo.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: NumeroFogo.val, enable: NumeroFogo.enable, attr: { maxlength: NumeroFogo.maxlength, id : NumeroFogo.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataHora.text, attr: { for: DataHora.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: DataHora.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataHora.maxlength, id : DataHora.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-8" data-bind="visible: Motivo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Motivo.text, attr: { for: Motivo.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: Motivo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Motivo.maxlength, id : Motivo.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: Motivo.idBtnSearch}">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: ValorCarcaca.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorCarcaca.text, attr: { for: ValorCarcaca.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorCarcaca.val, attr: { maxlength: ValorCarcaca.maxlength, id : ValorCarcaca.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12" data-bind="visible: Observacao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                <textarea rows="5" class="form-control" type="text" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id}"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalMovimentacaoPneuParaVeiculo" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Movimentação de Pneu para Veículo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="knockoutMovimentacaoPneuParaVeiculo">
+                    <div class="row">
+                        <div class="col-12 col-md-8" data-bind="visible: NumeroFogo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: NumeroFogo.text, attr: { for: NumeroFogo.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: NumeroFogo.val, enable: NumeroFogo.enable, attr: { maxlength: NumeroFogo.maxlength, id : NumeroFogo.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataHora.text, attr: { for: DataHora.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: DataHora.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataHora.maxlength, id : DataHora.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: SulcoAnterior.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SulcoAnterior.text, attr: { for: SulcoAnterior.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: SulcoAnterior.val, enable: SulcoAnterior.enable, attr: { maxlength: SulcoAnterior.maxlength, id : SulcoAnterior.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: SulcoAtual.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SulcoAtual.text, attr: { for: SulcoAtual.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: SulcoAtual.val, attr: { maxlength: SulcoAtual.maxlength, id : SulcoAtual.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Calibragem.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Calibragem.text, attr: { for: Calibragem.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Calibragem.val, attr: { maxlength: Calibragem.maxlength, id : Calibragem.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: MilimetragemUm.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemUm.text, attr: { for: MilimetragemUm.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemUm.val, attr: { maxlength: MilimetragemUm.maxlength, id : MilimetragemUm.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: MilimetragemDois.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemDois.text, attr: { for: MilimetragemDois.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemDois.val, attr: { maxlength: MilimetragemDois.maxlength, id : MilimetragemDois.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: MilimetragemTres.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemTres.text, attr: { for: MilimetragemTres.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemTres.val, attr: { maxlength: MilimetragemTres.maxlength, id : MilimetragemTres.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: MilimetragemQuatro.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemQuatro.text, attr: { for: MilimetragemQuatro.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemQuatro.val, attr: { maxlength: MilimetragemQuatro.maxlength, id : MilimetragemQuatro.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: MilimetragemMedia.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MilimetragemMedia.text, attr: { for: MilimetragemMedia.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: MilimetragemMedia.val, enable: MilimetragemMedia.enable, attr: { maxlength: MilimetragemMedia.maxlength, id : MilimetragemMedia.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalMovimentacaoPneuReformaParaEstoque" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Reforma para Estoque</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="knockoutMovimentacaoPneuReformaParaEstoque">
+                    <div class="row">
+                        <div class="col-12 col-md-8" data-bind="visible: NumeroFogo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: NumeroFogo.text, attr: { for: NumeroFogo.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: NumeroFogo.val, enable: NumeroFogo.enable, attr: { maxlength: NumeroFogo.maxlength, id : NumeroFogo.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataHora.text, attr: { for: DataHora.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: DataHora.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataHora.maxlength, id : DataHora.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: SulcoAnterior.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SulcoAnterior.text, attr: { for: SulcoAnterior.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: SulcoAnterior.val, enable: SulcoAnterior.enable, attr: { maxlength: SulcoAnterior.maxlength, id : SulcoAnterior.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: SulcoAtual.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SulcoAtual.text, attr: { for: SulcoAtual.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: SulcoAtual.val, attr: { maxlength: SulcoAtual.maxlength, id : SulcoAtual.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Almoxarifado.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Almoxarifado.text, attr: { for: Almoxarifado.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: Almoxarifado.val, valueUpdate: 'afterkeydown', attr: { maxlength: Almoxarifado.maxlength, id : Almoxarifado.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: Almoxarifado.idBtnSearch}">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: BandaRodagem.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: BandaRodagem.text, attr: { for: BandaRodagem.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: BandaRodagem.val, valueUpdate: 'afterkeydown', attr: { maxlength: BandaRodagem.maxlength, id : BandaRodagem.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: BandaRodagem.idBtnSearch}">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: ServicoRealizado.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ServicoRealizado.text, attr: { for: ServicoRealizado.id }"></label>
+                                <select class="form-control" data-bind="enable: ServicoRealizado.enable, options: ServicoRealizado.options, optionsText: 'text', optionsValue: 'value', value: ServicoRealizado.val, attr: { id : ServicoRealizado.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Vida.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Vida.text, attr: { for: Vida.id }"></label>
+                                <select class="form-control" data-bind="enable: Vida.enable, options: Vida.options, optionsText: 'text', optionsValue: 'value', value: Vida.val, attr: { id : Vida.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: ValorMaoObra.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorMaoObra.text, attr: { for: ValorMaoObra.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorMaoObra.val, attr: { maxlength: ValorMaoObra.maxlength, id : ValorMaoObra.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: ValorProdutos.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorProdutos.text, attr: { for: ValorProdutos.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorProdutos.val, attr: { maxlength: ValorProdutos.maxlength, id : ValorProdutos.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: ValorResidualAtualPneu.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorResidualAtualPneu.text, attr: { for: ValorResidualAtualPneu.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorResidualAtualPneu.val, enable: ValorResidualAtualPneu.enable, attr: { maxlength: ValorResidualAtualPneu.maxlength, id : ValorResidualAtualPneu.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-9" data-bind="visible: ResponsavelOrcamento.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ResponsavelOrcamento.text, attr: { for: ResponsavelOrcamento.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ResponsavelOrcamento.val, enable: ResponsavelOrcamento.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ResponsavelOrcamento.maxlength, id : ResponsavelOrcamento.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12" data-bind="visible: Observacao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                <textarea rows="5" class="form-control" type="text" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id}"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <h3>Produtos</h3>
+                            <div class="d-flex my-2">
+                                <button class="btn btn-primary" type="button" data-bind="click: AdicionarProdutos.eventClick, attr: { id: AdicionarProdutos.id}">
+                                    <i class="fal fa-plus"></i> <span data-bind="text: AdicionarProdutos.text"></span>
+                                </button>
+                            </div>
+                            <table width="100%" class="table table-bordered table-hover" cellspacing="0" id="grid-reforma-para-estoque-produto"></table>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalMovimentacaoPneuReformaParaEstoqueProduto" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Produtos</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="knockoutMovimentacaoPneuReformaParaEstoqueProduto">
+                    <div class="row">
+                        <div class="col-12 col-md-6" data-bind="visible: Produto.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Produto.text, attr: { for: Produto.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: Produto.val, valueUpdate: 'afterkeydown', attr: { maxlength: Produto.maxlength, id : Produto.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: Produto.idBtnSearch}">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: FinalidadeProduto.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: FinalidadeProduto.text, attr: { for: FinalidadeProduto.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="value: FinalidadeProduto.val, valueUpdate: 'afterkeydown', attr: { maxlength: FinalidadeProduto.maxlength, id : FinalidadeProduto.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: FinalidadeProduto.idBtnSearch}">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Quantidade.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Quantidade.text, attr: { for: Quantidade.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Quantidade.val, attr: { maxlength: Quantidade.maxlength, id : Quantidade.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Valor.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Valor.text, attr: { for: Valor.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Valor.val, attr: { maxlength: Valor.maxlength, id : Valor.id} , valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-danger" type="button" data-bind="click: Excluir.eventClick, visible: Excluir.visible, text: Excluir.text, attr: { id : Excluir.id}"></button>
+                                <button class="btn btn-default ms-2" type="button" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, text: Cancelar.text, attr: { id : Cancelar.id}"></button>
+                                <button class="btn btn-success ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, text: Atualizar.text, attr: { id : Atualizar.id}"></button>
+                                <button class="btn btn-success ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalMovimentacaoPneuParaRodizio" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Rodízio de Pneus</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="knockoutMovimentacaoPneuParaRodizio">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataHora.text, attr: { for: DataHora.id }"></label>
+                                <input type="text" class="form-control" data-bind="css: DataHora.requiredClass, value: DataHora.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataHora.maxlength, id: DataHora.id}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 pneu-section">
+                            <h5>Pneu 1</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: NumeroFogo_1.visible">
+                                        <label class="form-label" data-bind="text: NumeroFogo_1.text, attr: { for: NumeroFogo_1.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: NumeroFogo_1.requiredClass, value: NumeroFogo_1.val, enable: NumeroFogo_1.enable, attr: { maxlength: NumeroFogo_1.maxlength, id: NumeroFogo_1.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: SulcoAnterior_1.visible">
+                                        <label class="form-label" data-bind="text: SulcoAnterior_1.text, attr: { for: SulcoAnterior_1.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: SulcoAnterior_1.requiredClass, value: SulcoAnterior_1.val, enable: SulcoAnterior_1.enable, attr: { maxlength: SulcoAnterior_1.maxlength, id: SulcoAnterior_1.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: SulcoAtual_1.visible">
+                                        <label class="form-label" data-bind="text: SulcoAtual_1.text, attr: { for: SulcoAtual_1.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: SulcoAtual_1.requiredClass, value: SulcoAtual_1.val, attr: { maxlength: SulcoAtual_1.maxlength, id: SulcoAtual_1.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: Calibragem_1.visible">
+                                        <label class="form-label" data-bind="text: Calibragem_1.text, attr: { for: Calibragem_1.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: Calibragem_1.requiredClass, value: Calibragem_1.val, attr: { maxlength: Calibragem_1.maxlength, id: Calibragem_1.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: MilimetragemUm_1.visible">
+                                        <label class="form-label" data-bind="text: MilimetragemUm_1.text, attr: { for: MilimetragemUm_1.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: MilimetragemUm_1.requiredClass, value: MilimetragemUm_1.val, attr: { maxlength: MilimetragemUm_1.maxlength, id: MilimetragemUm_1.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: MilimetragemDois_1.visible">
+                                        <label class="form-label" data-bind="text: MilimetragemDois_1.text, attr: { for: MilimetragemDois_1.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: MilimetragemDois_1.requiredClass, value: MilimetragemDois_1.val, attr: { maxlength: MilimetragemDois_1.maxlength, id: MilimetragemDois_1.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: MilimetragemTres_1.visible">
+                                        <label class="form-label" data-bind="text: MilimetragemTres_1.text, attr: { for: MilimetragemTres_1.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: MilimetragemTres_1.requiredClass, value: MilimetragemTres_1.val, attr: { maxlength: MilimetragemTres_1.maxlength, id: MilimetragemTres_1.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: MilimetragemQuatro_1.visible">
+                                        <label class="form-label" data-bind="text: MilimetragemQuatro_1.text, attr: { for: MilimetragemQuatro_1.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: MilimetragemQuatro_1.requiredClass, value: MilimetragemQuatro_1.val, attr: { maxlength: MilimetragemQuatro_1.maxlength, id: MilimetragemQuatro_1.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pneu-section border-start">
+                            <h5>Pneu 2</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: NumeroFogo_2.visible">
+                                        <label class="form-label" data-bind="text: NumeroFogo_2.text, attr: { for: NumeroFogo_2.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: NumeroFogo_2.requiredClass, value: NumeroFogo_2.val, enable: NumeroFogo_2.enable, attr: { maxlength: NumeroFogo_2.maxlength, id: NumeroFogo_2.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: SulcoAnterior_2.visible">
+                                        <label class="form-label" data-bind="text: SulcoAnterior_2.text, attr: { for: SulcoAnterior_2.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: SulcoAnterior_2.requiredClass, value: SulcoAnterior_2.val, enable: SulcoAnterior_2.enable, attr: { maxlength: SulcoAnterior_2.maxlength, id: SulcoAnterior_2.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: SulcoAtual_2.visible">
+                                        <label class="form-label" data-bind="text: SulcoAtual_2.text, attr: { for: SulcoAtual_2.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: SulcoAtual_2.requiredClass, value: SulcoAtual_2.val, attr: { maxlength: SulcoAtual_2.maxlength, id: SulcoAtual_2.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: Calibragem_2.visible">
+                                        <label class="form-label" data-bind="text: Calibragem_2.text, attr: { for: Calibragem_2.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: Calibragem_2.requiredClass, value: Calibragem_2.val, attr: { maxlength: Calibragem_2.maxlength, id: Calibragem_2.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: MilimetragemUm_2.visible">
+                                        <label class="form-label" data-bind="text: MilimetragemUm_2.text, attr: { for: MilimetragemUm_2.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: MilimetragemUm_2.requiredClass, value: MilimetragemUm_2.val, attr: { maxlength: MilimetragemUm_2.maxlength, id: MilimetragemUm_2.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: MilimetragemDois_2.visible">
+                                        <label class="form-label" data-bind="text: MilimetragemDois_2.text, attr: { for: MilimetragemDois_2.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: MilimetragemDois_2.requiredClass, value: MilimetragemDois_2.val, attr: { maxlength: MilimetragemDois_2.maxlength, id: MilimetragemDois_2.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: MilimetragemTres_2.visible">
+                                        <label class="form-label" data-bind="text: MilimetragemTres_2.text, attr: { for: MilimetragemTres_2.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: MilimetragemTres_2.requiredClass, value: MilimetragemTres_2.val, attr: { maxlength: MilimetragemTres_2.maxlength, id: MilimetragemTres_2.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" data-bind="visible: MilimetragemQuatro_2.visible">
+                                        <label class="form-label" data-bind="text: MilimetragemQuatro_2.text, attr: { for: MilimetragemQuatro_2.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: MilimetragemQuatro_2.requiredClass, value: MilimetragemQuatro_2.val, attr: { maxlength: MilimetragemQuatro_2.maxlength, id: MilimetragemQuatro_2.id}, valueUpdate: 'afterkeydown'" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12" data-bind="visible: MotivoRodizio.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: MotivoRodizio.text, attr: { for: MotivoRodizio.id }"></label>
+                                <input type="text" class="form-control" data-bind="css: MotivoRodizio.requiredClass, value: MotivoRodizio.val, enable: MotivoRodizio.enable, attr: { maxlength: MotivoRodizio.maxlength, id: MotivoRodizio.id}, valueUpdate: 'afterkeydown'" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-success" type="submit" data-loading-text="Aguarde..." data-bind="click: ConfirmarRodizio.eventClick, text: ConfirmarRodizio.text, attr: { id: ConfirmarRodizio.id}"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/movimentacaoPneu"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+    _PermissoesPersonalizadas = @Html.Raw(ViewBag.PermissoesPersonalizadas);
+    $(document).ready(function () {
+        loadMovimentacaoPneu();
+    });
+
+</script>

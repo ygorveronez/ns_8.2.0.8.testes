@@ -1,0 +1,144 @@
+using System;
+using System.Web;
+using System.Web.Security;
+
+namespace EmissaoCTe.WebApp
+{
+    /// <summary>
+    /// Enforces a single login session
+    /// Needs an entry in Web.Config, exactly where depends on the version of IIS, but you
+    /// can safely put it in both places.
+    /// 1:
+    ///  <system.web>
+    ///     <httpModules>
+    ///      <add name="SingleSessionEnforcement" type="SingleSessionEnforcement" />
+    ///    </httpModules>
+    ///  </system.web>
+    /// 2:
+    ///  <system.webServer>
+    ///    <modules runAllManagedModulesForAllRequests="true">
+    ///      <add name="SingleSessionEnforcement" type="SingleSessionEnforcement" />
+    ///    </modules>
+    ///  </system.webServer>
+    /// Also, slidingExpiration for the forms must be set to false, also set a 
+    /// suitable timeout period (in minutes)
+    ///  <authentication mode="Forms">
+    ///   <forms protection="All" slidingExpiration="false" loginUrl="login.aspx" timeout="600" />
+    ///  </authentication>
+    /// </summary>
+    public class SingleSessionEnforcement : IHttpModule
+    {
+        public SingleSessionEnforcement()
+        {
+            // No construction needed
+        }
+
+        private void OnPostAuthenticate(Object sender, EventArgs e)
+        {
+            Repositorio.UnitOfWork unitOfWork = new Repositorio.UnitOfWork(Conexao.StringConexao);
+            try
+            {
+                //Guid sessionToken;
+
+                //HttpApplication httpApplication = (HttpApplication)sender;
+                //HttpContext httpContext = httpApplication.Context;
+
+                //// Check user's session token
+                //if (httpContext.User.Identity.IsAuthenticated)
+                //{
+                //    FormsAuthenticationTicket authenticationTicket = ((FormsIdentity)httpContext.User.Identity).Ticket;
+
+                //    if (authenticationTicket.UserData != "")
+                //    {
+                //        sessionToken = new Guid(authenticationTicket.UserData);
+                //    }
+                //    else
+                //    {
+                //        // No authentication ticket found so logout this user
+                //        // Should never hit this code
+                //        FormsAuthentication.SignOut();
+                //        FormsAuthentication.RedirectToLoginPage();
+                //        return;
+                //    }
+
+                //    //MembershipUser currentUser = Membership.GetUser(authenticationTicket.Name);
+                //    var s = Global.Sessions.Find(delegate (Dominio.ObjetosDeValor.SessaoDoSistema x) { return x.Usuario.Codigo == int.Parse(httpContext.Request.Cookies.Get("User").Value); }); //(int)httpContext.Cache.Get("IdEmpresa"); });
+
+                //    // May want to add a conditional here so we only check
+                //    // if the user needs to be checked. For instance, your business
+                //    // rules for the application may state that users in the Admin
+                //    // role are allowed to have multiple sessions
+                //    Guid storedToken = new Guid(s.SessionToken); //currentUser.Comment);
+
+                //    if (sessionToken != storedToken)
+                //    {
+                //        // Stored session does not match one in authentication
+                //        // ticket so logout the user
+                //        FormsAuthentication.SignOut();
+                //        FormsAuthentication.RedirectToLoginPage();
+                //    }
+                //}
+
+                if (System.Configuration.ConfigurationManager.AppSettings["PermitirAcessoSimultaneo"] == "SIM")
+                    return;
+
+                HttpApplication httpApplication = (HttpApplication)sender;
+                HttpContext httpContext = httpApplication.Context;
+
+                //if (httpContext.User.Identity.IsAuthenticated)
+                //{
+                //    Repositorio.UnitOfWork unitOfWork = new Repositorio.UnitOfWork(Conexao.StringConexao);
+                //    Repositorio.Usuario repUsuario = new Repositorio.Usuario(unitOfWork);
+
+                //    int.TryParse(httpContext.Request.Cookies.Get("User").Value, out int codigoUsuario);
+                //    string sessionUser = repUsuario.BuscarSession(codigoUsuario);
+
+                //    var s = Global.Sessions.Find(delegate (Dominio.ObjetosDeValor.SessaoDoSistema x) { return x.Usuario.Codigo == int.Parse(httpContext.Request.Cookies.Get("User").Value); }); //(int)httpContext.Cache.Get("IdEmpresa"); });
+
+                //    if (!string.IsNullOrWhiteSpace(sessionUser) && s != null)
+                //    {
+                //        if (sessionUser != s.SessionToken)
+                //        {
+                //            FormsAuthentication.SignOut();
+                //            FormsAuthentication.RedirectToLoginPage();
+                //        }
+                //    }
+                //}
+
+                if (httpContext.User.Identity.IsAuthenticated)
+                {
+                    Repositorio.Usuario repUsuario = new Repositorio.Usuario(unitOfWork);
+
+                    int.TryParse(httpContext.Request.Cookies.Get("User")?.Value, out int codigoUsuario);
+                    string sessionUser = repUsuario.BuscarSession(codigoUsuario);
+
+                    if (sessionUser != httpContext.Request.Cookies.Get("GuidUser")?.Value)
+                    {
+                        FormsAuthentication.SignOut();
+                        FormsAuthentication.RedirectToLoginPage();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Servicos.Log.TratarErro(ex, "SessaoUsuario");
+                //FormsAuthentication.SignOut();
+                //FormsAuthentication.RedirectToLoginPage();
+            }
+            finally
+            {
+                unitOfWork.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            // Nothing to dispose
+        }
+
+        public void Init(HttpApplication context)
+        {
+            context.PostAuthenticateRequest += new EventHandler(OnPostAuthenticate);
+        }
+    }
+}

@@ -1,0 +1,372 @@
+﻿
+<style>
+
+    #divOpcoes {
+        margin: 1rem 0;
+        min-height: 3.5rem;
+        display: flex;
+        justify-content: space-around;
+    }
+
+        #divOpcoes select, #divOpcoes option {
+            cursor: pointer;
+        }
+</style>
+
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Frotas</li>
+    <li class="breadcrumb-item active">Movimentação de Placas</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class="subheader-icon fal fa-truck"></i> Movimentação de Placas
+    </h1>
+    <div class="subheader-help">
+        <button type="button" onclick="iniciarAjuda(184)" data-action="toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Abrir a ajuda da página" aria-label="Abrir a ajuda da página"><i class="fal fa-question-circle"></i></button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-sm-6 col-md-4" id="divDeOpcoes">
+        <div class="panel">
+            <div class="panel-hdr">
+                <h2>Motoristas</h2>
+                <a href="javascript:void(0);" class="card-help" title="Entenda o motorista" onclick="iniciarAjuda(183)"><i class="fal fa-question"></i></a>
+            </div>
+            <div id="knockoutPesquisaMotoristas" class="panel-container">
+                <div class="panel-content">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-4" data-bind="visible: CPF.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: CPF.text, attr: { for: CPF.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: CPF.val, attr: { maxlength: CPF.maxlength, id : CPF.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5" data-bind="visible: Nome.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Nome.text, attr: { for: Nome.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Nome.val, attr: { maxlength: Nome.maxlength, id : Nome.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: Placa.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Placa.text, attr: { for: Placa.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Placa.val, attr: { maxlength: Placa.maxlength, id : Placa.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12" data-bind="visible: SomentePedentes.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: SomentePedentes.val, attr: { maxlength: SomentePedentes.maxlength, name: SomentePedentes.id, id: SomentePedentes.id }">
+                                        <label class="custom-control-label" data-bind="text: SomentePedentes.text, attr: { for: SomentePedentes.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                                        <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="divGridMotorista" class="mt-3">
+                        <table width="100%" class="table table-bordered table-hover table-condensed table-striped tableCursorMove" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-4">
+        <div class="panel">
+            <div class="panel-hdr">
+                <h2>Movimentação de Placas</h2>
+            </div>
+            <div class="panel-container">
+                <div class="panel-content">
+                    <form id="knockoutPesquisa" class="mb-3">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Placa.text, attr: { for: Placa.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="value: Placa.val, attr: { maxlength: Placa.maxlength, id : Placa.id}, valueUpdate: 'afterkeydown'" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: Placa.idBtnSearch}">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: NumeroFrota.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: NumeroFrota.text, attr: { for: NumeroFrota.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: NumeroFrota.val, attr: { maxlength: NumeroFrota.maxlength, id : NumeroFrota.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Motorista.text, attr: { for: Motorista.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="value: Motorista.val, valueUpdate: 'afterkeydown', attr: { maxlength: Motorista.maxlength, id : Motorista.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: Motorista.idBtnSearch}" title="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: KMAtual.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: KMAtual.text, attr: { for: KMAtual.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: KMAtual.val, valueUpdate: 'afterkeydown', attr: { maxlength: KMAtual.maxlength, id : KMAtual.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-8" data-bind="visible: SegmentoVeiculo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: SegmentoVeiculo.text"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="value: SegmentoVeiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: SegmentoVeiculo.maxlength, id : SegmentoVeiculo.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: SegmentoVeiculo.idBtnSearch}">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                                        <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="divResultadoPesquisa" class="my-3">
+                        <fieldset class="fieldsetinfo">
+                            <div class="legendBackGroud" style="width:170px;"></div>
+                            <legend>Veículo não localizado</legend>
+                            <h4>
+                                A consulta realizada não retornou nenhum veículo de tração.
+                            </h4>
+                        </fieldset>
+                    </div>
+
+                    <div class="well" id="divResultadoPesquisaReboque" style="padding-bottom:0px;">
+                        <div class="widget-body no-padding" style="margin-top:1px">
+                            <div class="smart-form">
+                                <fieldset class="fieldsetinfo">
+                                    <div class="legendBackGroud" style="width:170px;"></div>
+                                    <legend>Reboque</legend>
+                                    <h4 id="h4ReboqueSemVinculo">
+                                        O reboque não está vinculado a uma tração
+                                    </h4>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="divVeiculoTracao" class="card my-3">
+                        <div class="card-header">
+                            <h3 class="card-title">Tração</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="fdsVeiculos"></div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div id="divReboquesVeiculo" class="my-3">
+                        <h3>Reboques</h3>
+                        <div id="fdsReboques"></div>
+                    </div>
+
+                    <div id="divMotoristasVeiculo" class="my-3">
+                        <h3>Motorista</h3>
+                        <div id="fdsMotoristas"></div>
+                    </div>
+
+                    <div id="divOpcoes" class="d-none justify-content-end mt-3">
+
+                        <button class="btn btn-primary" type="button" data-bind="visible: Equipamento.visible, attr: { id: Equipamento.idBtnSearch}">
+                            <i class="fal fa-plus"></i> <span data-bind="text: Equipamento.text"></span>
+                        </button>
+
+                        @if (ViewBag.AtivarBotaoAlterarGestor ?? false)
+                        {
+                            <button class="btn btn-success ms-2 me-2" type="button" data-bind="visible: AlterarGestor.visible, text: AlterarGestor.text, attr: { id : AlterarGestor.idBtnSearch}"></button>
+                        }
+
+                        <button class="btn btn-success ms-2 me-2" type="button" data-bind="visible: AlterarCentroResultado.visible, text: AlterarCentroResultado.text, attr: { id : AlterarCentroResultado.idBtnSearch}"></button>
+
+                        <div class="btn-group" data-bind="visible: GerarPDF.visible() || GerarExcel.visible()">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fal fa-cog"></i>&nbsp;Imprimir&nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li data-bind="click: GerarPDF.eventClick, visible: GerarPDF.visible, attr: { id : GerarPDF.id }">
+                                    <a class="dropdown-item">
+                                        <i data-bind="css: GerarPDF.icon"></i>&nbsp;
+                                        <span data-bind="text: GerarPDF.text"></span>
+                                    </a>
+                                </li>
+                                <li data-bind="click: GerarExcel.eventClick, visible: GerarExcel.visible, attr: { id : GerarExcel.id }">
+                                    <a class="dropdown-item">
+                                        <i data-bind="css: GerarExcel.icon"></i>&nbsp;
+                                        <span data-bind="text: GerarExcel.text"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="divDeOpcoes2" class="col-12 col-sm-6 col-md-4">
+        <div class="panel">
+            <div class="panel-hdr">
+                <h2>Reboques</h2>
+                <a href="javascript:void(0);" class="card-help" title="Entenda o reboque" onclick="iniciarAjuda(182)"><i class="fal fa-question"></i></a>
+            </div>
+            <div id="knockoutPesquisaReboque" class="panel-container">
+                <div class="panel-content">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-4" data-bind="visible: PlacaReboque.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: PlacaReboque.text, attr: { for: PlacaReboque.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: PlacaReboque.val, attr: { maxlength: PlacaReboque.maxlength, id : PlacaReboque.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: NumeroFrota.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: NumeroFrota.text, attr: { for: NumeroFrota.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: NumeroFrota.val, attr: { maxlength: NumeroFrota.maxlength, id : NumeroFrota.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoReboque.text, attr: { for: TipoReboque.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="value: TipoReboque.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoReboque.maxlength, id : TipoReboque.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: TipoReboque.idBtnSearch}" title="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" data-bind="visible: SomentePedentes.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: SomentePedentes.val, attr: { maxlength: SomentePedentes.maxlength, name: SomentePedentes.id, id: SomentePedentes.id }">
+                                        <label class="custom-control-label" data-bind="text: SomentePedentes.text, attr: { for: SomentePedentes.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" data-bind="visible: TipoVeiculo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoVeiculo.text, attr: { for: TipoVeiculo.id }"></label>
+                                    <select class="form-control" data-bind="options: TipoVeiculo.options, optionsText: 'text', optionsValue: 'value', value: TipoVeiculo.val, attr: { id : TipoVeiculo.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                                        <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="divGridReboque" class="mt-3">
+                        <table width="100%" class="table table-bordered table-hover table-condensed table-striped tableCursorMove" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalInformarKmAtualVeiculoTracao" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutInformarKmAtualVeiculoTracao" class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Informar Km Atual Veículo Traçao</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fal fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-2" data-bind="visible: Reboque.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Reboque.text, attr: { for: Reboque.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Reboque.val, valueUpdate: 'afterkeydown' , attr: { maxlength: Reboque.maxlength, id : Reboque.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: Veiculo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Veiculo.val, valueUpdate: 'afterkeydown' , attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Placa.visible, enable:Placa.enable">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Placa.text, attr: { for: Placa.id }"></label>
+                                <input type="text" class="form-control" data-bind="enable: false, value: Placa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Placa.maxlength, id : Placa.id}" />                                
+                            </div>
+                        </div>                    
+                        <div class="col-12 col-md-6" data-bind="visible: KmAtual.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: KmAtual.text, attr: { for: KmAtual.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: KmAtual.val, valueUpdate: 'afterkeydown', attr: { maxlength: KmAtual.maxlength, id : KmAtual.id}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-success" type="button" data-bind="click: Salvar.eventClick, visible: Salvar.visible, attr: { value: Salvar.text, id: Salvar.id}">
+                            <i class="fal fa-check"></i><span data-bind="text: Salvar.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="divModalInformarKmAtualVeiculoTracao" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Veiculos.Veiculo.InformarKmAtualVeiculoTracao}</h4>                
+            </div>
+            <div class="modal-body">
+                <div id="container-informar-km-atual-veiculo-tracao"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/movimentacaoDePlacas"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+    
+    $(document).ready(function () {
+        loadMovimentacaoDePlacas();
+    });
+
+</script>

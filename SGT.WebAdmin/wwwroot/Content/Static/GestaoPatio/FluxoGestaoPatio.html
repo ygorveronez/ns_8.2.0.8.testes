@@ -1,0 +1,110 @@
+﻿<div class="border container-fluxo" id="#idFluxoGestaoPatio">
+    <div class="row" data-bind="style: { height: AlturaFluxo.val}">
+        <div class="col col-12 col col-md-2 cabecalho-fluxo">
+            <div data-bind="css: {'carga-detalhes': true, 'fluxo-possui-carga': PossuiCarga.val, 'fluxo-sem-carga': CargaDePreCarga.val, 'fluxo-carga-cancelada': CargaCancelada.val, 'no-pointer': (Carga.OcultarFluxoCarga && PossuiCarga.val())}, attr: {id : Carga.idTab }, click : Carga.eventClick">
+                <span data-bind="visible: CargaCancelada.val" class="tag-cancelada">Cancelada</span>
+                <div class="d-flex align-items-center m-1 mb-0 overflow-hidden">
+                    <button class="btn btn-icon me-1 btn-mensagens-alerta" data-bind="visible: MensagensAlerta.val().length > 0, click: ExibirMensagensAlerta.eventClick, css: { 'btn-warning': !MensagemAlertaComBloqueio.val(), 'btn-danger': MensagemAlertaComBloqueio.val() }" title="Exibir mensagens de alerta">
+                        <i class="fal fa-lg" data-bind="css: { 'fa-exclamation-triangle': !MensagemAlertaComBloqueio.val(), 'fa-ban': MensagemAlertaComBloqueio.val() }"></i>
+                    </button>
+                    <div class="flex-grow-1 fs-3">
+                        <span data-bind="text: NumeroCarregamento.val"></span>
+                    </div>
+                    <div class="btn-mensagens-alerta" data-bind="visible: MensagensAlerta.val().length > 0"></div>
+                </div>
+                <small style="display: block;" data-toggle="tooltip" data-bind="text: Remetente.valsubstring, attr: {title: Remetente.valsubstring}, visible: Remetente.visible"></small>
+                <small style="display: block;" data-toggle="tooltip" data-bind="text: TipoOperacao.val, visible: TipoOperacao.visible"></small>
+                <small style="display: block;" data-toggle="tooltip" data-bind="text: Transportador.val, attr: {title: Transportador.val}, visible: Transportador.visible"></small>
+                <small style="display: block;" data-toggle="tooltip" data-bind="text: CategoriaAgendamento.val, attr: {title: CategoriaAgendamento.val}, visible: CategoriaAgendamento.visible"></small>
+                <small style="display: block;" data-toggle="tooltip" data-bind="text: TipoCarregamento.val, attr: {title: TipoCarregamento.val}, visible: TipoCarregamento.visible"></small>
+                <small style="display: block; text-align: center;" data-bind="text: Placas.val, visible: Placas.visible"></small>
+                <small style="display: block;" data-bind="text: DataCarga.val, visible: DataCarga.visible"></small>
+                <small style="display: block;" data-bind="text: Doca.val, visible: Doca.visible"></small>
+                <small style="display: block;" data-bind="text: ModeloVeicularCargaVeiculo.val, visible: ModeloVeicularCargaVeiculo.visible"></small>
+                <small style="display: block;" data-bind="text: AreaVeiculo.val, visible: AreaVeiculo.visible"></small>
+                <small style="display: block;" data-bind="text: Equipamento.val, visible: Equipamento.visible"></small>
+                <small style="display: block; color: blue;" data-bind="text: AntecipacaoICMS.text, visible: AntecipacaoICMS.visible"></small>
+                <div data-bind="visible: (PercentualSeparacaoMercadoria.val() != '0%')" class="well" style="background-color: inherit; border: none; box-shadow: none; -webkit-box-shadow: none; align-items: center;">
+                    <label style="width: 100%; display:block;">
+                        <b>Separação:</b>
+                        <section class="col-12">
+                            <small class="progress col-12" style="height: 30px; line-height: 30px; font-size: 16px;" data-bind="text: PercentualSeparacaoMercadoria.val, style: {width: PercentualSeparacaoMercadoria.val}, attr: { class: PercentualSeparacaoMercadoria.cssClass}"></small>
+                        </section>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col col-12 col col-md-10 etapas-fluxo">
+            <span class="btn-group">
+                <button class="btn btn-default p-1" data-bind="click: Auditar.eventClick, visible: Auditar.visible">
+                    <i class="fal fa-eye"></i>
+                </button>
+                <button class="btn btn-default p-1" type="button" data-bind="click: DetalhesCarga.eventClick, visible: DetalhesCarga.visible, attr: { id : DetalhesCarga.id }">
+                    <i class="fal fa-info-circle"></i>
+                </button>
+                <button class="btn btn-default p-1" type="button" data-bind="click: AtualizarPerguntasChecklist.eventClick, visible: AtualizarPerguntasChecklist.visible, attr: { id : AtualizarPerguntasChecklist.id, title: AtualizarPerguntasChecklist.text }">
+                    <i class="fal fa-redo"></i>
+                </button>
+            </span>
+            <div data-bind="css: { 'fluxo-com-auditoria' : Auditar.visible, 'container-etapas' : true }">
+                <ul class="nav nav-steps" data-bind="foreach: { data: KnoutEtapas.val, as: 'Etapa' }">
+                    <li data-bs-toggle="#stepFluxo" data-bind="style: {width : $parent.TamanhoEtapa.val }">
+                        <!-- ko foreach: Etapa.info -->
+                        <!-- ko ifnot: $data.type == "time-diff" -->
+                        <small data-bind="css: 'small-info ' + $data.type">
+                            <b data-bind="text : $data.data"></b>
+                        </small>
+                        <!-- /ko -->
+                        <!-- ko if: $data.type == "time-diff" -->
+                        <small data-bind="css: {'small-info': true, 'time-diff': true, 'atrasado': $data.data < 0, 'adiantado': $data.data > 0}">
+                            <span data-bind="text : $root.KnoutEtapas.ToTime($data.data)"></span>
+                        </small>
+                        <!-- /ko -->
+                        <!-- /ko -->
+
+                        <button href="#tabFluxo" data-bind="click : Etapa.eventClick" data-bs-toggle="tab" style="margin-top:8px;">
+                            <span rel="popover-hover" data-placement="top" data-bind="style: { background: Etapa.cor }, attr: { class: Etapa.cssClass, 'data-content' : Etapa.tooltip, 'data-original-title' : Etapa.tooltipTitle }" style="padding: 4px 12px; width:30px; height:30px">
+                                <!-- ko if: Etapa.exibirAlerta -->
+                                <i class="fal fa-exclamation-triangle blink alerta-etapa-fluxo-patio-icone"></i>
+                                <!-- /ko -->
+                            </span>
+                            <span class="title" data-bind="text: Etapa.text" style="margin-top: 0px;font-size: 12px; line-height:11px; font-weight: 500; color:#7a7a7a"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="divModalDetalhesCheckList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bind="attr: { id : ExibirMensagensAlerta.idModal }">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Mensagens de Alerta</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fal fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body pb-0">
+                    <!-- ko foreach: { data: MensagensAlerta.val(), as: 'MensagemAlerta' } -->
+                    <div class="alert alert-block" data-bind="css: { 'alert-warning': !MensagemAlerta.Bloquear, 'alert-danger': MensagemAlerta.Bloquear }">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-1 me-2">
+                                <!-- ko foreach: { data: MensagemAlerta.Mensagens, as: 'Mensagem' } -->
+                                <h4 class="fw-bold" data-bind="text: MensagemAlerta.Titulo, visible: (MensagemAlerta.Titulo != '')"></h4>
+                                <h5 data-bind="text: Mensagem"></h5>
+                                <!-- /ko -->
+                            </div>
+                            <!-- ko if: MensagemAlerta.UtilizarConfirmacao -->
+                            <button class="btn btn-success btn-sm btn-w-m waves-effect waves-themed" type="button" data-bind="css: { 'btn-warning': !MensagemAlerta.Bloquear, 'btn-danger': MensagemAlerta.Bloquear }, click: function () { confirmarMensagemAlertaFluxoPatioClick($parent, $data); }">
+                                <i class="fal fa-check"></i> Confirmar
+                            </button>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

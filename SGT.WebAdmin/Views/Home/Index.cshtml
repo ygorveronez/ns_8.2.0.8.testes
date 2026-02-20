@@ -1,0 +1,314 @@
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage
+
+
+@if (!ViewBag.LayoutAmarelo)
+{
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item active">Home</li>
+    </ol>
+    <div class="subheader">
+        <span class="subheader-title">
+            <i class="fal fa-home fw-500"></i>
+            @ViewBag.Saudacao
+        </span>
+    </div>
+}
+else
+{
+    <div class="row box-bem-vindo" style="display: none">
+        <div class="col col-12 py-4">
+            <div class="mensagem-aviso-agendamentos-pendentes-container" id="mensagem-aviso-agendamentos-pendentes-container">
+                <span>@Localization.Resources.Gerais.Home.ExistemAgendamentosPendentes</span>
+                <span>@Localization.Resources.Gerais.Home.MuitoImportanteRealizarConclusao</span>
+                <span>@Localization.Resources.Gerais.Home.ConcluaAgendamentosPendentesOuExclua</span>
+            </div>
+            <div class="mb-4">
+                <span>@Localization.Resources.Gerais.Home.OQueDesejaFazer</span>
+            </div>
+            <div>
+                <a href="#/Pedidos/RetiradaProduto" class="btn btn-primary">@Localization.Resources.Gerais.Home.Agendar</a>
+                <a href="#/Pedidos/RetiradaProdutoLista" class="btn btn-primary" style="margin-left: 10px">@Localization.Resources.Gerais.Home.VerAgendamentos</a>
+                <a href="javascript:void(0);" onclick="excluirAgendamentosPendentes();" class="btn btn-primary" style="margin-left: 10px; display: none" id="opcao-excluir-agendamentos-pendentes-tela-inicial">Excluir Agendamentos Pendentes</a>
+                <a href="#/Pedidos/ConsultarAndamentoPedido" class="btn btn-primary" style="margin-left: 10px">@Localization.Resources.Gerais.Home.AcompanharPedido</a>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row mt-2">
+    <div class="col-12" id="knockoutMensagemAviso" style="display: none;">
+        <!-- ko foreach: Mensagens -->
+        <div class="alert alert-info mb-3" role="alert">
+            <div class="align-items-center">
+                <div class="alert-icon">
+                    <i class="fal fa-info-circle fw-500"></i>
+                </div>
+                <div>
+                    <span class="h4 fw-500" data-bind="text: Titulo.val"></span>
+                    <br />
+                    <span data-bind="html: Mensagem.val"></span>
+                </div>
+
+                <!-- ko if: Anexos().length -->
+                <div class="card mt-3" style="background-color: rgba(255, 255, 255, 0.2)">
+                    <div class="card-header">
+                        <h5 class="card-title">@Localization.Resources.Gerais.Home.Anexos</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <table class="anexos-table table table-hover dataTable">
+                            <!-- ko foreach: Anexos -->
+                            <thead>
+                                <tr role="row" style="width: 80%">
+                                    <th class="text-align-left sorting">
+                                        <span class="text-info">@Localization.Resources.Gerais.Geral.Descricao</span>
+                                    </th>
+                                    <th class="sorting_disabled_opcao text-center sorting_disabled">
+                                        <span class="text-info">@Localization.Resources.Gerais.Geral.Opcoes</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr role="row" class="odd">
+                                    <td class="text-align-left">
+                                        <span title="Descricao" data-bind="html: Descricao"></span>
+                                    </td>
+                                    <td class="sorting_disabled_opcao text-center">
+                                        <a href="#" data-bind="text: 'Download', click: (data, $e) => $parent.DownloadAnexo($e, Codigo) "></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!-- /ko -->
+                        </table>
+
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+    <div class="col-12 col-xl-12" style="margin-bottom: 10px">
+        <div id="divAcessos">
+            <button type="button" id="btnTermosDeUso" class="btn btn-default" style="display: none; overflow: hidden;"><span class="glyphicon glyphicon-file"></span>&nbsp;Termo de Uso </button>
+        </div>
+    </div>
+    <div class="col-12 col-xl-6" id="knockoutAlertaLicenca" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">@Localization.Resources.Gerais.Home.AlertasDeLicencas</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover" id="gridAlertasTMS"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row d-none" id="knockoutAvisoFornecedor">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        @*<i class="fa fa-fw fa-info-circle"></i>
+            <strong>Aviso:</strong>
+            <br />*@
+        <span data-bind="html: TextoAviso"></span>
+        <div class="anexos-container">
+            <!-- ko if: Anexos().length -->
+            <div class="anexos-title">@Localization.Resources.Gerais.Home.Anexos</div>
+            <!-- ko foreach: Anexos -->
+            <div class="anexo-item">
+                - <a href="#" data-bind="text: Descricao, click: (data, $e) => $parent.DownloadAnexo($e, Codigo) "></a>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+<div id="divAcessoRapido" style="display: none; margin-left:-13px; margin-top:0px">
+    <div id="divGraficoFaturamento">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div id="wid-id-Grafico" style="display:none;">
+                        <header>
+                            <span class="widget-icon"> <i class="glyphicon glyphicon-stats txt-color-darken"></i> </span>
+                            <h2>@Localization.Resources.Gerais.Home.Faturamento</h2>
+                        </header>
+                        <div class="row">
+                            <div class="col-12 col-lg-12 col-md-12 row">
+                                <div class="col-6 col-lg-6 col-md-6">
+                                    <div class="col-12 col-lg-12 col-md-12">
+                                        <div id="divGraficoBarras">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-12 col-md-12" id="knockoutMicrocharts">
+                                        <div id="divMicrocharts" class="row">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-lg-6 col-md-6">
+                                    <div class="col-12 col-lg-12 col-md-12" id="knockoutContaPagarReceber">
+                                        <header role="heading">
+                                            <h2>@Localization.Resources.Gerais.Home.ContasReceberPagar</h2>
+                                        </header>
+                                        <fieldset style="margin-bottom: 13px;">
+                                            <section class="insideNoPaddignTable">
+                                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: GridContaPagarReceber.idGrid}" cellspacing="0"></table>
+                                            </section>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-12 col-lg-12 col-md-12">
+                                        <div>
+                                            <header role="heading">
+                                                <h2>@Localization.Resources.Gerais.Home.AlertasDeLicencas</h2>
+                                            </header>
+                                            <div class="widget-body no-padding">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover" id="gridAlertas"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="divCertificado" style="display: none;">
+        <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+            <div class="col-sm-12 col-md-12 col-lg-12 jarviswidget jarviswidget-color-greenDark jarviswidget-sortable" id="wid-id-2" data-widget-editbutton="false" role="widget" style="display:none;">
+                <header role="heading">
+                    <span class="widget-icon">
+                        <i class="fa fa-table"></i>
+                    </span>
+                    <h2 id="tituloCertificado">Empresas com certificado à vencer (em até 10 dias)</h2>
+                </header>
+                <div role="contentinfo">
+                    <div class="widget-body no-padding">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="gridCertificado"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
+
+<div id="ModalTermoUso">
+    <div class="modal fade" id="divModalTermoUso" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="float: left;">Termo de uso do sistema</h4>
+                    <h4 class="modal-title" style="float: right;">Aceite o termo ao final da página</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="smart-form" id="knockoutTermoUsoSistemaHome">
+                        <fieldset>
+                            <div id="contentTermoUso">
+                            </div>
+                            <div class="margin-top-25 margin-left-25">
+                                <section class="col col-xs-6 col-lg-4 margin-bottom-5" data-bind="visible: (DataVigenciaContrato.val() != '')">
+                                    <label><b data-bind="text : DataVigenciaContrato.text"></b> <span data-bind="text : DataVigenciaContrato.val"></span></label>
+                                </section>
+                            </div>
+                        </fieldset>
+                        <footer class="d-flex justify-content-end mt-3">
+                            <input type="button" data-bind="click: Fechar.eventClick, visible: Fechar.visible, attr: { value: Fechar.text, id : Fechar.id}" class="btn btn-labeled btn-default me-2 botaoDentroSmartAdmimForm" />
+                            <input type="button" data-bind="click: BaixarContrato.eventClick, visible: BaixarContrato.visible, attr: { value: BaixarContrato.text, id : BaixarContrato.id}" class="btn btn-labeled btn-success me-2 botaoDentroSmartAdmimForm" />
+                            <input type="button" data-bind="click: AceitarTermo.eventClick, visible: AceitarTermo.visible, attr: { value: AceitarTermo.text, id : AceitarTermo.id}" class="btn btn-labeled btn-success botaoDentroSmartAdmimForm" />
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalConfigCertificadoDigital">
+    <div class="modal fade" id="divModalConfigCertificadoDigital" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> &times;</button>
+                    <h4 class="modal-title">@Localization.Resources.Gerais.Home.ConfiguracaoCertificadoDigitalA1</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div>
+                            <div id="knockoutConfiguracaoCertificadoHome" class="smart-form">
+                                <fieldset>
+                                    <div class="row">
+                                        <section class="col col-lg-8 col-md-8 col-sm-12 col-xs-12" data-bind="visible: Arquivo.visible">
+                                            <label class="label" data-bind="text: Arquivo.text"></label>
+                                            <label for="file" class="input input-file">
+                                                <div class="button">
+                                                    <input type="file" name="file" accept=".pfx" data-bind="value: Arquivo.val, attr: { id: Arquivo.id }">Selecionar
+                                                </div>
+                                                <input type="text" placeholder="Selecione o certificado digital" data-bind="value: Arquivo.val" readonly>
+                                            </label>
+                                        </section>
+                                        <section data-bind="visible : SenhaCertificado.visible" class="col col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <label class="label"><b data-bind="text: SenhaCertificado.text"></b></label>
+                                            <label data-bind="attr: { class: SenhaCertificado.requiredClass}">
+                                                <input type="password" data-bind="value: SenhaCertificado.val, attr: { maxlength: SenhaCertificado.maxlength, id : SenhaCertificado.id}" />
+                                            </label>
+                                        </section>
+                                        <section data-bind="visible : DataInicialCertificado.visible" class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                            <label class="label"><b data-bind="text: DataInicialCertificado.text"></b></label>
+                                            <label data-bind="attr: { class: DataInicialCertificado.requiredClass}">
+                                                <input type="text" data-bind="value: DataInicialCertificado.val, enable: DataInicialCertificado.enable, attr: { maxlength: DataInicialCertificado.maxlength, id : DataInicialCertificado.id}" />
+                                            </label>
+                                        </section>
+                                        <section data-bind="visible : DataFinalCertificado.visible" class="col col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                            <label class="label"><b data-bind="text: DataFinalCertificado.text"></b></label>
+                                            <label data-bind="attr: { class: DataFinalCertificado.requiredClass}">
+                                                <input type="text" data-bind="value: DataFinalCertificado.val, enable: DataFinalCertificado.enable, attr: { maxlength: DataFinalCertificado.maxlength, id : DataFinalCertificado.id}" />
+                                            </label>
+                                        </section>
+                                        <section data-bind="visible : SerieCertificado.visible" class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <label class="label"><b data-bind="text: SerieCertificado.text"></b></label>
+                                            <label data-bind="attr: { class: SerieCertificado.requiredClass}">
+                                                <input type="text" data-bind="value: SerieCertificado.val, enable: SerieCertificado.enable, attr: { maxlength: SerieCertificado.maxlength, id : SerieCertificado.id}" />
+                                            </label>
+                                        </section>
+                                    </div>
+                                </fieldset>
+                                <footer>
+                                    <input type="button" data-bind="click: Enviar.eventClick, visible: Enviar.visible, attr: { value: Enviar.text, id : Enviar.id}" class="btn btn-labeled btn-success botaoDentroSmartAdmimForm" />
+                                    <input type="button" data-bind="click: Baixar.eventClick, visible: Baixar.visible, attr: { value: Baixar.text, id : Baixar.id}" class="btn btn-labeled btn-success botaoDentroSmartAdmimForm" />
+                                    &nbsp;<input type="button" data-bind="click: Remover.eventClick, visible: Remover.visible, attr: { value: Remover.text, id : Remover.id}" class="btn btn-labeled btn-danger botaoDentroSmartAdmimForm" />
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalAvisoMensagem"></div>
+
+<script src="~/scripts/canvg"></script>
+<script src="~/scripts/d3js"></script>
+<script src="~/scripts/easy-pie-chart"></script>
+<script src="~/scripts/lancamentoConta"></script>
+<script src="~/scripts/home"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadLocalizationResources("Gerais.Home").then(LoadHome());
+    });
+
+</script>

@@ -1,0 +1,98 @@
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage
+
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Relatórios</li>
+        <li class="breadcrumb-item">NFe</li>
+        <li class="breadcrumb-item active">NFes Cliente</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            NFes Cliente
+        </h1>
+    </div>
+    <div id="divConteudoRelatorio" class="panel">
+        <div class="panel-container">
+            <div class="panel-hdr">
+                <h3>
+                    <i class="fal fa-file-alt"></i>
+                    Pesquisar NFes Cliente
+                </h3>
+            </div>
+            <div class="panel-content">
+                <form>
+                    <div id="knockoutPesquisaNFes">
+                        <div class="row">
+                            <div class="col-12 col-md-3" data-bind="visible: FiltroDinamico.visible">
+                                <div class="form-group">
+                                    <label class="form-label">Pesquisar nota fiscal por nome, CNPJ, UF e notas fiscais</label>
+                                    <input type="text" class="form-control" data-bind="class: FiltroDinamico.requiredClass, value: FiltroDinamico.val, valueUpdate: 'afterkeydown', attr: { maxlength: FiltroDinamico.maxlength, id : FiltroDinamico.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Canhoto.visible">
+                                <div class="form-group">
+                                    <label class="form-label" >N° Canhoto</label>
+                                    <input type="text" class="form-control" data-bind="class: Canhoto.requiredClass, value: Canhoto.val, valueUpdate: 'afterkeydown', attr: { maxlength: Canhoto.maxlength, id : Canhoto.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: StatusEntrega.visible">
+                                <div class="form-group">
+                                    <label class="form-label" >Status Entrega</label>
+                                    <select class="form-control" data-bind="class: StatusEntrega.requiredClass, options: StatusEntrega.options, optionsText: 'text', optionsValue: 'value', value: StatusEntrega.val, attr: { maxlength: StatusEntrega.maxlength, id : StatusEntrega.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: DataInicialEmissao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataInicialEmissao.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataInicialEmissao.requiredClass, value: DataInicialEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicialEmissao.maxlength, id : DataInicialEmissao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: DataFinalEmissao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataFinalEmissao.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataFinalEmissao.requiredClass, value: DataFinalEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinalEmissao.maxlength, id : DataFinalEmissao.id}" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+                <div class="row ">
+                    <div id="knockoutCRUDConfiguracaoRelatorio" class="col-12 col-md-6 mb-3 mb-md-0">
+                        <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="enable: ExibirConfiguracoes.enable, click: ExibirConfiguracoes.eventClick, attr: { id: ExibirConfiguracoes.id}" type="button">
+                            <i data-bind="css: ExibirConfiguracoes.icon"></i><span data-bind="text: ExibirConfiguracoes.text"></span>
+                        </button>
+                    </div>
+                    <div id="knockoutCRUDFiltrosPesquisaNFes" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                       
+                        <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="click: Preview.eventClick, attr: { id: Preview.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Preview.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div id="divConfigRelatorio"></div>
+
+                <table id="gridPreviewRelatorio" class="table table-bordered table-hover table-condensed " width="100%" cellspacing="0"></table>
+
+                <div id="knockoutCRUDPesquisaNFes" class="d-flex  justify-content-end mt-3">
+                    <button class="btn btn-success " data-bind="click: GerarPlanilhaCliente.eventClick, attr: { id: GerarPlanilhaCliente.id}" type="button">
+                        <i class="fal fa-file-excel"></i><span data-bind="text: GerarPlanilhaCliente.text"></span>
+                    </button>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/relatorios/scripts/nfes"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadNFes();
+    });
+
+</script>

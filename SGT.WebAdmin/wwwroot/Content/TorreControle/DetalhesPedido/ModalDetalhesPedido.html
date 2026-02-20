@@ -1,0 +1,473 @@
+﻿<style>
+    .modal-content {
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .modal-body {
+        margin-bottom: 20px;
+    }
+
+    .modal-header .btn-close {
+        margin-left: auto;
+    }
+
+    .modal-footer-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .nav-tabs {
+        margin-top: 20px;
+    }
+
+    .tab-content {
+        margin-top: 10px;
+    }
+
+    .color-circle {
+        width: 56px;
+        height: 16px;
+        border-radius: 4px;
+        background-color: #0008ff;
+        display: inline-block;
+        margin-left: 4px;
+    }
+
+    .info-box {
+        margin-bottom: 14px;
+    }
+
+    .item-col {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-val {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<div class="modal fade" id="divModalDetalhesPedidos" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-lg-down modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex flex-column gap-2">
+                    <h2 id="TituloModalEntregaColeta" class="fw-bold">Detalhes dos Pedidos</h2>
+                    <h4 class="modal-title modal-entrega-title"></h4>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" onclick="fecharModalDetalhesPedidos()"></button>
+            </div>
+            <div id="knockoutDetalhesPedidos">
+                <!-- ko foreach: DetalhesPedidos -->
+                <div class="accordion-item">
+                    <h3 class="accordion-header" data-bind="attr: { id: 'idAccordionHeader' + Codigo.val() }">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bind="attr: { 'data-bs-target': '#idAccordionCollapse' + Codigo.val(), 'aria-controls': 'idAccordionCollapse' + Codigo.val() }" aria-expanded="false">
+                            <h4 class="fw-bold" data-bind="text: NumeroPedidoEmbarcador.val"></h4>
+                        </button>
+                    </h3>
+                    <div class="accordion-collapse collapse" data-bind="attr: { id: 'idAccordionCollapse' + Codigo.val(), 'aria-labelledby': 'idAccordionHeader' + Codigo.val() }">
+                        <div class="accordion-body">
+                            <div class="info-box">
+                                <div class="row mt-2">
+                                    <div class="text-uppercase fw-bold fs-5">OPERAÇÃO</div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <span class="text-uppercase fw-bold" data-bind="text: FarolStatus.text"></span>
+                                        <div class="color-circle" data-bind="style:{'background-color': FarolStatus.val() }"></div>
+                                    </div>
+                                    <div class="col-6 d-flex align-items-center justify-content-end">
+                                        <div class="dropdown box-search" style="margin-left:0px" id="dropdown">
+                                            <button style="border:none;background:none;" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#" data-bind="click: AdicionarOcorrencia.eventClick, text: AdicionarOcorrencia.text"></a></li>
+                                                <li><a class="dropdown-item" href="#" data-bind="click: Anexos.eventClick, text: Anexos.text"></a></li>
+                                                <li><a class="dropdown-item" href="#" data-bind="click: VisualizarHistoricoObservacaoPedido.eventClick, text: VisualizarHistoricoObservacaoPedido.text"></a></li>
+                                                <li><a class="dropdown-item" href="#" data-bind="click: SetarPedidoCritico.eventClick, text: SetarPedidoCritico.text"></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-2 item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: ProtocoloIntegracao.text"></b></label>
+                                        <span class="info-val" data-bind="text: ProtocoloIntegracao.val"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: Carga.text"></b></label>
+                                        <span class="info-val" data-bind="text: Carga.val"></span>
+                                    </div>
+                                    <div class="col-2 item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: Peso.text"></b></label>
+                                        <span data-bind="text: Peso.val"></span>
+                                    </div>
+                                    <div class="col-2 item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: TipoOperacao.text"></b></label>
+                                        <span class="info-val" data-bind="text: TipoOperacao.val"></span>
+                                    </div>
+                                    <div class="col-2 item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: ModeloVeicular.text"></b></label>
+                                        <span class="info-val" data-bind="text: ModeloVeicular.val"></span>
+                                    </div>
+                                    <div class="col-2 item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: CargaCritica.text"></b></label>
+                                        <span class="info-val" data-bind="text: CargaCritica.val, attr: { style: PedidoCritico.val() ? 'color: #FF4E4E; font-weight: 600' : '' }"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-box">
+                                <div class="text-uppercase fw-bold fs-5">Pedido</div>
+                                <div class="row mt-2">
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: PedidoCritico.text"></b></label>
+                                        <span data-bind="text: PedidoCritico.val() ? 'Sim' : '-', attr: { style: PedidoCritico.val() ? 'color: #FF4E4E; font-weight: 600' : '' } " class="info-val"></span>
+                                    </div>
+
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: Filial.text"></b></label>
+                                        <span class="info-val" data-bind="text: Filial.val() ? Filial.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: EscritorioVenda.text"></b></label>
+                                        <span class="info-val" data-bind="text: EscritorioVenda.val() ? EscritorioVenda.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: CanalVenda.text"></b></label>
+                                        <span data-bind="text: CanalVenda.val() ? CanalVenda.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: NotasFiscais.text"></b></label>
+                                        <span class="info-val" data-bind="text: NotasFiscais.val() ? NotasFiscais.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: TipoMercadoria.text"></b></label>
+                                        <span class="info-val" data-bind="text: TipoMercadoria.val() ? TipoMercadoria.val() : '-'"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: EquipeVendas.text"></b></label>
+                                        <span class="info-val" data-bind="text: EquipeVendas.val() ? EquipeVendas.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: CanalEntrega.text"></b></label>
+                                        <span class="info-val" data-bind="text: CanalEntrega.val() ? CanalEntrega.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: Destinatario.text"></b></label>
+                                        <span data-bind="text: Destinatario.val() ? Destinatario.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: Item.text"></b></label>
+                                        <span class="info-val" data-bind="text: Item.val() ? Item.val() : '-'"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-12 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: EnderecoDestino.text"></b></label>
+                                        <span class="info-val" data-bind="text: EnderecoDestino.val() ? EnderecoDestino.val() : '-'"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-box">
+                                <div class="row mt-2">
+                                    <div class="text-uppercase fw-bold fs-5">Datas</div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: DataFaturamento.text"></b></label>
+                                        <span class="info-val" data-bind="text: DataFaturamento.val() ? DataFaturamento.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: DataEntrega.text"></b></label>
+                                        <span class="info-val" data-bind="text: DataEntrega.val() ? DataEntrega.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: DataPrevisaoEntrega.text"></b></label>
+                                        <span data-bind="text: DataPrevisaoEntrega.val() ? DataPrevisaoEntrega.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: DataPrevisaoEntregaAjustada.text"></b></label>
+                                        <span class="info-val" data-bind="text: DataPrevisaoEntregaAjustada.val() ? DataPrevisaoEntregaAjustada.val() : '-'"></span>
+                                    </div>
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: DataReprogramada.text"></b></label>
+                                        <span class="info-val" data-bind="text: DataReprogramada.val() ? DataReprogramada.val() : '-'"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-box">
+                                <div class="row mt-2" style="display: flex;align-items: center;">
+                                    <div class="col-auto text-uppercase fw-bold fs-5">Observações</div>
+                                    <div class="col-auto p-0">
+                                        <button class="btn p-0" type="button" data-bind="click: VisualizarHistoricoObservacaoPedido.eventClick, attr: { id: VisualizarHistoricoObservacaoPedido.id}">
+                                            <span class="text-lowercase" style="color: #3EA7DB;">Ver mais</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-2 item-col item-col">
+                                        <label class="info-title text-uppercase"><b data-bind="text: Observacao.text"></b></label>
+                                        <span class="info-val" data-bind="text: Observacao.val"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li id="liProdutos" class="nav-item" role="presentation">
+                                            <a data-bind="attr: { href: '#tab-detalhes-pedido-produto-' + Produtos.idGrid }" class="nav-link active" data-bs-toggle="tab" role="tab">
+                                                <span class="hidden-mobile hidden-tablet">Produtos</span>
+                                            </a>
+                                        </li>
+                                        <li id="liOcorrencia" class="nav-item" role="presentation">
+                                            <a data-bind="attr: { href: '#tab-detalhes-pedido-ocorrencia-' + Ocorrencias.idGrid }" class="nav-link" data-bs-toggle="tab" role="tab">
+                                                <span class="hidden-mobile hidden-tablet">Ocorrências</span>
+                                            </a>
+                                        </li>
+                                        <li id="liOcorrenciasComerciais" class="nav-item" role="presentation">
+                                            <a data-bind="attr: { href: '#tab-detalhes-pedido-ocorrencias-comerciais-' + OcorrenciasComerciais.idGrid }" class="nav-link" data-bs-toggle="tab" role="tab">
+                                                <span class="hidden-mobile hidden-tablet">Ocorrências Comerciais</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content border border-top-0 p-3" style="margin-top: 0px;">
+                                        <div class="tab-pane fade show active" data-bind="attr: { id: 'tab-detalhes-pedido-produto-' + Produtos.idGrid }" role="tabpanel">
+                                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Produtos.idGrid }" cellspacing="0"></table>
+                                        </div>
+                                        <div class="tab-pane fade" data-bind="attr: { id: 'tab-detalhes-pedido-ocorrencia-' + Ocorrencias.idGrid }" role="tabpanel">
+                                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Ocorrencias.idGrid }" cellspacing="0"></table>
+                                        </div>
+                                        <div class="tab-pane fade" data-bind="attr: { id: 'tab-detalhes-pedido-ocorrencias-comerciais-' + OcorrenciasComerciais.idGrid }" role="tabpanel">
+                                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: OcorrenciasComerciais.idGrid }" cellspacing="0"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bind="click: ExportarDetalhesPedido.eventClick, enable: ExportarDetalhesPedido.enable, visible: ExportarDetalhesPedido.visible, attr: { value: ExportarDetalhesPedido.text, id : ExportarDetalhesPedido.id}">
+                        <i class="fal fa-file-excel"></i> {Localize::Gerais.Geral.Exportar}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalAnexosPedidoEmbarcador" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" id="myModalLabel">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Cargas.Carga.AnexosDoPedido}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <button data-bind="attr: { id: Adicionar.id}, enable: Adicionar.enable,click: Adicionar.eventClick" class="btn btn-labeled btn-success botaoDentroSmartAdmimForm mb-3" type="button">
+                    &nbsp; <span data-bind="text : Adicionar.text"></span> &nbsp;
+                </button>
+                <table width="100%" class="table table-bordered table-hover margin-top-0" data-bind="attr: { id: Anexos.idGrid }" cellspacing="0"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalAdicionarAnexoPedidoEmbarcador" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" id="myModalLabel">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Cargas.Carga.AdicionarAnexo}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                        </div>
+                    </div>
+                    <div class="form-group col-12 col-md-6" style="margin-top:5px;" data-bind="visible: Arquivo.visible">
+                        <p class="form-label" data-bind="text: Arquivo.text"></p>
+                        <div class="custom-file-btn" data-bind="visible: Arquivo.visible">
+                            <input type="file" class="custom-file-input" data-bind="value: Arquivo.val, attr: {id: Arquivo.id}" readonly>
+                            <label class="custom-file-label" data-bind="attr: {for: Arquivo.id}, text: Arquivo.val() !=``? Arquivo.val(): `Selecione um arquivo para anexar`"></label>
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                    <button data-bind="attr: { id: Adicionar.id}, enable: Adicionar.enable,click: Adicionar.eventClick" class="btn btn-labeled btn-success botaoDentroSmartAdmimForm" type="button">
+                        &nbsp; <span data-bind="text : Adicionar.text"></span> &nbsp;
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class=" modal fade" id="divModalAdicionarOcorrenciaEntrega" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="d-flex flex-column gap-2">
+                    <h2 id="TituloModalEntregaColeta"> Adicionar Ocorrência</h2>
+                    <h4 class="modal-title modal-entrega-title"></h4>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true" onclick="fecharModalAdicionarOcorrenciaEntrega()">
+                </button>
+            </div>
+            <div class="tab-pane fade tab-adicionar-ocorrencia-entrega show" id="knockoutOcorrenciaEntrega">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a href="#tab-adicionar-ocorrencia-entrega-detalhes" class="nav-link active" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Gerais.Geral.Detalhes}</span>
+                        </a>
+                    </li>
+                    <li id="li-controle-entrega-ocorrencia-anexo" class="nav-item">
+                        <a href="#tab-adicionar-ocorrencia-entrega-anexos" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Gerais.Geral.Anexos}</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0 p-3" data-bind="visible: true">
+                    <div id="tab-adicionar-ocorrencia-entrega-detalhes" class="mb-3 tab-pane fade active show">
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: Ocorrencia.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Ocorrencia.text, attr: { for: Ocorrencia.id }"></label>
+                                    <select class="form-control" data-bind="options: Ocorrencia.options, optionsText: 'text', optionsValue: 'value', value: Ocorrencia.val, attr: { id : Ocorrencia.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: DataOcorrencia.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataOcorrencia.text, attr: { for: DataOcorrencia.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataOcorrencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataOcorrencia.maxlength, id : DataOcorrencia.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12" data-bind="visible: ObservacaoOcorrencia.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ObservacaoOcorrencia.text, attr: { for: ObservacaoOcorrencia.id }"></label>
+                                    <textarea class="form-control" rows="4" data-bind="value: ObservacaoOcorrencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: ObservacaoOcorrencia.maxlength, id : ObservacaoOcorrencia.id }"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-adicionar-ocorrencia-entrega-anexos" class="mb-3 tab-pane fade">
+                        <div class="col-12 col-md-1 mb-2">
+                            <div class="custom-file-btn" data-bind="visible: Upload.visible">
+                                <label class="btn btn-primary" data-bind="attr: { for: Upload.idFile }">
+                                    <i class="fal fa-upload"></i> {Localize::Gerais.Geral.Adicionar}
+                                </label>
+                                <input type="file" accept=".jpg,.jpeg,.png" data-bind="event: {change: Upload.eventChange}, attr: { id : Upload.idFile, accept: Upload.accept, multiple: true }">
+                            </div>
+                        </div>
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: AnexosOcorrenciaAdicionar.idGrid}" cellspacing="0"></table>
+                    </div>
+                </div>
+                <div class="col-12 mt-3 mb-3">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary" type="button" data-bind="click: AdicionarOcorrenciaEntrega.eventClick, enable: AdicionarOcorrenciaEntrega.enable, visible: AdicionarOcorrenciaEntrega.visible, attr: { value: AdicionarOcorrenciaEntrega.text, id : AdicionarOcorrenciaEntrega.id}">
+                            <i class="fal fa-plus"></i> {Localize::Gerais.Geral.Adicionar}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="divModalHistoricoObservacaoPedido" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" id="knoutHistoricoObservacaoPedido">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Observações</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body m-0">
+                <div class="row">
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: GridHistorico.idGrid }" cellspacing="0"></table>
+                </div>
+            </div>
+            <footer class="modal-footer p-0">
+                <button class="btn btn-primary" type="button" data-bind="click: AdicionarObservacaoPedido.eventClick, attr: { id: AdicionarObservacaoPedido.id}">
+                    <span data-bind="text: AdicionarObservacaoPedido.text"></span>
+                </button>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalAlterarObservacaoPedido" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content" id="knockoutObservacaoPedido">
+            <div class="modal-header">
+                <h4 class="modal-title">Observação Pedido</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body m-0">
+                <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                        <textarea class="form-control" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', 
+                                  attr: { maxlength: Observacao.maxlength, id : Observacao.id }, enable: Observacao.enable"></textarea>
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer p-0">
+                <div data-bind="visible: Salvar.visible">
+                    <button class="btn btn-success" type="button" data-bind="click: Salvar.eventClick, attr: { id: Salvar.id}">
+                        <span data-bind="text: Salvar.text"></span>
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalAlteracaoDataPrevisaoEntrega" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-md modal-dialog-centered" style="max-width:490px !important">
+        <div class="modal-content" id="knockoutAlteracaoDataPrevisaoEntrega">
+            <div class="modal-header">
+                <h4 class="modal-title">Alterar data previsão planejada</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body smart-form padding-bottom-5">
+                <div class="row">
+                    <div class="col-12 col-md-12" data-bind="visible: DataPrevisaoPlanejada.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataPrevisaoPlanejada.text, attr: { for: DataPrevisaoPlanejada.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataPrevisaoPlanejada.requiredClass, value: DataPrevisaoPlanejada.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoPlanejada.maxlength, id : DataPrevisaoPlanejada.id}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-12" data-bind="visible: DataPrevisaoReprogramada.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataPrevisaoReprogramada.text, attr: { for: DataPrevisaoReprogramada.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataPrevisaoReprogramada.requiredClass, value: DataPrevisaoReprogramada.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoReprogramada.maxlength, id : DataPrevisaoReprogramada.id}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <footer class="text-right">
+                        <input type="button" data-bind="click: Cancelar.eventClick, attr: { value: Cancelar.text, id : Cancelar.id}" class="btn btn-default me-2">
+                        <input type="button" data-bind="click: Confirmar.eventClick, attr: { value: Confirmar.text, id : Confirmar.id}" class="btn btn-success">
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

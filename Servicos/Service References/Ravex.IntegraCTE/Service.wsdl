@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="https://app.ravex.com.br/wsCte_homo/Service.asmx" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="https://app.ravex.com.br/wsCte_homo/Service.asmx" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService Cte</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="https://app.ravex.com.br/wsCte_homo/Service.asmx">
+      <s:element name="ImportarCte">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="login" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="senha" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cte" type="tns:Cte" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Cte">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ChaveAcesso" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentificadorViagem" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataEmissao" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="StatusCte" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ValorCte" nillable="true" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Placa" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Motorista" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CpfMotorista" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Transportadora" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CnpjTransportadora" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="NotasFiscais" type="tns:ArrayOfNotaFiscal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfNotaFiscal">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="NotaFiscal" nillable="true" type="tns:NotaFiscal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NotaFiscal">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Numero" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ChaveAcessoNFe" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Valor" nillable="true" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cliente" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CnpjCliente" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ImportarCteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ImportarCteResult" type="tns:Retorno" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Retorno">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mensagem" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ImportarCteSoapIn">
+    <wsdl:part name="parameters" element="tns:ImportarCte" />
+  </wsdl:message>
+  <wsdl:message name="ImportarCteSoapOut">
+    <wsdl:part name="parameters" element="tns:ImportarCteResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WebServiceCteSoap">
+    <wsdl:operation name="ImportarCte">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Método que recebe um objeto tipado de Cte</wsdl:documentation>
+      <wsdl:input message="tns:ImportarCteSoapIn" />
+      <wsdl:output message="tns:ImportarCteSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WebServiceCteSoap" type="tns:WebServiceCteSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ImportarCte">
+      <soap:operation soapAction="https://app.ravex.com.br/wsCte_homo/Service.asmx/ImportarCte" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WebServiceCteSoap12" type="tns:WebServiceCteSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ImportarCte">
+      <soap12:operation soapAction="https://app.ravex.com.br/wsCte_homo/Service.asmx/ImportarCte" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WebServiceCte">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">WebService Cte</wsdl:documentation>
+    <wsdl:port name="WebServiceCteSoap" binding="tns:WebServiceCteSoap">
+      <soap:address location="https://app.ravex.com.br/wsCte_homo/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WebServiceCteSoap12" binding="tns:WebServiceCteSoap12">
+      <soap12:address location="https://app.ravex.com.br/wsCte_homo/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

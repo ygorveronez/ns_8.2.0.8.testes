@@ -1,0 +1,63 @@
+using System;
+
+namespace Servicos
+{
+    //public class FS
+    //{
+    //    private static FS _cfs = new FS();
+    //    private bool isContainer;
+    //    private static string Dir { get; set; }
+
+    //    public FS()
+    //    {
+    //        this.isContainer = true;
+    //    }
+    //    public FS(string dir)
+    //    {
+    //        this.isContainer = true;
+    //        Dir = dir;
+    //    }
+    //    public static string GetPath(string path)
+    //    {
+    //        if (path.Length > 2 && path[1] == ':' )
+    //        {
+    //            path = $"{Dir}\\{path.Substring(3).TrimStart('\\')}";
+    //        }
+    //        return path;
+    //    }
+    //}
+
+
+    public class FS
+    {
+        private static readonly Lazy<FS> instance = new Lazy<FS>(() => new FS());
+
+        private bool IsContainer { get; set; }
+        private string Dir { get; set; }
+
+        private FS()
+        {
+
+        }
+
+        public static FS Instance => instance.Value;
+
+        public static string GetPath(string path)
+        {
+            bool FlagMustangON = false;
+            
+            if (FlagMustangON && Instance.IsContainer && path.Length > 2 && path[1] == ':')
+                path = $"{Instance.Dir}\\{path.Substring(3).TrimStart('\\')}";
+
+            return path;
+        }
+
+        public static FS Start(string dir, bool isContainer)
+        {
+            Instance.Dir = dir;
+            Instance.IsContainer = isContainer;
+            return Instance;
+        }
+    }
+
+}

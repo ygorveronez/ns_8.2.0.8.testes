@@ -1,0 +1,259 @@
+﻿<div id="divModalDetalhesPedido" class="modal fade" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Cargas.Carga.DetalhesDosPedidos}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col col-xs-12 d-flex gap-2">
+                        <div data-bind="visible: AdicionarPedido.visible">
+                            <button data-bind="attr: { id: AdicionarPedido.id}, enable: AdicionarPedido.enable,click: AdicionarPedido.eventClick" class="btn btn-labeled btn-success botaoDentroSmartAdmimForm pull-right" type="button">
+                                &nbsp; <span data-bind="text : AdicionarPedido.text"></span> &nbsp;
+                            </button>
+                        </div>
+                        <div data-bind="visible: RemoverPedidosSelecao.visible">
+                            <button data-bind="attr: { id: RemoverPedidosSelecao.id}, enable: RemoverPedidosSelecao.enable,click: RemoverPedidosSelecao.eventClick" class="btn btn-labeled btn-warning botaoDentroSmartAdmimForm pull-right" type="button">
+                                &nbsp; <span data-bind="text : RemoverPedidosSelecao.text"></span> &nbsp;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3" id="tabDetalhesCargaPedidos">
+                    <ul class="nav nav-tabs" id="tabDetalhesCargaPedidosLista">
+                        <!-- ko foreach: Pedidos -->
+                        <!-- ko ifnot: OcultarPedido.val -->
+                        <li class="nav-item active">
+                            <a class="nav-link" data-bs-toggle="tab" data-bind="attr: {href: '#detalhePedido_' + Codigo.val()}">
+                                <span class="hidden-mobile hidden-tablet" data-bind="text: (NumeroPedido.val() > 0 ? (NumeroPedido.val() + ' - ') : '') + NumeroPedidoEmbarcador.val()"></span>
+                            </a>
+                        </li>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <li class="nav-item " id="tabAnexos">
+                            <a href="#knockoutPedidoAnexos" class="nav-link" data-bs-toggle="tab"><span class="hidden-mobile hidden-tablet"><i class="fal fa-file-alt"></i>{Localize::Cargas.Carga.Anexos}</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- ko foreach: Pedidos -->
+                        <!-- ko ifnot: OcultarPedido.val -->
+                        <div data-bind="attr: {id: 'detalhePedido_' + Codigo.val()}, css: (Index.val() == 0 ? 'in active' : '')" class="tab-pane">
+                            <div class="row">
+                                <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-6 mt-3">
+                                    <div class="row">
+                                        <div data-bind="visible: DataCriacao.visible" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DataCriacao.text"></span></b><span data-bind="text: DataCriacao.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: NumeroPedidoEmbarcador.text"></span></b><span data-bind="text: NumeroPedidoEmbarcador.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: NumeroPedido.text"></span></b><span data-bind="text: NumeroPedido.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Empresa.text"></span></b><span data-bind="text: Empresa.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Usuario.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Usuario.text"></span></b><span data-bind="text: Usuario.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DataInicialColeta.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DataInicialColeta.text"></span></b><span data-bind="text: DataInicialColeta.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DataPrevisaoSaida.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DataPrevisaoSaida.text"></span></b><span data-bind="text: DataPrevisaoSaida.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DataPrevisaoEntrega.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DataPrevisaoEntrega.text"></span></b><span data-bind="text: DataPrevisaoEntrega.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (LeadTimeFilialEmissora.val() != 0)" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: LeadTimeFilialEmissora.text"></span></b><span data-bind="text: LeadTimeFilialEmissora.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (LeadTime.val() != 0)" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: LeadTime.text"></span></b><span data-bind="text: LeadTime.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (LeadTimeTransportador.val() != 0)" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: LeadTimeTransportador.text"></span></b><span data-bind="text: LeadTimeTransportador.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PrevisaoEntregaFilialEmissora.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PrevisaoEntregaFilialEmissora.text"></span></b><span data-bind="text: PrevisaoEntregaFilialEmissora.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: TipoOperacao.text"></span></b><span data-bind="text: TipoOperacao.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Origem.text"></span></b><span data-bind="text: Origem.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Destino.text"></span></b><span data-bind="text: Destino.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Remetente.text"></span></b><span data-bind="text: Remetente.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Destinatario.text"></span></b><span data-bind="text: Destinatario.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Peso.text"></span></b><span data-bind="text: Peso.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PesoCargaPedido.text"></span></b><span data-bind="text: PesoCargaPedido.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: TotalPallets.text"></span></b><span data-bind="text: TotalPallets.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PalletsCarregados.text"></span></b><span data-bind="text: PalletsCarregados.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Observacao.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Observacao.text"></span></b><span data-bind="text: Observacao.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (ObservacaoInterna.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: ObservacaoInterna.text"></span></b><span data-bind="text: ObservacaoInterna.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Temperatura.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Temperatura.text"></span></b><span data-bind="text: Temperatura.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Vendedor.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Vendedor.text"></span></b><span data-bind="text: Vendedor.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Ordem.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Ordem.text"></span></b><span data-bind="text: Ordem.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PortoChegada.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PortoChegada.text"></span></b><span data-bind="text: PortoChegada.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PortoSaida.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PortoSaida.text"></span></b><span data-bind="text: PortoSaida.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Companhia.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Companhia.text"></span></b><span data-bind="text: Companhia.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (NumeroNavio.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: NumeroNavio.text"></span></b><span data-bind="text: NumeroNavio.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Reserva.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Reserva.text"></span></b><span data-bind="text: Reserva.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Resumo.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Resumo.text"></span></b><span data-bind="text: Resumo.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (TipoEmbarque.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: TipoEmbarque.text"></span></b><span data-bind="text: TipoEmbarque.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DeliveryTerm.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DeliveryTerm.text"></span></b><span data-bind="text: DeliveryTerm.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (IdAutorizacao.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: IdAutorizacao.text"></span></b><span data-bind="text: IdAutorizacao.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DataETA.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DataETA.text"></span></b><span data-bind="text: DataETA.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DataInclusaoBooking.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DataInclusaoBooking.text"></span></b><span data-bind="text: DataInclusaoBooking.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DataInclusaoPCP.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DataInclusaoPCP.text"></span></b><span data-bind="text: DataInclusaoPCP.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (NumeroContainer.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: NumeroContainer.text"></span></b><span data-bind="text: NumeroContainer.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PedidoViagemNavio.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PedidoViagemNavio.text"></span></b><span data-bind="text: PedidoViagemNavio.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (NumeroBooking.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: NumeroBooking.text"></span></b><span data-bind="text: NumeroBooking.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PortoOrigem.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PortoOrigem.text"></span></b><span data-bind="text: PortoOrigem.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PortoDestino.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PortoDestino.text"></span></b><span data-bind="text: PortoDestino.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 margin-bottom-5" data-bind="visible: NumeroReboqueDescricao.visible">
+                                            <label><b data-bind="text : NumeroReboqueDescricao.text"></b> <span data-bind="text : NumeroReboqueDescricao.val"></span></label>
+                                        </div>
+                                        <div class="col col-xs-12 margin-bottom-5" data-bind="visible: TipoCarregamentoPedidoDescricao.visible">
+                                            <label><b data-bind="text : TipoCarregamentoPedidoDescricao.text"></b> <span data-bind="text : TipoCarregamentoPedidoDescricao.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (FuncionarioVendedor.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: FuncionarioVendedor.text"></span></b><span data-bind="text: FuncionarioVendedor.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (QuantidadeVolumes.val() != 0)" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: QuantidadeVolumes.text"></span></b><span data-bind="text: QuantidadeVolumes.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (FormaPagamento.val() != '')" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: FormaPagamento.text"></span></b><span data-bind="text: FormaPagamento.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DiasDePrazoFatura.val() != 0)" class="col col-xs-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DiasDePrazoFatura.text"></span></b><span data-bind="text: DiasDePrazoFatura.val"></span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-6 mt-3">
+                                    <div class="row">
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:5px !important;">
+                                            <button type="button" class="col-auto btn btn-warning fal fa-remove" data-bind=" enable: RemoverPedido.enable, click: RemoverPedido.eventClick, visible: RemoverPedido.visible, attr: { id : RemoverPedido.id}">
+                                                <span data-bind="text: RemoverPedido.text"></span>
+                                            </button>
+                                        </div>
+                                        <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Tomador.text"></span></b><span data-bind="text: Tomador.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Recebedor.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Recebedor.text"></span></b><span data-bind="text: Recebedor.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (Expedidor.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: Expedidor.text"></span></b><span data-bind="text: Expedidor.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (DataAgendamento.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: DataAgendamento.text"></span></b><span data-bind="text: DataAgendamento.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (SenhaAgendamentoCliente.val() != '')" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: SenhaAgendamentoCliente.text"></span></b><span data-bind="text: SenhaAgendamentoCliente.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PossuiAjudanteCarga.val() != '')" class="col col-md-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PossuiAjudanteCarga.text"></span></b><span data-bind="text: PossuiAjudanteCarga.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PossuiCarga.val() != '')" class="col col-md-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PossuiCarga.text"></span></b><span data-bind="text: PossuiCarga.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PossuiDescarga.val() != '')" class="col col-md-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PossuiDescarga.text"></span></b><span data-bind="text: PossuiDescarga.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PossuiAjudanteDescarga.val() != '')" class="col col-md-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PossuiAjudanteDescarga.text"></span></b><span data-bind="text: PossuiAjudanteDescarga.val"></span></label>
+                                        </div>
+                                        <div data-bind="visible: (PalletsCarregadosNestaCarga.val() != '')" class="col col-md-12 margin-bottom-5">
+                                            <label><b><span data-bind="text: PalletsCarregadosNestaCarga.text"></span></b><span data-bind="text: PalletsCarregadosNestaCarga.val"></span></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <div id="knockoutPedidoAnexos" class="tab-pane fade">
+                            <div class="no-margin" data-bind="visible: AdicionarAnexo.visible">
+                                <div class="row">
+                                    <div class="col-12  d-flex justify-content-end mt-3">
+                                        <button data-bind="attr: { id: AdicionarAnexo.id}, enable: AdicionarAnexo.enable,click: AdicionarAnexo.eventClick" class="btn btn-labeled btn-success botaoDentroSmartAdmimForm pull-right" type="button">
+                                            &nbsp; <span data-bind="text : AdicionarAnexo.text"></span> &nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Anexos.idGrid}" cellspacing="0"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="container-detalhe-pedido-modais"></div>

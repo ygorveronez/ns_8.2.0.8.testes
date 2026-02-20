@@ -1,0 +1,156 @@
+﻿<div id="#detalheCarregamento" class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 card-carregamento">
+    <div class="card card-carga" data-bind="attr: { id: InfoCarregamento.id, class: InfoCarregamento.cssClass }" style="height:100%; padding: 10px;">
+        <div class="ribbon-tms ribbon-tms-blue-violet" data-bind="visible: CarregamentoRedespacho.val">
+            <span data-bind="text: CarregamentoRedespacho.text"></span>
+        </div>
+        <div style="width: 150px; height: 150px;" data-bind="{ visible: GerandoCargaBackground.val, class: GerandoCargaBackground.cssClass }">
+            <span style="font-size: 15px; line-height: 30px; width: 186px; top: 41px; right: -38px;" data-bind="text: GerandoCargaBackground.text"></span>
+        </div>
+        <p style="margin-bottom: 0px!important;">
+            <strong>Carregamento: </strong>
+            <strong data-bind="text: NumeroCarregamento.val"></strong>&nbsp;
+            <span data-bind="text: '(' + Filial.val() + ')', visible: Filial.val() != ''"></span><span data-bind="text: ' - ' + QuantidadeEntregras.val() + (QuantidadeEntregras.val() > 1 ? ' entregas' : ' entrega'), visible: QuantidadeEntregras.val() > 0"></span>
+
+            <span title="Identificação da rota" style="float:right; margin-top: -2px;"><img style="height: 20px;" data-bind="attr:{src: imgColorMarker( Codigo.val(), null, true )}" /></span>
+            <span style="float: right; margin-top: -2px; margin-left: 3px;" data-bind="visible: RestricoesClientes.val().length > 0">
+                <img style="height: 20px;" src="../../../img/montagem-carga-mapa/markers/restricao-cliente-24.png" data-bind="attr:{title: RestricoesClientes.val().length + ' restriç' + (RestricoesClientes.val().length > 1 ? 'ões entrega' : 'ão entrega')}, event: { click: RestricoesClientes.eventClick }" />
+            </span>
+            <span style="float: right; margin-top: -2px; margin-left: 3px;" data-bind="visible: Balancas.val().length > 0"><img style="height: 20px;" src="../../../img/montagem-carga-mapa/markers/balanca.png" data-bind="attr:{title: Balancas.val().length + ' balança' + (Balancas.val().length > 1 ? 's' : '')}" /></span>
+            <!--<span style="float: right; margin-top: -2px; margin-left: 3px;" data-bind="visible: PracasPedagio.val().length > 0"><img style="height: 20px;" src="../../../img/montagem-carga-mapa/markers/pedagio-24.png" data-bind="attr:{title: PracasPedagio.val().length + ' praça' + (PracasPedagio.val().length > 1 ? 's' : '') + ' pedágio'}" /></span>-->
+            <span style="float: right; margin-top: -2px; margin-left: 3px;" data-bind="visible: PracasPedagio.val().length > 0"><img style="height: 20px;" src="../../../img/montagem-carga-mapa/markers/pedagio-24.png" data-bind="attr:{title: formatTitlePracasPedagio(PracasPedagio.val())}" /></span>
+            <label class="checkbox float-end" style="float: right; margin-left: 3px;">
+                <input type="checkbox" data-bind="checked: ExibirCarregamentoMapa.val, event: { change: ExibirCarregamentoMapa.eventChange }" />
+                <i style="height: 15px;"></i> <b data-bind="text: ExibirCarregamentoMapa.text"></b>
+            </label>
+            <!--visible: permiteAdicionarNotaManualmente()-->
+        </p>
+        <hr style="margin: 0px!important;" />
+        <div data-bind="event: { click: InfoCarregamento.eventClick, contextmenu: InfoCarregamento.eventRightClick }" style="margin-top: 10px;">
+            <div class="row" style="margin-left: -4px;">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="attr: { id: TipoOperacao.id }" style="margin-bottom: 4px;">
+                    <strong data-bind="text: Rotas.text"></strong>&nbsp;<span data-bind="text: Rotas.val, attr: { title: Rotas.val }"></span>
+                </div>
+            </div>
+            <p style="margin-bottom: 4px !important; margin-left: 8px; "><strong data-bind="text: Transportador.text"></strong>&nbsp;<span data-bind="text: Transportador.val, attr: { title: Transportador.val }"></span></p>
+            <p style="margin-bottom: 4px !important; margin-left: 8px; "><strong data-bind="text: ModeloVeicularCarga.text"></strong>&nbsp;<span data-bind="text: ModeloVeicularCarga.val, attr: { title: ModeloVeicularCarga.val }"></span></p>
+
+            <div class="row" style="margin-left: -4px;" data-bind="visible: ValorFreteMontagem.visible">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" data-bind="attr: { id: TipoOperacao.id }" style="margin-bottom: 4px;">
+                    <strong data-bind="text: TipoOperacao.text"></strong>&nbsp;<span data-bind="text: TipoOperacao.val, attr: { title: TipoOperacao.val }"></span>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" data-bind="attr: { id: ValorFreteMontagem.id }" style="margin-bottom: 4px;">
+                    <strong data-bind="text: ValorFreteMontagem.text"></strong>&nbsp;<span data-bind="text: ValorFreteMontagem.val, attr: { title: ValorFreteMontagem.val }"></span>
+                </div>
+            </div>
+
+            <div class="row" style="margin-left: -4px;">
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" data-bind="attr: { id: Distancia.id }" style="margin-bottom: 4px;">
+                    <strong data-bind="text: Distancia.text"></strong>&nbsp;<span data-bind="text: Distancia.val, attr: { title: Distancia.val }"></span>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" data-bind="attr: { id: TempoDeViagemEmMinutos.id }" style="margin-bottom: 4px;">
+                    <strong data-bind="text: TempoDeViagemEmMinutos.text"></strong>&nbsp;<span data-bind="text: TempoDeViagemEmMinutos.val, attr: { title: TempoDeViagemEmMinutos.val }"></span>
+                </div>
+                <div style=" margin-bottom: 4px;" class="col-xs-4 col-sm-4 col-md-4 col-lg-4" data-bind="attr: { id: QtdeEntregasPedidos.id }">
+                    <strong data-bind="text: QtdeEntregasPedidos.text" title="Quantidade de entregas / Pedidos / Itens"></strong>&nbsp;<span data-bind="text: QtdeEntregasPedidos.val, attr: { title: QtdeEntregasPedidos.val }"></span>
+                    <a href="#" data-bind="visible: AlertaLimiteEntregas.val" data-toggle="tab">
+                        <span rel="popover-hover" data-placement="top" data-bind="style: { background: AlertaLimiteEntregas.cor }, attr: { class: AlertaLimiteEntregas.cssClass, 'data-content' : AlertaLimiteEntregas.tooltip, 'data-original-title' : AlertaLimiteEntregas.tooltipTitle }" style="padding: 4px 12px;" class="alerta-limite-entregas blink" data-content="Indica se o carregamento excedeu o limite de entregas."></span>
+                    </a>
+                </div>
+            </div>
+
+            <span style="margin-left: 8px" data-bind="visible: OcupacaoPeso.visible, text: OcupacaoPeso.val, attr: { title: OcupacaoPeso.val }"></span>
+            <span style="margin-left: 8px" data-bind="visible: OcupacaoPallets.visible, text: OcupacaoPallets.val, attr: { title: OcupacaoPallets.val }"></span>
+            <span style="margin-left: 8px" data-bind="visible: OcupacaoCubagem.visible, text: OcupacaoCubagem.val, attr: { title: OcupacaoCubagem.val }"></span>
+
+            <div class="panel-content" style="padding-top:0px;">
+
+                <ul style="font-size: 11px;" class="nav nav-tabs" id="myTab" data-bind="foreach: TiposDePedidos.val()">
+                    <li class="nav-item" data-bind="attr: { class: $data.active }">
+                        <a style="padding: 4px 10px 5px; cursor: pointer;" data-toggle="tab" href="#" aria-expanded="true" data-bind="event: { click: oupacaoTipoPedidos.bind($data.value) }">
+                            <i data-bind="attr: { class: $data.icon }"></i>
+                            <span style="font-weight: 700;" class="hidden-mobile hidden-tablet" data-bind="text: $data.tipo"></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <fieldset class="tab-content no-padding">
+                    <div id="knoutPercentual" class="tab-pane in active">
+                        <fieldset>
+                            <!--Aqui vamos apresentar o peso, pallet e cubabem em formato de progress.-->
+                            <div class="row" style="margin: 0px!important;">
+                                <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 tooltipocupacao" data-bind="attr: { id: Peso.id }" style="padding: 0px !important; border-bottom: none;">
+                                    <span class="tooltipocupacaotext" data-bind="text: formatPercentOcupacao( OcupacaoPeso.val(), 'Peso' )"></span>
+                                    <div class="progress progress-lg" style="margin: 8px 0px 0px 8px;">
+                                        <div style="padding: 8px;" class="progress-bar bg-color" role="progressbar" data-bind="attr: { id: ProgressPeso.id }, style: { width: formatPercentOcupacaoProgress( OcupacaoPeso.val() ) }">
+                                            <span class="labelProgress" style="font-size: 11px; text-shadow: none; font-weight: 700" data-bind="text: Peso.val"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 4px;">
+                                    <strong data-bind="text: Peso.text"></strong> (<span data-bind="text: Peso.val, attr: { title: Peso.val }"></span> / <span data-bind="text: CapacidadePeso.val, attr: { title: CapacidadePeso.val }"></span>)
+                                </div>
+                                <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 tooltipocupacao" data-bind="visible: Pallets.visible, attr: { id: Pallets.id }" style="padding: 0px 0px 0px 5px !important; border-bottom: none; margin-bottom: 4px;" rel="tooltip" data-html="true" data-toggle="tooltip">
+                                    <span class="tooltipocupacaotext" data-bind="text: formatPercentOcupacao( OcupacaoPallets.val(), 'Pallets' )"></span>
+                                    <div class="progress progress-lg" style="margin: 8px 0px 0px 8px;">
+                                        <div style="padding: 8px;" class="progress-bar bg-color" role="progressbar" data-bind="attr: { id: ProgressPallets.id }, style: { width: formatPercentOcupacaoProgress( OcupacaoPallets.val() ) }">
+                                            <span class="labelProgress" style="font-size: 11px; text-shadow: none; font-weight: 700" data-bind="text: Pallets.val"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 4px;" data-bind="visible: Pallets.visible">
+                                    <strong data-bind="text: Pallets.text"></strong> (<span data-bind="text: Pallets.val, attr: { title: Pallets.val }"></span> / <span data-bind="text: CapacidadePallets.val, attr: { title: CapacidadePallets.val }"></span>)
+                                </div>
+                                <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 tooltipocupacao" data-bind="visible: Cubagem.visible, attr: { id: Cubagem.id }" style="padding: 0px 0px 0px 5px!important; border-bottom: none;" rel="tooltip" data-html="true" data-toggle="tooltip">
+                                    <span class="tooltipocupacaotext" data-bind="text: formatPercentOcupacao( OcupacaoCubagem.val(), 'Cubagem' )"></span>
+                                    <div class="progress progress-lg" style="margin: 8px 0px 0px 8px;">
+                                        <div style="padding: 8px;" class="progress-bar bg-color" role="progressbar" data-bind="attr: { id: ProgressCubagem.id }, style: { width: formatPercentOcupacaoProgress( OcupacaoCubagem.val() ) }">
+                                            <span class="labelProgress" style="font-size: 11px; text-shadow: none; font-weight: 700" data-bind="text: Cubagem.val"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="visible: Cubagem.visible">
+                                    <strong data-bind="text: Cubagem.text"></strong> (<span data-bind="text: Cubagem.val, attr: { title: Cubagem.val }"></span> / <span data-bind="text: CapacidadeCubagem.val, attr: { title: CapacidadeCubagem.val }"></span>)
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="row" style="margin: 8px 0px 0px -3px!important;">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <!--text-right-->
+                    <strong data-bind="text: DataProgramada.text"></strong>&nbsp;<span data-bind="text: DataProgramada.val, attr: { title: DataProgramada.val }"></span>
+                    <a href="#" data-bind="visible: PossuiProdutoPalletFechado.val" data-toggle="tab">
+                        <span rel="popover-hover" data-placement="top" data-bind="style: { background: PossuiProdutoPalletFechado.cor }, attr: { class: PossuiProdutoPalletFechado.cssClass, 'data-content' : PossuiProdutoPalletFechado.tooltip, 'data-original-title' : PossuiProdutoPalletFechado.tooltipTitle }" style="padding: 4px 12px;" class="alerta-produto-pallet-fechado blink" data-content="Indica se o carregamento possui produto com Pallet Fechado."></span>
+                    </a>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
+                    <strong data-bind="visible: ValorFreteSimulado.visible, text: ValorFreteSimulado.text"></strong>&nbsp;<span data-bind="visible: ValorFreteSimulado.visible, text: ValorFreteSimulado.val, attr: { title: ValorFreteSimulado.val }"></span>
+                </div>
+            </div>
+
+            <div class="row" style="margin: 5px 0px 0px 0px!important;" data-bind="visible: CategoriasPessoas.visible">
+                <div>
+                    <!-- ko foreach: { data: CategoriasPessoas.val, as: 'categoria' } -->
+                    <span class="btn-colorselector" style="margin: 0px 5px 0px 0px !important; border-radius: 4px;" data-bind="style:{ 'background-color' : categoria.Cor }, attr: { title: categoria.Categoria }"></span>
+                    <!-- /ko -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+
+    .progress {
+        position: relative;
+    }
+
+    .labelProgress {
+        position: absolute;
+        left: 50%;
+        color: #666666;
+    }
+</style>

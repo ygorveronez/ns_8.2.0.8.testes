@@ -1,0 +1,826 @@
+﻿<div id="#fechamentoAcertoViagem">
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <h3>Dados do Acerto</h3>
+            <table class="mb-3 table table-bordered">
+                <tbody>
+                    <tr data-bind="visible: Motorista.visible">
+                        <td>
+                            <b class="me-2">Nome Motorista:</b>
+                        </td>
+                        <td>
+                            <span data-bind="text: Motorista.val, title: Motorista.val, attr: { title: Motorista.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: CPFMotorista.visible">
+                        <td>
+                            <b class="me-2">CPF Motorista:</b>
+                        </td>
+                        <td>
+                            <span data-bind="text: CPFMotorista.val, title: CPFMotorista.val, attr: { title: CPFMotorista.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: Periodo.visible">
+                        <td>
+                            <b class="me-2">Período do Acerto:</b>
+                        </td>
+                        <td>
+                            <span data-bind="text: Periodo.val, title: Periodo.val, attr: { title: Periodo.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: SaldoAtualMotorista.visible">
+                        <td>
+                            <b class="me-2">Saldo Atual:</b>
+                        </td>
+                        <td>
+                            <span data-bind="text: SaldoAtualMotorista.val, title: SaldoAtualMotorista.val, attr: { title: SaldoAtualMotorista.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: PrevisaoDiarias.visible">
+                        <td>
+                            <b class="me-2">Prev. Diárias:</b>
+                        </td>
+                        <td>
+                            <span data-bind="text: PrevisaoDiarias.val, title: PrevisaoDiarias.val, attr: { title: PrevisaoDiarias.val }"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Descontos Para o Motorista</h3>
+            <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Descontos.idGrid}" cellspacing="0"></table>
+            <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-primary" type="button" data-bind="click: AdicionarDesconto.eventClick, enable: AdicionarDesconto.enable, visible: AdicionarDesconto.visible, attr: { id : AdicionarDesconto.id}">
+                    <i class="fal fa-plus"></i> <span data-bind="text:AdicionarDesconto.text"></span>
+                </button>
+            </div>
+            <h3>Receitas X Despesas Viagens</h3>
+            <ul id="myTabResultado" class="nav nav-tabs">
+                <li id="liTabResultadoViagem" class="nav-item">
+                    <a href="#tabResultadoViagem" id="tabResultadoViagemTab" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-codepen"></i> <span class="hidden-mobile hidden-tablet">Viagem</span>
+                    </a>
+                </li>
+                <li id="liTabResultadoMotorista" class="nav-item">
+                    <a href="#tabResultadoMotorista" id="tabResultadoMotoristaTab" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-bar-chart"></i> <span class="hidden-mobile hidden-tablet">Motorista</span>
+                    </a>
+                </li>
+                <li id="liTabSaldoViagem" class="nav-item">
+                    <a href="#tabSaldoViagem" id="tabSaldoViagemTab" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-edit"></i> <span class="hidden-mobile hidden-tablet">Saldo da Viagem</span>
+                    </a>
+                </li>
+                <li id="liTabDevolucaoMotorista" class="nav-item">
+                    <a href="#tabDevolucaoMotorista" id="tabDevolucaoMotoristaTab" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-edit"></i> <span class="hidden-mobile hidden-tablet">Devol. do Mot.</span>
+                    </a>
+                </li>
+                <li id="liTabVariacaoCambial" class="nav-item">
+                    <a href="#tabVariacaoCambial" id="tabVariacaoCambialTab" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-money"></i> <span class="hidden-mobile hidden-tablet">Variação</span>
+                    </a>
+                </li>
+            </ul>
+            <div id="myTabContentResultado" class="tab-content">
+                <div class="tab-pane fade" id="tabResultadoViagem">
+                    <table class="table table-bordered">
+                        <thead class="text-center">
+                            <tr>
+                                <th colspan="2"><b>DESPESAS</b></th>
+                                <th colspan="2"><b>RECEITAS</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>Combustível:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: DespesaCombustivel.val, title: DespesaCombustivel.val, attr: { title: DespesaCombustivel.val }"></span>
+                                </td>
+                                <th><label><b>Frete:</b></label></th>
+                                <th class="text-align-right"><span>R$ </span><span data-bind="text: ReceitaFrete.val, title: ReceitaFrete.val, attr: { title: ReceitaFrete.val }"></span></th>
+                            </tr>
+                            <tr>
+                                <td><b>ARLA:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: DespesaArla.val, title: DespesaArla.val, attr: { title: DespesaArla.val }"></span>
+                                </td>
+                                <td><b>Pedágio Recebido:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: PedagioRecebido.val, title: PedagioRecebido.val, attr: { title: PedagioRecebido.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Pedágio Pago:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: PedagioPago.val, title: PedagioPago.val, attr: { title: PedagioPago.val }"></span>
+                                </td>
+                                <td><b>Outros:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: OutrosRecebimentos.val, title: OutrosRecebimentos.val, attr: { title: OutrosRecebimentos.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Despesas Motorista:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: DespesaMotorista.val, title: DespesaMotorista.val, attr: { title: DespesaMotorista.val }"></span>
+                                </td>
+                                <td><b>Bonificação Cliente:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: BonificacaoCliente.val, title: BonificacaoCliente.val, attr: { title: BonificacaoCliente.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Salário/Encargos</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: ComissaoMotorista.val, title: ComissaoMotorista.val, attr: { title: ComissaoMotorista.val }"></span>
+                                </td>
+                                <td><b>Ocorrências:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: Ocorrencias.val, title: Ocorrencias.val, attr: { title: Ocorrencias.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Bonificações:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: ValorTotalBonificacao.val, title: ValorTotalBonificacao.val, attr: { title: ValorTotalBonificacao.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Total:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: TotalDespesa.val, title: TotalDespesa.val, attr: { title: TotalDespesa.val }"></span>
+                                </td>
+                                <td><b>Total:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: TotalReceita.val, title: TotalReceita.val, attr: { title: TotalReceita.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td><b>Saldo:</b></td>
+                                <td>
+                                    <span>R$ </span><b><span data-bind="text: TotalSaldo.text"></span></b><b><span data-bind="text: TotalSaldo.val, title: TotalSaldo.val, attr: { title: TotalSaldo.val }"></span></b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="tabResultadoMotorista">
+                    <table class="table table-bordered">
+                        <thead class="text-center">
+                            <tr>
+                                <th colspan="2"><b>DESPESAS MOTORISTA</b></th>
+                                <th colspan="2"><b>RECEITAS MOTORISTA</b></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <b>Abastecimento: </b> <a id="hrfDetalheAbastecimento" href="javascript:void(0);" title="Detalhe" onclick="DetalheMoedaEstrangeiraClick(1)"><i class="fal fa-question-circle"></i></a>
+                                </td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: AbastecimentoMotorista.val, title: AbastecimentoMotorista.val, attr: { title: AbastecimentoMotorista.val }"></span>
+                                </td>
+                                <td>
+                                    <b>Adiantamento: </b> <a id="hrfDetalheAdiantamento" href="javascript:void(0);" title="Detalhe" onclick="DetalheMoedaEstrangeiraClick(5)"><i class="fal fa-question-circle"></i></a>
+                                </td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: AdiantamentoMotorista.val, title: AdiantamentoMotorista.val, attr: { title: AdiantamentoMotorista.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Pedágio: </b> <a id="hrfDetalhePedagio" href="javascript:void(0);" title="Detalhe" onclick="DetalheMoedaEstrangeiraClick(2)"><i class="fal fa-question-circle"></i></a> 
+                                </td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: PedagioMotorista.val, title: PedagioMotorista.val, attr: { title: PedagioMotorista.val }"></span>
+                                </td>
+                                <td>
+                                    <b>Descontos: </b> <a id="hrfDetalheDesconto" href="javascript:void(0);" title="Detalhe" onclick="DetalheMoedaEstrangeiraClick(6)"><i class="fal fa-question-circle"></i></a>
+                                </td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: DescontosMotorista.val, title: DescontosMotorista.val, attr: { title: DescontosMotorista.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Outras Despesas: </b> <a id="hrfDetalheOutraDespesa" href="javascript:void(0);" title="Detalhe" onclick="DetalheMoedaEstrangeiraClick(3)"><i class="fal fa-question-circle"></i></a>
+                                </td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: OutraDespesaMotorista.val, title: OutraDespesaMotorista.val, attr: { title: OutraDespesaMotorista.val }"></span>
+                                </td>
+                                <td data-bind="visible: ComissaoReceitaMotorista.visible">
+                                    <b>Comissão:</b>
+                                </td>
+                                <td data-bind="visible: ComissaoReceitaMotorista.visible">
+                                    <span>R$ </span><span data-bind="text: ComissaoReceitaMotorista.val, title: ComissaoReceitaMotorista.val, attr: { title: ComissaoReceitaMotorista.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Bonificação: </b> <a id="hrfDetalheBonificacao" href="javascript:void(0);" title="Detalhe" onclick="DetalheMoedaEstrangeiraClick(4)"><i class="fal fa-question-circle"></i></a>
+                                </td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: BonificacoesMotorista.val, title: BonificacoesMotorista.val, attr: { title: BonificacoesMotorista.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Diárias</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: DiariaMotorista.val, title: DiariaMotorista.val, attr: { title: DiariaMotorista.val }"></span>
+                                </td>
+                            </tr>
+                            <tr data-bind="visible: DevolucoesMotorista.visible">
+                                <td>
+                                    <b>Devoluções:</b>
+                                </td>
+                                <td>
+                                    <span data-bind="visible: DevolucoesMotorista.visible">R$ </span><span data-bind="text: DevolucoesMotorista.val, title: DevolucoesMotorista.val, attr: { title: DevolucoesMotorista.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-bind="visible: VariacaoCambial.visible">
+                                    <b>Variações (-):</b> <a id="hrfVariacaoCambial" href="javascript:void(0);" title="Cálcular" onclick="CalcularVariacaoCambial()"><i class="fal fa-recycle"></i></a>
+                                </td>
+                                <td data-bind="visible: VariacaoCambial.visible">
+                                    <span>R$ </span><span data-bind="text: VariacaoCambial.val, title: VariacaoCambial.val, attr: { title: VariacaoCambial.val }"></span>
+                                </td>
+                                <td data-bind="visible: VariacaoCambialReceita.visible">
+                                    <b>Variações (+):</b> <a id="hrfVariacaoCambialReceital" href="javascript:void(0);" title="Cálcular" onclick="CalcularVariacaoCambial()"><i class="fal fa-recycle"></i></a>
+                                </td>
+                                <td data-bind="visible: VariacaoCambialReceita.visible">
+                                    <span>R$ </span><span data-bind="text: VariacaoCambialReceita.val, title: VariacaoCambialReceita.val, attr: { title: VariacaoCambialReceita.val }"></span>
+                                </td>
+                            </tr>
+                            <tr data-bind="visible: RetornoAdiantamento.visible">
+                                <td>
+                                    <b>Ret. Adiantamento (-):</b>
+                                </td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: RetornoAdiantamento.val, title: RetornoAdiantamento.val, attr: { title: RetornoAdiantamento.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Total:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: TotalDespesaMotorista.val, title: TotalDespesaMotorista.val, attr: { title: TotalDespesaMotorista.val }"></span>
+                                </td>
+                                <td><b>Total:</b></td>
+                                <td>
+                                    <span>R$ </span><span data-bind="text: TotalReceitaMotorista.val, title: TotalReceitaMotorista.val, attr: { title: TotalReceitaMotorista.val }"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Saldo da ficha:</b>
+                                </td>
+                                <td>
+                                    <span data-bind="visible: SaldoFichaMotorista.visible">R$ </span><span data-bind="text: SaldoFichaMotorista.val, title: SaldoFichaMotorista.val, attr: { title: SaldoFichaMotorista.val }"></span>
+                                </td>
+                                <td>
+                                    <b>Saldo: </b> <a id="hrfDetalheSaldo" href="javascript:void(0);" title="Detalhe" onclick="DetalheSaldoAcertoViagemClick(0)"><i class="fal fa-question-circle"></i></a>
+                                </td>
+                                <td>
+                                    <span>R$ </span><b><span data-bind="text: SaldoMotorista.text"></span></b><b><span data-bind="text: SaldoMotorista.val, title: SaldoMotorista.val, attr: { title: SaldoMotorista.val }"></span></b>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div data-bind="id: VisualizarAdiantamentos.idFade, fadeVisible: VisualizarAdiantamentos.visibleFade">
+                        <button class="btn btn-primary my-3" type="button" data-bind="attr: { id: Adiantamentos.idBtnSearch}, enable: Adiantamentos.enable">
+                            <i class="fal fa-plus"></i> <span data-bind="text: Adiantamentos.text"></span>
+                        </button>
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: GridAdiantamentos.idGrid}" cellspacing="0"></table>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-success" type="button" data-bind="click: VisualizarAdiantamentos.eventClick, enable: VisualizarAdiantamentos.enable, attr: { id: VisualizarAdiantamentos.id}, visible: VisualizarAdiantamentos.visible">
+                            <i data-bind="attr: { class: VisualizarAdiantamentos.icon}" class="fal fa-eye"></i> <span data-bind="text: VisualizarAdiantamentos.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabSaldoViagem">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <h3>Alimentação</h3>
+                            <div class="row">
+                                <div class="col-12" data-bind="visible: ValorTotalAlimentacaoRepassado.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorTotalAlimentacaoRepassado.text, attr: { for: ValorTotalAlimentacaoRepassado.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: ValorTotalAlimentacaoRepassado.requiredClass, value: ValorTotalAlimentacaoRepassado.val, enable: ValorTotalAlimentacaoRepassado.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorTotalAlimentacaoRepassado.maxlength, id : ValorTotalAlimentacaoRepassado.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: ValorAlimentacaoRepassado.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorAlimentacaoRepassado.text, attr: { for: ValorAlimentacaoRepassado.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: ValorAlimentacaoRepassado.requiredClass, value: ValorAlimentacaoRepassado.val, enable: ValorAlimentacaoRepassado.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorAlimentacaoRepassado.maxlength, id : ValorAlimentacaoRepassado.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: ValorAlimentacaoComprovado.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorAlimentacaoComprovado.text, attr: { for: ValorAlimentacaoComprovado.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: ValorAlimentacaoComprovado.requiredClass, value: ValorAlimentacaoComprovado.val, enable: ValorAlimentacaoComprovado.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorAlimentacaoComprovado.maxlength, id : ValorAlimentacaoComprovado.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: ValorAlimentacaoSaldo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorAlimentacaoSaldo.text, attr: { for: ValorAlimentacaoSaldo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: ValorAlimentacaoSaldo.requiredClass, value: ValorAlimentacaoSaldo.val, enable: ValorAlimentacaoSaldo.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorAlimentacaoSaldo.maxlength, id : ValorAlimentacaoSaldo.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: SaldoPrevistoAlimentacaoMotorista.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: SaldoPrevistoAlimentacaoMotorista.text, attr: { for: SaldoPrevistoAlimentacaoMotorista.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: SaldoPrevistoAlimentacaoMotorista.requiredClass, value: SaldoPrevistoAlimentacaoMotorista.val, enable: SaldoPrevistoAlimentacaoMotorista.enable, valueUpdate: 'afterkeydown', attr: { maxlength: SaldoPrevistoAlimentacaoMotorista.maxlength, id : SaldoPrevistoAlimentacaoMotorista.id}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <h3>Outras Despesas</h3>
+                            <div class="row">
+                                <div class="col-12" data-bind="visible: ValorTotalAdiantamentoRepassado.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorTotalAdiantamentoRepassado.text, attr: { for: ValorTotalAdiantamentoRepassado.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: ValorTotalAdiantamentoRepassado.requiredClass, value: ValorTotalAdiantamentoRepassado.val, enable: ValorTotalAdiantamentoRepassado.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorTotalAdiantamentoRepassado.maxlength, id : ValorTotalAdiantamentoRepassado.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: ValorAdiantamentoRepassado.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorAdiantamentoRepassado.text, attr: { for: ValorAdiantamentoRepassado.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: ValorAdiantamentoRepassado.requiredClass, value: ValorAdiantamentoRepassado.val, enable: ValorAdiantamentoRepassado.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorAdiantamentoRepassado.maxlength, id : ValorAdiantamentoRepassado.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: ValorAdiantamentoComprovado.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorAdiantamentoComprovado.text, attr: { for: ValorAdiantamentoComprovado.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: ValorAdiantamentoComprovado.requiredClass, value: ValorAdiantamentoComprovado.val, enable: ValorAdiantamentoComprovado.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorAdiantamentoComprovado.maxlength, id : ValorAdiantamentoComprovado.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: ValorAdiantamentoSaldo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ValorAdiantamentoSaldo.text, attr: { for: ValorAdiantamentoSaldo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: ValorAdiantamentoSaldo.requiredClass, value: ValorAdiantamentoSaldo.val, enable: ValorAdiantamentoSaldo.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorAdiantamentoSaldo.maxlength, id : ValorAdiantamentoSaldo.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: SaldoPrevistoOutrasDepesasMotorista.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: SaldoPrevistoOutrasDepesasMotorista.text, attr: { for: SaldoPrevistoOutrasDepesasMotorista.id }"></label>
+                                        <input type="text" class="form-control" data-bind="css: SaldoPrevistoOutrasDepesasMotorista.requiredClass, value: SaldoPrevistoOutrasDepesasMotorista.val, enable: SaldoPrevistoOutrasDepesasMotorista.enable, valueUpdate: 'afterkeydown', attr: { maxlength: SaldoPrevistoOutrasDepesasMotorista.maxlength, id : SaldoPrevistoOutrasDepesasMotorista.id}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabDevolucaoMotorista">
+                    <h3>Devoluções feitas pelo Motorista</h3>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: DevolucoesMoedaEstrangeira.idGrid}" cellspacing="0"></table>
+                    <form class="mt-3">
+                        <div class="row">
+                            <div class="col-12 col-md-3" data-bind="visible: MoedaCotacaoBancoCentral.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: MoedaCotacaoBancoCentral.text, attr: { for: MoedaCotacaoBancoCentral.id }"></label>
+                                    <select class="form-control" data-bind="options: MoedaCotacaoBancoCentral.options, enable: MoedaCotacaoBancoCentral.enable, optionsText: 'text', optionsValue: 'value', value: MoedaCotacaoBancoCentral.val, attr: { id : MoedaCotacaoBancoCentral.id}, event: {blur : CalcularMoedaEstrangeiraDevolucao}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: Justificativa.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Justificativa.text, attr: { for: Justificativa.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Justificativa.requiredClass, value: Justificativa.val, enable: Justificativa.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Justificativa.maxlength, id : Justificativa.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: Justificativa.idBtnSearch}, enable: Justificativa.enable">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5" data-bind="visible: DataBaseCRT.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataBaseCRT.text, attr: { for: DataBaseCRT.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: DataBaseCRT.requiredClass, value: DataBaseCRT.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataBaseCRT.maxlength, id : DataBaseCRT.id}, event: {blur : CalcularMoedaEstrangeiraDevolucao}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ValorOriginal.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ValorOriginal.text, attr: { for: ValorOriginal.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: ValorOriginal.requiredClass, value: ValorOriginal.val, valueUpdate: 'afterkeydown', attr: { maxlength: ValorOriginal.maxlength, id : ValorOriginal.id}, event: {blur : ConverterValorOriginalDevolucao}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ValorMoedaCotacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ValorMoedaCotacao.text, attr: { for: ValorMoedaCotacao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: ValorMoedaCotacao.requiredClass, value: ValorMoedaCotacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: ValorMoedaCotacao.maxlength, id : ValorMoedaCotacao.id}, event: {blur : ConverterValorOriginalDevolucao}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ValorDevolucao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ValorDevolucao.text, attr: { for: ValorDevolucao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: ValorDevolucao.requiredClass, value: ValorDevolucao.val, enable: ValorDevolucao.enable, valueUpdate: 'afterkeydown', event: {blur:ConverterValorDespesa}, attr: { maxlength: ValorDevolucao.maxlength, id : ValorDevolucao.id}, event: {blur : ConverterValorDevolucao}" />
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-success" type="button" data-bind="click: AdicionarDevolucao.eventClick, enable: AdicionarDevolucao.enable, visible: AdicionarDevolucao.visible, attr: { id : AdicionarDevolucao.id}">
+                                        <i class="fal fa-plus"></i> <span data-bind="text:AdicionarDevolucao.text"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="tabVariacaoCambial">
+                    <h3>Lançamentos de variações cambiais</h3>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: VariacoesCambial.idGrid}" cellspacing="0"></table>
+                    <form class="mt-3">
+                        <div class="row">
+                            <div class="col-12 col-md-3" data-bind="visible: MoedaCotacaoBancoCentralVariacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: MoedaCotacaoBancoCentralVariacao.text, attr: { for: MoedaCotacaoBancoCentralVariacao.id }"></label>
+                                    <select class="form-control" data-bind="options: MoedaCotacaoBancoCentralVariacao.options, enable: MoedaCotacaoBancoCentralVariacao.enable, optionsText: 'text', optionsValue: 'value', value: MoedaCotacaoBancoCentralVariacao.val, attr: { id : MoedaCotacaoBancoCentralVariacao.id}, event: {blur : CalcularMoedaEstrangeiraVariacao}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: JustificativaVariacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: JustificativaVariacao.text, attr: { for: JustificativaVariacao.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: JustificativaVariacao.requiredClass, value: JustificativaVariacao.val, enable: JustificativaVariacao.enable, valueUpdate: 'afterkeydown', attr: { maxlength: JustificativaVariacao.maxlength, id : JustificativaVariacao.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: JustificativaVariacao.idBtnSearch}, enable: JustificativaVariacao.enable">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5" data-bind="visible: DataBaseCRTVariacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataBaseCRTVariacao.text, attr: { for: DataBaseCRTVariacao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: DataBaseCRTVariacao.requiredClass, value: DataBaseCRTVariacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataBaseCRTVariacao.maxlength, id : DataBaseCRTVariacao.id}, event: {blur : CalcularMoedaEstrangeiraVariacao}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ValorOriginalVariacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ValorOriginalVariacao.text, attr: { for: ValorOriginalVariacao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: ValorOriginalVariacao.requiredClass, value: ValorOriginalVariacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: ValorOriginalVariacao.maxlength, id : ValorOriginalVariacao.id}, event: {blur : ConverterValorOriginalVariacao}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ValorMoedaCotacaoVariacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ValorMoedaCotacaoVariacao.text, attr: { for: ValorMoedaCotacaoVariacao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: ValorMoedaCotacaoVariacao.requiredClass, value: ValorMoedaCotacaoVariacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: ValorMoedaCotacaoVariacao.maxlength, id : ValorMoedaCotacaoVariacao.id}, event: {blur : ConverterValorOriginalVariacao}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ValorVariacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ValorVariacao.text, attr: { for: ValorVariacao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: ValorVariacao.requiredClass, value: ValorVariacao.val, enable: ValorVariacao.enable, valueUpdate: 'afterkeydown', event: {blur:ConverterValorDespesa}, attr: { maxlength: ValorVariacao.maxlength, id : ValorVariacao.id}, event: {blur : ConverterValorVariacao}" />
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary" type="button" data-bind="click: AdicionarVariacao.eventClick, enable: AdicionarVariacao.enable, visible: AdicionarVariacao.visible, attr: { id : AdicionarVariacao.id}">
+                                        <i class="fal fa-plus"></i> <span data-bind="text:AdicionarVariacao.text"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-3" style="visibility: hidden">
+                <!--<button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Fechamento.eventClick, visible: Fechamento.visible, text: Fechamento.text, attr: { id : Fechamento.id}"></button>-->
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <h3>Veículos / Infrações</h3>
+            <ul class="nav nav-tabs" id="myTabVeiculo">
+                <li id="liTabVeiculos" class="nav-item">
+                    <a href="#tabVeiculos" class="nav-link active" data-bs-toggle="tab">
+                        <i class="fal fa-car"></i> <span class="hidden-mobile hidden-tablet">Veículos</span>
+                    </a>
+                </li>
+                <li id="liTabInfracao" class="nav-item">
+                    <a href="#tabInfracao" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-money-bill"></i> <span class="hidden-mobile hidden-tablet">Infrações</span>
+                    </a>
+                </li>
+                <li id="liTabCheque" class="nav-item">
+                    <a href="#tabCheque" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-money-bill"></i> <span class="hidden-mobile hidden-tablet">Cheques</span>
+                    </a>
+                </li>
+                <li id="liTabFolga" class="nav-item">
+                    <a href="#tabFolga" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-edit"></i> <span class="hidden-mobile hidden-tablet">Folgas</span>
+                    </a>
+                </li>
+                <li id="liTabFormaRecebimento" class="nav-item">
+                    <a href="#tabFormaRecebimento" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-money-bill"></i> <span class="hidden-mobile hidden-tablet">Receb. Mot.</span>
+                    </a>
+                </li>
+                <li id="liTabTacografo" class="nav-item">
+                    <a href="#tabTacografo" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-dashboard"></i> <span class="hidden-mobile hidden-tablet">Tacógrafos</span>
+                    </a>
+                </li>
+                <li id="liTabAcertoMotorista" class="nav-item">
+                    <a href="#tabAcertoMotorista" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-money"></i> <span class="hidden-mobile hidden-tablet">Acert. Motorista</span>
+                    </a>
+                </li>
+            </ul>
+            <div id="myTabContentResultado" class="tab-content bordered border-top-0 p-3">
+                <div class="tab-pane fade active show" id="tabVeiculos">
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: VeiculosFechamento.idGrid}" cellspacing="0"></table>
+                    <div class="d-flex justify-content-end my-3">
+                        <button class="btn btn-danger" type="button" data-bind="visible: RemoverVeiculo.visible, enable: RemoverVeiculo.enable, attr: { id : RemoverVeiculo.idBtnSearch}">
+                            <i class="fal fa-remove"></i> <span data-bind="text:RemoverVeiculo.text"></span>
+                        </button>
+                        <button class="btn btn-primary ms-2" type="button" data-bind="visible: VeiculosFechamento.visible, enable: VeiculosFechamento.enable, attr: { id : VeiculosFechamento.idBtnSearch}">
+                            <i class="fal fa-plus"></i> <span data-bind="text:VeiculosFechamento.text"></span>
+                        </button>
+                    </div>
+                    <div class="form-group" data-bind="visible: Cheque.visible">
+                        <label class="form-label" data-bind="text: Cheque.text, attr: { for: Cheque.id }"></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="css: Cheque.requiredClass, value: Cheque.val, enable: Cheque.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Cheque.maxlength, id : Cheque.id}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Cheque.idBtnSearch}, enable: Cheque.enable">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-bind="visible: SegmentoVeiculo.visible">
+                        <label class="form-label" data-bind="text: SegmentoVeiculo.text, attr: { for: SegmentoVeiculo.id }"></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="css: SegmentoVeiculo.requiredClass, value: SegmentoVeiculo.val, enable: SegmentoVeiculo.enable, valueUpdate: 'afterkeydown', attr: { maxlength: SegmentoVeiculo.maxlength, id : SegmentoVeiculo.id}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" data-bind="attr: { id: SegmentoVeiculo.idBtnSearch}, enable: SegmentoVeiculo.enable">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabInfracao">
+                    <h3>Adicione as infrações assinadas pelo motorista.</h3>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: AcertoViagemInfracao.idGrid}" cellspacing="0"></table>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-primary" type="button" data-bind="visible: AcertoViagemInfracao.visible, enable: AcertoViagemInfracao.enable, attr: { id : AcertoViagemInfracao.idBtnSearch}">
+                            <i class="fal fa-plus"></i> <span data-bind="text:AcertoViagemInfracao.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabCheque">
+                    <h3>Adicione os cheques repassados ao motorista.</h3>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: GridCheques.id}" cellspacing="0"></table>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-primary" type="button" data-bind="attr: { id: Cheques.idBtnSearch}, enable: Cheques.enable">
+                            <i class="fal fa-plus"></i> <span data-bind="text: Cheques.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabFolga">
+                    <h3>Lançamento de folga ao motorista.</h3>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: GridFolgas.id}" cellspacing="0"></table>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-default" type="button" data-bind="click: Folgas.eventClick, enable: Folgas.enable, visible: Folgas.visible, attr: { id : Folgas.id}">
+                            <i class="fal fa-plus"></i> <span data-bind="text:Folgas.text"></span>
+                        </button>
+                        <button class="btn btn-success ms-2" type="button" data-bind="click: AprovarFolgas.eventClick, enable: AprovarFolgas.enable, visible: AprovarFolgas.visible, attr: { id : AprovarFolgas.id}">
+                            <i class="fal fa-check"></i> <span data-bind="text:AprovarFolgas.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabFormaRecebimento">
+                    <h3>Lançamento de forma do recebimento ao motorista.</h3>
+                    <div class="row" data-bind="visible : FormaRecebimentoMotoristaAcerto.visible">
+                        <div class="col-12 col-md-4" data-bind="visible: FormaRecebimentoMotoristaAcerto.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: FormaRecebimentoMotoristaAcerto.text, attr: { for: FormaRecebimentoMotoristaAcerto.id }"></label>
+                                <select class="form-control" data-bind="options: FormaRecebimentoMotoristaAcerto.options, enable: FormaRecebimentoMotoristaAcerto.enable, optionsText: 'text', optionsValue: 'value', value: FormaRecebimentoMotoristaAcerto.val, attr: { id : FormaRecebimentoMotoristaAcerto.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: DataVencimentoMotoristaAcerto.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataVencimentoMotoristaAcerto.text, for: DataVencimentoMotoristaAcerto.id"></label>
+                                <input type="text" class="form-control" data-bind="css: DataVencimentoMotoristaAcerto.requiredClass, value: DataVencimentoMotoristaAcerto.val, enable: DataVencimentoMotoristaAcerto.enable, valueUpdate: 'afterkeydown', attr: { maxlength: DataVencimentoMotoristaAcerto.maxlength, id : DataVencimentoMotoristaAcerto.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-5" data-bind="visible: TipoMovimentoMotoristaAcerto.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: TipoMovimentoMotoristaAcerto.text, attr: { for: TipoMovimentoMotoristaAcerto.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: TipoMovimentoMotoristaAcerto.requiredClass, value: TipoMovimentoMotoristaAcerto.val, enable: TipoMovimentoMotoristaAcerto.enable, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoMotoristaAcerto.maxlength, id : TipoMovimentoMotoristaAcerto.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: TipoMovimentoMotoristaAcerto.idBtnSearch}, enable: TipoMovimentoMotoristaAcerto.enable">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" data-bind="visible: ObservacaoMotoristaAcerto.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ObservacaoMotoristaAcerto.text, attr: { for: ObservacaoMotoristaAcerto.id }"></label>
+                                <textarea rows="10" type="text" class="form-control" data-bind="value: ObservacaoMotoristaAcerto.val, enable: ObservacaoMotoristaAcerto.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ObservacaoMotoristaAcerto.maxlength, id : ObservacaoMotoristaAcerto.id}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabAcertoMotorista">
+                    <h3>Acerto ao Motorista.</h3>
+                    <div class="form-group" data-bind="visible: Titulo.visible">
+                        <label class="form-label" data-bind="text: Titulo.text, attr: { for: Titulo.id }"></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="css: Titulo.requiredClass, value: Titulo.val, enable: Titulo.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Titulo.maxlength, id : Titulo.id}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Titulo.idBtnSearch}, enable: Titulo.enable">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-bind="visible: Banco.visible">
+                        <label class="form-label" data-bind="text: Banco.text, attr: { for: Banco.id }"></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="css: Banco.requiredClass, value: Banco.val, enable: Titulo.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Banco.maxlength, id : Banco.id}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" data-bind="attr: { id: Banco.idBtnSearch}, enable: Titulo.enable">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" data-bind="visible: ObservacaoAcertoMotorista.visible">
+                        <label class="form-label" data-bind="text: ObservacaoAcertoMotorista.text, attr: { for: ObservacaoAcertoMotorista.id }"></label>
+                        <textarea rows="10" type="text" class="form-control" data-bind="value: ObservacaoAcertoMotorista.val, enable: ObservacaoAcertoMotorista.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ObservacaoAcertoMotorista.maxlength, id : ObservacaoAcertoMotorista.id}"></textarea>
+                    </div>
+                </div>                                               
+                <div class="tab-pane fade" id="tabTacografo">
+                    <h3>Tacógrafo(s) retornado(s)</h3>
+                    <div class="row mb-1">
+                        <div class="col-12 col-md-4">
+                            <div class="form-group" data-bind="visible: ControleTacografo.visible">
+                                <label class="form-label" data-bind="text: ControleTacografo.text, attr: { for: ControleTacografo.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: ControleTacografo.requiredClass, value: ControleTacografo.val, enable: ControleTacografo.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ControleTacografo.maxlength, id : ControleTacografo.id}"/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="attr: { id: ControleTacografo.idBtnSearch}, enable: ControleTacografo.enable">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" style="margin-top: 39px">
+                            <div class="form-group" data-bind="visible: HouveExcesso.visible">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" data-bind="checked: HouveExcesso.val, enable: HouveExcesso.enable, valueUpdate: 'afterkeydown', attr: { name: HouveExcesso.id, id : HouveExcesso.id}" />
+                                    <label class="custom-control-label" data-bind="text: HouveExcesso.text, attr: { for: HouveExcesso.id }"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-left">
+                                <button class="btn btn-success" type="button" data-bind="click: AdicionarTacografo.eventClick, enable: AdicionarTacografo.enable, visible: AdicionarTacografo.visible, attr: { id : AdicionarTacografo.id}">
+                                    <i class="fal fa-plus"></i> <span data-bind="text:AdicionarTacografo.text"></span>
+                                </button>
+                                <!--<button class="btn btn-success ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: AdicionarTacografo.eventClick, enable: AdicionarTacografo.enable, visible: AdicionarTacografo.visible, text: AdicionarTacografo.text, attr: { id : AdicionarTacografo.id}"></button>-->
+                            </div>
+                        </div>
+                    </div>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: AcertoViagemTacografo.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-3" style="visibility: hidden">
+                <!--<button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Fechamento.eventClick, visible: Fechamento.visible, text: Fechamento.text, attr: { id : Fechamento.id}"></button>-->
+            </div>
+            <h3>Bonificações Para o Motorista</h3>
+            <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Bonificacoes.idGrid}" cellspacing="0"></table>
+            <div class="d-flex justify-content-end mt-2">
+                <button class="btn btn-primary" type="button" data-bind="click: AdicionarBonificacao.eventClick, enable: AdicionarBonificacao.enable, visible: AdicionarBonificacao.visible, attr: { id : AdicionarBonificacao.id}">
+                    <i class="fal fa-plus"></i> <span data-bind="text:AdicionarBonificacao.text"></span>
+                </button>
+            </div>
+            <h3>Resumo Final</h3>
+            <table class="col col-12 table table-bordered" id="divResumoFinal">
+                <tbody>
+                    <tr data-bind="visible: NumeroViagens.visible">
+                        <td>
+                            <b class="me-2">Número de Viagens:</b>
+                        </td>
+                        <td>
+                            <span data-bind="text: NumeroViagens.val, title: NumeroViagens.val, attr: { title: NumeroViagens.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: ValorViagensCompartilhada.visible">
+                        <td>
+                            <b class="me-2">Viagens Compartilhadas (<span data-bind="text: NumeroViagensCompartilhada.val, title: NumeroViagensCompartilhada.val, attr: { title: NumeroViagensCompartilhada.val }"></span>):</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: ValorViagensCompartilhada.val, title: ValorViagensCompartilhada.val, attr: { title: ValorViagensCompartilhada.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: FaturamentoLiquido.visible">
+                        <td>
+                            <b class="me-2">Frete Líquido (Frete - Pedágios (dos CTe's) - ICMS):</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: FaturamentoLiquido.val, title: FaturamentoLiquido.val, attr: { title: FaturamentoLiquido.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: FaturamentoBruto.visible">
+                        <td>
+                            <b class="me-2">Faturamento (Bruto todos os comp. + ICMS):</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: FaturamentoBruto.val, title: FaturamentoBruto.val, attr: { title: FaturamentoBruto.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: TotalImposto.visible">
+                        <td>
+                            <b class="me-2">ICMS:</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: TotalImposto.val, title: TotalImposto.val, attr: { title: TotalImposto.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: AdiantamentoXDespesas.visible">
+                        <td>
+                            <b class="me-2">Despesas Pagas pelo Motorista:</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: AdiantamentoXDespesas.val, title: AdiantamentoXDespesas.val, attr: { title: AdiantamentoXDespesas.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: (PercentualComissao.val() != '0' && PercentualComissao.val() != '' && PercentualComissao.val() != '0,00')">
+                        <td>
+                            <b class="me-2">Comissão <span data-bind="text: PercentualComissao.val, title: PercentualComissao.val, attr: { title: PercentualComissao.val }"></span> %:</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: ComissaoMotorista.val, title: ComissaoMotorista.val, attr: { title: ComissaoMotorista.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: (PercentualPremioComissao.val() != '0' && PercentualPremioComissao.val() != '' && PercentualPremioComissao.val() != '0,00')">
+                        <td>
+                            <b class="me-2">Premiação sobre o faturamento <span data-bind="text: PercentualPremioComissao.val, title: PercentualPremioComissao.val, attr: { title: PercentualPremioComissao.val }"></span> %:</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: PremioComissaoMotorista.val, title: PremioComissaoMotorista.val, attr: { title: PremioComissaoMotorista.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: ValorTotalBonificacao.visible">
+                        <td>
+                            <b class="me-2">Bonificação:</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: ValorTotalBonificacao.val, title: ValorTotalBonificacao.val, attr: { title: ValorTotalBonificacao.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: ValorTotalDesconto.visible">
+                        <td>
+                            <b class="me-2">Descontos:</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: ValorTotalDesconto.val, title: ValorTotalDesconto.val, attr: { title: ValorTotalDesconto.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: TotalPagarMotorista.visible">
+                        <td>
+                            <b class="me-2">Total para pagar ao motorista:</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: TotalPagarMotorista.val, title: TotalPagarMotorista.val, attr: { title: TotalPagarMotorista.val }"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: ValorLiquidoMes.visible">
+                        <td>
+                            <b class="me-2">Liquido Mês:</b>
+                        </td>
+                        <td>
+                            <span>R$ </span><span data-bind="text: ValorLiquidoMes.val, title: ValorLiquidoMes.val, attr: { title: ValorLiquidoMes.val }"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="divConfigRelatorio" style="display:none"></div>
+
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn btn-warning" type="button" data-bind="click: RetornarOutraDespesa.eventClick, visible: RetornarOutraDespesa.visible, enable: RetornarOutraDespesa.enable, text: RetornarOutraDespesa.text, attr: { id : RetornarOutraDespesa.id}"></button>
+        
+        <button class="btn btn-default ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: ObterAssinatura.eventClick, enable: ObterAssinatura.enable, visible: ObterAssinatura.visible, text: ObterAssinatura.text, attr: { id : ObterAssinatura.id}"></button>
+
+        <button class="btn btn-default ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: VisualizarDetalhe.eventClick, enable: VisualizarDetalhe.enable, visible: VisualizarDetalhe.visible, text: VisualizarDetalhe.text, attr: { id : VisualizarDetalhe.id}"></button>
+        <button class="btn btn-primary ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: VisualizarReciboMotorista.eventClick, enable: VisualizarReciboMotorista.enable, visible: VisualizarReciboMotorista.visible, text: VisualizarReciboMotorista.text, attr: { id : VisualizarReciboMotorista.id}"></button>
+        <button class="btn btn-primary ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: VisualizarRecibo.eventClick, enable: VisualizarRecibo.enable, visible: VisualizarRecibo.visible, text: VisualizarRecibo.text, attr: { id : VisualizarRecibo.id}"></button>
+        <button class="btn btn-success ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: FinalizarAcerto.eventClick, enable: FinalizarAcerto.enable, visible: FinalizarAcerto.visible, text: FinalizarAcerto.text, attr: { id : FinalizarAcerto.id}"></button>
+    </div>
+</div>

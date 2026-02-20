@@ -1,0 +1,318 @@
+﻿@using SGT.WebAdmin;
+@using SGT.WebAdmin.Extensions;
+@model SGT.WebAdmin.Models.Login
+
+
+
+<!DOCTYPE html>
+<html lang="pt-br" id="extr-page">
+<head>
+	<meta charset="utf-8">
+	<title>@Html.Raw(ViewBag.Titulo) - Acesso ao Sistema</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="~/css/bootstrap" />
+	<link rel="stylesheet" href="~/css/fontAwesome" />
+	<link rel="stylesheet" href="~/css/plugins" />
+	<link rel="stylesheet" href="~/css/production" />
+	<link rel="stylesheet" href="~/css/skins" />
+	<link rel="stylesheet" href="~/css/smartAdminRTL" />
+	<link rel="stylesheet" href="~/css/yourStyle" />
+	<link rel="stylesheet" href="~/css/retiradaProduto" />
+
+	<link rel="shortcut icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+	<link rel="icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+
+<body class="animated fadeInDown @Html.Raw(ViewBag.ClasseCorBotoes)">
+	<header id="header" style="@Html.Raw(ViewBag.Layout)">
+		<div id="logo-group">
+			<span id="logo"> <img src="@Html.Raw(ViewBag.Logo)" alt="SmartAdmin"> </span>
+		</div>
+	</header>
+	<div id="main" role="main">
+		<div class="row box-bem-vindo" style="display: none">
+			<section class="col col-lg-12">
+				<img src="../img/Logos/saint-gobain-glass.png" alt="Quartzolit" class="login-img" /><br />
+				Registro
+			</section>
+		</div>
+		<div id="content" class="container">
+			<div class="row" id="knockoutRegistro">
+				<div class="col-xs-12">
+					<div class="well no-padding">
+
+						<div id="mensagemConferirEmail" style="display: none; padding: 0px 20px; padding-bottom: 15px">
+							<h2>Registro com sucesso! Verifique seu e-mail para ativar sua conta</h2>
+							<a href="/login">Voltar para a tela de acesso ao sistema</a>
+						</div>
+
+						<form method="post" action="@Url.Action("index", "login")" id="login-form" class="smart-form client-form">
+							<header class="text-center">
+								Registro
+							</header>
+							@Html.HiddenFor(m => m.ReturnUrl)
+							@Html.AntiForgeryToken()
+							@Html.ValidationBootstrap()
+
+							<fieldset>
+								<section data-bind="visible: TipoPessoa.visible" class="col col-xs-12">
+									<label class="label"><b data-bind="text: TipoPessoa.text"></b></label>
+									<label class="select">
+										<select data-bind="options: TipoPessoa.options, enable: TipoPessoa.enable, optionsText: 'text', optionsValue: 'value', value: TipoPessoa.val, attr: { id : TipoPessoa.id}, event : {change : TipoPessoa.eventChange}"></select>
+										<i></i>
+									</label>
+								</section>
+
+								<section class="col col-xs-12" data-bind="visible: CNPJ.visible">
+									<label class="label"><b data-bind="text: CNPJ.text, visible: CNPJ.visible"></b></label>
+									<label data-bind="attr: { class: CNPJ.requiredClass }, visible: CNPJ.visible">
+										<input type="text" data-bind="value: CNPJ.val, enable: CNPJ.enable,  attr: { maxlength: CNPJ.maxlength, id : CNPJ.id}, valueUpdate: 'afterkeydown'" />
+									</label>
+								</section>
+
+								<section data-bind="visible: CPF.visible" class="col col-xs-12">
+									<label class="label"><b data-bind="text: CPF.text"></b></label>
+									<label data-bind="attr: { class: CPF.requiredClass}">
+										<input type="text" data-bind="value: CPF.val, enable: CPF.enable, attr: { maxlength: CPF.maxlength, id : CPF.id}, valueUpdate: 'afterkeydown'" />
+									</label>
+								</section>
+
+								<!-- REGISTRO COMPLETO ABAIXO -->
+
+								<div id="registroCompleto" style="display: none">
+
+									<section data-bind="visible: Nome.visible" class="col col-xs-12">
+										<label class="label"><b data-bind="text: Nome.text"></b></label>
+										<label data-bind="attr: { class: Nome.requiredClass}">
+											<input type="text" data-bind="value: Nome.val, enable: Nome.enable, attr: { maxlength: Nome.maxlength, id : Nome.id} " />
+										</label>
+									</section>
+
+									<section data-bind="visible: Fantasia.visible" class="col col-xs-12">
+										<label class="label"><b data-bind="text: Fantasia.text"></b></label>
+										<label data-bind="attr: { class: Fantasia.requiredClass}">
+											<input type="text" data-bind="value: Fantasia.val, enable: Fantasia.enable, attr: { maxlength: Fantasia.maxlength, id : Fantasia.id} " />
+										</label>
+									</section>
+
+									<section data-bind="visible: IE.visible" class="col col-xs-6">
+										<label class="label"><b data-bind="text: IE.text"></b></label>
+										<label data-bind="attr: { class: IE.requiredClass}, visible: IE.visible">
+											<input class="form-control" placeholder="" type="text" data-bind="value: IE.val, enable: IE.enable, attr: { maxlength: IE.maxlength, id : IE.id} " />
+										</label>
+									</section>
+
+									<section data-bind="visible: RG.visible" class="col col-xs-6">
+										<label class="label"><b data-bind="text: RG.text"></b></label>
+										<label data-bind="attr: { class: RG.requiredClass}, visible: RG.visible">
+											<input class="form-control" placeholder="" type="text" data-bind="value: RG.val, enable: RG.enable, attr: { maxlength: RG.maxlength, id : RG.id} " />
+										</label>
+									</section>
+
+									<section data-bind="visible: Atividade.visible" class="col col-xs-6">
+										<div class="input-group">
+											<label class="label"><b data-bind="text: Atividade.text"></b></label>
+											<label data-bind="attr: { class: Atividade.requiredClass}">
+												<input type="text" data-bind="value: Atividade.val, enable: Atividade.enable, attr: { maxlength: Atividade.maxlength, id : Atividade.id}, valueUpdate: 'afterkeydown'" />
+											</label>
+											<div class="input-group-btn">
+												<button data-bind="attr: { id: Atividade.idBtnSearch}, enable: Atividade.enable" class="btn btn-default btn-primary botaoBusca" type="button">
+													<i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+												</button>
+											</div>
+										</div>
+									</section>
+
+									<section data-bind="visible: TelefonePrincipal.visible" class="col col-xs-6">
+										<label class="label"><b data-bind="text: TelefonePrincipal.text"></b></label>
+										<label data-bind="attr: { class: TelefonePrincipal.requiredClass}">
+											<input type="text" data-bind="value: TelefonePrincipal.val, enable: TelefonePrincipal.enable, attr: { maxlength: TelefonePrincipal.maxlength, id : TelefonePrincipal.id} " />
+										</label>
+									</section>
+
+									<section data-bind="visible : Email.visible" class="col col-xs-6">
+										<label class="label"><b data-bind="text: Email.text"></b></label>
+										<label class="input" data-bind="attr: { class: Email.requiredClass}">
+											<input type="text" class="form-control" data-bind="value: Email.val, enable: Email.enable, attr: { maxlength: Email.maxlength, id : Email.id } " />
+										</label>
+									</section>
+
+									<section class="col col-xs-6" data-bind="visible: CEP.visible">
+										<label class="label"><b data-bind="text: CEP.text, visible: CEP.visible"></b></label>
+										<label data-bind="attr: { class: CEP.requiredClass}, visible: CEP.visible">
+											<input type="text" data-bind="value: CEP.val,  attr: { maxlength: CEP.maxlength, id : CEP.id}, visible: CEP.visible " />
+										</label>
+									</section>
+
+									<section data-bind="visible: Bairro.visible" class="col col-xs-6">
+										<label class="label"><b data-bind="text: Bairro.text"></b></label>
+										<label data-bind="attr: { class: Bairro.requiredClass}">
+											<input type="text" data-bind="value: Bairro.val, enable: Bairro.enable, attr: { maxlength: Bairro.maxlength, id : Bairro.id} " />
+										</label>
+									</section>
+
+									<section data-bind="visible: Endereco.visible" class="col col-xs-12">
+										<label class="label"><b data-bind="text: Endereco.text"></b></label>
+										<label data-bind="attr: { class: Endereco.requiredClass}, visible: Endereco.visible">
+											<input class="form-control" placeholder="" type="text" data-bind="value: Endereco.val, enable: Endereco.enable, attr: { maxlength: Endereco.maxlength, id : Endereco.id} " />
+										</label>
+									</section>
+
+									<div class="clearfix"></div>
+
+									<section class="col col-xs-6">
+										<div class="input-group">
+											<label class="label"><b data-bind="text: Localidade.text"></b></label>
+											<label data-bind="attr: { class: Localidade.requiredClass}">
+												<input type="text" data-bind="value: Localidade.val, enable: Localidade.enable, attr: { maxlength: Localidade.maxlength, id : Localidade.id}, valueUpdate: 'afterkeydown'" />
+											</label>
+											<div class="input-group-btn">
+												<button data-bind="enable: Localidade.enable, attr: { id: Localidade.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+													<i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+												</button>
+											</div>
+										</div>
+									</section>
+
+									<section data-bind="visible: TipoLogradouro.visible" class="col col-xs-6">
+										<label class="label"><b data-bind="text: TipoLogradouro.text"></b></label>
+										<label class="select">
+											<select data-bind="options: TipoLogradouro.options, optionsText: 'text', optionsValue: 'value', value: TipoLogradouro.val, attr: { id : TipoLogradouro.id}"></select>
+											<i></i>
+										</label>
+									</section>
+
+									<section data-bind="visible: Complemento.visible" class="col col-xs-12">
+										<label class="label"><b data-bind="text: Complemento.text"></b></label>
+										<label data-bind="attr: { class: Complemento.requiredClass}">
+											<input type="text" data-bind="value: Complemento.val, attr: { maxlength: Complemento.maxlength, id : Complemento.id} " />
+										</label>
+									</section>
+
+									<section data-bind="visible: Numero.visible" class="col col-xs-6">
+										<label class="label"><b data-bind="text: Numero.text"></b></label>
+										<label data-bind="attr: { class: Numero.requiredClass}">
+											<input type="text" data-bind="value: Numero.val, valueUpdate: 'afterkeydown', attr: { maxlength: Numero.maxlength, id : Numero.id}" />
+										</label>
+									</section>
+
+									<section data-bind="visible: TipoEndereco.visible" class="col col-xs-6">
+										<label class="label"><b data-bind="text: TipoEndereco.text"></b></label>
+										<label class="select">
+											<select data-bind="options: TipoEndereco.options, optionsText: 'text', optionsValue: 'value', value: TipoEndereco.val, attr: { id : TipoEndereco.id}"></select>
+											<i></i>
+										</label>
+									</section>
+								</div>
+
+								<hr />
+
+								<div id="mensagemJaTemConta" style="padding: 16px; display: none">
+									<b>Esse CPF/CNPJ já está cadastrado no sistema. Por favor, crie uma senha.</b>
+								</div>
+
+								<div id="containerSenha" style="display: none">
+									<div data-bind="visible : Senha.visible" class="col col-xs-6 form-group margin-bottom-10">
+										<label class="label"><b data-bind="text: Senha.text"></b></label>
+										<label class="input" data-bind="attr: { class: Email.requiredClass}">
+											<input type="password" class="form-control" data-bind="value: Senha.val, enable: Senha.enable, attr: { maxlength: Senha.maxlength, id : Senha.id } " />
+										</label>
+									</div>
+
+									<div data-bind="visible : ConfirmarSenha.visible" class="col col-xs-6 form-group margin-bottom-10">
+										<label class="label"><b data-bind="text: ConfirmarSenha.text"></b></label>
+										<label class="input" data-bind="attr: { class: Email.requiredClass}">
+											<input type="password" class="form-control" data-bind="value: ConfirmarSenha.val, enable: ConfirmarSenha.enable, attr: { maxlength: ConfirmarSenha.maxlength, id : ConfirmarSenha.id } " />
+										</label>
+									</div>
+								</div>
+
+							</fieldset>
+
+							<footer style="padding: 0px">
+								<div id="mensagemJaTemAcesso" style="padding: 20px; display: none">
+									Esse CPF/CNPJ já está cadastrado no sistema e ativo. Por favor, use a <a href="/login">página de Acesso ao Sistema</a>.
+									<br />
+									<button type="button" class="btn btn-primary" style="float: none; margin: 0; margin-top: 10px;" data-bind="click: TentarNovamente.eventClick">
+										Tentar novamente
+									</button>
+								</div>
+
+								<section class="col col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="visible: Registrar.visible">
+									<button type="button" class="btn btn-primary" data-bind="click: Registrar.eventClick">
+										Registrar
+									</button>
+								</section>
+
+								<section class="col col-xs-12 col-sm-12 col-md-12 col-lg-12" data-bind="visible: Continuar.visible">
+									<button type="button" class="btn btn-primary" data-bind="click: Continuar.eventClick">
+										Continuar
+									</button>
+								</section>
+							</footer>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="~/scripts/jquery"></script>
+	<script src="~/scripts/jqueryUI"></script>
+	<script src="~/scripts/appConfig"></script>
+	<script src="~/scripts/blockUI"></script>
+	<script src="~/scripts/jqueryTouch"></script>
+	<script src="~/scripts/JarvisWidget"></script>
+	<script src="~/scripts/Wizard"></script>
+	<script src="~/scripts/app"></script>
+	<script src="~/scripts/appConfig"></script>
+	<script src="~/scripts/appConfig"></script>
+	<script src="~/scripts/myAppConfig"></script>
+	<script src="~/scripts/bootstrap"></script>
+	<script src="~/scripts/jqueryValidate"></script>
+	<script src="~/scripts/maskedInput"></script>
+	<script src="~/scripts/jqueryMbBrowser"></script>
+	<script src="~/scripts/smartNotification"></script>
+	<script src="~/scripts/fastClick"></script>
+	<script src="~/scripts/maskMoney"></script>
+	<script src="~/scripts/moment"></script>
+	<script src="~/scripts/fullcalendar"></script>
+	<script src="~/scripts/countdown"></script>
+	<script src="~/scripts/promise"></script>
+	<script src="~/scripts/datetimepicker"></script>
+	<script src="~/scripts/globalize"></script>
+	<script src="~/scripts/dataTables"></script>
+	<script src="~/scripts/knockout"></script>
+	<script src="~/scripts/global"></script>
+	<script src="~/scripts/twbsPagination"></script>
+	<script src="~/scripts/enumeradores"></script>
+	<script src="~/scripts/configuracaoTMS"></script>
+	<script src="~/scripts/consultas"></script>
+	<script src="~/scripts/bootstrapSelect"></script>
+	<script src="~/scripts/bootstrapToggle"></script>
+	<script src="~/scripts/bootstrapColorSelector"></script>
+	<script src="~/scripts/registro"></script>
+
+	<!--[if IE 8]>
+
+		<h1>Seu navegador está desatualizado, por favor atualize-o acessando <a href="http://www.microsoft.com.br/download">www.microsoft.com.br/download</a></h1>
+
+	<![endif]-->
+</body>
+</html>
+
+<script type="text/javascript">
+	pageSetUp();
+	var _CONFIGURACAO_TMS = @Html.Raw(ViewBag.ConfiguracaoPadrao);
+
+	$(document).ready(function () {
+		setarConfiguracaoPadrao();
+		LoadRegistro();
+	});
+</script>

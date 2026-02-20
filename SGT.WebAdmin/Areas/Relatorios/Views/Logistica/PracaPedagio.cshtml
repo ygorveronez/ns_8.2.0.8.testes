@@ -1,0 +1,108 @@
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage
+
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Relatório</li>
+        <li class="breadcrumb-item">Logistica</li>
+        <li class="breadcrumb-item active">Praças de Pedágios</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class="subheader-icon fal fa-truck"></i> Praças de Pedágios
+        </h1>
+    </div>
+    <div id="divConteudoRelatorio" class="panel">
+        <div class="panel-container">
+            <div class="panel-hdr">
+                <h3>
+                    <i class="fal fa-file-alt"></i>
+                    Relatórios
+                </h3>
+            </div>
+            <div class="panel-content">
+                <form>
+                    <div id="knockoutPesquisaPracaPedagio">
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible : TipoRelatorio.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoRelatorio.text, attr: { for: TipoRelatorio.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="value: TipoRelatorio.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoRelatorio.maxlength, id : TipoRelatorio.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoRelatorio.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: Rodovia.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Rodovia.text, attr: { for: Rodovia.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Rodovia.val, valueUpdate: 'afterkeydown', attr: { maxlength: Rodovia.maxlength, id : Rodovia.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: DataTarifaInicial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataTarifaInicial.text, attr: { for: DataTarifaInicial.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataTarifaInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataTarifaInicial.maxlength, id : DataTarifaInicial.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: DataTarifaFinal.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataTarifaFinal.text, attr: { for: DataTarifaFinal.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataTarifaFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataTarifaFinal.maxlength, id : DataTarifaFinal.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Status.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Status.text, attr: { for: Status.id }"></label>
+                                    <select class="form-control" data-bind="options: Status.options, optionsText: 'text', optionsValue: 'value', value: Status.val, attr: { id : Status.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="row mb-3">
+                    <div id="knockoutCRUDConfiguracaoRelatorio" class="col-12 col-md-6 mb-3 mb-md-0">
+                        <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="enable: ExibirConfiguracoes.enable, click: ExibirConfiguracoes.eventClick, attr: { id: ExibirConfiguracoes.id}" type="button">
+                            <i data-bind="css: ExibirConfiguracoes.icon"></i><span data-bind="text: ExibirConfiguracoes.text"></span>
+                        </button>
+                    </div>
+                    <div id="knockoutCRUDFiltrosPesquisaPracaPedagio" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                        <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="click: Preview.eventClick, attr: { id: Preview.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Preview.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div id="divConfigRelatorio"></div>
+                <table width="100%" class="table table-bordered table-hover table-condensed table-striped" id="gridPreviewRelatorio" cellspacing="0"></table>
+                <div id="knockoutCRUDPesquisaPracaPedagio" class="d-flex justify-content-center justify-content-md-end mt-3">
+                    <button class="btn btn-success me-3" data-bind="click: GerarRelatorioExcel.eventClick, attr: { id: GerarRelatorioExcel.id}" type="button">
+                        <i class="fal fa-file-excel"></i><span data-bind="text: GerarRelatorioExcel.text"></span>
+                    </button>
+                    <button class="btn btn-success" data-bind="click: GerarRelatorioPDF.eventClick, attr: { id: GerarRelatorioPDF.id}" type="button">
+                        <i class="fal fa-file-pdf"></i><span data-bind="text: GerarRelatorioPDF.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/relatorios/scripts/pracaPedagio"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadPracaPedagio();
+    });
+
+</script>

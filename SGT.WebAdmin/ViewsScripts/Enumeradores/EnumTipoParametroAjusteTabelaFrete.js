@@ -1,0 +1,23 @@
+﻿var EnumTipoParametroAjusteTabelaFrete = {
+    TipoCarga: 1,
+    ModeloReboque: 2,
+    ModeloTracao: 3,
+    ComponenteFrete: 4,
+    NumeroEntrega: 5,
+    Peso: 6,
+    Distancia: 7,
+    Rota: 8,
+    ParametrosOcorrencia: 9,
+    Pallets: 10,
+    Tempo: 11,
+    Ajudante: 12,
+    ValorFreteLiquido: 13,
+    ValorMinimo: 14,
+    ValorMaximo: 15,
+    PesoExcedente: 17,
+    DistanciaExcedente: 18,
+    NumeroEntregaExcedente: 19,
+    PalletExcedente: 21,
+    AjudanteExcedente: 22,
+    TipoEmbalagem: 23
+};

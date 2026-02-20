@@ -1,0 +1,462 @@
+﻿<style>
+    div.mon-icone {
+        clear: both;
+        overflow: auto;
+        padding: 10px 0px 0px 0px;
+        margin-right: 5px;
+    }
+
+        div.mon-icone div.mon-content {
+            margin-left: 50px;
+        }
+
+        div.mon-icone i.fam {
+            margin-right: 10px;
+            display: block;
+            float: left;
+            width: 40px;
+            font-size: 36px;
+            text-align: center;
+        }
+
+    .btn-mon-alterar-status {
+        float: right;
+        margin-top: 0;
+    }
+
+    @media (max-width: 499px) {
+        .btn-mon-alterar-status {
+            float: none;
+        }
+    }
+
+    .btn-mon-alterar-status i.fa {
+        margin-right: 10px;
+    }
+</style>
+
+<div class="modal fade" id="divModalDetalhesMonitoramento" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {Localize::Consultas.MonitoramentoDetalhes.DetalhesMonitoramentoCarga}
+                    <span class="title-carga-codigo-embarcador"></span> <span class="title-carga-placa"></span>
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body pt-0">
+                <header id="knockoutHeaderDetalhesMonitoramento" role="heading">
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-default btn-xs auditoria-botao-exibir float-end" aria-expanded="false" data-bind="click: Auditoria.eventClick, attr:{title:Auditoria.text}"><i class="fal fa-eye"></i></button>
+                            <button class="btn btn-default btn-xs float-end" aria-expanded="false" data-bind="click: Atualizar.eventClick, attr:{title:Atualizar.text}"><i class="fal fa-sync"></i></button>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs">
+                        <li id="liTabDetalhesMonitoramento" class="nav-item active">
+                            <a data-bs-toggle="tab" class="nav-link active" href="#knockoutDetalhesMonitoramento"><span class="hidden-mobile hidden-tablet">{Localize::Consultas.MonitoramentoDetalhes.Info}</span></a>
+                        </li>
+                        <li id="liTabDestinos" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabDestinos"><span class="hidden-mobile hidden-tablet">{Localize::Consultas.MonitoramentoDetalhes.Destinos}</span></a>
+                        </li>
+                        <li id="liTabPedidos" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabPedidos"><span class="hidden-mobile hidden-tablet">{Localize::Consultas.MonitoramentoDetalhes.Pedidos}</span></a>
+                        </li>
+                        <li id="liHistoricoVeiculos" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabHistoricoVeiculos"><span class="hidden-mobile hidden-tablet">{Localize::Consultas.MonitoramentoDetalhes.HistoricoDeVeiculos}</span></a>
+                        </li>
+                        <li id="liHistoricoStatusViagem" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabHistoricoStatusViagem"><span class="hidden-mobile hidden-tablet">{Localize::Consultas.MonitoramentoDetalhes.HistoricoDeStatus}</span></a>
+                        </li>
+                        <li id="liPermanenciaClientes" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabPermanenciaClientes"><span class="hidden-mobile hidden-tablet">{Localize::Consultas.MonitoramentoDetalhes.NosClientes}</span></a>
+                        </li>
+                        <li id="liPermanenciaSubareas" class="nav-item">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabPermanenciaSubareas"><span class="hidden-mobile hidden-tablet">{Localize::Consultas.MonitoramentoDetalhes.NasSubareas}</span></a>
+                        </li>
+                        <li id="liQualidadeMonitoramento" class="nav-item" style="display:none">
+                            <a data-bs-toggle="tab" class="nav-link" href="#tabQualidadeMonitoramento"><span class="hidden-mobile hidden-tablet">{Localize::Consultas.MonitoramentoDetalhes.QualidadeMonitoramento}</span></a>
+                        </li>
+                    </ul>
+                </header>
+                <div role="contentinfo">
+                    <div id="myTabContent" class="tab-content border border-top-0 p-2">
+                        <div id="knockoutDetalhesMonitoramento" class="tab-pane active show">
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <div class="mon-icone mon-monitoramento">
+                                        <strong>{Localize::Consultas.MonitoramentoDetalhes.Monitoramentos}</strong><br />
+                                        <i class="fa fam fa-binoculars"></i>
+                                        <div class="mon-content">
+                                            <span data-bind="text:Codigo.text, attr:{id:Codigo.id}"></span> <span data-bind="text:Codigo.val"></span><br />
+                                            <span data-bind="text:Data.text, attr:{id:Data.id}"></span> <span data-bind="text:Data.val"></span>
+                                            <span data-bind="visible: DataInicio.visible"><br /><span data-bind="text:DataInicio.text, attr:{id:Data.id}"></span> <span data-bind="text:DataInicio.val"></span></span>
+                                            <span data-bind="visible: DataFim.visible"><br /><span data-bind="text:DataFim.text, attr:{id:Data.id}"></span> <span data-bind="text:DataFim.val"></span></span>
+                                        </div>
+                                    </div>
+                                    <div class="mon-icone mon-critico" data-bind="visible: Critico.visible">
+                                        <strong>{Localize::Consultas.MonitoramentoDetalhes.Criticidade}</strong><br />
+                                        <i class="fa fam fa-exclamation-circle"></i>
+                                        <label class="checkbox" style="margin-top: 5px">
+                                            <input type="checkbox" data-bind="checked: Critico.val, enable: Critico.enable, valueUpdate: 'afterkeydown', attr: { name: Critico.id, id : Critico.id}" />
+                                            <i></i> <span data-bind="text: Critico.text"></span>
+                                        </label>
+                                    </div>
+                                    <div class="mon-icone mon-motorista">
+                                        <strong>{Localize::Consultas.MonitoramentoDetalhes.Motoristas}</strong><br />
+                                        <i class="fa fam fa-user-circle"></i>
+                                        <div class="mon-content">
+                                            <span data-bind="text:MotoristaNome.text, attr:{id:MotoristaNome.id}"></span> <span data-bind="text:MotoristaNome.val"></span><br />
+                                            <span data-bind="text:MotoristaCPF.text, attr:{id:MotoristaCPF.id}"></span> <span data-bind="text:MotoristaCPF.val"></span><br />
+                                            <span data-bind="text:MotoristaTelefone.text,attr:{id:MotoristaTelefone.id}"></span> <span data-bind="text:MotoristaTelefone.val"></span>
+                                        </div>
+                                    </div>
+                                    <div class="mon-icone mon-cavalo" data-bind="visible: Cavalo.visible, attr:{id:Cavalo.id}">
+                                        <strong>{Localize::Consultas.MonitoramentoDetalhes.Cavalo}</strong><br />
+                                        <i class="fa fam fa-truck"></i>
+                                        <div class="mon-content">
+                                            <span data-bind="text:CavaloPlaca.text,attr:{id:CavaloPlaca.id}"></span> <span data-bind="text:CavaloPlaca.val"></span><br />
+                                            <span data-bind="text:CavaloTara.text,attr:{id:CavaloTara.id}"></span> <span data-bind="text:CavaloTara.val"></span><br />
+                                            <span data-bind="text:CavaloCapacidade.text,attr:{id:CavaloCapacidade.id}"></span> <span data-bind="text:CavaloCapacidade.val"></span>
+                                        </div>
+                                    </div>
+                                    <div class="mon-icone mon-reboques" data-bind="visible: Reboque.visible, attr:{id:Reboque.id}">
+                                        <strong>{Localize::Consultas.MonitoramentoDetalhes.Reboques}</strong><br />
+                                        <i class="fa fam fa-truck"></i>
+                                        <div class="mon-content">
+                                            <span data-bind="text:ReboquePlaca.text,attr:{id:ReboquePlaca.id}"></span> <span data-bind="text:ReboquePlaca.val"></span><br />
+                                            <span data-bind="text:ReboqueTara.text,attr:{id:ReboqueTara.id}"></span> <span data-bind="text:ReboqueTara.val"></span><br />
+                                            <span data-bind="text:ReboqueCapacidade.text,attr:{id:ReboqueCapacidade.id}"></span> <span data-bind="text:ReboqueCapacidade.val"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <strong>{Localize::Consultas.MonitoramentoDetalhes.PosicaoAtual}</strong>
+                                    <div class="mon-icone mon-posicao" data-bind="attr:{id:PosicaoAtualData.id}">
+                                        <i class="fa fam fa-map-marker"></i>
+                                        <span data-bind="text:PosicaoAtualData.val"></span><br />
+                                        <span data-bind="text:PosicaoAtualLatitude.val"></span>,<span data-bind="text:PosicaoAtualLongitude.val"></span>
+                                    </div>
+                                    <div class="mon-icone mon-velocidade" data-bind="attr:{id:Velocidade.id}">
+                                        <i class="fa fam fa-tachometer"></i>
+                                        <span data-bind="text:Velocidade.text"></span><br />
+                                        <span data-bind="text:Velocidade.val"></span>
+                                    </div>
+                                    <div class="mon-icone mon-temperatura" data-bind="attr:{id:Temperatura.id}">
+                                        <i class="fa fam fa-thermometer-half"></i>
+                                        <span data-bind="text:Temperatura.text"></span><br />
+                                        <span data-bind="text:Temperatura.val"></span>
+                                    </div>
+                                    <div class="mon-icone mon-ignicao" data-bind="attr:{id:Ignicao.id}">
+                                        <i class="fa fam fa-power-off" style="color: rgb(52, 152, 219);"></i>
+                                        <span data-bind="text:Ignicao.text"></span><br />
+                                        <span data-bind="text:Ignicao.val"></span>
+                                    </div>
+                                    <div class="mon-icone mon-tecnologia" data-bind="attr:{id:Tecnologia.id}">
+                                        <i class="fa fam fa-signal"></i>
+                                        <span data-bind="text:Tecnologia.text"></span> <span data-bind="text:Tecnologia.val"></span><span data-bind="visible: NomeConta.visible, attr:{id:NomeConta.id}"> (<span data-bind="text:NomeConta.val"></span>)</span><br />
+                                        <span data-bind="text:NumeroEquipamento.text"></span> <span data-bind="text:NumeroEquipamento.val"></span>
+                                    </div>
+                                    <div class="mon-icone mon-rastreador" data-bind="attr:{id:Rastreador.id}">
+
+                                        <i class="fa fam fa-wifi" style="color: rgb(51, 204, 51);"></i>
+                                        <span data-bind="text:Rastreador.text"></span><br />
+                                        <span data-bind="text:DescricaoRastreador.val"></span>
+                                        <span data-bind="text:Rastreador.val"></span>
+                                    </div>
+                                    <div class="mon-icone mon-observacao" data-bind="visible: Observacao.visible, attr:{id:Observacao.id}">
+                                        <strong>{Localize::Consultas.MonitoramentoDetalhes.Observacao}</strong>
+                                        <div class="mon-icone mon-status" style="overflow:hidden">
+                                            <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                                                <div class="form-group mb-1">
+                                                    <textarea class="form-control" rows="4" data-bind="enable: Observacao.enable, css: Observacao.requiredClass, value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                                                </div>
+                                                <button class="btn btn-success btn-xs botaoBusca btn-mon-alterar-status" data-bind="visible: AlterarObservacao.visible, click: AlterarObservacao.eventClick, attr: { id: AlterarObservacao.id}" type="button">
+                                                    <i class="fal fa-edit"></i><span data-bind="text: AlterarObservacao.text"></span>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="mon-icone mon-status d-flex" style="scrollbar-width: none">
+                                        <div class="col-6">
+                                            <strong>{Localize::Consultas.MonitoramentoDetalhes.Situacao}</strong>
+                                            <i class="fal fam fa-star"></i>
+                                            <div class="mon-content">
+                                                <span data-bind="text:StatusDescricao.val"></span><br />
+                                                <span data-bind="text:StatusViagemDescricao.val"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 mt-3">
+                                            <button class="btn btn-success btn-xs botaoBusca btn-mon-alterar-status" data-bind="visible: AlterarStatus.visible, click: AlterarStatus.eventClick, attr: { id: AlterarStatus.id}" type="button">
+                                                <i class="fal fa-edit"></i><span data-bind="text: AlterarStatus.text"></span>
+                                            </button>
+                                            <button class="btn btn-success btn-xs botaoBusca btn-mon-alterar-status" data-bind="visible: FinalizarMonitoramento.visible, click: FinalizarMonitoramento.eventClick, attr: { id: FinalizarMonitoramento.id}" type="button">
+                                                <i class="fal fa-close"></i><span data-bind="text: FinalizarMonitoramento.text"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mon-icone mon-distancias">
+                                        <strong class="mt-3">{Localize::Consultas.MonitoramentoDetalhes.Distancias}</strong>
+                                        <i class="fal fam fa-road"></i>
+                                        <div class="mon-content">
+                                            <span data-bind="text:DistanciaPrevista.text, attr:{id:DistanciaPrevista.id}"></span> <span data-bind="text:DistanciaPrevista.val"></span><br />
+                                            <span data-bind="text:DistanciaRealizada.text, attr:{id:DistanciaRealizada.id}"></span> <span data-bind="text:DistanciaRealizada.val"></span><br />
+                                            <span data-bind="text:DistanciaAteOrigem.text, attr:{id:DistanciaAteOrigem.id}"></span> <span data-bind="text:DistanciaAteOrigem.val"></span><br />
+                                            <span data-bind="text:DistanciaAteDestino.text, attr:{id:DistanciaAteDestino.id}"></span> <span data-bind="text:DistanciaAteDestino.val"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mon-icone mon-tempos" data-bind="">
+                                        <strong class="mt-3">{Localize::Consultas.MonitoramentoDetalhes.TempoParaChegada}</strong>
+                                        <i class="fal fam fa-hourglass-half"></i>
+                                        <span data-bind="text:TempoEstimado.text,attr:{id:TempoEstimado.id}"></span> <span data-bind="text:TempoEstimado.val"></span><br />
+                                        <span data-bind="text:TempoRealizado.text,attr:{id:TempoRealizado.id}"></span> <span data-bind="text:TempoRealizado.val"></span>
+                                    </div>
+
+                                    <div class="mon-icone mon-distancias">
+                                        <strong>{Localize::Consultas.MonitoramentoDetalhes.DatasPrevistas}</strong>
+                                        <i class="fal fam fa-calendar"></i>
+                                        <div class="mon-content">
+                                            <span data-bind="text:ChegadaAgendada.text, attr:{id:ChegadaAgendada.id}"></span> <span data-bind="text:ChegadaAgendada.val"></span><br />
+                                            <span data-bind="text:ChegadaPrevistaInicial.text, attr:{id:ChegadaPrevistaInicial.id}"></span> <span data-bind="text:ChegadaPrevistaInicial.val"></span><br />
+                                            <span data-bind="text:ChegadaPrevistaAtual.text, attr:{id:ChegadaPrevistaAtual.id}"></span> <span data-bind="text:ChegadaPrevistaAtual.val"></span>
+                                        </div>
+                                    </div>
+                                    <div class="mon-icone mon-distancias">
+                                        <strong class="mt-3">{Localize::Consultas.MonitoramentoDetalhes.DatasRealizadas}</strong>
+                                        <i class="fal fam fa-calendar-check"></i>
+                                        <span data-bind="text:ChegadaReal.text, attr:{id:ChegadaReal.id}"></span> <span data-bind="text:ChegadaReal.val"></span>
+                                    </div>
+                                    <div class="mon-icone mon-distancias" data-bind="visible: NumeroMonitoramentoCarga.visible">
+                                        <i class="fa fam fa-sort-numeric-up-alt"></i>
+                                        <span data-bind="text:NumeroMonitoramentoCarga.text,attr:{id:NumeroMonitoramentoCarga.id}"></span> <span data-bind="text:NumeroMonitoramentoCarga.val"></span><br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabDestinos" class="tab-pane row">
+                            <div class="col-12 col-md-12">
+                                <div id="container-grid-detalhe-monitoramento-destinos">
+                                    <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-detalhe-monitoramento-destinos" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabPedidos" class="tab-pane row">
+                            <div class="col-12 col-md-12">
+                                <div id="container-grid-detalhe-monitoramento-pedidos">
+                                    <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-detalhe-monitoramento-pedidos" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabHistoricoVeiculos" class="tab-pane row">
+                            <div class="col-12 col-md-12">
+                                <div id="container-grid-detalhe-monitoramento-historico-veiculos">
+                                    <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-detalhe-monitoramento-historico-veiculos" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabHistoricoStatusViagem" class="tab-pane row">
+                            <div class="col-12 col-md-12">
+                                <div id="container-grid-detalhe-monitoramento-historico-status-viagem">
+                                    <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-detalhe-monitoramento-historico-status-viagem" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabPermanenciaSubareas" class="tab-pane row">
+                            <div class="col-12 col-md-12">
+                                <div id="container-grid-detalhe-monitoramento-permanencia-subarea">
+                                    <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-detalhe-monitoramento-permanencia-subarea" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabPermanenciaClientes" class="tab-pane row">
+                            <div class="col-12 col-md-12">
+                                <div id="container-grid-detalhe-monitoramento-permanencia-cliente">
+                                    <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-detalhe-monitoramento-permanencia-cliente" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabQualidadeMonitoramento" class="tab-pane row">
+                            <div class="col-12 col-md-12">
+                                <div id="knockoutQualidadeMonitoramento">
+                                    <table width='100%' class='table table-bordered table-hover table-condensed no-footer dataTable JColResizer' id='grid-tabela-alertas' cellspacing='0' role='grid' aria-describedby='grid-tabela_info'>
+                                        <thead>
+                                            <tr>
+                                                <!-- ko foreach: { data: ListaRegrasQualidadeMonitoramento.val, as: 'LegendaDinamica' } -->
+                                                <th data-bind="text: LegendaDinamica.text "></th>
+                                                <!-- /ko -->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <!-- ko foreach: { data: ListaRegrasQualidadeMonitoramento.val, as: 'LegendaDinamica' } -->
+                                                <td data-bind="text: LegendaDinamica.val "></td>
+                                                <!-- /ko -->
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="divModalDetalhesMonitoramentoAlterarStatus" role="dialog" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" id="knockoutDetalhesMonitoramentoAlterarStatus">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        {Localize::Consultas.MonitoramentoDetalhes.AterarStatusMonitoramento}
+                        <span class="title-carga-codigo-embarcador"></span> - <span class="title-carga-placa"></span>
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fal fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body smart-form padding-bottom-5">
+                    <div class="row">
+                        <div class="col-12 col-md-6" data-bind="visible: StatusViagem.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: StatusViagem.text, attr: { for: StatusViagem.id }"></label>
+                                <select class="form-control" data-bind="class: StatusViagem.requiredClass, options: StatusViagem.options, optionsText: 'text', optionsValue: 'value', value: StatusViagem.val, attr: { maxlength: StatusViagem.maxlength, id : StatusViagem.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: DataInicioStatus.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataInicioStatus.text, attr: { for: DataInicioStatus.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: DataInicioStatus.requiredClass, value: DataInicioStatus.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioStatus.maxlength, id : DataInicioStatus.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: DataPrevisaoChegadaPlanta.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataPrevisaoChegadaPlanta.text, attr: { for: DataPrevisaoChegadaPlanta.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: DataPrevisaoChegadaPlanta.requiredClass, value: DataPrevisaoChegadaPlanta.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoChegadaPlanta.maxlength, id : DataPrevisaoChegadaPlanta.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12" data-bind="visible: EntregaDestino.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: EntregaDestino.text, attr: { for: EntregaDestino.id }"></label>
+                                <select class="form-control" data-bind="class: EntregaDestino.requiredClass, options: EntregaDestino.options, optionsText: 'text', optionsValue: 'value', value: EntregaDestino.val, attr: { maxlength: EntregaDestino.maxlength, id : EntregaDestino.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12" data-bind="visible: IndicarEntradaEmSubarea.visible">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" data-bind="checked: IndicarEntradaEmSubarea.val, attr: { maxlength: IndicarEntradaEmSubarea.maxlength, name: IndicarEntradaEmSubarea.id, id: IndicarEntradaEmSubarea.id }">
+                                    <label class="custom-control-label" data-bind="text: IndicarEntradaEmSubarea.text, attr: { for: IndicarEntradaEmSubarea.id }"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="divVisualizarIndicarEntradaEmSubarea">
+                            <div class="col-12 col-md-6" data-bind="visible: Subarea.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Subarea.text, attr: { for: Subarea.id }"></label>
+                                    <select class="form-control" data-bind="class: Subarea.requiredClass, options: Subarea.options, optionsText: 'text', optionsValue: 'value', value: Subarea.val, attr: { maxlength: Subarea.maxlength, id : Subarea.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: DataInicioSubarea.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataInicioSubarea.text, attr: { for: DataInicioSubarea.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataInicioSubarea.requiredClass, value: DataInicioSubarea.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioSubarea.maxlength, id : DataInicioSubarea.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: DataFimSubarea.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataFimSubarea.text, attr: { for: DataFimSubarea.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataFimSubarea.requiredClass, value: DataFimSubarea.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFimSubarea.maxlength, id : DataFimSubarea.id}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="button" data-bind="click: Cancelar.eventClick, attr: { value: Cancelar.text, id : Cancelar.id}" class="btn btn-default me-3">
+                        <input type="button" data-bind="click: Confirmar.eventClick, attr: { value: Confirmar.text, id : Confirmar.id}" class="btn btn-success">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="divModalDetalhesMonitoramentoAlterarHistoricoStatusViagem" role="dialog" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" id="knockoutDetalhesMonitoramentoAlterarHistoricoStatusViagem">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        {Localize::Consultas.MonitoramentoDetalhes.AlterarHistorico}
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fal fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12">
+                            <label class="label"><b data-bind="text: StatusViagem.text"></b></label>
+                            <label><span data-bind="text:StatusViagem.val"></span></label>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: DataInicioStatus.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataInicioStatus.text, attr: { for: DataInicioStatus.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: DataInicioStatus.requiredClass, value: DataInicioStatus.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioStatus.maxlength, id : DataInicioStatus.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12" data-bind="visible: DataPrevisaoChegadaPlanta.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataPrevisaoChegadaPlanta.text, attr: { for: DataPrevisaoChegadaPlanta.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: DataPrevisaoChegadaPlanta.requiredClass, value: DataPrevisaoChegadaPlanta.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoChegadaPlanta.maxlength, id : DataPrevisaoChegadaPlanta.id}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="button" data-bind="click: Cancelar.eventClick, attr: { value: Cancelar.text, id : Cancelar.id}" class="btn btn-default me-3">
+                        <input type="button" data-bind="click: Confirmar.eventClick, attr: { value: Confirmar.text, id : Confirmar.id}" class="btn btn-succes">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="divModalDetalhesMonitoramentoAlterarDatasRaioEntrega" role="dialog" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" id="knockoutDetalhesMonitoramentoAlterarDatasRaioEntrega">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        {Localize::Consultas.MonitoramentoDetalhes.AlterarDatasEntradaSaidaRaio}
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fal fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12" data-bind="visible: DataEntradaRaio.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataEntradaRaio.text, attr: { for: DataEntradaRaio.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: DataEntradaRaio.requiredClass, value: DataEntradaRaio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntradaRaio.maxlength, id : DataEntradaRaio.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12" data-bind="visible: DataSaidaRaio.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataSaidaRaio.text, attr: { for: DataSaidaRaio.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: DataSaidaRaio.requiredClass, value: DataSaidaRaio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataSaidaRaio.maxlength, id : DataSaidaRaio.id}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="button" data-bind="click: Cancelar.eventClick, attr: { value: Cancelar.text, id : Cancelar.id}" class="btn btn-default me-3">
+                        <input type="button" data-bind="click: Confirmar.eventClick, attr: { value: Confirmar.text, id : Confirmar.id}" class="btn btn-success">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,119 @@
+﻿@model Dominio.ObjetosDeValor.Embarcador.GestaoEntregas.EntregaView
+
+<!-- Abas -->
+<section class="abas">
+    <div class="row">
+        <div class="col container-abas p-0">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active aba-icone-01" id="detalhe-pedido-tab" data-toggle="tab" href="#detalhe-pedido" role="tab" aria-controls="detalhe-pedido" aria-selected="true">Detalhe do pedido</a>
+                </li>
+                @if (Model.Localizacao.ExibirMapa) { 
+                <li class="nav-item">
+                    <a class="nav-link aba-icone-02" id="localizacao-tab" data-toggle="tab" href="#localizacao-pedido" role="tab" aria-controls="localizacao" aria-selected="false">Localização</a>
+                </li>
+                }
+                <li class="nav-item">
+                    <a class="nav-link aba-icone-03" id="historico-tab" data-toggle="tab" href="#historico-pedido" role="tab" aria-controls="historico" aria-selected="false">Histórico</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link aba-icone-04" id="motorista-tab" data-toggle="tab" href="#motorista-pedido" role="tab" aria-controls="motorista" aria-selected="false">Motorista</a>
+                </li>
+            </ul>
+            <div class="tab-content conteudo-abas">
+                <!-- Detalhe Pedido -->
+                <div class="tab-pane fade show active table-responsive-md" id="detalhe-pedido" role="tabpanel" aria-labelledby="detalhe-pedido-tab">
+                    <table class="table-hover">
+                        <tr class="table-secondary">
+                            <td class="col-1 col-md-2 desc-tabela">Nº da carga:</td>
+                            <td class="col-11 col-md-10">@Html.Raw(Model.Numero)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-1 col-md-2 desc-tabela">Nº do transporte:</td>
+                            <td class="col-11 col-md-10">@Html.Raw(Model.NumeroTransporte)</td>
+                        </tr>
+                        <tr class="table-secondary">
+                            <td class="col-1 col-md-2 desc-tabela">Remetente:</td>
+                            <td class="col-11 col-md-10">@Html.Raw(Model.Remetente)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-1 col-md-2 desc-tabela">Destinatário:</td>
+                            <td class="col-11 col-md-10">@Html.Raw(Model.Destinatario)</td>
+                        </tr>
+                        <tr class="table-secondary">
+                            <td class="col-1 col-md-2 desc-tabela">Localidade:</td>
+                            <td class="col-11 col-md-10">@Html.Raw(Model.Localidade)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-1 col-md-2 desc-tabela">Notas Fiscais</td>
+                            <td class="col-11 col-md-10">@Html.Raw(Model.NotasFiscais)</td>
+                        </tr>
+                        <tr class="table-secondary">
+                            <td class="col-1 col-md-2 desc-tabela">Quant. de Volumes:</td>
+                            <td class="col-11 col-md-10">@Html.Raw(Model.Volumes)</td>
+                        </tr>
+                        <tr>
+                            <td class="col-1 col-md-2 desc-tabela">Transportador:</td>
+                            <td class="col-11 col-md-10">@Html.Raw(Model.Transportador)</td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- Localização -->
+                <div class="tab-pane fade" id="localizacao-pedido" role="tabpanel" aria-labelledby="localizacao-tab">
+                    @Html.Partial("~/Views/GestaoEntregas/NovoRastreioEntrega/Mapa.cshtml", Model)
+                </div>
+                <!-- Histórico -->
+                <div class="tab-pane fade" id="historico-pedido" role="tabpanel" aria-labelledby="historico-tab">
+                    <div class="row">
+                        <div class="container-historico col">
+                            @{
+                                int i = 0;
+                                string classEtapa = "historico-etapa-01";
+                            }
+                            @foreach (var historico in Model.Historico)
+                            {
+                                {
+                                    classEtapa = i == 0
+                                          ? "historico-etapa-01"
+                                          : i == Model.Historico.Count - 1
+                                            ? "historico-etapa-03" : "historico-etapa-02";
+
+                                    if (Model.Historico.Count == 1)
+                                    {
+                                        classEtapa = "";
+                                    }
+                                }
+                                <div class="@classEtapa row">
+                                    <div class="bullet-etapa col-1"><img src="/img/rastreio-entrega/bullet-on.svg" alt=""></div>
+                                    <div class="status-etapa col-md-3 col-lg-2">
+                                        <p>@historico.Data</p>
+                                    </div>
+                                    <div class="detalhes-etapa col-md-8 col-lg-9">
+                                        <p>@historico.Descricao</p>
+                                    </div>
+                                </div>
+                                { i += 1; }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motorista -->
+                <div class="tab-pane fade" id="motorista-pedido" role="tabpanel" aria-labelledby="motorista-tab">
+                    <div class="tab-pane fade show active table-responsive-md" id="detalhe-pedido" role="tabpanel" aria-labelledby="detalhe-pedido-tab">
+                        <table class="table-hover">
+                            <tr class="table-secondary">
+                                <td class="col-1 col-md-2 desc-tabela">Nome do motorista:</td>
+                                <td class="col-11 col-md-10">@Html.Raw(Model.NomeMotorista)</td>
+                            </tr>
+                            @*<tr>
+                                <td class="col-1 col-md-2 desc-tabela">Telefone:</td>
+                                <td class="col-11 col-md-10">@Html.Raw(Model.TelefoneMotorista)</td>
+                            </tr>*@
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,301 @@
+﻿
+
+<!-- HTML/CSS section -->
+<section id="widget-grid">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Atendimentos</li>
+        <li class="breadcrumb-item active">Atendimento</li>
+    </ol>
+
+    <div class="subheader">
+        <h1 class="subheader-title">Atendimento</h1>
+        <div class="subheader-help">
+            <button type="button" onclick="iniciarAjuda(830)" data-action="toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Abrir a ajuda da página" aria-label="Abrir a ajuda da página">
+                <i class="fal fa-question-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-hdr">
+            <h2><i class="subheader-icon fal fa-edit"></i> Atendimentos</h2>
+        </div>
+        <div class="panel-container">
+            <div class="panel-content">
+                <div id="knockoutAtendimentoCRM">
+                    <div class="row col-12">
+                        <!-- Botões -->
+                        <div class="col-md-2">
+                            <button id="novoAtendimentoBtn" class="btn btn-success ms-2" data-bind="click: NovoAtendimento.eventClick, visible: !NovoAtendimento.visibleFade()">
+                                <i class="fas fa-plus"></i>
+                                Novo Atendimento
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button id="consultarAtendimentoBtn" class="btn btn-primary" data-bind="visible: !NovoAtendimento.visibleFade()">
+                                <i class="fas fa-search"></i> Consultar Atendimento
+                            </button>
+                        </div>
+
+                        <!-- Conteúdo do atendimento -->
+                        <div class="panel-content" data-bind="id: NovoAtendimento.idFade, fadeVisible: NovoAtendimento.visibleFade">
+                            <div class="mt-3">
+                                <!-- Passos do atendimento -->
+                                <ul class="nav nav-steps">
+                                    <li>
+                                        <button class="active">
+                                            <span class="step" style="background-color: orange;">
+                                                <i class="fal fa-file-alt"></i>
+                                            </span>
+                                            <span class="title">Abertura</span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button>
+                                            <span class="step">
+                                                <i class="fal fa-search"></i>
+                                            </span>
+                                            <span class="title">Análise</span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button>
+                                            <span class="step">
+                                                <i class="fal fa-check-circle"></i>
+                                            </span>
+                                            <span class="title">Finalizado</span>
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <!-- Formulário de abertura de atendimento -->
+                                <div class="card" data-bind="visible: !Continuar.visibleFade()">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h4>Abertura do atendimento</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5>Selecione o tipo de atendimento:</h5>
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <label>
+                                                    <input type="radio" name="tipoAtendimento" value="coleta" data-bind="checked: selectedOption" /> Coleta
+                                                </label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>
+                                                    <input type="radio" name="tipoAtendimento" value="numeroDT" data-bind="checked: selectedOption" /> Número de DT
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card" data-bind="id: Continuar.idFade, fadeVisible: Continuar.visibleFade">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h4>Abertura do atendimento</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <!-- 'Tipo de Atendimento' -->
+                                                <div class="form-group text-start">
+                                                    <label class="form-label" data-bind="text: TipoAtendimento.text, attr: { for: TipoAtendimento.id }"></label>
+                                                    <span data-bind="text: TipoAtendimento.val" style="font-weight: bold;"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- 'Número' -->
+                                                <div class="form-group text-start" data-bind="visible: NumeroDT.visible">
+                                                    <label class="form-label" data-bind="text: NumeroDT.text, attr: { for: NumeroDT.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control input-sm" data-bind="value: NumeroDT.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroDT.maxlength, id : NumeroDT.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: NumeroDT.idBtnSearch}">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <!-- 'Portfólio' -->
+                                                <div class="form-group text-start" data-bind="visible: Portifolio.visible">
+                                                    <label class="form-label" data-bind="text: Portifolio.text, attr: { for: Portifolio.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control input-sm" data-bind="value: Portifolio.val, valueUpdate: 'afterkeydown', attr: { maxlength: Portifolio.maxlength, id : Portifolio.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: Portifolio.idBtnSearch}">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- 'Motivo' -->
+                                                <div class="form-group text-start" data-bind="visible: Motivo.visible">
+                                                    <label class="form-label" data-bind="text: Motivo.text, attr: { for: Motivo.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control input-sm" data-bind="value: Motivo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Motivo.maxlength, id : Motivo.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" type="button" data-bind="attr: { id: Motivo.idBtnSearch}">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 'Classificação' -->
+                                        <div class="row">
+                                            <label class="form-label" data-bind="text: ClassificacaoEstadia.text, attr: { for: ClassificacaoEstadia.id }"></label>
+                                            <div class="col-md-1">
+                                                <label>
+                                                    <input type="radio" name="classificacao" value="comercial" /> Comercial
+                                                </label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>
+                                                    <input type="radio" name="classificacao" value="operacional" /> Operacional
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div id="panelReentrega" style="display: block; margin-top: 20px;">
+                                            <label class="form-label" data-bind="visible: DataPrimeiraTentativaInicio.visible">Primeira tentativa de entrega</label>
+                                            <div class="row col-12">
+                                                <div class="col-12 col-md-3" data-bind="visible: DataPrimeiraTentativaInicio.visible">
+                                                    <div class="form-group">
+                                                        <label class="form-label" data-bind="text: DataPrimeiraTentativaInicio.text, attr: { for: DataPrimeiraTentativaInicio.id }"></label>
+                                                        <input type="text" class="form-control" data-bind="class: DataPrimeiraTentativaInicio.requiredClass, enable: DataPrimeiraTentativaInicio.enable,value: DataPrimeiraTentativaInicio.val, valueUpdate: 'afterkeydown', attr: { maxlenglabel: DataPrimeiraTentativaInicio.maxlenglabel, id : DataPrimeiraTentativaInicio.id}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-3" data-bind="visible: DataPrimeiraTentativaFim.visible">
+                                                    <div class="form-group">
+                                                        <label class="form-label" data-bind="text: DataPrimeiraTentativaFim.text, attr: { for: DataPrimeiraTentativaFim.id }"></label>
+                                                        <input type="text" class="form-control" data-bind="class: DataPrimeiraTentativaFim.requiredClass, enable: DataPrimeiraTentativaFim.enable,value: DataPrimeiraTentativaFim.val, valueUpdate: 'afterkeydown', attr: { maxlenglabel: DataPrimeiraTentativaFim.maxlenglabel, id : DataPrimeiraTentativaFim.id}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <label class="form-label" data-bind="visible: DataSegundaTentativaInicio.visible">Segunda tentativa de entrega</label>
+                                            <div class="row col-12">
+                                                <div class="col-12 col-md-3" data-bind="visible: DataSegundaTentativaInicio.visible">
+                                                    <div class="form-group">
+                                                        <label class="form-label" data-bind="text: DataSegundaTentativaInicio.text, attr: { for: DataSegundaTentativaInicio.id }"></label>
+                                                        <input type="text" class="form-control" data-bind="class: DataSegundaTentativaInicio.requiredClass, enable: DataSegundaTentativaInicio.enable,value: DataSegundaTentativaInicio.val, valueUpdate: 'afterkeydown', attr: { maxlenglabel: DataSegundaTentativaInicio.maxlenglabel, id : DataSegundaTentativaInicio.id}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-3" data-bind="visible: DataSegundaTentativaFim.visible">
+                                                    <div class="form-group">
+                                                        <label class="form-label" data-bind="text: DataSegundaTentativaFim.text, attr: { for: DataSegundaTentativaFim.id }"></label>
+                                                        <input type="text" class="form-control" data-bind="class: DataSegundaTentativaFim.requiredClass, enable: DataSegundaTentativaFim.enable,value: DataSegundaTentativaFim.val, valueUpdate: 'afterkeydown', attr: { maxlenglabel: DataSegundaTentativaFim.maxlenglabel, id : DataSegundaTentativaFim.id}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button type="button" class="btn btn-secondary" data-bind="click: NovaTentativaEntrega.eventClick, visible: NovaTentativaEntrega.visible">
+                                                        <i class="fal fa-plus"></i><span data-bind="text: NovaTentativaEntrega.text"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6 d-flex justify-content-end">
+                                                    <button type="button" class="btn btn-primary me-2" data-bind="click: ConfirmaEntrega.eventClick, visible: ConfirmaEntrega.visible">
+                                                        Confirmar entrega
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary me-2" data-bind="click: EntregaNaoRealizada.eventClick, visible: EntregaNaoRealizada.visible">
+                                                        Entrega não realizada
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group text-start" data-bind="visible: PerguntasAnalise.visible">
+                                        <label class="form-label" data-bind="text: PerguntasAnalise.text, attr: { for: PerguntasAnalise.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-sm" data-bind="value: PerguntasAnalise.val, valueUpdate: 'afterkeydown', attr: { maxlength: PerguntasAnalise.maxlength, id : PerguntasAnalise.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button" data-bind="click: PerguntasAnalise.eventClick, attr: { id: PerguntasAnalise.idBtnSearch}">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label" data-bind="text: ChegadaEstadia.text, attr: { for: ChegadaEstadia.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: ChegadaEstadia.requiredClass, value: ChegadaEstadia.val, attr: { maxlength: ChegadaEstadia.maxlength, id : ChegadaEstadia.id}" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" data-bind="text: SaidaEstadia.text, attr: { for: SaidaEstadia.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: SaidaEstadia.requiredClass, value: SaidaEstadia.val, attr: { maxlength: SaidaEstadia.maxlength, id : SaidaEstadia.id}" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" data-bind="text: DataAgendamentoEstadia.text, attr: { for: DataAgendamentoEstadia.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: DataAgendamentoEstadia.requiredClass, value: DataAgendamentoEstadia.val, attr: { maxlength: DataAgendamentoEstadia.maxlength, id : DataAgendamentoEstadia.id}" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" data-bind="text: QuantidadeEstadia.text, attr: { for: QuantidadeEstadia.id }"></label>
+                                    <input type="text" class="form-control" data-bind="css: QuantidadeEstadia.requiredClass, value: QuantidadeEstadia.val, attr: { maxlength: QuantidadeEstadia.maxlength, id : QuantidadeEstadia.id}" />
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <div>
+                                <button type="button" class="btn btn-primary me-2" data-bind="click: Voltar.eventClick, visible: Voltar.visible">
+                                    Voltar
+                                </button>
+                                <button type="button" class="btn btn-success" data-bind="click: Continuar.eventClick, visible: Continuar.visible">
+                                    Continuar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-container">
+        <div class="panel-content" id="panelAtendimentoCRMNotaFiscal" style="display: none;">
+            <div id="knockoutAtendimentoCRMNotaFiscal">
+                <div class="row col-12">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-primary ms-2" data-bind="attr: { id: NFe.idBtnSearch}">
+                            <i class="fal fa-plus"></i><span data-bind="text: NFe.text"></span>
+                        </button>
+                        <div class="ms-2">
+                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: GridNotaFiscal.id}" cellspacing="0"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="ModaisAtendimentoCRM"></div>
+<div id="knockoutTentativaEntregaCRM"></div>
+
+<!-- Scripts -->
+<script src="~/scripts/atendimentoCRM"></script>
+
+<script type="text/javascript">
+
+    // Configurações iniciais da página
+    pageSetUp();
+
+    $(document).ready(function () {
+        // Carregar atendimento CRM ao carregar a página
+        loadAtendimentoCRM();
+    });
+
+</script>

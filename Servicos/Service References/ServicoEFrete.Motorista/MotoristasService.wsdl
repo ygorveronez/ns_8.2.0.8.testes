@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://schemas.ipc.adm.br/efrete/motoristas" xmlns:s1="http://schemas.ipc.adm.br/efrete/motoristas/objects" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s2="http://schemas.ipc.adm.br/efrete/objects" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://schemas.ipc.adm.br/efrete/motoristas" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/motoristas">
+      <s:import namespace="http://schemas.ipc.adm.br/efrete/motoristas/objects" />
+      <s:element name="Obter">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:ObterRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObterResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:ObterResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gravar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:GravarRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GravarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:GravarResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/motoristas/objects">
+      <s:import namespace="http://schemas.ipc.adm.br/efrete/objects" />
+      <s:element name="ObterRequest" type="s1:ObterRequest" />
+      <s:complexType name="ObterRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Request">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="CPF" type="s:long" />
+              <s:element minOccurs="1" maxOccurs="1" name="CNH" type="s:long" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ObterResult" nillable="true" type="s1:ObterResponse" />
+      <s:complexType name="ObterResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Motorista" type="s1:Motorista" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Motorista">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CPF" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CNH" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="DataNascimento" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="NomeDeSolteiraDaMae" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Endereco" type="s2:Endereco" />
+          <s:element minOccurs="0" maxOccurs="1" name="Telefones" type="s2:Telefones" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GravarRequest" type="s1:GravarRequest" />
+      <s:complexType name="GravarRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Request">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="CPF" type="s:long" />
+              <s:element minOccurs="0" maxOccurs="1" name="Nome" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="CNH" type="s:long" />
+              <s:element minOccurs="1" maxOccurs="1" name="DataNascimento" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="NomeDeSolteiraDaMae" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Endereco" type="s2:Endereco" />
+              <s:element minOccurs="0" maxOccurs="1" name="Telefones" type="s2:Telefones" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="GravarResult" nillable="true" type="s1:GravarResponse" />
+      <s:complexType name="GravarResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Motorista" type="s1:Motorista" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/objects">
+      <s:complexType name="Request" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Token" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Integrador" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Versao" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Response" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Versao" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Sucesso" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Excecao" type="s2:Excecao" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocoloServico" nillable="true" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Excecao">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Mensagem" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Codigo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Endereco">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Bairro" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rua" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Numero" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Complemento" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CEP" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodigoMunicipio" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Telefones">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Celular" type="s2:Telefone" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fixo" type="s2:Telefone" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fax" type="s2:Telefone" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Telefone">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DDD" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Numero" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ObterSoapIn">
+    <wsdl:part name="parameters" element="tns:Obter" />
+  </wsdl:message>
+  <wsdl:message name="ObterSoapOut">
+    <wsdl:part name="parameters" element="tns:ObterResponse" />
+  </wsdl:message>
+  <wsdl:message name="GravarSoapIn">
+    <wsdl:part name="parameters" element="tns:Gravar" />
+  </wsdl:message>
+  <wsdl:message name="GravarSoapOut">
+    <wsdl:part name="parameters" element="tns:GravarResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MotoristasServiceSoap">
+    <wsdl:operation name="Obter">
+      <wsdl:input message="tns:ObterSoapIn" />
+      <wsdl:output message="tns:ObterSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Gravar">
+      <wsdl:input message="tns:GravarSoapIn" />
+      <wsdl:output message="tns:GravarSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MotoristasServiceSoap" type="tns:MotoristasServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Obter">
+      <soap:operation soapAction="http://schemas.ipc.adm.br/efrete/motoristas/Obter" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gravar">
+      <soap:operation soapAction="http://schemas.ipc.adm.br/efrete/motoristas/Gravar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MotoristasServiceSoap12" type="tns:MotoristasServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Obter">
+      <soap12:operation soapAction="http://schemas.ipc.adm.br/efrete/motoristas/Obter" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gravar">
+      <soap12:operation soapAction="http://schemas.ipc.adm.br/efrete/motoristas/Gravar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MotoristasService">
+    <wsdl:port name="MotoristasServiceSoap" binding="tns:MotoristasServiceSoap">
+      <soap:address location="https://dev.efrete.com.br/Services/MotoristasService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MotoristasServiceSoap12" binding="tns:MotoristasServiceSoap12">
+      <soap12:address location="https://dev.efrete.com.br/Services/MotoristasService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

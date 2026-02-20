@@ -1,0 +1,174 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="EmissaoCTe.WebApp.Site" %>
+
+<%@ Import Namespace="System.Web.Optimization" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title></title>
+    <link rel="shortcut icon" href="Images/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%: Styles.Render("~/styles/bootstrap",
+                      "~/styles/site",
+                      "~/bundle/styles/smartMenu") %>
+    <%: Scripts.Render("~/bundle/scripts/jquery", 
+                       "~/bundle/scripts/bootstrap",
+                       "~/bundle/scripts/bootbox",
+                       "~/bundle/scripts/globalize",
+                       "~/bundle/scripts/smartMenu",
+                       "~/bundle/scripts/auditoria") %>
+    <script type="text/javascript">
+        function ObterPath() {
+            var p = "";
+            if (document.location.pathname.split("/").length > 1) {
+                var paths = document.location.pathname.split("/");
+                for (var i = 0; (paths.length - 1) > i; i++) {
+                    if (paths[i] != "") {
+                        p += "/" + paths[i];
+                    }
+                }
+            }
+            return p;
+        }
+
+        var _CONFIGURACAO_AUDITORIA = false;
+        $(document).ready(function () {
+            _CONFIGURACAO_AUDITORIA = "#<%: hddConfiguracaoAuditoria.ClientID %>";
+        });
+    </script>
+    <style>
+        @media screen and (min-width: 1024px) {
+            #divModalAuditoria .modal-dialog, #divModalDetalhesAuditoria .modal-dialog {
+                right: auto;
+                width: 1000px;
+                padding-top: 30px;
+                padding-bottom: 30px;
+            }
+
+            #divModalAuditoria .modal-content, #divModalDetalhesAuditoria .modal-content {
+                -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        @media screen and (min-width: 1560px) {
+            #divModalAuditoria .modal-dialog, #divModalDetalhesAuditoria .modal-dialog {
+                right: auto;
+                width: 1550px;
+                padding-top: 30px;
+                padding-bottom: 30px;
+            }
+
+            #divModalAuditoria .modal-content, #divModalDetalhesAuditoria .modal-content {
+                -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            }
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <meta name="description" content="Emissão de CT-e Online" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:HiddenField ID="hddConfiguracaoAuditoria" runat="server" />
+        <div class="navbar navbar-inverse navbar-static-top main-menu" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand logo" href="Default.aspx" style="padding-top: 10px; padding-bottom: 10px; min-width: 190px">
+                        <img id="imgLogo" src="" alt="" />
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul id="navigation" class="nav navbar-nav navbar-left" runat="server" clientidmode="Static">
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li id="divAuditoriaGlobal" style="display: none"><a href="#"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;Auditoria</a></li>
+                        <li><a href="Ajuda.aspx"><span class="glyphicon glyphicon-question-sign"></span>&nbsp;Ajuda</a></li>
+                        <li><a href="Logout.aspx"><span class="glyphicon glyphicon-off"></span>&nbsp;Sair</a></li>
+                    </ul>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <strong><span id="spnDescricaoEmpresa" runat="server" class="navbar-text pull-left" style="margin-top: 0; margin-left: 0; margin-bottom: 10px;"></span></strong>
+                    <a href="AlterarSenha.aspx" target="_self" style="margin-top: 0; margin-left: 0; margin-bottom: 10px;" class="pull-right navbar-text"><span class="glyphicon glyphicon-user">&nbsp;</span></a>
+                    <strong><span id="spnDescricaoUsuario" runat="server" class="navbar-text pull-right hidden-sm hidden-xs" style="margin-top: 0; margin-left: 0; margin-bottom: 10px;"></span></strong>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <asp:ContentPlaceHolder ID="body" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <div class="nav navbar-inverse navbar-fixed-bottom hidden-xs" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <p class="navbar-text text-center">
+                        Powered by <a runat="server" id="ancSiteEmpresa" href="https://www.multicte.com.br/" class="navbar-link" title="Multisoftware"><b>Multisoftware</b></a>  -  Fone: <b runat="server" id="lblTelefoneEmpresa">(49) 3025-9500</b>  -  E-mail: <a id="ancEmailEmpresa" runat="server" href="mailto:emissao@multisoftware.com.br" class="navbar-link"><b>emissao@multisoftware.com.br</b></a>  -  Skype: <a id="ancSkypeEmpresa" runat="server" href="skype:treinamento.multisoftware?chat" class="navbar-link"><b>emissao.multisoftware</b></a>
+                    </p>
+                    <p runat="server" id="lblVersao" class="navbar-text text-center" style="font-size: 12px; margin-left: 100px;">
+                        v. 6.26.00
+                    </p>
+                </div>
+            </div>
+        </div>
+        <% #if !DEBUG %>
+        <script type="text/javascript">
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-43029832-1', 'multicte.com.br');
+            ga('send', 'pageview');
+        </script>
+        <% #endif %>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip({ delay: { show: 500, hide: 200 }, animation: true });
+                $("#imgLogo").attr("src", ObterPath() + "/Empresa/ObterLogoDaEmpresa");
+            });
+        </script>
+    </form>
+
+    <div class="modal modal-wide fade" id="divModalDetalhesAuditoria" style="z-index:1300" role="dialog" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                    <h4 class="modal-title">Detalhes Auditoria</h4>
+                </div>
+                <div class="modal-body">
+                    <section class="insideNoPaddignTable">
+                        <div id="tbl_detalhes_auditoria" style="margin-top: 10px;"></div>
+                        <div id="tbl_paginacao_detalhes_auditoria"></div>
+                        <div class="clearfix"></div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-wide fade" id="divModalAuditoria" style="z-index:1200" role="dialog" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+                    <h4 class="modal-title">Auditoria</h4>
+                </div>
+                <div class="modal-body">
+                    <section class="insideNoPaddignTable">
+                        <div id="tbl_auditoria" style="margin-top: 10px;"></div>
+                        <div id="tbl_paginacao_auditoria"></div>
+                        <div class="clearfix"></div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

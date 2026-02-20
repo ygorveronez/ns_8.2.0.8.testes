@@ -1,0 +1,57 @@
+﻿@model Dominio.ObjetosDeValor.Embarcador.GestaoEntregas.EntregaView
+
+@{int index = 0; }
+<table class="table">
+    <thead>
+        <tr style="text-align:center" class="header-tabela">
+            <th class="col-1 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.Produtos</th>
+            <th class="col-1 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.Lote</th>
+            <th class="col-1 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.Quantidade</th>
+            <th class="col-1 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.PesoUnitario</th>
+            <th class="col-1 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.PesoEmbalagem</th>
+            <th class="col-1 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.PesoTotal</th>
+        </tr>
+    </thead>
+    @foreach (var produto in Model.Produtos)
+    {
+        string classeLinha = index % 2 == 0 ? "table-secondary" : "table-white";
+        <tr class="@classeLinha linhas" style="text-align:start">
+            <td class="col-11 col-md-4">@produto.Produto</td>
+            <td class="col-1 col-md-2 desc-tabela text-center">@produto.Lote</td>
+            <td class="col-1 col-md-2 desc-tabela text-center">@produto.Quantidade.ToString("n2")</td>
+            <td class="col-1 col-md-2 desc-tabela text-center">@produto.PesoUnitario.ToString("n2")</td>
+            <td class="col-1 col-md-2 desc-tabela text-center">@produto.PesoTotalEmbalagem.ToString("n2")</td>
+            <td class="col-1 col-md-2 desc-tabela text-center">@produto.PesoTotal.ToString("n2")</td>
+        </tr>
+    }
+</table>
+
+<div style="margin-top:20px;">
+    <section class="feedback-container"></section>
+</div>
+
+
+<script>
+    var linhas = document.querySelectorAll("tbody tr");
+    linhas.forEach(function (linha, index) {
+        if (index % 2 === 0) {
+            linha.classList.add("table-secondary");
+            linha.classList.remove("table-white");
+        } else {
+            linha.classList.add("table-white");
+            linha.classList.remove("table-secondary");
+        }
+    });
+</script>
+
+<style>
+    .header-tabela {
+        font-size: 14px;
+        font-weight: bold;
+        color: #475999;
+    }
+
+    .linhas {
+        font-size: 14px;
+    }
+</style>

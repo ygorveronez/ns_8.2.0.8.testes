@@ -1,0 +1,200 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Contabils</li>
+    <li class="breadcrumb-item active">ArquivoEBS</li>
+</ol>
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class=""></i> Geração do arquivo de EBS
+    </h1>
+</div>
+
+<div class="panel">
+    <div class="panel-container">
+        <div class="panel-content">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a href="#knockoutGeracaoArquivoEBS" class="nav-link active" data-bs-toggle="tab"><i class="fal fa-barcode"></i><span class="hidden-mobile hidden-tablet">Documento de Entrada</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#knockoutArquivoEBSBaixas" class="nav-link" data-bs-toggle="tab"><i class="fal fa-dollar-sign"></i><span class="hidden-mobile hidden-tablet">Baixas de Títulos</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="#knockoutArquivoEBSComissaoMotorista" class="nav-link" data-bs-toggle="tab"><i class="fal fa-percent"></i><span class="hidden-mobile hidden-tablet">Comissões de Motoristas</span></a>
+                </li>
+            </ul>
+            <div class="tab-content border border-top-0 p-3">
+                <!-- Documento de Entrada-->
+                <div id="knockoutGeracaoArquivoEBS" class="tab-pane fade active show">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: Filial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Filial.requiredClass, value: Filial.val, valueUpdate: 'afterkeydown', attr: { maxlength: Filial.maxlength, id : Filial.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Filial.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ModelosDocumento.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ModelosDocumento.text"></label>
+                                    <select class="form-control" data-bind="class: ModelosDocumento.requiredClass, options: ModelosDocumento.options, optionsText: 'text', optionsValue: 'value', value: ModelosDocumento.val, attr: { maxlength: ModelosDocumento.maxlength, id : ModelosDocumento.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: DataEntradaInicial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataEntradaInicial.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataEntradaInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntradaInicial.maxlength, id : DataEntradaInicial.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: DataEntradaFinal.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataEntradaFinal.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataEntradaFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntradaFinal.maxlength, id : DataEntradaFinal.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: DataEmissaoInicial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataEmissaoInicial.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataEmissaoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoInicial.maxlength, id : DataEmissaoInicial.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: DataEmissaoFinal.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataEmissaoFinal.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataEmissaoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoFinal.maxlength, id : DataEmissaoFinal.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: DocumentoEmEBS.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DocumentoEmEBS.text"></label>
+                                    <select class="form-control" data-bind="options: DocumentoEmEBS.options, optionsText: 'text', optionsValue: 'value', value: DocumentoEmEBS.val, attr: { id : DocumentoEmEBS.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ProdutoEmEBS.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ProdutoEmEBS.text"></label>
+                                    <select class="form-control" data-bind="options: ProdutoEmEBS.options, optionsText: 'text', optionsValue: 'value', value: ProdutoEmEBS.val, attr: { id : ProdutoEmEBS.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end mb-3">
+                                <button class="btn btn-primary ms-1" type="button" data-bind="click: PesquisarNotasEntrada.eventClick, attr: { id: PesquisarNotasEntrada.id}, visible: PesquisarNotasEntrada.visible, enable: PesquisarNotasEntrada.enable">
+                                    <i class="fal fa-search"></i><span data-bind="text: PesquisarNotasEntrada.text"></span>
+                                </button>
+                                <button class="btn btn-default ms-1" type="button" data-bind="click: SelecionarTodos.eventClick, attr: { id: SelecionarTodos.id}, visible: SelecionarTodos.visible, enable: SelecionarTodos.enable">
+                                    <i class="fal fa-check"></i><span data-bind="text: SelecionarTodos.text"></span>
+                                </button>
+                            </div>
+                            <table width="100%" class="table table-bordered table-hover" data-bind="enable: NotasEntrada.enable, attr: { id: NotasEntrada.idGrid}" cellspacing="0"></table>
+                        </div>
+                        <footer class="d-flex justify-content-end mt-2">
+                            <button class="btn btn-default ms-1" type="button" data-bind="click: Cancelar.eventClick,visible: Cancelar.visible, attr: { value: Cancelar.text, id : Cancelar.id}">
+                                <span data-bind="text: Cancelar.text"></span>
+                            </button>
+                            <button class="btn btn-success ms-1" type="button" data-loading-text="Aguarde..." data-bind="click: ArquivoNotas.eventClick,visible: ArquivoNotas.visible, attr: { value: ArquivoNotas.text, id : ArquivoNotas.id}">
+                                <span data-bind="text: ArquivoNotas.text"></span>
+                            </button>
+                            <button class="btn btn-success ms-1" type="button" data-loading-text="Aguarde..." data-bind="click: ArquivoProdutos.eventClick,visible: ArquivoProdutos.visible, attr: { value: ArquivoProdutos.text, id : ArquivoProdutos.id}">
+                                <span data-bind="text: ArquivoProdutos.text"></span>
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+
+                <!-- Baixa de Títulos -->
+                <div id="knockoutArquivoEBSBaixas" class="tab-pane fade">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-3" data-bind="visible: DataInicial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataInicial.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: DataFinal.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataFinal.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="d-flex justify-content-end">
+                            <button class="btn btn-default ms-1" type="button" data-bind="click: Cancelar.eventClick,visible: Cancelar.visible, attr: { value: Cancelar.text, id : Cancelar.id}">
+                                <i class="fal fa-ban"></i><span data-bind="text: Cancelar.text"></span>
+                            </button>
+                            <button class="btn btn-success ms-1" type="button" data-loading-text="Aguarde..." data-bind="click: GerarArquivo.eventClick,visible: GerarArquivo.visible, attr: { value: GerarArquivo.text, id : GerarArquivo.id}">
+                                <span data-bind="text: GerarArquivo.text"></span>
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+                <!-- Comissões de Motoristas -->
+                <div id="knockoutArquivoEBSComissaoMotorista" class="tab-pane fade">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-4" data-bind="visible: ComissaoMotorista.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ComissaoMotorista.text, attr: { for: ComissaoMotorista.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" data-bind="css: ComissaoMotorista.requiredClass, value: ComissaoMotorista.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': ComissaoMotorista.text, maxlength: ComissaoMotorista.maxlength, id: ComissaoMotorista.id, name: ComissaoMotorista.id }" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: ComissaoMotorista.idBtnSearch}">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: CodigoEvento.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: CodigoEvento.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: CodigoEvento.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoEvento.maxlength, id : CodigoEvento.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Tipo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Tipo.text"></label>
+                                    <select class="form-control" data-bind="options: Tipo.options, optionsText: 'text', optionsValue: 'value', value: Tipo.val, attr: { id : Tipo.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: TipoSistemaContabil.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoSistemaContabil.text"></label>
+                                    <select class="form-control" data-bind="options: TipoSistemaContabil.options, optionsText: 'text', optionsValue: 'value', value: TipoSistemaContabil.val, attr: { id : TipoSistemaContabil.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="d-flex justify-content-end">
+                            <button class="btn btn-default ms-1" type="button" data-bind="click: Cancelar.eventClick,visible: Cancelar.visible, attr: { value: Cancelar.text, id : Cancelar.id}">
+                                <i class="fal fa-ban"></i><span data-bind="text: Cancelar.text"></span>
+                            </button>
+                            <button class="btn btn-success ms-1" type="button" data-loading-text="Aguarde..." data-bind="click: GerarArquivo.eventClick,visible: GerarArquivo.visible, attr: { value: GerarArquivo.text, id : GerarArquivo.id}">
+                                <span data-bind="text: GerarArquivo.text"></span>
+                            </button>
+                        </footer>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/arquivoEBS"></script>
+<script type="text/javascript">
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadArquivoEBS();
+    });
+
+</script>
+

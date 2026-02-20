@@ -1,0 +1,335 @@
+﻿
+<style>
+    table.dataTable.margin-top-0 {
+        margin-top: 0 !important;
+    }
+
+    .jarviswidget > .content-no-padding {
+        padding: 0;
+    }
+
+        .jarviswidget > .content-no-padding .tab-pane {
+            padding: 13px 13px 0;
+        }
+
+        .jarviswidget > .content-no-padding .tab-pane-no-padding {
+            padding: 0;
+        }
+
+    .btn-teste-disponibilidade {
+        height: 31px;
+        margin: 0 10px 5px 0;
+        padding: 0 22px;
+        font: 300 15px/29px 'Open Sans', Helvetica, Arial, sans-serif;
+        cursor: pointer;
+    }
+
+    .retorno-disponibilidade {
+        font-size: 22px;
+    }
+
+        .retorno-disponibilidade .fa-check {
+            color: green;
+        }
+
+        .retorno-disponibilidade .fa-close {
+            color: red;
+        }
+
+    .tab-content + .tab-content {
+        margin-top: 0;
+    }
+
+    @@media (max-width: 767px) {
+        .tab-content + .tab-content {
+            margin-top: 25px;
+        }
+    }
+
+    .smart-form .toggle {
+        margin-bottom: 0px;
+    }
+</style>
+
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Integrações</li>
+        <li class="breadcrumb-item active">Controle Integração</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            {Localize::Integracoes.ControleIntegracao.DescricaoControleDeIntegracao}
+        </h1>
+    </div>
+
+    <div id="knockoutPesquisaControleIntegracao">
+        <div class="panel">
+            <div class="panel-container">
+                <div class="panel-content">
+                    <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                        <i class="fal fa-search"></i>
+                        {Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} 
+                    </button>
+                    <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                        <form>
+                            <div class="row">
+                                 
+                                <div class="col-12 col-md-2" data-bind="visible: DataInicio.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataInicio.text, attr: { for: DataInicio.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataInicio.requiredClass, value: DataInicio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicio.maxlength, id : DataInicio.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-2" data-bind="visible: DataLimite.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: DataLimite.text, attr: { for: DataLimite.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: DataLimite.requiredClass, value: DataLimite.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataLimite.maxlength, id : DataLimite.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-2" data-bind="visible: NumeroCarga.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroCarga.text, attr: { for: NumeroCarga.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: NumeroCarga.requiredClass, value: NumeroCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroCarga.maxlength, id : NumeroCarga.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-2" data-bind="visible: NumeroCte.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroCte.text, attr: { for: NumeroCte.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: NumeroCte.requiredClass, value: NumeroCte.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroCte.maxlength, id : NumeroCte.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4" data-bind="visible: CodigoIntegracao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: CodigoIntegracao.text, attr: { for: CodigoIntegracao.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: CodigoIntegracao.requiredClass, value: CodigoIntegracao.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoIntegracao.maxlength, id : CodigoIntegracao.id}" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4" data-bind="visible: Integradora.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Integradora.text, attr: { for: Integradora.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: Integradora.requiredClass, value: Integradora.val, valueUpdate: 'afterkeydown', attr: { maxlength: Integradora.maxlength, id : Integradora.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Integradora.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-4" data-bind="visible: Usuario.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Usuario.text, attr: { for: Usuario.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: Usuario.requiredClass, value: Usuario.val, valueUpdate: 'afterkeydown', attr: { maxlength: Usuario.maxlength, id : Usuario.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Usuario.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel mt-3" id="wid-id-4" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+        <div class="panel-container">
+            <div class="panel-content">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a href="#tabSistema" class="nav-link active" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.Sistema} </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceCargas" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS Cargas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceCTe" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS CT-e</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceEmpresa" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS Empresa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceFilial" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS Filial</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceImpressao" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS Impressão</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceImpressao" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS Janela de Carregamento</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceMDFe" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS MDF-e</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceNFe" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">WS NF-e</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceNFS" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS NFS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServiceOcorrencias" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS Ocorrências</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServicePallet" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">WS Pallet</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabWebServicePessoas" class="nav-link" data-bs-toggle="tab">
+                            <span class="hidden-mobile hidden-tablet">{Localize::Integracoes.ControleIntegracao.PesquisarIntegracoes} WS Pessoas</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0 p-3" id="knockoutControleIntegracao">
+                    <div class="tab-pane fade active show" data-bind="attr: { id: Sistema.WebService.id}" role="tabpanel">
+                        <form>
+                            <div class="row">
+
+                                <table width="100%" class="table table-bordered table-hover margin-top-0" cellspacing="0" data-bind="attr: { id: Sistema.WebService.idGrid}"></table>
+
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ko foreach: ListaWebService -->
+                    <div class="tab-pane fade" data-bind="attr: { id: WebService.id}">
+                        <form class="fieldset-no-padding">
+                            <div class="row">
+
+                                <div class="col-12 col-md-8">
+                                    <div class="card">
+                                        <div class="card-header d-flex align-items-center justify-content-between">
+                                            <h3 class="card-title">{Localize::Integracoes.ControleIntegracao.Auditoria}</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <table width="100%" class="table table-bordered table-hover margin-top-0" cellspacing="0" data-bind="attr: { id: WebService.idGrid}"></table>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card mt-3" data-bind="attr: { id: (WebService.idGridRetorno + '-container')}" style="display: none;">
+                                        <div class="card-header d-flex align-items-center justify-content-between">
+                                            <h3 class="card-title">{Localize::Integracoes.ControleIntegracao.Retorno}</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <table width="100%" class="table table-bordered table-hover margin-top-0" cellspacing="0" data-bind="attr: { id: WebService.idGridRetorno}"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                                 
+                                <div class="col-12 col-md-4">
+                                    <div class="card">
+                                        <div class="card-header d-flex align-items-center justify-content-between">
+                                            <h3 class="card-title">{Localize::Integracoes.ControleIntegracao.Disponibilidade} </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+
+                                                <div class="col-12 col-md-12" data-bind="visible: Disponibilidade.visible">
+                                                    <div class="retorno-disponibilidade">  <i class="fal fa-times"></i>
+                                                        <i data-bind="css: Disponibilidade.cssClass"></i><span data-bind="text: Disponibilidade.val"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 col-md-12">
+                                                    <button class="btn btn-primary btn-teste-disponibilidade" type="button" data-bind="click: ExecutarTeste.eventClick, attr: { id: ExecutarTeste.id}">
+                                                        <span data-bind="text: ExecutarTeste.text"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="d-flex justify-content-end mb-2 ms-2">
+                                                <button class="btn btn-success waves-effect waves-themed btnPesquisarFiltroPesquisa" type="button" data-bind="click: DownloadXml.eventClick, attr: { id: DownloadXml.id}">
+                                                    <span data-bind="text: DownloadXml.text"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /ko -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="divModalDetalhesAuditoria" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Integracoes.ControleIntegracao.DetalhesAuditoria} </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <table width="100%" class="table table-bordered table-hover dataTable no-footer" id="grid-detalhes-auditoria"></table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/scripts/controleIntegracao"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadLocalizationResources("Integracoes.ControleIntegracao").then(loadControleIntegracao);
+    });
+
+</script>
+

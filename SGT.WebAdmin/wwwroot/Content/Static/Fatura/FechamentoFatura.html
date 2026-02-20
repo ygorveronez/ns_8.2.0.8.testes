@@ -1,0 +1,309 @@
+﻿<div class="card" id="#divFechamentoFatura">
+    <div class="card-header">
+        <div class="card-title">Finalizar Fatura</div>
+    </div>
+    <div class="card-body">
+        <div class="row" data-bind="visible: PercentualProcessadoFechamento.visible">
+            <div class="col-6">
+                <span data-bind="text: PercentualProcessadoFechamento.text"></span>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+                <span class="pull-right" data-bind="text: PercentualProcessadoFechamento.val"></span>
+            </div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" data-bind="style: { width: PercentualProcessadoFechamento.val }"></div>
+            </div>
+        </div>
+        <div class="row" data-bind="visible: !PercentualProcessadoFechamento.visible()">
+            <div class="col-12 col-md-6">
+                <!-- Card Valores da Fatura -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Valores da Fatura</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <section class="col-12 col-md-12 mb-3" data-bind="visible: GerarTituloPorDocumentoFiscal.val">
+                                <b data-bind="text: GerarTituloPorDocumentoFiscal.text"></b>
+                            </section>
+                            <section data-bind="visible: ValorTotal.visible" class="col-12 col-md-3 mb-3" style="font-size: 15px;">
+                                <b>Valor: </b>
+                                <span data-bind="text: ValorTotal.val, title: ValorTotal.val, attr: { title: ValorTotal.val }"></span>
+                            </section>
+                            <section data-bind="visible: Descontos.visible" class="col-12 col-md-3 mb-3" style="font-size: 15px">
+                                <b>Descontos:</b>
+                                <span data-bind="text: Descontos.val, title: Descontos.val, attr: { title: Descontos.val }"></span>
+                            </section>
+                            <section data-bind="visible: Acrescimos.visible" class="col-12 col-md-3 mb-3" style="font-size: 15px">
+                                <b>Acréscimos:</b>
+                                <span data-bind="text: Acrescimos.val, title: Acrescimos.val, attr: { title: Acrescimos.val }"></span>
+                            </section>
+                            <section data-bind="visible: TotalGeral.visible" class="col-12 col-md-3 mb-3" style="font-size: 15px">
+                                <b>Total Final:</b>
+                                <span data-bind="text: TotalGeral.val, title: TotalGeral.val, attr: { title: TotalGeral.val }"></span>
+                            </section>
+                            <section data-bind="visible: Moeda.visible" class="col-12 col-md-6 mb-3" style="font-size: 15px;">
+                                <b data-bind="text: Moeda.text"></b>
+                                <span data-bind="text: Moeda.val, title: Moeda.val, attr: { title: Moeda.val }"></span>
+                            </section>
+                            <section data-bind="visible: DescontosMoeda.visible" class="col-12 col-md-6 mb-3" style="font-size: 15px;">
+                                <b data-bind="text: DescontosMoeda.text"></b>
+                                <span data-bind="text: DescontosMoeda.val, title: DescontosMoeda.val, attr: { title: DescontosMoeda.val }"></span>
+                            </section>
+                            <section data-bind="visible: AcrescimosMoeda.visible" class="col-12 col-md-6 mb-3" style="font-size: 15px;">
+                                <b data-bind="text: AcrescimosMoeda.text"></b>
+                                <span data-bind="text: AcrescimosMoeda.val, title: AcrescimosMoeda.val, attr: { title: AcrescimosMoeda.val }"></span>
+                            </section>
+                            <section data-bind="visible: ValorTotalMoeda.visible" class="col-12 col-md-6 mb-3" style="font-size: 15px;">
+                                <b data-bind="text: ValorTotalMoeda.text"></b>
+                                <span data-bind="text: ValorTotalMoeda.val, title: ValorTotalMoeda.val, attr: { title: ValorTotalMoeda.val }"></span>
+                            </section>
+                        </div>
+                        <!-- Card Acréscimo e Desconto -->
+                        <div class="card" data-bind="visible: AcrescimosDescontos.visible">
+                            <div class="card-header">
+                                <div class="card-title">Acréscimo / Desconto</div>
+                            </div>
+                            <div class="card-body">
+                                <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: AcrescimosDescontos.idGrid}, enable: AcrescimosDescontos.enable" cellspacing="0"></table>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button class="btn btn-default btn-toolbar" data-bind="click: AdicionarAcrescimoDesconto.eventClick, enable: AdicionarAcrescimoDesconto.enable, visible: AdicionarAcrescimoDesconto.visible, attr: { id : AdicionarAcrescimoDesconto.id}" type="button">
+                                            <i class="fal fa-plus"></i>
+                                            <span data-bind="text:AdicionarAcrescimoDesconto.text, enable: AdicionarAcrescimoDesconto.enable"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-12 mt-3" data-bind="visible: ObservacaoFatura.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ObservacaoFatura.text, attr: { for: ObservacaoFatura.id }"></label>
+                                    <textarea class="form-control" rows="5" data-bind="value: ObservacaoFatura.val, valueUpdate: 'afterkeydown', attr: { maxlength: ObservacaoFatura.maxlength, id : ObservacaoFatura.id }, enable: ObservacaoFatura.enable"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12" data-bind="visible: ImprimirObservacaoFatura.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ImprimirObservacaoFatura.val, attr: { maxlength: ImprimirObservacaoFatura.maxlength, name: ImprimirObservacaoFatura.id, id: ImprimirObservacaoFatura.id }">
+                                        <label class="custom-control-label" data-bind="text: ImprimirObservacaoFatura.text, attr: { for: ImprimirObservacaoFatura.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer" data-bind="visible: SalvarValores.visible() || SalvarObservacao.visible()">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button data-bind="click: SalvarObservacao.eventClick, enable: SalvarObservacao.enable, visible: SalvarObservacao.visible, attr: { id : SalvarObservacao.id}" class="btn btn-success mx-3" type="button">
+                                    <span data-bind="text: SalvarObservacao.text"></span>
+                                </button>
+                                <button data-bind="click: SalvarValores.eventClick, enable: SalvarValores.enable, visible: SalvarValores.visible, attr: { id : SalvarValores.id}" class="btn btn-success" type="button">
+                                    <span data-bind="text:SalvarValores.text"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Dados da Fatura -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <div class="card-title">Dados da Fatura</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: TomadorFatura.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TomadorFatura.text, attr: { for: TomadorFatura.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: TomadorFatura.requiredClass, value: TomadorFatura.val, valueUpdate: 'afterkeydown', attr: { maxlength: TomadorFatura.maxlength, id : TomadorFatura.id}, enable: TomadorFatura.enable" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TomadorFatura.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12" data-bind="visible: GerarBoleto.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: GerarBoleto.text, attr: { for: GerarBoleto.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: GerarBoleto.requiredClass, value: GerarBoleto.val, valueUpdate: 'afterkeydown', attr: { maxlength: GerarBoleto.maxlength, id : GerarBoleto.id}, enable: GerarBoleto.enable" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: GerarBoleto.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: EmpresaFatura.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: EmpresaFatura.text, attr: { for: EmpresaFatura.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: EmpresaFatura.requiredClass, value: EmpresaFatura.val, valueUpdate: 'afterkeydown', attr: { maxlength: EmpresaFatura.maxlength, id : EmpresaFatura.id}, enable: EmpresaFatura.enable" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: EmpresaFatura.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: Banco.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Banco.text, attr: { for: Banco.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Banco.requiredClass, value: Banco.val, valueUpdate: 'afterkeydown', attr: { maxlength: Banco.maxlength, id : Banco.id}, enable: Banco.enable" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Banco.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Agencia.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Agencia.text"></label>
+                                    <input type="text" class="form-control" data-bind="enable: Agencia.enable, value: Agencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: Agencia.maxlength, id : Agencia.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Digito.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Digito.text"></label>
+                                    <input type="text" class="form-control" data-bind="enable: Digito.enable, value: Digito.val, valueUpdate: 'afterkeydown', attr: { maxlength: Digito.maxlength, id : Digito.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: NumeroConta.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: NumeroConta.text"></label>
+                                    <input type="text" class="form-control" data-bind="enable: NumeroConta.enable, value: NumeroConta.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroConta.maxlength, id : NumeroConta.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: TipoConta.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoConta.text, attr: { for: TipoConta.id }"></label>
+                                    <select class="form-control" data-bind="options: TipoConta.options, optionsText: 'text', optionsValue: 'value', value: TipoConta.val, attr: { id : TipoConta.id}, enable: TipoConta.enable"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <!-- Card Parcelas -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Parcelas</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-4" data-bind="visible: QuantidadeParcelas.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: QuantidadeParcelas.text, attr: { for: QuantidadeParcelas.id }"></label>
+                                    <select class="form-control" data-bind="options: QuantidadeParcelas.options, enable: QuantidadeParcelas.enable, optionsText: 'text', optionsValue: 'value', value: QuantidadeParcelas.val, attr: { id : QuantidadeParcelas.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: IntervaloDeDias.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: IntervaloDeDias.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: IntervaloDeDias.val, enable: IntervaloDeDias.enable, attr: { maxlength: IntervaloDeDias.maxlength, id : IntervaloDeDias.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: DataPrimeiroVencimento.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataPrimeiroVencimento.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: DataPrimeiroVencimento.val, enable: DataPrimeiroVencimento.enable, attr: { maxlength: DataPrimeiroVencimento.maxlength, id : DataPrimeiroVencimento.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: TipoArredondamento.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoArredondamento.text, attr: { for: TipoArredondamento.id }"></label>
+                                    <select class="form-control" data-bind="options: TipoArredondamento.options, enable: TipoArredondamento.enable, optionsText: 'text', optionsValue: 'value', value: TipoArredondamento.val, attr: { id : TipoArredondamento.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: FormaTitulo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: FormaTitulo.text, attr: { for: FormaTitulo.id }"></label>
+                                    <select class="form-control" data-bind="options: FormaTitulo.options, enable: FormaTitulo.enable, optionsText: 'text', optionsValue: 'value', value: FormaTitulo.val, attr: { id : FormaTitulo.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button data-bind="click: GerarParcelas.eventClick, enable: GerarParcelas.enable, visible: GerarParcelas.visible, attr: { id : GerarParcelas.id}" class="btn btn-success mx-3" type="button">
+                                    <span data-bind="text:GerarParcelas.text"></span>
+                                </button>
+                                <button data-bind="click: AtualizarParcelas.eventClick, enable: AtualizarParcelas.enable, visible: AtualizarParcelas.visible, attr: { id : AtualizarParcelas.id}" class="btn btn-primary" type="button">
+                                    <span data-bind="text:AtualizarParcelas.text"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Parcelas.idGrid}" cellspacing="0"></table>
+                    </div>
+                </div>
+                <!-- Card CTes para remover das integrações -->
+                <div class="card mt-3" data-bind="visible: PermiteRemoverCTesIntegracao.val">
+                    <div class="card-header">
+                        <div class="card-title">CT-es para Remover das Integrações</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: CTesRemoverIntegracao.idGrid}" cellspacing="0"></table>
+                            <div class="col-12 col-md-6" data-bind="visible: CTe.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: CTe.text, attr: { for: CTe.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: CTe.requiredClass, value: CTe.val, valueUpdate: 'afterkeydown', attr: { maxlength: CTe.maxlength, id : CTe.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: CTe.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button data-bind="click: SalvarCTeRemoverIntegracao.eventClick, enable: SalvarCTeRemoverIntegracao.enable, visible: SalvarCTeRemoverIntegracao.visible, attr: { id : SalvarCTeRemoverIntegracao.id}" class="btn btn-success" type="button">
+                                    <span data-bind="text: SalvarCTeRemoverIntegracao.text"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="divFaturaContabilizacao"></div>
+                <div id="divConfigRelatorio" style="display:none;"></div>
+            </div>
+        </div>
+        <footer data-bind="visible: !PercentualProcessadoFechamento.visible()">
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-end">
+                    <button class="btn btn-success mx-3" type="button" data-bind="click: DownloadPreviewDOCCOB.eventClick, enable: DownloadPreviewDOCCOB.enable, visible: DownloadPreviewDOCCOB.visible, attr: { id : DownloadPreviewDOCCOB.id}">
+                        <span data-bind="css: DownloadPreviewDOCCOB.icon"></span>
+                        <span data-bind="text: DownloadPreviewDOCCOB.text"></span>
+                    </button>
+                    <button class="btn btn-primary mx-3" type="button" data-bind="click: LiquidarFatura.eventClick, enable: LiquidarFatura.enable, visible: LiquidarFatura.visible, attr: { value: LiquidarFatura.text, id : LiquidarFatura.id}">
+                        <span data-bind="text: LiquidarFatura.text"></span>
+                    </button>
+                    <button class="btn btn-danger mx-3" type="button" data-bind="click: VisualizarFatura.eventClick, enable: VisualizarFatura.enable, visible: VisualizarFatura.visible, attr: { value: VisualizarFatura.text, id : VisualizarFatura.id}">
+                        <span data-bind="text: VisualizarFatura.text"></span>
+                    </button>
+                    <button class="btn btn-success mx-3" type="button" data-bind="click: FecharFatura.eventClick, enable: FecharFatura.enable, visible: FecharFatura.visible, attr: { value: FecharFatura.text, id : FecharFatura.id}">
+                        <span data-bind="text: FecharFatura.text"></span>
+                    </button>
+                    <button class="btn btn-danger mx-3" type="button" data-bind="click: ReAbrirFatura.eventClick, visible: ReAbrirFatura.visible, enable: ReAbrirFatura.enable, attr: { value: ReAbrirFatura.text, id : ReAbrirFatura.id}">
+                        <span data-bind="text: ReAbrirFatura.text"></span>
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>

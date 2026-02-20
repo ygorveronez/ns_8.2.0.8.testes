@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:p1="http://electrolux.com/SD/OL/Notfis" name="SI_PendNotfis_EDI_Sync_Outbound" targetNamespace="http://electrolux.com/SD/OL/Notfis" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation />
+  <wsp:UsingPolicy wsdl:required="true" />
+  <wsp:Policy wsu:Id="OP_SI_PendNotfis_EDI_Sync_Outbound" />
+  <wsdl:types>
+    <xsd:schema xmlns="http://electrolux.com/SD/OL/Common" targetNamespace="http://electrolux.com/SD/OL/Common" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:complexType name="DT_IdentService_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">Identificação no serviço</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">0b8d81cbe30c11ea8989000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="identCarrier">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">754830b2e22811eaacda005056ba0c66</xsd:appinfo>
+              <xsd:documentation>ID de identificação no serviço</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="10" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema xmlns:p4="http://electrolux.com/SD/OL/Common" xmlns="http://electrolux.com/SD/OL/Notfis" targetNamespace="http://electrolux.com/SD/OL/Notfis" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://electrolux.com/SD/OL/Common" />
+      <xsd:element name="FM_PendNotfis_EDI">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="standard" type="p1:ExchangeFaultData" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="MT_RequestPendNotfis_EDI" type="p1:DT_SearchPendNotifis_SAP" />
+      <xsd:element name="MT_ResultPendNotfis_EDI" type="p1:DT_ReturnPendNotifis_SAP" />
+      <xsd:complexType name="ExchangeLogData">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">a283e980e22d11ea85a5000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="severity" type="xsd:string" />
+          <xsd:element name="text" type="xsd:string" />
+          <xsd:element minOccurs="0" name="url" type="xsd:string" />
+          <xsd:element minOccurs="0" name="id" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_ReturnPendNotifis_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">NOTFIS: Retorno da busca de NOTFIS pendentes</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">55906cf7e22b11eacaa6000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="listPendNotfis">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">6f7a2fc0e22b11eaafad005056ba0c66</xsd:appinfo>
+              <xsd:documentation>Lista de NOTFIS pendentes</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="identNotfis" type="p1:DT_IdentNotfis">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">f883e711e22911ea8bab005056ba0c66</xsd:appinfo>
+                    <xsd:documentation>Identificação NOTIFIS</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="dataDisp" type="xsd:date">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">21b98f87e22a11eac915005056ba0c66</xsd:appinfo>
+                    <xsd:documentation>Data da sua disponibilidade</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="horaDisp" type="xsd:time">
+                  <xsd:annotation>
+                    <xsd:appinfo source="http://sap.com/xi/TextID">21b98f88e22a11ea8217005056ba0c66</xsd:appinfo>
+                    <xsd:documentation>Hora da sua disponibilidade</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_SearchPendNotifis_SAP">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">NOTFIS: Parâmetros de busca</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">23e47a0ee22911ea8302000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="identService" type="p4:DT_IdentService_SAP">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">22e8063ae22911eabd81005056ba0c66</xsd:appinfo>
+              <xsd:documentation>Identifcação no serviço</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="dataInicial" type="xsd:date">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">22e8063be22911eacfb0005056ba0c66</xsd:appinfo>
+              <xsd:documentation>Data inicial</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="dataFinal" type="xsd:date">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">22e8063ce22911eaac0f005056ba0c66</xsd:appinfo>
+              <xsd:documentation>Data Final</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="DT_IdentNotfis">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="EN">NOTFIS: Identificação do NOTFIS</xsd:documentation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">b62fa627e22911eaca25000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="ident">
+            <xsd:annotation>
+              <xsd:appinfo source="http://sap.com/xi/TextID">7f93c151e22911eaaedd005056ba0c66</xsd:appinfo>
+              <xsd:documentation>Identificação NOTIFIS</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="14" />
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="ExchangeFaultData">
+        <xsd:annotation>
+          <xsd:appinfo source="http://sap.com/xi/VersionID">a2610304e22d11eab429000025a7ef3e</xsd:appinfo>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="faultText" type="xsd:string" />
+          <xsd:element minOccurs="0" name="faultUrl" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="faultDetail" type="p1:ExchangeLogData" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="MT_RequestPendNotfis_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="MT_RequestPendNotfis_EDI" element="p1:MT_RequestPendNotfis_EDI" />
+  </wsdl:message>
+  <wsdl:message name="MT_ResultPendNotfis_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="MT_ResultPendNotfis_EDI" element="p1:MT_ResultPendNotfis_EDI" />
+  </wsdl:message>
+  <wsdl:message name="FM_PendNotfis_EDI">
+    <wsdl:documentation />
+    <wsdl:part name="FM_PendNotfis_EDI" element="p1:FM_PendNotfis_EDI" />
+  </wsdl:message>
+  <wsdl:portType name="SI_PendNotfis_EDI_Sync_Outbound">
+    <wsdl:documentation />
+    <wsdl:operation name="SI_PendNotfis_EDI_Sync_Outbound">
+      <wsdl:documentation />
+      <wsp:Policy>
+        <wsp:PolicyReference URI="#OP_SI_PendNotfis_EDI_Sync_Outbound" />
+      </wsp:Policy>
+      <wsdl:input message="p1:MT_RequestPendNotfis_EDI" />
+      <wsdl:output message="p1:MT_ResultPendNotfis_EDI" />
+      <wsdl:fault name="FM_PendNotfis_EDI" message="p1:FM_PendNotfis_EDI" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SI_PendNotfis_EDI_Sync_OutboundBinding" type="p1:SI_PendNotfis_EDI_Sync_Outbound">
+    <binding transport="http://schemas.xmlsoap.org/soap/http" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    <wsdl:operation name="SI_PendNotfis_EDI_Sync_Outbound">
+      <operation soapAction="http://sap.com/xi/WebService/soap1.1" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      <wsdl:input>
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:input>
+      <wsdl:output>
+        <body use="literal" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:output>
+      <wsdl:fault name="FM_PendNotfis_EDI">
+        <fault use="literal" name="FM_PendNotfis_EDI" namespace="" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SI_PendNotfis_EDI_Sync_OutboundService">
+    <wsdl:port name="HTTP_Port" binding="p1:SI_PendNotfis_EDI_Sync_OutboundBinding">
+      <address location="http://r6l.biz.electrolux.com:56300/XISOAPAdapter/MessageServlet?senderParty=CARRIER&amp;senderService=BRSV_SERVICE_EDI&amp;receiverParty=CARRIER&amp;receiverService=BRSV_SERVICE_EDI&amp;interface=SI_PendNotfis_EDI_Sync_Outbound&amp;interfaceNamespace=http%3A%2F%2Felectrolux.com%2FSD%2FOL%2FNotfis" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </wsdl:port>
+    <wsdl:port name="HTTPS_Port" binding="p1:SI_PendNotfis_EDI_Sync_OutboundBinding">
+      <address location="https://r6l.biz.electrolux.com:56301/XISOAPAdapter/MessageServlet?senderParty=CARRIER&amp;senderService=BRSV_SERVICE_EDI&amp;receiverParty=CARRIER&amp;receiverService=BRSV_SERVICE_EDI&amp;interface=SI_PendNotfis_EDI_Sync_Outbound&amp;interfaceNamespace=http%3A%2F%2Felectrolux.com%2FSD%2FOL%2FNotfis" xmlns="http://schemas.xmlsoap.org/wsdl/soap/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://schemas.ipc.adm.br/efrete/veiculos" xmlns:s1="http://schemas.ipc.adm.br/efrete/veiculos/objects" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s2="http://schemas.ipc.adm.br/efrete/objects" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://schemas.ipc.adm.br/efrete/veiculos" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/veiculos">
+      <s:import namespace="http://schemas.ipc.adm.br/efrete/veiculos/objects" />
+      <s:element name="ObterPorPlaca">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:ObterPorPlacaRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObterPorPlacaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:ObterPorPlacaResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Gravar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:GravarRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GravarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:GravarResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/veiculos/objects">
+      <s:import namespace="http://schemas.ipc.adm.br/efrete/objects" />
+      <s:element name="ObterPorPlacaRequest" type="s1:ObterPorPlacaRequest" />
+      <s:complexType name="ObterPorPlacaRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Placa" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="RNTRC" type="s:long" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="ObterPorPlacaResult" nillable="true" type="s1:ObterPorPlacaResponse" />
+      <s:complexType name="ObterPorPlacaResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Veiculo" type="s1:Veiculo" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Veiculo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Placa" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Renavam" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="Chassi" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RNTRC" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroDeEixos" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodigoMunicipio" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Marca" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Modelo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnoFabricacao" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="AnoModelo" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cor" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Tara" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CapacidadeKg" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CapacidadeM3" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoRodado" nillable="true" type="s1:TipoRodado" />
+          <s:element minOccurs="1" maxOccurs="1" name="TipoCarroceria" nillable="true" type="s1:TipoCarroceria" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TipoRodado">
+        <s:restriction base="s:string">
+          <s:enumeration value="NaoAplicavel" />
+          <s:enumeration value="Truck" />
+          <s:enumeration value="Toco" />
+          <s:enumeration value="Cavalo" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="TipoCarroceria">
+        <s:restriction base="s:string">
+          <s:enumeration value="NaoAplicavel" />
+          <s:enumeration value="Aberta" />
+          <s:enumeration value="FechadaOuBau" />
+          <s:enumeration value="Granelera" />
+          <s:enumeration value="PortaContainer" />
+          <s:enumeration value="Sider" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GravarRequest" type="s1:GravarRequest" />
+      <s:complexType name="GravarRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Request">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Veiculo" type="s1:Veiculo" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="GravarResult" nillable="true" type="s1:GravarResponse" />
+      <s:complexType name="GravarResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Veiculo" type="s1:Veiculo" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/objects">
+      <s:complexType name="Request" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Token" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Integrador" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Versao" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Response" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Versao" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Sucesso" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Excecao" type="s2:Excecao" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocoloServico" nillable="true" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Excecao">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Mensagem" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Codigo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ObterPorPlacaSoapIn">
+    <wsdl:part name="parameters" element="tns:ObterPorPlaca" />
+  </wsdl:message>
+  <wsdl:message name="ObterPorPlacaSoapOut">
+    <wsdl:part name="parameters" element="tns:ObterPorPlacaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GravarSoapIn">
+    <wsdl:part name="parameters" element="tns:Gravar" />
+  </wsdl:message>
+  <wsdl:message name="GravarSoapOut">
+    <wsdl:part name="parameters" element="tns:GravarResponse" />
+  </wsdl:message>
+  <wsdl:portType name="VeiculosServiceSoap">
+    <wsdl:operation name="ObterPorPlaca">
+      <wsdl:input message="tns:ObterPorPlacaSoapIn" />
+      <wsdl:output message="tns:ObterPorPlacaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Gravar">
+      <wsdl:input message="tns:GravarSoapIn" />
+      <wsdl:output message="tns:GravarSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="VeiculosServiceSoap" type="tns:VeiculosServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ObterPorPlaca">
+      <soap:operation soapAction="http://schemas.ipc.adm.br/efrete/veiculos/ObterPorPlaca" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gravar">
+      <soap:operation soapAction="http://schemas.ipc.adm.br/efrete/veiculos/Gravar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="VeiculosServiceSoap12" type="tns:VeiculosServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ObterPorPlaca">
+      <soap12:operation soapAction="http://schemas.ipc.adm.br/efrete/veiculos/ObterPorPlaca" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Gravar">
+      <soap12:operation soapAction="http://schemas.ipc.adm.br/efrete/veiculos/Gravar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="VeiculosService">
+    <wsdl:port name="VeiculosServiceSoap" binding="tns:VeiculosServiceSoap">
+      <soap:address location="https://dev.efrete.com.br/Services/VeiculosService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="VeiculosServiceSoap12" binding="tns:VeiculosServiceSoap12">
+      <soap12:address location="https://dev.efrete.com.br/Services/VeiculosService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

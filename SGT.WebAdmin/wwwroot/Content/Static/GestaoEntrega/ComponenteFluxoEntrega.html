@@ -1,0 +1,37 @@
+﻿<script type="text/html" id="fluxo-entrega-template">
+    <div class="well container-fluxo" data-bind="css: { 'exibicao-compacta': KnoutEtapas.val().length > 10}">
+        <div class="row">
+            <div class="col col col-xs-12 col-sm-12 col-md-2 col-lg-1 cabecalho-fluxo">
+                <div data-bind="css: {'carga-detalhes': true, 'fluxo-carga-cancelada': CargaCancelada.val, 'no-pointer': Carga.OcultarFluxoCarga}, attr: {id : Carga.idTab }, click : Carga.eventClick">
+                    <span data-bind="visible: CargaCancelada.val" class="tag-cancelada">Cancelada</span>
+                    <h3 data-bind="text: NumeroCarregamento.val"></h3>
+                    <small style="display:block; margin-top:25px; text-align:center" data-bind="text: Placas.val, visible: Placas.visible"></small>
+                    <small style="display:block" data-bind="text: DataCarga.val, visible: DataCarga.visible"></small>
+                </div>
+            </div>
+            <dv class="col col col-xs-12 col-sm-12 col-md-10 col-lg-11 etapas-fluxo">
+                <span class="btn-group auditoria-fluxo-entrega" data-bind="click: Auditar.eventClick, visible: Auditar.visible">
+                    <button class="btn btn-default btn-xs btn-block">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </span>
+                <div data-bind="css: { 'fluxo-com-auditoria' : Auditar.visible, 'container-etapas' : true }">
+                    <ul class="bootstrapWizard form-wizard WizardCarga" data-bind="foreach: { data: KnoutEtapas.val, as: 'Etapa' }, style: {'width': KnoutEtapas.width}">
+                        <li data-target="#stepFluxo" data-bind="style: {width : $parent.TamanhoEtapa.val }">
+                            <!-- ko foreach: Etapa.info -->
+                            <small data-bind="css: 'small-info ' + $data.type">
+                                <b data-bind="text : $data.data"></b>
+                            </small>
+                            <!-- /ko -->
+
+                            <a href="#tabFluxo" data-bind="click : Etapa.eventClick" data-toggle="tab">
+                                <span rel="popover-hover" data-placement="top" data-bind="attr: {class: Etapa.cssClass, 'data-content' : Etapa.tooltip, 'data-original-title' : Etapa.tooltipTitle }" style="padding: 4px 12px;"></span>
+                                <span class="title" data-bind="text: Etapa.text" style="margin-top:-10px"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </dv>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,42 @@
+namespace Dominio.NDDigital.v104.Emissao
+{
+    /// <summary>
+    /// ICMS isento não tributado ou diferido
+    /// </summary>
+    public class Registro24145 : Registro
+    {
+        #region Construtores
+
+        public Registro24145(string registro)
+            : base(registro)
+        {
+            this.GerarRegistro();
+        }
+
+        #endregion
+
+        #region Propriedades
+
+        /// <summary>
+        /// Tributação do Serviço
+        /// 40 - ICMS isenção;
+        /// 41 - ICMS não tributada;
+        /// 51 - ICMS diferido;
+        /// </summary>
+        public string CST { get; set; }
+
+        #endregion
+
+        #region Métodos
+
+        protected override void GerarRegistro()
+        {
+            string[] dados = this.StringRegistro.Split(';');
+
+            this.Identificador = this.ObterString(dados[0]);
+            this.CST = this.ObterString(dados[1]);
+        }
+
+        #endregion
+    }
+}

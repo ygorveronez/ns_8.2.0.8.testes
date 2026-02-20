@@ -1,0 +1,190 @@
+﻿
+<section id="widget-grid">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Notas Fiscais</li>
+        <li class="breadcrumb-item active">Contrato Nota Fiscal</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class="subheader-icon fal fa-file"></i> Contrato Nota Fiscal
+        </h1>
+    </div>
+
+    <div id="knockoutPesquisaContratoNotaFiscal" class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <i class="fal fa-search"></i>
+                    Pesquisar Contrato
+                </button>
+
+                <div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <form class="mt-3">
+                        <div class="row">
+                            <div class="col-12 col-md-4" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible : Contrato.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Contrato.text, attr: { for: Contrato.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Contrato.val, attr: { maxlength: Contrato.maxlength, id : Contrato.id} , valueUpdate: 'afterkeydown'" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Ativo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Ativo.text, attr: { for: Ativo.id }"></label>
+                                    <select class="form-control" data-bind="options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { id : Ativo.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-end my-3">
+                        <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                            <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <ul class="nav nav-tabs">
+                    <li id="liTabContrato" class="nav-item">
+                        <a href="#tabContrato" class="nav-link active" data-bs-toggle="tab">
+                            <i class="fal fa-edit"></i> <span class="hidden-mobile hidden-tablet">Cadastro do Contrato </span>
+                        </a>
+                    </li>
+                    <li id="liTabConfiguracao" class="nav-item" style="display: none;">
+                        <a href="#tabConfiguracao" class="nav-link" data-bs-toggle="tab">
+                            <i class="fal fa-gear"></i> <span class="hidden-mobile hidden-tablet">Configurações </span>
+                        </a>
+                    </li>
+                    <li id="liTabTransportadores" class="nav-item" style="display: none;">
+                        <a href="#tabTransportadores" class="nav-link" data-bs-toggle="tab">
+                            <i class="fal fa-truck"></i> <span class="hidden-mobile hidden-tablet">Transportadores </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content border border-top-0 p-3">
+                    <div class="tab-pane fade active show" id="tabContrato">
+                        <h3>Cadastrar Contrato</h3>
+                        <form id="knockoutCadastroContratoNotaFiscal">
+                            <div class="row">
+                                <div class="col-12 col-md-9" data-bind="visible: Descricao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: Ativo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Ativo.text, attr: { for: Ativo.id }"></label>
+                                        <select class="form-control" data-bind="options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { id : Ativo.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div id="txtEditor"></div>
+                                </div>
+                                <section class="col-12" data-bind="visible: Contrato.visible">
+                                    <h5 class="mt-1">Tags:</h5>
+                                    <div class="checkboxes">
+                                        <button class="btn btn-default mb-2" type="button" data-bind="click: TagRazaoSocialCliente.eventClick, visible: TagRazaoSocialCliente.visible, text: TagRazaoSocialCliente.text, attr: { id : TagRazaoSocialCliente.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagCNPJCliente.eventClick, visible: TagCNPJCliente.visible, text: TagCNPJCliente.text, attr: { id : TagCNPJCliente.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagEnderecoCliente.eventClick, visible: TagEnderecoCliente.visible, text: TagEnderecoCliente.text, attr: { id : TagEnderecoCliente.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagComplementoCliente.eventClick, visible: TagComplementoCliente.visible, text: TagComplementoCliente.text, attr: { id : TagComplementoCliente.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagBairroCliente.eventClick, visible: TagBairroCliente.visible, text: TagBairroCliente.text, attr: { id : TagBairroCliente.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagCidadeUFCliente.eventClick, visible: TagCidadeUFCliente.visible, text: TagCidadeUFCliente.text, attr: { id : TagCidadeUFCliente.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagRazaoSocialAdmin.eventClick, visible: TagRazaoSocialAdmin.visible, text: TagRazaoSocialAdmin.text, attr: { id : TagRazaoSocialAdmin.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagCNPJAdmin.eventClick, visible: TagCNPJAdmin.visible, text: TagCNPJAdmin.text, attr: { id : TagCNPJAdmin.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagEnderecoAdmin.eventClick, visible: TagEnderecoAdmin.visible, text: TagEnderecoAdmin.text, attr: { id : TagEnderecoAdmin.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagComplementoAdmin.eventClick, visible: TagComplementoAdmin.visible, text: TagComplementoAdmin.text, attr: { id : TagComplementoAdmin.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagBairroAdmin.eventClick, visible: TagBairroAdmin.visible, text: TagBairroAdmin.text, attr: { id : TagBairroAdmin.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagCidadeUFAdmin.eventClick, visible: TagCidadeUFAdmin.visible, text: TagCidadeUFAdmin.text, attr: { id : TagCidadeUFAdmin.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagResponsavelAdmin.eventClick, visible: TagResponsavelAdmin.visible, text: TagResponsavelAdmin.text, attr: { id : TagResponsavelAdmin.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagDataAtual.eventClick, visible: TagDataAtual.visible, text: TagDataAtual.text, attr: { id : TagDataAtual.id}"></button>
+                                        <button class="btn btn-default ms-2 mb-2" type="button" data-bind="click: TagDataCadastro.eventClick, visible: TagDataCadastro.visible, text: TagDataCadastro.text, attr: { id : TagDataCadastro.id}"></button>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-start">
+                                    <div class="form-group col-12 col-md-6" data-bind="visible: Arquivo.visible">
+                                        <p class="form-label" data-bind="text: Arquivo.text"></p>
+                                        <div class="custom-file" data-bind="visible: Arquivo.visible">
+                                            <input type="file" class="custom-file-input" name="file" accept=".pdf" data-bind="enable : Arquivo.enable, value: Arquivo.val, attr: {id: Arquivo.id}" readonly>
+                                            <label class="custom-file-label" data-bind="attr: {for: Arquivo.id}, text: Arquivo.val() !=``? Arquivo.val(): `Selecione um arquivo para anexar`"></label>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-danger me-3" type="button" data-bind="visible: RemoverArquivo.visible, click: RemoverArquivo.eventClick, attr: { id: RemoverArquivo.id}, enable: RemoverArquivo.enable">
+                                        <i class="fal fa-times "></i> <span data-bind="text: RemoverArquivo.text"></span>
+                                    </button>
+                                    <button class="btn btn-primary me-3" type="button" data-bind="visible: DownloadArquivo.visible, click: DownloadArquivo.eventClick, attr: { id: DownloadArquivo.id}">
+                                        <i class="fal fa-download"></i><span data-bind="text: DownloadArquivo.text"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="tabConfiguracao">
+                        <h3>Configurações</h3>
+                        <form id="knockoutContratoConfiguracao">
+                            <div class="row">
+                                <div class="col-12 col-md-3" data-bind="visible: RecorrenciaEmDias.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: RecorrenciaEmDias.text, attr: { for: RecorrenciaEmDias.id }"></label>
+                                        <input type="text" class="form-control" data-bind="value: RecorrenciaEmDias.val, valueUpdate: 'afterkeydown', attr: { maxlength: RecorrenciaEmDias.maxlength, id : RecorrenciaEmDias.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12" data-bind="visible: NotificarPorEmail.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: NotificarPorEmail.val, valueUpdate: 'afterkeydown', attr: { name: NotificarPorEmail.id, id : NotificarPorEmail.id}" />
+                                            <label class="custom-control-label" data-bind="text: NotificarPorEmail.text, attr: { for: NotificarPorEmail.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" id="tabTransportadores">
+                        <h3>Transportadores</h3>
+                        <form id="knockoutContratoTransportador">
+                            <button class="btn btn-primary mb-3" type="button" data-bind="attr: { id: Transportador.idBtnSearch}">
+                                <i class="fal fa-plus"></i> <span data-bind="text: Transportador.text"></span>
+                            </button>
+                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Grid.id}" cellspacing="0"></table>
+                        </form>
+                    </div>
+                    <div id="knockoutCRUDContratoNotaFiscal" class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-danger" type="button" data-bind="click: Excluir.eventClick, visible: Excluir.visible, text: Excluir.text, attr: { id : Excluir.id}"></button>
+                        <button class="btn btn-default ms-2" type="button" data-bind="click: Cancelar.eventClick, text: Cancelar.text, visible: Cancelar.visible, attr: { value: Cancelar.text, id : Cancelar.id}"></button>
+                        <button class="btn btn-success ms-2" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                        <button class="btn btn-success ms-2" type="button" data-bind="click: Atualizar.eventClick,visible: Atualizar.visible, text: Atualizar.text, attr: { id : Atualizar.id}"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/summernote" />
+
+<script src="~/scripts/contratoNotaFiscal"></script>
+<script src="~/scripts/summernote"></script>
+
+<script type="text/javascript">
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadContratoNotaFiscal();
+    });
+
+</script>
+

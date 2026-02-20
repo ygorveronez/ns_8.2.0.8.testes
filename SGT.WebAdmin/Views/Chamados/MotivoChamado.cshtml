@@ -1,0 +1,1232 @@
+﻿
+<style>
+    .divPergunta {
+        position: relative;
+        font-weight: 600;
+    }
+
+        .divPergunta span:nth-child(2) {
+            position: absolute;
+            top: -15px;
+            font-size: 0.8em;
+            left: 0;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+</style>
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Chamados</li>
+    <li class="breadcrumb-item active">Motivo Chamado</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i></i> @Localization.Resources.Chamado.MotivoChamado.DescricaoMotivoChamado
+    </h1>
+</div>
+
+<div id="knockoutPesquisaMotivoChamado">
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <i class="fal fa-search"></i>
+                    @Localization.Resources.Chamado.MotivoChamado.PesquisarMotivoAtendimento
+                </button>
+
+                <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-9" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: Status.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Status.text"></label>
+                                    <select class="form-control" data-bind="options: Status.options, optionsText: 'text', optionsValue: 'value', value: Status.val, attr: { id : Status.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex align-items-center justify-content-end mb-3">
+                        <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel mt-3" id="wid-id-4">
+    <div class="panel-container">
+        <div class="panel-content">
+            <ul class="nav nav-tabs">
+                <li class="nav-item" id="liTabMotivoChamado">
+                    <a href="#tabMotivoChamado" class="nav-link active" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">@Localization.Resources.Chamado.MotivoChamado.CadastroMotivo </span>
+                    </a>
+                </li>
+                <li class="nav-item" id="liTabMotivoChamadoData" style="display: none">
+                    <a href="#tabMotivoChamadoData" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">@Localization.Resources.Chamado.MotivoChamado.Datas </span>
+                    </a>
+                </li>
+                <li class="nav-item" id="liTabArvoreDesicao" style="display: none">
+                    <a href="#tabArvoreDesicao" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">@Localization.Resources.Chamado.MotivoChamado.ArvoreDecisao </span>
+                    </a>
+                </li>
+
+                <li class="nav-item" id="liTabGatilhosTempoList" style="display: none">
+                    <a href="#tabGatilhosTempoList" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">@Localization.Resources.Chamado.MotivoChamado.GatilhosTempoEscaltionList </span>
+                    </a>
+                </li>
+                <li class="nav-item" id="liTabGatilhosAPartirDeIntegracao">
+                    <a href="#tabGatilhosAPartirDeIntegracao" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">@Localization.Resources.Chamado.MotivoChamado.GatilhosIntegracoes</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="liTabCausasParaFinalizacaoArvoreDecisao" style="display: none">
+                    <a href="#tabCausasParaFinalizacaoArvoreDecisao" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">@Localization.Resources.Chamado.MotivoChamado.Causas</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="liTabGatilhosNaCarga">
+                    <a href="#tabGatilhosNaCarga" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">@Localization.Resources.Chamado.MotivoChamado.GatilhosNaCarga</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="liTabNotificacaoEmail">
+                    <a href="#tabNotificacaoEmail" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">@Localization.Resources.Chamado.MotivoChamado.NotificacaoEmail</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="liTabCriticidadeAtendimento">
+                    <a href="#tabCriticidadeAtendimento" class="nav-link" data-bs-toggle="tab">
+                        <span class="hidden-mobile hidden-tablet">Criticidade do Atendimento</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content border border-top-0 p-3">
+                <div class="tab-pane fade active show" id="tabMotivoChamado" role="tabpanel">
+                    <form novalidate id="knockoutMotivoChamado">
+                        <div class="row">
+
+                            <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: CodigoIntegracao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: CodigoIntegracao.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: CodigoIntegracao.requiredClass, value: CodigoIntegracao.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoIntegracao.maxlength, id : CodigoIntegracao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: TipoMotivoAtendimento.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoMotivoAtendimento.text, attr: { for: TipoMotivoAtendimento.id }"></label>
+                                    <select class="form-control" data-bind="class: TipoMotivoAtendimento.requiredClass, options: TipoMotivoAtendimento.options, optionsText: 'text', optionsValue: 'value', value: TipoMotivoAtendimento.val, attr: { maxlength: TipoMotivoAtendimento.maxlength, id : TipoMotivoAtendimento.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Status.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Status.text, attr: { for: Status.id }"></label>
+                                    <select class="form-control" data-bind="class: Status.requiredClass, options: Status.options, optionsText: 'text', optionsValue: 'value', value: Status.val, attr: { maxlength: Status.maxlength, id : Status.id}"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6" data-bind="visible: TipoOcorrencia.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoOcorrencia.text, attr: { for: TipoOcorrencia.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: TipoOcorrencia.requiredClass, value: TipoOcorrencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoOcorrencia.maxlength, id : TipoOcorrencia.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoOcorrencia.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: Genero.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Genero.text, attr: { for: Genero.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Genero.requiredClass, value: Genero.val, valueUpdate: 'afterkeydown', attr: { maxlength: Genero.maxlength, id : Genero.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Genero.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: AreaEnvolvida.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: AreaEnvolvida.text, attr: { for: AreaEnvolvida.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: AreaEnvolvida.requiredClass, value: AreaEnvolvida.val, valueUpdate: 'afterkeydown', attr: { maxlength: AreaEnvolvida.maxlength, id : AreaEnvolvida.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: AreaEnvolvida.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: GrupoMotivoChamado.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: GrupoMotivoChamado.text, attr: { for: GrupoMotivoChamado.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: GrupoMotivoChamado.requiredClass, value: GrupoMotivoChamado.val, valueUpdate: 'afterkeydown', attr: { maxlength: GrupoMotivoChamado.maxlength, id : GrupoMotivoChamado.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: GrupoMotivoChamado.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: NumeroCriticidadeAtendimento.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: NumeroCriticidadeAtendimento.text, attr: { for: NumeroCriticidadeAtendimento.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: NumeroCriticidadeAtendimento.requiredClass, value: NumeroCriticidadeAtendimento.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroCriticidadeAtendimento.maxlength, id : NumeroCriticidadeAtendimento.id}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: TipoQuebraRegraPallet.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoQuebraRegraPallet.text, attr: { for: TipoQuebraRegraPallet.id }"></label>
+                                    <select class="form-control" data-bind="class: TipoQuebraRegraPallet.requiredClass, options: TipoQuebraRegraPallet.options, optionsText: 'text', optionsValue: 'value', value: TipoQuebraRegraPallet.val, attr: { maxlength: TipoQuebraRegraPallet.maxlength, id : TipoQuebraRegraPallet.id}"></select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: ValidaValorCarga.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ValidaValorCarga.val, attr: { maxlength: ValidaValorCarga.maxlength, name: ValidaValorCarga.id, id: ValidaValorCarga.id }">
+                                        <label class="custom-control-label" data-bind="text: ValidaValorCarga.text, attr: { for: ValidaValorCarga.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ValidaValorDescarga.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ValidaValorDescarga.val, attr: { maxlength: ValidaValorDescarga.maxlength, name: ValidaValorDescarga.id, id: ValidaValorDescarga.id }">
+                                        <label class="custom-control-label" data-bind="text: ValidaValorDescarga.text, attr: { for: ValidaValorDescarga.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ChamadoDeveSerAbertoPeloEmbarcador.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ChamadoDeveSerAbertoPeloEmbarcador.val, attr: { maxlength: ChamadoDeveSerAbertoPeloEmbarcador.maxlength, name: ChamadoDeveSerAbertoPeloEmbarcador.id, id: ChamadoDeveSerAbertoPeloEmbarcador.id }">
+                                        <label class="custom-control-label" data-bind="text: ChamadoDeveSerAbertoPeloEmbarcador.text, attr: { for: ChamadoDeveSerAbertoPeloEmbarcador.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: GerarCargaDevolucaoSeAprovado.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: GerarCargaDevolucaoSeAprovado.val, attr: { maxlength: GerarCargaDevolucaoSeAprovado.maxlength, name: GerarCargaDevolucaoSeAprovado.id, id: GerarCargaDevolucaoSeAprovado.id }">
+                                        <label class="custom-control-label" data-bind="text: GerarCargaDevolucaoSeAprovado.text, attr: { for: GerarCargaDevolucaoSeAprovado.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: GerarValePalletSeAprovado.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: GerarValePalletSeAprovado.val, attr: { maxlength: GerarValePalletSeAprovado.maxlength, name: GerarValePalletSeAprovado.id, id: GerarValePalletSeAprovado.id }">
+                                        <label class="custom-control-label" data-bind="text: GerarValePalletSeAprovado.text, attr: { for: GerarValePalletSeAprovado.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ExigeValor.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ExigeValor.val, attr: { maxlength: ExigeValor.maxlength, name: ExigeValor.id, id: ExigeValor.id }">
+                                        <label class="custom-control-label" data-bind="text: ExigeValor.text, attr: { for: ExigeValor.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ExigeValorNaLiberacao.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ExigeValorNaLiberacao.val, attr: { maxlength: ExigeValorNaLiberacao.maxlength, name: ExigeValorNaLiberacao.id, id: ExigeValorNaLiberacao.id }">
+                                        <label class="custom-control-label" data-bind="text: ExigeValorNaLiberacao.text, attr: { for: ExigeValorNaLiberacao.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ObrigarMotoristaInformarMultiMobile.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ObrigarMotoristaInformarMultiMobile.val, attr: { maxlength: ObrigarMotoristaInformarMultiMobile.maxlength, name: ObrigarMotoristaInformarMultiMobile.id, id: ObrigarMotoristaInformarMultiMobile.id }">
+                                        <label class="custom-control-label" data-bind="text: ObrigarMotoristaInformarMultiMobile.text, attr: { for: ObrigarMotoristaInformarMultiMobile.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ExigeFotoAbertura.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ExigeFotoAbertura.val, attr: { maxlength: ExigeFotoAbertura.maxlength, name: ExigeFotoAbertura.id, id: ExigeFotoAbertura.id }">
+                                        <label class="custom-control-label" data-bind="text: ExigeFotoAbertura.text, attr: { for: ExigeFotoAbertura.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ExigeQRCodeAbertura.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ExigeQRCodeAbertura.val, attr: { maxlength: ExigeQRCodeAbertura.maxlength, name: ExigeQRCodeAbertura.id, id: ExigeQRCodeAbertura.id }">
+                                        <label class="custom-control-label" data-bind="text: ExigeQRCodeAbertura.text, attr: { for: ExigeQRCodeAbertura.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: GerarOcorrenciaAutomaticamente.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: GerarOcorrenciaAutomaticamente.val, attr: { maxlength: GerarOcorrenciaAutomaticamente.maxlength, name: GerarOcorrenciaAutomaticamente.id, id: GerarOcorrenciaAutomaticamente.id }">
+                                        <label class="custom-control-label" data-bind="text: GerarOcorrenciaAutomaticamente.text, attr: { for: GerarOcorrenciaAutomaticamente.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: GerarOcorrenciaAutomaticamente.val()">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: GerarCTeComValorIgualCTeAnterior.val, attr: { maxlength: GerarCTeComValorIgualCTeAnterior.maxlength, name: GerarCTeComValorIgualCTeAnterior.id, id: GerarCTeComValorIgualCTeAnterior.id }">
+                                        <label class="custom-control-label" data-bind="text: GerarCTeComValorIgualCTeAnterior.text, attr: { for: GerarCTeComValorIgualCTeAnterior.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: GerarOcorrenciaAutomaticamente.val()">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: CalcularOcorrenciaPorTabelaFrete.val, attr: { maxlength: CalcularOcorrenciaPorTabelaFrete.maxlength, name: CalcularOcorrenciaPorTabelaFrete.id, id: CalcularOcorrenciaPorTabelaFrete.id }">
+                                        <label class="custom-control-label" data-bind="text: CalcularOcorrenciaPorTabelaFrete.text, attr: { for: CalcularOcorrenciaPorTabelaFrete.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ValidarDuplicidade.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ValidarDuplicidade.val, attr: { maxlength: ValidarDuplicidade.maxlength, name: ValidarDuplicidade.id, id: ValidarDuplicidade.id }">
+                                        <label class="custom-control-label" data-bind="text: ValidarDuplicidade.text, attr: { for: ValidarDuplicidade.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: DisponibilizaParaReeentrega.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: DisponibilizaParaReeentrega.val, attr: { maxlength: DisponibilizaParaReeentrega.maxlength, name: DisponibilizaParaReeentrega.id, id: DisponibilizaParaReeentrega.id }">
+                                        <label class="custom-control-label" data-bind="text: DisponibilizaParaReeentrega.text, attr: { for: DisponibilizaParaReeentrega.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ValidarDuplicidadePorDestinatario.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ValidarDuplicidadePorDestinatario.val, attr: { maxlength: ValidarDuplicidadePorDestinatario.maxlength, name: ValidarDuplicidadePorDestinatario.id, id: ValidarDuplicidadePorDestinatario.id }">
+                                        <label class="custom-control-label" data-bind="text: ValidarDuplicidadePorDestinatario.text, attr: { for: ValidarDuplicidadePorDestinatario.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ReferentePagamentoDescarga.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ReferentePagamentoDescarga.val, attr: { maxlength: ReferentePagamentoDescarga.maxlength, name: ReferentePagamentoDescarga.id, id: ReferentePagamentoDescarga.id }">
+                                        <label class="custom-control-label" data-bind="text: ReferentePagamentoDescarga.text, attr: { for: ReferentePagamentoDescarga.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarDesconto.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarDesconto.val, attr: { maxlength: PermiteInformarDesconto.maxlength, name: PermiteInformarDesconto.id, id: PermiteInformarDesconto.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInformarDesconto.text, attr: { for: PermiteInformarDesconto.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermitirAbrirMaisAtendimentoComMesmoMotivoParaMesmaCarga.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermitirAbrirMaisAtendimentoComMesmoMotivoParaMesmaCarga.val, attr: { maxlength: PermitirAbrirMaisAtendimentoComMesmoMotivoParaMesmaCarga.maxlength, name: PermitirAbrirMaisAtendimentoComMesmoMotivoParaMesmaCarga.id, id: PermitirAbrirMaisAtendimentoComMesmoMotivoParaMesmaCarga.id }">
+                                        <label class="custom-control-label" data-bind="text: PermitirAbrirMaisAtendimentoComMesmoMotivoParaMesmaCarga.text, attr: { for: PermitirAbrirMaisAtendimentoComMesmoMotivoParaMesmaCarga.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteEstornarAtendimento.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteEstornarAtendimento.val, attr: { maxlength: PermiteEstornarAtendimento.maxlength, name: PermiteEstornarAtendimento.id, id: PermiteEstornarAtendimento.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteEstornarAtendimento.text, attr: { for: PermiteEstornarAtendimento.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ExigeAnaliseParaOperacao.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ExigeAnaliseParaOperacao.val, attr: { maxlength: ExigeAnaliseParaOperacao.maxlength, name: ExigeAnaliseParaOperacao.id, id: ExigeAnaliseParaOperacao.id }">
+                                        <label class="custom-control-label" data-bind="text: ExigeAnaliseParaOperacao.text, attr: { for: ExigeAnaliseParaOperacao.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteAdicionarValorComoAdiantamentoMotorista.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteAdicionarValorComoAdiantamentoMotorista.val, attr: { maxlength: PermiteAdicionarValorComoAdiantamentoMotorista.maxlength, name: PermiteAdicionarValorComoAdiantamentoMotorista.id, id: PermiteAdicionarValorComoAdiantamentoMotorista.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteAdicionarValorComoAdiantamentoMotorista.text, attr: { for: PermiteAdicionarValorComoAdiantamentoMotorista.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteAdicionarValorComoDespesaMotorista.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteAdicionarValorComoDespesaMotorista.val, attr: { maxlength: PermiteAdicionarValorComoDespesaMotorista.maxlength, name: PermiteAdicionarValorComoDespesaMotorista.id, id: PermiteAdicionarValorComoDespesaMotorista.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteAdicionarValorComoDespesaMotorista.text, attr: { for: PermiteAdicionarValorComoDespesaMotorista.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteAdicionarValorComoDescontoMotorista.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteAdicionarValorComoDescontoMotorista.val, attr: { maxlength: PermiteAdicionarValorComoDescontoMotorista.maxlength, name: PermiteAdicionarValorComoDescontoMotorista.id, id: PermiteAdicionarValorComoDescontoMotorista.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteAdicionarValorComoDescontoMotorista.text, attr: { for: PermiteAdicionarValorComoDescontoMotorista.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: HabilitarPerfilAcessoEnvioEmail.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: HabilitarPerfilAcessoEnvioEmail.val, attr: { maxlength: HabilitarPerfilAcessoEnvioEmail.maxlength, name: HabilitarPerfilAcessoEnvioEmail.id, id: HabilitarPerfilAcessoEnvioEmail.id }">
+                                        <label class="custom-control-label" data-bind="text: HabilitarPerfilAcessoEnvioEmail.text, attr: { for: HabilitarPerfilAcessoEnvioEmail.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteRetornarParaAjuste.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteRetornarParaAjuste.val, attr: { maxlength: PermiteRetornarParaAjuste.maxlength, name: PermiteRetornarParaAjuste.id, id: PermiteRetornarParaAjuste.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteRetornarParaAjuste.text, attr: { for: PermiteRetornarParaAjuste.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ObrigarAnexo.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ObrigarAnexo.val, attr: { maxlength: ObrigarAnexo.maxlength, name: ObrigarAnexo.id, id: ObrigarAnexo.id }">
+                                        <label class="custom-control-label" data-bind="text: ObrigarAnexo.text, attr: { for: ObrigarAnexo.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteAtendimentoSemCarga.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteAtendimentoSemCarga.val, attr: { maxlength: PermiteAtendimentoSemCarga.maxlength, name: PermiteAtendimentoSemCarga.id, id: PermiteAtendimentoSemCarga.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteAtendimentoSemCarga.text, attr: { for: PermiteAtendimentoSemCarga.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteAlterarDatasCargaEntrega.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteAlterarDatasCargaEntrega.val, attr: { maxlength: PermiteAlterarDatasCargaEntrega.maxlength, name: PermiteAlterarDatasCargaEntrega.id, id: PermiteAlterarDatasCargaEntrega.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteAlterarDatasCargaEntrega.text, attr: { for: PermiteAlterarDatasCargaEntrega.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: BuscaContaBancariaDestinatario.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: BuscaContaBancariaDestinatario.val, attr: { maxlength: BuscaContaBancariaDestinatario.maxlength, name: BuscaContaBancariaDestinatario.id, id: BuscaContaBancariaDestinatario.id }">
+                                        <label class="custom-control-label" data-bind="text: BuscaContaBancariaDestinatario.text, attr: { for: BuscaContaBancariaDestinatario.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ObrigarInformarResponsavelAtendimento.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ObrigarInformarResponsavelAtendimento.val, attr: { maxlength: ObrigarInformarResponsavelAtendimento.maxlength, name: ObrigarInformarResponsavelAtendimento.id, id: ObrigarInformarResponsavelAtendimento.id }">
+                                        <label class="custom-control-label" data-bind="text: ObrigarInformarResponsavelAtendimento.text, attr: { for: ObrigarInformarResponsavelAtendimento.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: NaoPermitirLancarAtendimentoSemAcertoAberto.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: NaoPermitirLancarAtendimentoSemAcertoAberto.val, attr: { maxlength: NaoPermitirLancarAtendimentoSemAcertoAberto.maxlength, name: NaoPermitirLancarAtendimentoSemAcertoAberto.id, id: NaoPermitirLancarAtendimentoSemAcertoAberto.id }">
+                                        <label class="custom-control-label" data-bind="text: NaoPermitirLancarAtendimentoSemAcertoAberto.text, attr: { for: NaoPermitirLancarAtendimentoSemAcertoAberto.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6" data-bind="visible: PermitirLancarAtendimentoEmCargasComDocumentoEmitido.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermitirLancarAtendimentoEmCargasComDocumentoEmitido.val, attr: { maxlength: PermitirLancarAtendimentoEmCargasComDocumentoEmitido.maxlength, name: PermitirLancarAtendimentoEmCargasComDocumentoEmitido.id, id: PermitirLancarAtendimentoEmCargasComDocumentoEmitido.id }">
+                                        <label class="custom-control-label" data-bind="text: PermitirLancarAtendimentoEmCargasComDocumentoEmitido.text, attr: { for: PermitirLancarAtendimentoEmCargasComDocumentoEmitido.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInserirJustificativaOcorrencia.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInserirJustificativaOcorrencia.val, attr: { maxlength: PermiteInserirJustificativaOcorrencia.maxlength, name: PermiteInserirJustificativaOcorrencia.id, id: PermiteInserirJustificativaOcorrencia.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInserirJustificativaOcorrencia.text, attr: { for: PermiteInserirJustificativaOcorrencia.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: InformarQuantidade.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: InformarQuantidade.val, attr: { maxlength: InformarQuantidade.maxlength, name: InformarQuantidade.id, id: InformarQuantidade.id }">
+                                        <label class="custom-control-label" data-bind="text: InformarQuantidade.text, attr: { for: InformarQuantidade.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ObrigarInformacaoLote.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ObrigarInformacaoLote.val, attr: { maxlength: ObrigarInformacaoLote.maxlength, name: ObrigarInformacaoLote.id, id: ObrigarInformacaoLote.id }">
+                                        <label class="custom-control-label" data-bind="text: ObrigarInformacaoLote.text, attr: { for: ObrigarInformacaoLote.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ObrigarDataCritica.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ObrigarDataCritica.val, attr: { maxlength: ObrigarDataCritica.maxlength, name: ObrigarDataCritica.id, id: ObrigarDataCritica.id }">
+                                        <label class="custom-control-label" data-bind="text: ObrigarDataCritica.text, attr: { for: ObrigarDataCritica.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ObrigarRealMotivo.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ObrigarRealMotivo.val, attr: { maxlength: ObrigarRealMotivo.maxlength, name: ObrigarRealMotivo.id, id: ObrigarRealMotivo.id }">
+                                        <label class="custom-control-label" data-bind="text: ObrigarRealMotivo.text, attr: { for: ObrigarRealMotivo.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ExigeInformarModeloVeicularAberturaChamado.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ExigeInformarModeloVeicularAberturaChamado.val, attr: { maxlength: ExigeInformarModeloVeicularAberturaChamado.maxlength, name: ExigeInformarModeloVeicularAberturaChamado.id, id: ExigeInformarModeloVeicularAberturaChamado.id }">
+                                        <label class="custom-control-label" data-bind="text: ExigeInformarModeloVeicularAberturaChamado.text, attr: { for: ExigeInformarModeloVeicularAberturaChamado.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: TratativaDeveSerConfirmadaPeloCliente.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: TratativaDeveSerConfirmadaPeloCliente.val, attr: { maxlength: TratativaDeveSerConfirmadaPeloCliente.maxlength, name: TratativaDeveSerConfirmadaPeloCliente.id, id: TratativaDeveSerConfirmadaPeloCliente.id }">
+                                        <label class="custom-control-label" data-bind="text: TratativaDeveSerConfirmadaPeloCliente.text, attr: { for: TratativaDeveSerConfirmadaPeloCliente.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: IntegrarComDansales.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: IntegrarComDansales.val, attr: { maxlength: IntegrarComDansales.maxlength, name: IntegrarComDansales.id, id: IntegrarComDansales.id }">
+                                        <label class="custom-control-label" data-bind="text: IntegrarComDansales.text, attr: { for: IntegrarComDansales.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: NaoExigirJustificativaOcorrenciaChamadoAoSalvarObservacao.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: NaoExigirJustificativaOcorrenciaChamadoAoSalvarObservacao.val, attr: { maxlength: NaoExigirJustificativaOcorrenciaChamadoAoSalvarObservacao.maxlength, name: NaoExigirJustificativaOcorrenciaChamadoAoSalvarObservacao.id, id: NaoExigirJustificativaOcorrenciaChamadoAoSalvarObservacao.id }">
+                                        <label class="custom-control-label" data-bind="text: NaoExigirJustificativaOcorrenciaChamadoAoSalvarObservacao.text, attr: { for: NaoExigirJustificativaOcorrenciaChamadoAoSalvarObservacao.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteTrocarTransportadora.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteTrocarTransportadora.val, attr: { maxlength: PermiteTrocarTransportadora.maxlength, name: PermiteTrocarTransportadora.id, id: PermiteTrocarTransportadora.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteTrocarTransportadora.text, attr: { for: PermiteTrocarTransportadora.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: AtendimentoPorLote.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: AtendimentoPorLote.val, attr: { maxlength: AtendimentoPorLote.maxlength, name: AtendimentoPorLote.id, id: AtendimentoPorLote.id }">
+                                        <label class="custom-control-label" data-bind="text: AtendimentoPorLote.text, attr: { for: AtendimentoPorLote.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarNFD.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarNFD.val, attr: { maxlength: PermiteInformarNFD.maxlength, name: PermiteInformarNFD.id, id: PermiteInformarNFD.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInformarNFD.text, attr: { for: PermiteInformarNFD.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarNFD.val">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ObrigarPreenchimentoNFD.val, attr: { maxlength: ObrigarPreenchimentoNFD.maxlength, name: ObrigarPreenchimentoNFD.id, id: ObrigarPreenchimentoNFD.id }">
+                                        <label class="custom-control-label" data-bind="text: ObrigarPreenchimentoNFD.text, attr: { for: ObrigarPreenchimentoNFD.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarQuantidadeParaCalculo.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarQuantidadeParaCalculo.val, attr: { maxlength: PermiteInformarQuantidadeParaCalculo.maxlength, name: PermiteInformarQuantidadeParaCalculo.id, id: PermiteInformarQuantidadeParaCalculo.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInformarQuantidadeParaCalculo.text, attr: { for: PermiteInformarQuantidadeParaCalculo.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarQuantidadeVolumesParaCalculo.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarQuantidadeVolumesParaCalculo.val, attr: { maxlength: PermiteInformarQuantidadeVolumesParaCalculo.maxlength, name: PermiteInformarQuantidadeVolumesParaCalculo.id, id: PermiteInformarQuantidadeVolumesParaCalculo.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInformarQuantidadeVolumesParaCalculo.text, attr: { for: PermiteInformarQuantidadeVolumesParaCalculo.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarPesoParaCalculo.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarPesoParaCalculo.val, attr: { maxlength: PermiteInformarPesoParaCalculo.maxlength, name: PermiteInformarPesoParaCalculo.id, id: PermiteInformarPesoParaCalculo.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInformarPesoParaCalculo.text, attr: { for: PermiteInformarPesoParaCalculo.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarDataRetornoAposEstadia.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarDataRetornoAposEstadia.val, attr: { maxlength: PermiteInformarDataRetornoAposEstadia.maxlength, name: PermiteInformarDataRetornoAposEstadia.id, id: PermiteInformarDataRetornoAposEstadia.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInformarDataRetornoAposEstadia.text, attr: { for: PermiteInformarDataRetornoAposEstadia.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarOrdemInterna.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarOrdemInterna.val, attr: { maxlength: PermiteInformarOrdemInterna.maxlength, name: PermiteInformarOrdemInterna.id, id: PermiteInformarOrdemInterna.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInformarOrdemInterna.text, attr: { for: PermiteInformarOrdemInterna.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermiteInformarMotoristaNoAtendimento.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermiteInformarMotoristaNoAtendimento.val, attr: { maxlength: PermiteInformarMotoristaNoAtendimento.maxlength, name: PermiteInformarMotoristaNoAtendimento.id, id: PermiteInformarMotoristaNoAtendimento.id }">
+                                        <label class="custom-control-label" data-bind="text: PermiteInformarMotoristaNoAtendimento.text, attr: { for: PermiteInformarMotoristaNoAtendimento.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: GerarAcrescimoDescontoContratoFrete.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: GerarAcrescimoDescontoContratoFrete.val, attr: { maxlength: GerarAcrescimoDescontoContratoFrete.maxlength, name: GerarAcrescimoDescontoContratoFrete.id, id: GerarAcrescimoDescontoContratoFrete.id }">
+                                        <label class="custom-control-label" data-bind="text: GerarAcrescimoDescontoContratoFrete.text, attr: { for: GerarAcrescimoDescontoContratoFrete.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: InformarCodigoSIF.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: InformarCodigoSIF.val, attr: { maxlength: InformarCodigoSIF.maxlength, name: InformarCodigoSIF.id, id: InformarCodigoSIF.id }">
+                                        <label class="custom-control-label" data-bind="text: InformarCodigoSIF.text, attr: { for: InformarCodigoSIF.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermitirFreteRetornoDevolucao.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermitirFreteRetornoDevolucao.val, attr: { maxlength: PermitirFreteRetornoDevolucao.maxlength, name: PermitirFreteRetornoDevolucao.id, id: PermitirFreteRetornoDevolucao.id }">
+                                        <label class="custom-control-label" data-bind="text: PermitirFreteRetornoDevolucao.text, attr: { for: PermitirFreteRetornoDevolucao.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ValidarEscaladaAtendimentoUsuarioResponsavel.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ValidarEscaladaAtendimentoUsuarioResponsavel.val, attr: { maxlength: ValidarEscaladaAtendimentoUsuarioResponsavel.maxlength, name: ValidarEscaladaAtendimentoUsuarioResponsavel.id, id: ValidarEscaladaAtendimentoUsuarioResponsavel.id }">
+                                        <label class="custom-control-label" data-bind="text: ValidarEscaladaAtendimentoUsuarioResponsavel.text, attr: { for: ValidarEscaladaAtendimentoUsuarioResponsavel.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermitirAcessarEtapaOcorrenciaSemFinalizarEtapaAnalise.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermitirAcessarEtapaOcorrenciaSemFinalizarEtapaAnalise.val, attr: { maxlength: PermitirAcessarEtapaOcorrenciaSemFinalizarEtapaAnalise.maxlength, name: PermitirAcessarEtapaOcorrenciaSemFinalizarEtapaAnalise.id, id: PermitirAcessarEtapaOcorrenciaSemFinalizarEtapaAnalise.id }">
+                                        <label class="custom-control-label" data-bind="text: PermitirAcessarEtapaOcorrenciaSemFinalizarEtapaAnalise.text, attr: { for: PermitirAcessarEtapaOcorrenciaSemFinalizarEtapaAnalise.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermitirInformarCausadorOcorrencia.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermitirInformarCausadorOcorrencia.val, attr: { maxlength: PermitirInformarCausadorOcorrencia.maxlength, name: PermitirInformarCausadorOcorrencia.id, id: PermitirInformarCausadorOcorrencia.id }">
+                                        <label class="custom-control-label" data-bind="text: PermitirInformarCausadorOcorrencia.text, attr: { for: PermitirInformarCausadorOcorrencia.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: GerarGestaoDeDevolucao.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: GerarGestaoDeDevolucao.val, attr: { maxlength: GerarGestaoDeDevolucao.maxlength, name: GerarGestaoDeDevolucao.id, id: GerarGestaoDeDevolucao.id }">
+                                        <label class="custom-control-label" data-bind="text: GerarGestaoDeDevolucao.text, attr: { for: GerarGestaoDeDevolucao.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: BloquearParadaAppTrizy.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: BloquearParadaAppTrizy.val, attr: { maxlength: BloquearParadaAppTrizy.maxlength, name: BloquearParadaAppTrizy.id, id: BloquearParadaAppTrizy.id }">
+                                        <label class="custom-control-label" data-bind="text: BloquearParadaAppTrizy.text, attr: { for: BloquearParadaAppTrizy.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: HabilitarSenhaDevolucao.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: HabilitarSenhaDevolucao.val, attr: { maxlength: HabilitarSenhaDevolucao.maxlength, name: HabilitarSenhaDevolucao.id, id: HabilitarSenhaDevolucao.id }">
+                                        <label class="custom-control-label" data-bind="text: HabilitarSenhaDevolucao.text, attr: { for: HabilitarSenhaDevolucao.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: HabilitarEstadia.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: HabilitarEstadia.val, attr: { maxlength: HabilitarEstadia.maxlength, name: HabilitarEstadia.id, id: HabilitarEstadia.id }">
+                                        <label class="custom-control-label" data-bind="text: HabilitarEstadia.text, attr: { for: HabilitarEstadia.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: BloquearEstornoAtendimentosFinalizadosPortalTransportador.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: BloquearEstornoAtendimentosFinalizadosPortalTransportador.val, attr: { maxlength: BloquearEstornoAtendimentosFinalizadosPortalTransportador.maxlength, name: BloquearEstornoAtendimentosFinalizadosPortalTransportador.id, id: BloquearEstornoAtendimentosFinalizadosPortalTransportador.id }">
+                                        <label class="custom-control-label" data-bind="text: BloquearEstornoAtendimentosFinalizadosPortalTransportador.text, attr: { for: BloquearEstornoAtendimentosFinalizadosPortalTransportador.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: PermitirAtualizarInformacoesPedido.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PermitirAtualizarInformacoesPedido.val, attr: { maxlength: PermitirAtualizarInformacoesPedido.maxlength, name: PermitirAtualizarInformacoesPedido.id, id: PermitirAtualizarInformacoesPedido.id }">
+                                        <label class="custom-control-label" data-bind="text: PermitirAtualizarInformacoesPedido.text, attr: { for: PermitirAtualizarInformacoesPedido.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: HabilitarClassificacaoCriticos.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: HabilitarClassificacaoCriticos.val, attr: { maxlength: HabilitarClassificacaoCriticos.maxlength, name: HabilitarClassificacaoCriticos.id, id: HabilitarClassificacaoCriticos.id }">
+                                        <label class="custom-control-label" data-bind="text: HabilitarClassificacaoCriticos.text, attr: { for: HabilitarClassificacaoCriticos.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-4" data-bind="visible: PagamentoMotoristaTipo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: PagamentoMotoristaTipo.text, attr: { for: PagamentoMotoristaTipo.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: PagamentoMotoristaTipo.requiredClass, value: PagamentoMotoristaTipo.val, valueUpdate: 'afterkeydown', attr: { maxlength: PagamentoMotoristaTipo.maxlength, id : PagamentoMotoristaTipo.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: PagamentoMotoristaTipo.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: Justificativa.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Justificativa.text, attr: { for: Justificativa.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Justificativa.requiredClass, value: Justificativa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Justificativa.maxlength, id : Justificativa.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Justificativa.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: FornecedorDespesa.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: FornecedorDespesa.text, attr: { for: FornecedorDespesa.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: FornecedorDespesa.requiredClass, value: FornecedorDespesa.val, valueUpdate: 'afterkeydown', attr: { maxlength: FornecedorDespesa.maxlength, id : FornecedorDespesa.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: FornecedorDespesa.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: JustificativaAcrescimoDescontoContratoFrete.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: JustificativaAcrescimoDescontoContratoFrete.text, attr: { for: JustificativaAcrescimoDescontoContratoFrete.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: JustificativaAcrescimoDescontoContratoFrete.requiredClass, value: JustificativaAcrescimoDescontoContratoFrete.val, valueUpdate: 'afterkeydown', attr: { maxlength: JustificativaAcrescimoDescontoContratoFrete.maxlength, id : JustificativaAcrescimoDescontoContratoFrete.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: JustificativaAcrescimoDescontoContratoFrete.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: TipoTransportadorAcrescimoDescontoContratoFrete.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoTransportadorAcrescimoDescontoContratoFrete.text, attr: { for: TipoTransportadorAcrescimoDescontoContratoFrete.id }"></label>
+                                    <select class="form-control" data-bind="class: TipoTransportadorAcrescimoDescontoContratoFrete.requiredClass, options: TipoTransportadorAcrescimoDescontoContratoFrete.options, optionsText: 'text', optionsValue: 'value', value: TipoTransportadorAcrescimoDescontoContratoFrete.val, attr: { maxlength: TipoTransportadorAcrescimoDescontoContratoFrete.maxlength, id : TipoTransportadorAcrescimoDescontoContratoFrete.id}"></select>
+                                </div>
+                            </div>
+                            <div id="atributosDiariaAutomatica" style="display: none">
+                                <h3>
+                                    @Localization.Resources.Chamado.MotivoChamado.DiariaAutomatica
+                                </h3>
+                                <div class="col-12 col-md-12" data-bind="visible: ObrigatorioTerDiariaAutomatica.visible">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" data-bind="checked: ObrigatorioTerDiariaAutomatica.val, attr: { maxlength: ObrigatorioTerDiariaAutomatica.maxlength, name: ObrigatorioTerDiariaAutomatica.id, id: ObrigatorioTerDiariaAutomatica.id }">
+                                                <label class="custom-control-label" data-bind="text: ObrigatorioTerDiariaAutomatica.text, attr: { for: ObrigatorioTerDiariaAutomatica.id }"></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-12" data-bind="visible: BloquearAprovacaoValoresSuperioresADiariaAutomatica.visible">
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" data-bind="checked: BloquearAprovacaoValoresSuperioresADiariaAutomatica.val, attr: { maxlength: BloquearAprovacaoValoresSuperioresADiariaAutomatica.maxlength, name: BloquearAprovacaoValoresSuperioresADiariaAutomatica.id, id: BloquearAprovacaoValoresSuperioresADiariaAutomatica.id }">
+                                                    <label class="custom-control-label" data-bind="text: BloquearAprovacaoValoresSuperioresADiariaAutomatica.text, attr: { for: BloquearAprovacaoValoresSuperioresADiariaAutomatica.id }"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6" data-bind="visible: DiasLimiteAberturaAposDiariaAutomatica.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: DiasLimiteAberturaAposDiariaAutomatica.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: DiasLimiteAberturaAposDiariaAutomatica.requiredClass, value: DiasLimiteAberturaAposDiariaAutomatica.val, valueUpdate: 'afterkeydown', attr: { maxlength: DiasLimiteAberturaAposDiariaAutomatica.maxlength, id : DiasLimiteAberturaAposDiariaAutomatica.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6" data-bind="visible: LocalFreeTime.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: LocalFreeTime.text, attr: { for: LocalFreeTime.id }"></label>
+                                                <select class="form-control" data-bind="class: LocalFreeTime.requiredClass, options: LocalFreeTime.options, optionsText: 'text', optionsValue: 'value', value: LocalFreeTime.val, attr: { maxlength: LocalFreeTime.maxlength, id : LocalFreeTime.id}"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                            <textarea class="form-control" rows="4" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: GerarCargaDevolucaoSeAprovado.val()">
+                                    <h3>E-mail</h3>
+                                    <div class="row">
+                                        <div class="col-12 col-md-12" data-bind="visible: Assunto.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: Assunto.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: Assunto.requiredClass, value: Assunto.val, valueUpdate: 'afterkeydown', attr: { maxlength: Assunto.maxlength, id : Assunto.id}" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-12" data-bind="visible: ConteudoEmail.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ConteudoEmail.text, attr: { for: ConteudoEmail.id }"></label>
+                                                <textarea class="form-control" rows="4" data-bind="value: ConteudoEmail.val, valueUpdate: 'afterkeydown', attr: { maxlength: ConteudoEmail.maxlength, id : ConteudoEmail.id }"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="tabMotivoChamadoData" role="tabpanel">
+                    <h3>@Localization.Resources.Chamado.MotivoChamado.DatasMotivoAtendimento </h3>
+                    <form novalidate id="knockoutMotivoChamadoData">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Grid.id}" cellspacing="0"></table>
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: Obrigatorio.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Obrigatorio.text, attr: { for: Obrigatorio.id }"></label>
+                                    <select class="form-control" data-bind="class: Obrigatorio.requiredClass, options: Obrigatorio.options, optionsText: 'text', optionsValue: 'value', value: Obrigatorio.val, attr: { maxlength: Obrigatorio.maxlength, id : Obrigatorio.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: Status.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Status.text, attr: { for: Status.id }"></label>
+                                    <select class="form-control" data-bind="class: Status.requiredClass, options: Status.options, optionsText: 'text', optionsValue: 'value', value: Status.val, attr: { maxlength: Status.maxlength, id : Status.id}"></select>
+                                </div>
+                            </div>
+                            <footer>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="button" class="btn btn-labeled btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { id : Cancelar.id}">
+                                            <i class="fal fa-ban"></i>
+                                            <span data-bind="text: Cancelar.text"></span>
+                                        </button>
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-end">
+                                        <button type="button" class="btn btn-labeled btn-success" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { id : Atualizar.id}">
+                                            <i class="fal fa-check"></i>
+                                            <span data-bind="text: Atualizar.text"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-labeled btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                                            <span data-bind="text: Adicionar.text"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="tabArvoreDesicao" role="tabpanel">
+                    <form id="knockoutArvoreDecisao">
+                        <div class="row">
+
+                            <div class="col-12 col-md-4" data-bind="visible: Pergunta.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Pergunta.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: Pergunta.requiredClass, value: Pergunta.val, valueUpdate: 'afterkeydown', attr: { maxlength: Pergunta.maxlength, id : Pergunta.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: Resposta.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Resposta.text, attr: { for: Resposta.id }"></label>
+                                    <select class="form-control" data-bind="class: Resposta.requiredClass, options: Resposta.options, optionsText: 'text', optionsValue: 'value', value: Resposta.val, attr: { maxlength: Resposta.maxlength, id : Resposta.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: PerguntaPai.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: PerguntaPai.text, attr: { for: PerguntaPai.id }"></label>
+                                    <select class="form-control" data-bind="class: PerguntaPai.requiredClass, options: PerguntaPai.options, optionsText: 'text', optionsValue: 'value', value: PerguntaPai.val, attr: { maxlength: PerguntaPai.maxlength, id : PerguntaPai.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: StatusFinalizador.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: StatusFinalizador.text, attr: { for: StatusFinalizador.id }"></label>
+                                    <select class="form-control" data-bind="class: StatusFinalizador.requiredClass, options: StatusFinalizador.options, optionsText: 'text', optionsValue: 'value', value: StatusFinalizador.val, attr: { maxlength: StatusFinalizador.maxlength, id : StatusFinalizador.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end my-1 gap-2">
+                            <button class="btn btn-primary " type="button" data-bind="click: Adicionar.eventClick,visible:Adicionar.visible, attr: { id: Adicionar.id}">
+                                <span data-bind="text: Adicionar.text"></span>
+                            </button>
+                            <button class="btn btn-secondary" type="button" data-bind="click: Cancelar.eventClick ,visible:Cancelar.visible, attr: { id: Cancelar.id} ">
+                                <span data-bind="text: Cancelar.text"></span>
+                            </button>
+                            <button class="btn btn-primary" type="button" data-bind="click: Atualizar.eventClick, visible:Atualizar.visible, attr: { id: Atualizar.id}">
+                                <span data-bind="text: Atualizar.text"></span>
+                            </button>
+                        </div>
+                        <div id="listaPerguntasArvores" style="max-width: 60rem;">
+                            <!-- ko foreach: { data: Perguntas.val, as: 'Pergunta' } -->
+                            <div class="d-flex justify-content-between align-items-center border rounded mb-1 p-2">
+                                <div class="divPergunta">
+                                    <span data-bind="text: Pergunta.pergunta, attr: { id: Pergunta.key}"></span>
+                                    <span data-bind="text: ObterPai(Pergunta)"></span>
+                                </div>
+
+                                <div>
+                                    <button class="btn btn-warning" type="button" data-bind="click: function(){ EditaPerguntaArvore(Pergunta)}">
+                                        <i class="fal fa-pencil-alt"></i>
+                                    </button>
+                                    <button class="btn btn-danger" type="button" data-bind="click: function(){ DeletaPergunta(Pergunta.key)}">
+                                        <i class="fal fa-trash"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="tabGatilhosTempoList" role="tabpanel">
+                    <form id="knockoutGatilhosTempoList">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Grid.idGrid}" cellspacing="0"></table>
+                        <div class="row">
+                            <div class="col-12 col-md-4" data-bind="visible: NivelEscalationList.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: NivelEscalationList.text, attr: { for: NivelEscalationList.id }"></label>
+                                    <select class="form-control" data-bind="class: NivelEscalationList.requiredClass, options: NivelEscalationList.options, optionsText: 'text', optionsValue: 'value', value: NivelEscalationList.val, attr: { maxlength: NivelEscalationList.maxlength, id : NivelEscalationList.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: Tempo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Tempo.text"></label>
+                                    <input type="number" class="form-control" data-bind="class: Tempo.requiredClass, value: Tempo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Tempo.maxlength, id : Tempo.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: Setor.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Setor.text, attr: { for: Setor.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Setor.requiredClass, value: Setor.val, valueUpdate: 'afterkeydown', attr: { maxlength: Setor.maxlength, id : Setor.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Setor.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-primary" type="button" data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                                <span data-bind="text: Adicionar.text"></span>
+                            </button>
+                            <button class="btn btn-secondary" type="button" data-bind="click: Cancelar.eventClick ,visible:Cancelar.visible, attr: { id: Cancelar.id} ">
+                                <span data-bind="text: Cancelar.text"></span>
+                            </button>
+                            <button class="btn btn-primary" type="button" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { id : Atualizar.id}">
+                                <span data-bind="text: Atualizar.text"></span>
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: PossibilitarInclusaoAnexoAoEscalarAtendimento.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: PossibilitarInclusaoAnexoAoEscalarAtendimento.val, attr: { maxlength: PossibilitarInclusaoAnexoAoEscalarAtendimento.maxlength, name: PossibilitarInclusaoAnexoAoEscalarAtendimento.id, id: PossibilitarInclusaoAnexoAoEscalarAtendimento.id }">
+                                        <label class="custom-control-label" data-bind="text: PossibilitarInclusaoAnexoAoEscalarAtendimento.text, attr: { for: PossibilitarInclusaoAnexoAoEscalarAtendimento.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: ConsiderarHorasDiasUteis.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: ConsiderarHorasDiasUteis.val, attr: { maxlength: ConsiderarHorasDiasUteis.maxlength, name: ConsiderarHorasDiasUteis.id, id: ConsiderarHorasDiasUteis.id }">
+                                        <label class="custom-control-label" data-bind="text: ConsiderarHorasDiasUteis.text, attr: { for: ConsiderarHorasDiasUteis.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="tabGatilhosAPartirDeIntegracao" role="tabpanel">
+                    <form id="knockoutGatilhosIntegracao">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: GridIntegracoes.id}" cellspacing="0"></table>
+                        <div class="col-12 col-md-12" data-bind="visible: SistemaIntegracao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: SistemaIntegracao.text, attr: { for: SistemaIntegracao.id }"></label>
+                                <select class="form-control" data-bind="class: SistemaIntegracao.requiredClass, options: SistemaIntegracao.options, optionsText: 'text', optionsValue: 'value', value: SistemaIntegracao.val, attr: { maxlength: SistemaIntegracao.maxlength, id : SistemaIntegracao.id}"></select>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-primary" type="button" data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id}">
+                                <span data-bind="text: Adicionar.text"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="tabCausasParaFinalizacaoArvoreDecisao" role="tabpanel">
+                    <form id="knockoutCausasParaFinalizacaoArvoreDecisao">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: GridCausas.id}" cellspacing="0"></table>
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, required: Descricao.required, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: Ativo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Ativo.text, attr: { for: Ativo.id }"></label>
+                                    <select class="form-control" data-bind="class: Ativo.requiredClass, options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { maxlength: Ativo.maxlength, id : Ativo.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-primary" type="button" data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id}, visible: Adicionar.visible">
+                                <span data-bind="text: Adicionar.text"></span>
+                            </button>
+                            <button class="btn btn-default" type="button" data-bind="click: Cancelar.eventClick, attr: { id: Cancelar.id}, visible: Cancelar.visible">
+                                <i class="fal fa-ban"></i>
+                                <span data-bind="text: Cancelar.text"></span>
+                            </button>
+                            <button class="btn btn-success" type="button" data-bind="click: Alterar.eventClick, attr: { id: Alterar.id}, visible: Alterar.visible">
+                                <span data-bind="text: Alterar.text"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="tabGatilhosNaCarga" role="tabpanel">
+                    <form id="knockoutGatilhosNaCarga">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: GridGatilhos.id}" cellspacing="0"></table>
+                        <div class="col-6 col-md-6" data-bind="visible: GatilhoNaCarga.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: GatilhoNaCarga.text, attr: { for: GatilhoNaCarga.id }"></label>
+                                <select class="form-control" data-bind="class: GatilhoNaCarga.requiredClass, options: GatilhoNaCarga.options, optionsText: 'text', optionsValue: 'value', value: GatilhoNaCarga.val, attr: { maxlength: GatilhoNaCarga.maxlength, id : GatilhoNaCarga.id}"></select>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-primary" type="button" data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id}">
+                                <span data-bind="text: Adicionar.text"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="tabNotificacaoEmail" role="tabpanel">
+                    <form id="knockoutMotivoChamadoEmail">
+                        <div class="row">
+                            <div class="col-12" data-bind="visible: EnviarEmailParaTransportadorAoCancelarChamado.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarEmailParaTransportadorAoCancelarChamado.val, attr: { maxlength: EnviarEmailParaTransportadorAoCancelarChamado.maxlength, name: EnviarEmailParaTransportadorAoCancelarChamado.id, id: EnviarEmailParaTransportadorAoCancelarChamado.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarEmailParaTransportadorAoCancelarChamado.text, attr: { for: EnviarEmailParaTransportadorAoCancelarChamado.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" data-bind="visible: EnviarEmailParaTransportadorAoAlterarChamado.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarEmailParaTransportadorAoAlterarChamado.val, attr: { maxlength: EnviarEmailParaTransportadorAoAlterarChamado.maxlength, name: EnviarEmailParaTransportadorAoAlterarChamado.id, id: EnviarEmailParaTransportadorAoAlterarChamado.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarEmailParaTransportadorAoAlterarChamado.text, attr: { for: EnviarEmailParaTransportadorAoAlterarChamado.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12" data-bind="visible: EnviarEmailParaTransportadorAoFinalizarChamado.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: EnviarEmailParaTransportadorAoFinalizarChamado.val, attr: { maxlength: EnviarEmailParaTransportadorAoFinalizarChamado.maxlength, name: EnviarEmailParaTransportadorAoFinalizarChamado.id, id: EnviarEmailParaTransportadorAoFinalizarChamado.id }">
+                                        <label class="custom-control-label" data-bind="text: EnviarEmailParaTransportadorAoFinalizarChamado.text, attr: { for: EnviarEmailParaTransportadorAoFinalizarChamado.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="tabCriticidadeAtendimento" role="tabpanel">
+                    <form id="knockoutCriticidadeAtendimento">
+                        <div class="panel-content">
+                            <h3 style="font-family: Roboto; font-weight: 600; font-size: 20px; line-height: 100%; margin-bottom: 8px;">Criticidade do Atendimento</h3>
+                            <p style="font-family: Roboto; font-weight: 400; font-size: 14px; line-height: 100%; margin-bottom: 16px;">Adicione parâmetros para utilização na análise do atendimento.</p>
+
+                            <button class="btn btn-primary waves-effect waves-themed mb-3" type="button"
+                                    style="background-color: #8AC9AB;border-color: #8AC9AB;width: 181px;height: 32px;border-radius: 4px;padding: 8px 16px;display: inline-flex;align-items: center;gap: 4px;"
+                                    data-bind="click: adicionarParametroClick">
+                                <i class="fal fa-plus"></i>
+                                <span>Adicionar Parâmetro</span>
+                            </button>
+
+
+                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: GridCriticidade.id}" cellspacing="0"></table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalAdicionarParametroCriticidade" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content" id="knockoutCriticidadeAtendimentoModal">
+                        <div class="modal-header">
+                            <h5 class="modal-title" data-bind="text: TituloModal"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p style="font-family: Roboto; font-weight: 400; font-size: 14px; line-height: 100%; margin-bottom: 20px;" data-bind="text: SubtituloModal"></p>
+
+                            <form novalidate>
+                                <div class="row">
+                                    <div class="col-12 col-md-3" data-bind="visible: Tipo.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Tipo.text"></label>
+                                            <select class="form-control" data-bind="class: Tipo.requiredClass, options: Tipo.options, optionsText: 'text', optionsValue: 'value', value: Tipo.val, attr: { maxlength: Tipo.maxlength, id: Tipo.id}"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-7" data-bind="visible: Conteudo.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Conteudo.text"></label>
+                                            <input type="text" class="form-control" data-bind="class: Conteudo.requiredClass, value: Conteudo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Conteudo.maxlength, id: Conteudo.id }" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-2" data-bind="visible: Ativo.visible">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: Ativo.text"></label>
+                                            <select class="form-control" data-bind="class: Ativo.requiredClass, options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { maxlength: Ativo.maxlength, id: Ativo.id}"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-success"
+                                    style="background-color: #8AC9AB; border-color: #8AC9AB;"
+                                    data-bind="click: Confirmar.eventClick, attr: { id: Confirmar.id }">
+                                Confirmar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="mt-2" id="knockoutCRUDMotivoChamado">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="button" class="btn btn-labeled btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { id : Cancelar.id}">
+                            <i class="fal fa-ban"></i>
+                            <span data-bind="text: Cancelar.text"></span>
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-danger mx-2" data-bind="click: Excluir.eventClick, visible: Excluir.visible, attr: { id : Excluir.id}">
+                            <i class="fal fa-trash"></i>
+                            <span data-bind="text: Excluir.text"></span>
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { id : Atualizar.id}">
+                            <i class="fal fa-check"></i>
+                            <span data-bind="text: Atualizar.text"></span>
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                            <span data-bind="text: Adicionar.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/motivoChamado"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    _CONFIGURACAO_TMS = $.extend({}, _CONFIGURACAO_TMS, @Html.Raw(ViewBag.Integracoes), @Html.Raw(ViewBag.Configuracoes));
+
+    $(document).ready(function () {
+        LoadLocalizationResources("Chamado.MotivoChamado").then(loadMotivoChamado);
+    });
+
+</script>

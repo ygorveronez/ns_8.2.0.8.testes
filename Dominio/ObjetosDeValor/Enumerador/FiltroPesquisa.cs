@@ -1,0 +1,22 @@
+namespace Dominio.ObjetosDeValor.Enumerador
+{
+	public enum FiltroPesquisa
+	{
+		ControleEntrega = 0,
+		MontagemCarregamento = 1,
+		ParametrosCentroCarregamentoSessaoRoteirizacao = 2,
+		AcompanhamentoEntrega = 3,
+		Monitoramento = 4,
+		AcompanhamentoCarga = 5,
+		PosicaoFrota = 6,
+		GestaoPedido = 7,
+		GestaoDevolucao = 8,
+		ControleSaldo = 9,
+		ControlePallet = 10,
+		AgendamentoPallet = 11,
+		IntegracaoAssincrona = 12,
+		ManutencaoPallet = 13,
+		AgendamentoAbastecimentoPallet = 14,
+        QualidadeEntrega = 15,
+	}
+}

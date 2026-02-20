@@ -1,0 +1,245 @@
+﻿@model Dominio.ObjetosDeValor.Embarcador.GestaoEntregas.EntregaView
+@{
+    Layout = "~/Views/GestaoEntregas/Acompanhamento.cshtml";
+}
+<section class="info-pedido">
+    <div class="row">
+        <div class="col-12">
+            @if (Model.Entregue)
+            {
+                <p class="lead text-center">@Localization.Resources.GestaoEntregas.Acompanhamento.SeuPedidoFoiEntregueNoEndereco:</p>
+            }
+            else
+            {
+                <p class="lead text-center">@Localization.Resources.GestaoEntregas.Acompanhamento.SeuPedidoSeraEntregueNoEndereco:</p>
+            }
+            <p class="text-center exibe-endereco">@Html.Raw(Model.EnderecoCompleto)</p>
+        </div>
+    </div>
+</section>
+
+<!-- Etapas da entrega -->
+<section class="exibe-etapas">
+    <div class="row">
+        <div class="col-12 p-0">
+            <div class="container-etapa-01-on">
+                <div class="etapa-01">
+                    <div class="icon-etapa-01">
+                        <img src="/img/rastreio-entrega/icon-partida.svg" alt="Início Viagem">
+                    </div>
+                    <div class="txt-etapa-01">
+                        <p class="text-center">@Localization.Resources.GestaoEntregas.Acompanhamento.InicioViagem</p>
+                    </div>
+                </div>
+            </div>
+            <div class="etapa-02">
+                <div class="icon-etapa-02-on">
+                    <img src="/img/rastreio-entrega/icon-a-caminho.svg" alt="A Caminho">
+                </div>
+                <div class="txt-etapa-02">
+                    <p class="text-center">@Localization.Resources.GestaoEntregas.Acompanhamento.Caminho</p>
+                </div>
+            </div>
+            @if (Model.Entregue)
+            {
+                <div class="container-etapa-03-on">
+                    <div class="etapa-03">
+                        <div class="icon-etapa-03-on">
+                            <img src="/img/rastreio-entrega/icon-chegou.svg" alt="Entregue">
+                        </div>
+                        <div class="txt-etapa-03">
+                            <p class="text-center">@Localization.Resources.GestaoEntregas.Acompanhamento.Entregue</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="container-etapa-03">
+                    <div class="etapa-03">
+                        <div class="icon-etapa-03">
+                            <img src="/img/rastreio-entrega/icon-chegou.svg" alt="Entregue">
+                        </div>
+                        <div class="txt-etapa-03">
+                            <p class="text-center">@Localization.Resources.GestaoEntregas.Acompanhamento.Entregue</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+@if (Model.Entregue && Model.Questionario.HabilitarAvaliacao)
+{
+    <!-- Avaliação da Entrega -->
+    <section class="previsao-chegada">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center">@Localization.Resources.GestaoEntregas.Acompanhamento.AvalieEntrega</h3>
+                <div class="box-avalie">
+                    <a href="#" alt="1" onclick="avaliar(1)">1</a>
+                    <a href="#" alt="2" onclick="avaliar(2)">2</a>
+                    <a href="#" alt="3" onclick="avaliar(3)">3</a>
+                    <a href="#" alt="4" onclick="avaliar(4)">4</a>
+                    <a href="#" alt="5" onclick="avaliar(5)">5</a>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else if (!Model.Entregue && Model.HabilitarPrevisaoEntrega)
+{
+    <!-- Previsão de chegada -->
+    <section class="previsao-chegada">
+        <div class="row">
+            <div class="offset-0 offset-md-3 col-12 col-md-6">
+                <h3 class="text-center">@Localization.Resources.GestaoEntregas.Acompanhamento.PrevisaoDeChegada</h3>
+                <div class="box-previsao-chegada">
+                    <div class="icon-previsao-chegada"><a href="#" onclick="document.getElementById('historico-tab').click()"><img src="/img/rastreio-entrega/icon-historico-ntf.svg" alt=""></a></div>
+                    <div class="txt-previsao-chegada">
+                        @if (Model.HorarioPrevisaoChegada != "00:00")
+                        {
+                            <p class="text-center">@Html.Raw(Model.DiaPrevisaoChegada) &bull; @Html.Raw(Model.HorarioPrevisaoChegada)</p>
+                        }
+                        else
+                        {
+                            <p class="text-center">@Html.Raw(Model.DiaPrevisaoChegada)</p>
+                        }
+                    </div>
+                </div>
+                <p class="text-center"><small>@Localization.Resources.GestaoEntregas.Acompanhamento.EssaPrevisaoPodeSerAtualizadaConformeAproximacaoDoVeiculo</small></p>
+            </div>
+        </div>
+    </section>
+}
+
+@if (Model.Entregue && Model.HabilitarObservacao && Model.Questionario.HabilitarAvaliacao)
+{
+    <div id="observacao-avaliacao" class="row justify-content-center align-items-end" style="margin-bottom: 10px">
+        @if (!string.IsNullOrWhiteSpace(Model.Observacao))
+        {
+            <div class="col-12 col-md-6">
+                <label class="label"><b>@Localization.Resources.Gerais.Geral.Observacao:</b></label>
+                <label class="input">
+                    <span>@Html.Raw(Html.Encode(Model.Observacao).Replace("\n", "<br />"))</span>
+                </label>
+            </div>
+        }
+        else
+        {
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label class="form-label" for="textarea-observacao-avaliacao" id="label-observacao-avaliacao">@Localization.Resources.Gerais.Geral.Observacao:</label>
+                    <textarea class="form-control" rows="3" id="textarea-observacao-avaliacao" style="resize: none;"></textarea>
+                </div>
+            </div>
+            <div id="salvar-observacao-avaliacao" class="col-12 col-md-2 mb-3">
+                <button class="btn btn-success" type="button" id="botao-salvar-observacao-avaliacao">
+                    <span>@Localization.Resources.GestaoEntregas.Acompanhamento.SalvarObservacao</span>
+                </button>
+            </div>
+        }
+    </div>
+}
+
+<div class="d-flex justify-content-end">
+    <div class="col-12 col-md-6">
+        <label class="label"><b>@Localization.Resources.Gerais.Geral.CodigoRastreio:</b></label>
+        <label class="input">
+            <span>@Html.Raw(Html.Encode(Model.CodigoRastreioCorreio).Replace("\n", "<br />"))</span>
+        </label>
+    </div>
+</div>
+
+@if (Model.HabilitarAcessoPortalMultiCliFor)
+{
+    <section style="position: fixed; bottom: 0; right: 0; padding-right: 1%">
+        <div>
+            <p>Para mais detalhes da entrega, <a href="@Model.LinkAcessoPortalMultiCliFor" target="_blank">clique aqui</a></p>
+        </div>
+    </section>
+}
+@{
+    List<(string Id, string Label, string ViewPath, string IconeClasse)> abasDisponiveis = new List<(string Id, string Label, string ViewPath, string IconeClasse)>
+    {
+        ("detalhe-pedido", Localization.Resources.GestaoEntregas.Acompanhamento.DetalheDoPedido, "~/Views/GestaoEntregas/Acompanhamento/Informacoes.cshtml", "aba-icone-01"),
+        ("localizacao-pedido", Localization.Resources.GestaoEntregas.Acompanhamento.Localizacao, "~/Views/GestaoEntregas/Acompanhamento/Mapa.cshtml", "aba-icone-02"),
+        ("historico-pedido", Localization.Resources.GestaoEntregas.Acompanhamento.Historico, "~/Views/GestaoEntregas/Acompanhamento/Historico.cshtml", "aba-icone-03"),
+        ("motorista-pedido", Localization.Resources.GestaoEntregas.Acompanhamento.Motorista, "~/Views/GestaoEntregas/Acompanhamento/Motorista.cshtml", "aba-icone-04"),
+        ("fotos-pedido", Localization.Resources.GestaoEntregas.Acompanhamento.Fotos, "~/Views/GestaoEntregas/Acompanhamento/Fotos.cshtml", "aba-icone-05"),
+        ("produtos-pedido", Localization.Resources.GestaoEntregas.Acompanhamento.Produtos, "~/Views/GestaoEntregas/Acompanhamento/Produtos.cshtml", "aba-icone-06"),
+        ("detalhe-produtos", Localization.Resources.GestaoEntregas.Acompanhamento.DetalhesProduto, "~/Views/GestaoEntregas/Acompanhamento/DetalhesProdutos.cshtml", "aba-icone-01")
+    };
+
+    List<(string Id, string Label, string ViewPath, string IconeClasse)> abasVisiveis = abasDisponiveis.Where(aba =>
+        (aba.Id == "detalhe-pedido" && Model.ExibirDetalhesPedido) ||
+        (aba.Id == "localizacao-pedido" && Model.Localizacao.ExibirMapa) ||
+        (aba.Id == "historico-pedido" && Model.ExibirHistoricoPedido) ||
+        (aba.Id == "motorista-pedido" && Model.ExibirDetalhesMotorista) ||
+        (aba.Id == "fotos-pedido" && Model.PermitirVisualizarFotosEntrega) ||
+        (aba.Id == "produtos-pedido" && Model.ExibirProduto) ||
+        (aba.Id == "detalhe-produtos" && Model.ExibirDetalhesProduto)).ToList();
+
+    string primeiraAbaId = abasVisiveis.FirstOrDefault().Id;
+}
+
+<!-- Abas -->
+<section class="abas">
+    <div class="row">
+        <div class="col container-abas p-0">
+            <ul class="nav nav-tabs" role="tablist">
+                @foreach ((string Id, string Label, string ViewPath, string IconeClasse) aba in abasVisiveis)
+                {
+                    string isActive = aba.Id == primeiraAbaId ? "active" : "";
+                    <li class="nav-item">
+                        <a class="nav-link @isActive @aba.IconeClasse" id="@aba.Id-tab" data-toggle="tab" href="#@aba.Id" role="tab" aria-controls="@aba.Id" aria-selected="@(isActive == "active")">
+                            @aba.Label
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            <div class="tab-content conteudo-abas">
+                @foreach ((string Id, string Label, string ViewPath, string IconeClasse) aba in abasVisiveis)
+                {
+                    string isActive = aba.Id == primeiraAbaId ? "fade active show" : "fade";
+                    <div class="tab-pane @isActive" id="@aba.Id" role="tabpanel" aria-labelledby="@aba.Id-tab">
+                        @Html.Partial(aba.ViewPath, Model)
+                    </div>
+                }
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<script>
+    var nota = @(Model.Avaliacao);
+    var codigoRastreio = "@(Model.CodigoRastreio)";
+
+    if (nota > 0) {
+        marcarEstrela(nota);
+    }
+
+</script>
+
+<style>
+    fieldset.main-fieldset {
+        padding-top: 15px;
+    }
+
+        fieldset.main-fieldset > header {
+            margin-bottom: 15px;
+        }
+
+    .questions {
+    }
+
+        .questions .question {
+            background-color: #f5f5f5;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+</style>
+

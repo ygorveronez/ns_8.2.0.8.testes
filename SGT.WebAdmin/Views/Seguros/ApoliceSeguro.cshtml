@@ -1,0 +1,609 @@
+﻿
+
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Seguros</li>
+        <li class="breadcrumb-item active">Apólice Seguro</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            Apólices de Seguro
+        </h1>
+        <div class="subheader-help">
+            <button type="button" onclick="iniciarAjuda(263)" data-action="toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Abrir a ajuda da página" aria-label="Abrir a ajuda da página"><i class="fal fa-question-circle"></i></button>
+        </div>
+    </div>
+
+    <div id="knockoutPesquisaApoliceSeguro">
+        <div class="panel">
+            <div class="panel-container">
+                <div class="panel-content">
+                    <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                        <i class="fal fa-search"></i>
+                        Pesquisar Apólices de Seguro
+                    </button>
+                    <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-6" data-bind="visible: Seguradora.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Seguradora.text, attr: { for: Seguradora.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: Seguradora.requiredClass, value: Seguradora.val, valueUpdate: 'afterkeydown', attr: { maxlength: Seguradora.maxlength, id : Seguradora.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Seguradora.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroApolice.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroApolice.text, attr: { for: NumeroApolice.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: NumeroApolice.requiredClass, value: NumeroApolice.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroApolice.maxlength, id : NumeroApolice.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: NumeroAverbacao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: NumeroAverbacao.text, attr: { for: NumeroAverbacao.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: NumeroAverbacao.requiredClass, value: NumeroAverbacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroAverbacao.maxlength, id : NumeroAverbacao.id}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" data-bind="id: BuscaAvancada.idFade, fadeVisible: BuscaAvancada.visibleFade">
+                                <div class="col-12 col-md-3" data-bind="visible: InicioVigencia.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: InicioVigencia.text, attr: { for: InicioVigencia.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: InicioVigencia.requiredClass, value: InicioVigencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: InicioVigencia.maxlength, id : InicioVigencia.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: FimVigencia.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: FimVigencia.text, attr: { for: FimVigencia.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: FimVigencia.requiredClass, value: FimVigencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: FimVigencia.maxlength, id : FimVigencia.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2" data-bind="visible: Ativa.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Ativa.text, attr: { for: Ativa.id }"></label>
+                                        <select class="form-control" data-bind="class: Ativa.requiredClass, options: Ativa.options, optionsText: 'text', optionsValue: 'value', value: Ativa.val, attr: { maxlength: Ativa.maxlength, id : Ativa.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Responsavel.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Responsavel.text, attr: { for: Responsavel.id }"></label>
+                                        <select class="form-control" data-bind="class: Responsavel.requiredClass, options: Responsavel.options, optionsText: 'text', optionsValue: 'value', value: Responsavel.val, enable: Responsavel.enable, attr: { maxlength: Responsavel.maxlength, id : Responsavel.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Pessoa.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Pessoa.text, attr: { for: Pessoa.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: Pessoa.requiredClass, value: Pessoa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Pessoa.maxlength, id : Pessoa.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Pessoa.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: GrupoPessoas.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: GrupoPessoas.text, attr: { for: GrupoPessoas.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: GrupoPessoas.requiredClass, value: GrupoPessoas.val, valueUpdate: 'afterkeydown', attr: { maxlength: GrupoPessoas.maxlength, id : GrupoPessoas.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: GrupoPessoas.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: Empresa.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Empresa.text, attr: { for: Empresa.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="css: Empresa.requiredClass, value: Empresa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Empresa.maxlength, id : Empresa.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Empresa.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class=" d-flex  justify-content-md-end mb-2">
+                                <button class="btn btn-primary me-3 btnPesquisarFiltroPesquisa" data-bind="click: BuscaAvancada.eventClick, attr: { id: BuscaAvancada.id}" type="button">
+                                    <i data-bind="attr: { class: BuscaAvancada.icon}" class="fal fa-plus"></i><span data-bind="text: BuscaAvancada.text"></span>
+                                </button>
+                                <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                    <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                                </button>
+                            </div>
+                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="panel mt-3">
+    <div class="panel-container">
+        <div class="panel-content">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="nav-item">
+                    <a href="#knockoutCadastroApoliceSeguro" class="nav-link active" data-bs-toggle="tab">
+                        <i class="fal fa-lock"></i><span class="hidden-mobile hidden-tablet">Apólice de Seguro</span>
+                    </a>
+                </li>
+                <li class="nav-item configuracao-averbacao" id="liATM" style="display:none">
+                    <a href="#tabATM" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-cog"></i> <span class="hidden-mobile hidden-tablet">ATM</span>
+                    </a>
+                </li>
+                <li class="nav-item configuracao-averbacao" id="liBradesco" style="display:none">
+                    <a href="#tabBradesco" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-cog"></i> <span class="hidden-mobile hidden-tablet">Bradesco</span>
+                    </a>
+                </li>
+                <li class="nav-item configuracao-averbacao" id="liPortoSeguro" style="display:none">
+                    <a href="#tabPortoSeguro" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-cog"></i>  <span class="hidden-mobile hidden-tablet">Porto Seguro</span>
+                    </a>
+                </li>
+                <li class="nav-item configuracao-averbacao" id="liSenig" style="display:none">
+                    <a href="#tabSenig" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-cog"></i> <span class="hidden-mobile hidden-tablet">Senig</span>
+                    </a>
+                </li>
+                <li class="nav-item" id="liApoliceSeguroDesconto">
+                    <a href="#tabApoliceSeguroDesconto" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-minus"></i> <span class="hidden-mobile hidden-tablet">Desconto</span>
+                    </a>
+                </li>
+
+
+            </ul>
+            <div class="tab-content border border-top-0 p-3" id="myTabContent">
+                <div class="tab-pane fade active show" id="knockoutCadastroApoliceSeguro" role="tabpanel">
+                    <form>
+                        <h4>Cadastrar Apólice de Seguro</h4>
+                        <div class="row">
+                            <div class="col-12 col-md-6" data-bind="visible: Seguradora.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Seguradora.text, attr: { for: Seguradora.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Seguradora.requiredClass, value: Seguradora.val, valueUpdate: 'afterkeydown', attr: { maxlength: Seguradora.maxlength, id : Seguradora.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Seguradora.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: NumeroApolice.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: NumeroApolice.text, attr: { for: NumeroApolice.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: NumeroApolice.requiredClass, value: NumeroApolice.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroApolice.maxlength, id : NumeroApolice.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: NumeroAverbacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: NumeroAverbacao.text, attr: { for: NumeroAverbacao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: NumeroAverbacao.requiredClass, value: NumeroAverbacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroAverbacao.maxlength, id : NumeroAverbacao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: InicioVigencia.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: InicioVigencia.text, attr: { for: InicioVigencia.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: InicioVigencia.requiredClass, value: InicioVigencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: InicioVigencia.maxlength, id : InicioVigencia.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: FimVigencia.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: FimVigencia.text, attr: { for: FimVigencia.id }"></label>
+                                    <input type="text" class="form-control" data-bind="class: FimVigencia.requiredClass, value: FimVigencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: FimVigencia.maxlength, id : FimVigencia.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Ativa.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Ativa.text, attr: { for: Ativa.id }"></label>
+                                    <select class="form-control" data-bind="class: Ativa.requiredClass, options: Ativa.options, optionsText: 'text', optionsValue: 'value', value: Ativa.val, attr: { maxlength: Ativa.maxlength, id : Ativa.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ValorLimiteApolice.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ValorLimiteApolice.text"></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" data-bind="checked: LimitirValorApolice.val, attr: { maxlength: LimitirValorApolice.maxlength, name: LimitirValorApolice.id, id: LimitirValorApolice.id }" />
+                                                    <label class="custom-control-label w-0 h-0" data-bind="attr: { for: LimitirValorApolice.id }"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" data-bind="value: ValorLimiteApolice.val, enable: ValorLimiteApolice.enable, attr: { maxlength: ValorLimiteApolice.maxlength, id : ValorLimiteApolice.id} " />
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-12 col-md-3" data-bind="visible: Responsavel.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Responsavel.text, attr: { for: Responsavel.id }"></label>
+                                    <select class="form-control" data-bind="class: Responsavel.requiredClass, options: Responsavel.options, optionsText: 'text', optionsValue: 'value', value: Responsavel.val, enable: Responsavel.enable, attr: { maxlength: Responsavel.maxlength, id : Responsavel.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: SeguradoraAverbacao.visible  + (Pessoa.visible() ? '4' : '3')">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: SeguradoraAverbacao.text, attr: { for: SeguradoraAverbacao.id }"></label>
+                                    <select class="form-control" data-bind="class: SeguradoraAverbacao.requiredClass, options: SeguradoraAverbacao.options, optionsText: 'text', optionsValue: 'value', value: SeguradoraAverbacao.val, attr: { maxlength: SeguradoraAverbacao.maxlength, id : SeguradoraAverbacao.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: Empresa.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Empresa.text, attr: { for: Empresa.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Empresa.requiredClass, value: Empresa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Empresa.maxlength, id : Empresa.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Empresa.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: Pessoa.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Pessoa.text, attr: { for: Pessoa.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Pessoa.requiredClass, value: Pessoa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Pessoa.maxlength, id : Pessoa.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Pessoa.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5" data-bind="visible: GrupoPessoas.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: GrupoPessoas.text, attr: { for: GrupoPessoas.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: GrupoPessoas.requiredClass, value: GrupoPessoas.val, valueUpdate: 'afterkeydown', attr: { maxlength: GrupoPessoas.maxlength, id : GrupoPessoas.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: GrupoPessoas.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" data-bind="visible: ValorFixoAverbacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ValorFixoAverbacao.text"></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" data-bind="checked: ValorFixoAverbacaoEnable.val, attr: { maxlength: ValorFixoAverbacaoEnable.maxlength, name: ValorFixoAverbacaoEnable.id, id: ValorFixoAverbacaoEnable.id }" />
+                                                    <label class="custom-control-label w-0 h-0" data-bind="attr: { for: ValorFixoAverbacaoEnable.id }"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <input type="text" class="form-control" data-bind="value: ValorFixoAverbacao.val, enable: ValorFixoAverbacao.enable, attr: { maxlength: ValorFixoAverbacao.maxlength, id : ValorFixoAverbacao.id} " />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                    <textarea class="form-control" rows="5" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade " id="tabATM">
+                    <div id="knockoutATM">
+                        <h4> Configuração ATM  </h4>
+
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-4" data-bind="visible: ATMCodigo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ATMCodigo.text, attr: { for: ATMCodigo.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: ATMCodigo.requiredClass, value: ATMCodigo.val, valueUpdate: 'afterkeydown', attr: { maxlength: ATMCodigo.maxlength, id : ATMCodigo.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: ATMUsuario.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ATMUsuario.text, attr: { for: ATMUsuario.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: ATMUsuario.requiredClass, value: ATMUsuario.val, valueUpdate: 'afterkeydown', attr: { maxlength: ATMUsuario.maxlength, id : ATMUsuario.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: ATMSenha.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: ATMSenha.text, attr: { for: ATMSenha.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: ATMSenha.requiredClass, value: ATMSenha.val, valueUpdate: 'afterkeydown', attr: { maxlength: ATMSenha.maxlength, id : ATMSenha.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: ATMAverbaComoEmbarcador.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: ATMAverbaComoEmbarcador.val, attr: { maxlength: ATMAverbaComoEmbarcador.maxlength, name: ATMAverbaComoEmbarcador.id, id: ATMAverbaComoEmbarcador.id }">
+                                            <label class="custom-control-label" data-bind="text: ATMAverbaComoEmbarcador.text, attr: { for: ATMAverbaComoEmbarcador.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: ATMAverbarNFeQuandoCargaPossuirNFSManual.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: ATMAverbarNFeQuandoCargaPossuirNFSManual.val, attr: { maxlength: ATMAverbarNFeQuandoCargaPossuirNFSManual.maxlength, name: ATMAverbarNFeQuandoCargaPossuirNFSManual.id, id: ATMAverbarNFeQuandoCargaPossuirNFSManual.id }">
+                                            <label class="custom-control-label" data-bind="text: ATMAverbarNFeQuandoCargaPossuirNFSManual.text, attr: { for: ATMAverbarNFeQuandoCargaPossuirNFSManual.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: VersaoLayoutATMOutrosDocumentos.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: VersaoLayoutATMOutrosDocumentos.text, attr: { for: VersaoLayoutATMOutrosDocumentos.id }"></label>
+                                        <select class="form-control" data-bind="class: VersaoLayoutATMOutrosDocumentos.requiredClass, options: VersaoLayoutATMOutrosDocumentos.options, optionsText: 'text', optionsValue: 'value', value: VersaoLayoutATMOutrosDocumentos.val, enable: VersaoLayoutATMOutrosDocumentos.enable, attr: { maxlength: VersaoLayoutATMOutrosDocumentos.maxlength, id : VersaoLayoutATMOutrosDocumentos.id}"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tabBradesco">
+                    <div id="knockoutBradesco">
+                        <h4> Configuração Bradesco  </h4>
+
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-6" data-bind="visible: BradescoToken.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: BradescoToken.text, attr: { for: BradescoToken.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: BradescoToken.requiredClass, value: BradescoToken.val, valueUpdate: 'afterkeydown', attr: { maxlength: BradescoToken.maxlength, id : BradescoToken.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" data-bind="visible: BradescoWSDLQuorum.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: BradescoWSDLQuorum.text, attr: { for: BradescoWSDLQuorum.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: BradescoWSDLQuorum.requiredClass, value: BradescoWSDLQuorum.val, valueUpdate: 'afterkeydown', attr: { maxlength: BradescoWSDLQuorum.maxlength, id : BradescoWSDLQuorum.id}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade " id="tabApoliceSeguroDesconto">
+                    <div id="knockoutApoliceSeguroDesconto">
+                        <h4>Desconto </h4>
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-start">
+                                    <button data-bind="visible: AdicionarDesconto.visible, click: AdicionarDesconto.eventClick, attr: { id: AdicionarDesconto.idBtnSearch}" class="btn btn-primary " type="button">
+                                        <i class="fal fa-plus"></i> <span data-bind="text: AdicionarDesconto.text"></span>
+                                    </button>
+                                    <span class="ImportarDescontos ms-3" data-bind='component: {name: "import-file", params: { ko: ImportarDescontos }}'></span>
+                                </div>
+                                <div class="mt-3">
+                                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Grid.id}" cellspacing="0"></table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade " id="tabPortoSeguro">
+                    <div id="knockoutPortoSeguro">
+                        <h4>Configuração Porto Seguro</h4>
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-4" data-bind="visible: PortoSeguroUsuario.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: PortoSeguroUsuario.text, attr: { for: PortoSeguroUsuario.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: PortoSeguroUsuario.requiredClass, value: PortoSeguroUsuario.val, valueUpdate: 'afterkeydown', attr: { maxlength: PortoSeguroUsuario.maxlength, id : PortoSeguroUsuario.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4" data-bind="visible: PortoSeguroSenha.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: PortoSeguroSenha.text, attr: { for: PortoSeguroSenha.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: PortoSeguroSenha.requiredClass, value: PortoSeguroSenha.val, valueUpdate: 'afterkeydown', attr: { maxlength: PortoSeguroSenha.maxlength, id : PortoSeguroSenha.id}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade " id="tabSenig">
+                    <div id="knockoutSenig">
+                        <h4><b>Configuração Senig </b> </h4>
+                        <form>
+                            <div class="row">
+                                <div class="col-12 col-md-12" data-bind="visible: AverbaComoEmbarcador.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: AverbaComoEmbarcador.val, attr: { maxlength: AverbaComoEmbarcador.maxlength, name: AverbaComoEmbarcador.id, id: AverbaComoEmbarcador.id }">
+                                            <label class="custom-control-label" data-bind="text: AverbaComoEmbarcador.text, attr: { for: AverbaComoEmbarcador.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <footer id="knoutCRUDApoliceSeguro">
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="button" class="btn btn-labeled btn-default ms-1" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { id : Cancelar.id}">
+                        <span data-bind="text: Cancelar.text"></span>
+                    </button>
+                    <button type="button" class="btn btn-labeled btn-danger ms-1" data-bind="click: Excluir.eventClick, visible: Excluir.visible, attr: { id : Excluir.id}">
+                        <span data-bind="text: Excluir.text"></span>
+                    </button>
+                    <button type="button" class="btn btn-labeled btn-success ms-1" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { id : Atualizar.id}">
+                        <span data-bind="text: Atualizar.text"></span>
+                    </button>
+                    <button type="button" class="btn btn-labeled btn-success ms-1" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                        <span data-bind="text: Adicionar.text"></span>
+                    </button>
+                    <button type="button" class="btn btn-labeled btn-primary ms-1" data-bind="click: Anexos.eventClick, visible: Anexos.visible, attr: { value: Anexos.text, id : Anexos.id}">
+                        <span data-bind="text: Anexos.text"></span>
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="divModalDesconto" role="dialog" aria-hidden="true">
+    <div id="knockoutCadastroApoliceSeguroDesconto" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Desconto</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class=" row">
+                    <div class="col-12 col-md-6" data-bind="visible: ModeloVeicularCarga.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: ModeloVeicularCarga.text, attr: { for: ModeloVeicularCarga.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: ModeloVeicularCarga.requiredClass, value: ModeloVeicularCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: ModeloVeicularCarga.maxlength, id : ModeloVeicularCarga.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: ModeloVeicularCarga.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: TipoOperacao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TipoOperacao.text, attr: { for: TipoOperacao.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: TipoOperacao.requiredClass, value: TipoOperacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoOperacao.maxlength, id : TipoOperacao.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoOperacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: Filial.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: Filial.requiredClass, value: Filial.val, valueUpdate: 'afterkeydown', attr: { maxlength: Filial.maxlength, id : Filial.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Filial.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: ValorDesconto.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: ValorDesconto.text, attr: { for: ValorDesconto.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: ValorDesconto.requiredClass, value: ValorDesconto.val, valueUpdate: 'afterkeydown', attr: { maxlength: ValorDesconto.maxlength, id : ValorDesconto.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: PercentualDesconto.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: PercentualDesconto.text, attr: { for: PercentualDesconto.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: PercentualDesconto.requiredClass, value: PercentualDesconto.val, valueUpdate: 'afterkeydown', attr: { maxlength: PercentualDesconto.maxlength, id : PercentualDesconto.id}" />
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="d-flex align-items-center justify-content-end mb-3">
+                    <input type="button" data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-labeled btn-success" />
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalGerenciarAnexosApolice" role="dialog" aria-hidden="true">
+    <div id="knockoutCadastroAnexosApolice" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Anexos da Apolice de Seguro</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class=" row">
+                    <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                        </div>
+                    </div>
+                    <div class="form-group col-12 col-md-6" data-bind="visible: Arquivo.visible">
+                        <p class="form-label" data-bind="text: Arquivo.text"></p>
+                        <div class="custom-file" data-bind="visible: Arquivo.visible">
+                            <input type="file" class="custom-file-input" placeholder="Selecione o arquivo" data-bind="value: Arquivo.val, attr: {id: Arquivo.id}" readonly>
+                            <label class="custom-file-label" data-bind="text: Arquivo.val, attr: { for: Arquivo.id }"></label>
+                        </div>
+                    </div>
+                </div>
+                <footer class="d-flex align-items-center justify-content-end mb-3">
+                    <input type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}" class="btnPesquisarFiltroPesquisa btn btn-labeled btn-success" />
+                </footer>
+                <div class="widget-body">
+                    <div class="widget-body no-padding" style="">
+                        <div class="smart-form">
+                            <header>
+                                <h4><i class="glyphicon glyphicon-list-alt"></i>&nbsp;Arquivos Anexados</h4>
+                            </header>
+                        </div>
+                    </div>
+
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id : Anexos.idGrid}"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/scripts/apoliceSeguro"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadApoliceSeguro();
+    });
+
+</script>
+

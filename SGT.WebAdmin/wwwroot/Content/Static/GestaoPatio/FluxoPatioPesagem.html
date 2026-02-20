@@ -1,0 +1,504 @@
+﻿<div class="modal fade" id="divModalPesagem" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Informações de Pesagem Inicial</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="knockoutPesagem">
+                    <div class="col-12 col-md-6" data-bind="visible: PesagemInicial.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: PesagemInicial.text, attr: { for: PesagemInicial.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: PesagemInicial.requiredClass, value: PesagemInicial.val, enable: PesagemInicial.enable, valueUpdate: 'afterkeydown', attr: { maxlength: PesagemInicial.maxlength, id : PesagemInicial.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6" data-bind="visible: Pressao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Pressao.text, attr: { for: Pressao.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Pressao.requiredClass, value: Pressao.val, enable: Pressao.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Pressao.maxlength, id : Pressao.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6" data-bind="visible: QuantidadeCaixas.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: QuantidadeCaixas.text, attr: { for: QuantidadeCaixas.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: QuantidadeCaixas.requiredClass, value: QuantidadeCaixas.val, enable: QuantidadeCaixas.enable, valueUpdate: 'afterkeydown', attr: { maxlength: QuantidadeCaixas.maxlength, id : QuantidadeCaixas.id}" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-2" data-bind="visible: ProdutorRural.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: ProdutorRural.text, attr: { for: ProdutorRural.id }"></label>
+                            <select class="form-control" data-bind="class: ProdutorRural.requiredClass, options: ProdutorRural.options, enable: ProdutorRural.enable, optionsText: 'text', optionsValue: 'value', value: ProdutorRural.val, attr: { maxlength: ProdutorRural.maxlength, id : ProdutorRural.id}"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3" data-bind="visible: Balanca.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Balanca.text, attr: { for: Balanca.id }"></label>
+                            <select class="form-control" data-bind="valueAllowUnset: true, class: Balanca.requiredClass, enable: Balanca.enable, options: Balanca.options, optionsText: 'text', optionsValue: 'value', value: Balanca.val, attr: { maxlength: Balanca.maxlength, id : Balanca.id}"></select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: GerarIntegracao.visible">
+                        <button data-bind="click: GerarIntegracao.eventClick, attr: { id: GerarIntegracao.id}" class="btn btn-success" style="margin-top: 31px" type="button">
+                            <span data-bind="text: GerarIntegracao.text"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-container">
+                    <div class="panel-content">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item active" id="liTabPesagemInicialAnexo">
+                                <a data-bs-toggle="tab" class="nav-link active" href="#tabPesagemInicialAnexo"><span class="hidden-mobile hidden-tablet">Anexos </span></a>
+                            </li>
+                            <li class="nav-item" id="liTabPesagemInicialIntegracao" style="display:none">
+                                <a data-bs-toggle="tab" class="nav-link" href="#tabPesagemInicialIntegracao"><span class="hidden-mobile hidden-tablet">Integração </span></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content border border-top-0 p-3" id="lista-aba-pesagem-inicial">
+
+                            <div class="tab-pane fade active show" id="tabPesagemInicialAnexo" role="tabpanel">
+                                <form novalidate>
+                                    <div class="row" id="knockoutListaAnexosPesagem">
+                                        <div data-bind="visible: Adicionar.visible" class="col-12 col-md-auto mb-2">
+                                            <input type="button" data-bind="click: Adicionar.eventClick, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-success" />
+                                        </div>
+                                        <div class="padding-side">
+                                            <table width="100%" class="table table-bordered table-hover margin-top-0" data-bind="attr: { id: Anexos.idGrid }" cellspacing="0"></table>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="tabPesagemInicialIntegracao" role="tabpanel">
+                                <div class="row">
+                                    <div id="tabIntegracoesPesagemInicialConteudo"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="knockoutPesagemCRUD" data-bind="visible: SalvarPesagem.visible()" class="d-flex justify-content-end mt-2">
+                        <button class="btn btn-warning me-2" type="button" data-bind="enable: CriarTicketBalanca.enable, visible: CriarTicketBalanca.visible, click: CriarTicketBalanca.eventClick, attr: { id: CriarTicketBalanca.id}">
+                            <span data-bind="text: CriarTicketBalanca.text"></span>
+                        </button>
+                        <button class="btn btn-success" type="button" data-bind="enable: SalvarPesagem.enable, visible: SalvarPesagem.visible, click: SalvarPesagem.eventClick, attr: { id: SalvarPesagem.id}">
+                            <i class="fal fa-check"></i><span data-bind="text: SalvarPesagem.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalAnexoPesagem" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Anexo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body modal-body-no-padding">
+                <form id="knockoutAnexoPesagem">
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6" data-bind="visible: Arquivo.visible">
+                            <p class="form-label" data-bind="text: Arquivo.text"></p>
+                            <div class="custom-file" data-bind="visible: Arquivo.visible">
+                                <input type="file" placeholder="Selecione uma arquivo para anexar" accept=".jpg,.jpeg,.png,.pdf" class="custom-file-input" data-bind="attr: {id: Arquivo.id}, value: Arquivo.val, enable: Arquivo.enable" readonly>
+                                <label class="custom-file-label" data-bind="text: Arquivo.val, attr: {for: Arquivo.id}"></label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-success">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalAnexoPesagemFinal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Anexo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body modal-body-no-padding">
+                <form id="knockoutAnexoPesagemFinal">
+                    <div class="row">
+                        <div class="form-group col-12 col-md-6" data-bind="visible: Arquivo.visible">
+                            <p class="form-label" data-bind="text: Arquivo.text"></p>
+                            <div class="custom-file" data-bind="visible: Arquivo.visible">
+                                <input type="file" placeholder="Selecione uma arquivo para anexar" accept=".jpg,.jpeg,.png,.pdf" class="custom-file-input" data-bind="attr: {id: Arquivo.id}, value: Arquivo.val, enable: Arquivo.enable" readonly>
+                                <label class="custom-file-label" data-bind="text: Arquivo.val, attr: {for: Arquivo.id}"></label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <input type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-success">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalMotivoProblemaIntegracao" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutMotivoProblemaIntegracao" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Problema Integração</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-12" data-bind="visible: Motivo.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Motivo.text, attr: { for: Motivo.id }"></label>
+                            <textarea class="form-control" rows="4" data-bind="value: Motivo.val, enable: Motivo.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Motivo.maxlength, id : Motivo.id }"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <input type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-labeled btn-success">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalHistoricoIntegracao" style="z-index:1200" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Histórico de Integração</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <table width="100%" class="table table-bordered table-hover" cellspacing="0" id="tblHistoricoIntegracao"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalPesagemFinal" style="z-index:1200" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Informações de Pesagem Final</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="knockoutPesagemFinal">
+                    <div class="col-12 col-md-4" data-bind="visible: PesagemFinal.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: PesagemFinal.text, attr: { for: PesagemFinal.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: PesagemFinal.requiredClass, value: PesagemFinal.val, enable: PesagemFinal.enable, valueUpdate: 'afterkeydown', attr: { maxlength: PesagemFinal.maxlength, id : PesagemFinal.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" data-bind="visible: Lacre.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Lacre.text, attr: { for: Lacre.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: Lacre.requiredClass, value: Lacre.val, enable: Lacre.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Lacre.maxlength, id : Lacre.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" data-bind="visible: PorcentagemPerda.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: PorcentagemPerda.text, attr: { for: PorcentagemPerda.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: PorcentagemPerda.requiredClass, value: PorcentagemPerda.val, enable: PorcentagemPerda.enable, valueUpdate: 'afterkeydown', attr: { maxlength: PorcentagemPerda.maxlength, id : PorcentagemPerda.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" data-bind="visible: LoteInterno.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: LoteInterno.text, attr: { for: LoteInterno.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: LoteInterno.requiredClass, value: LoteInterno.val, enable: LoteInterno.enable, valueUpdate: 'afterkeydown', attr: { maxlength: LoteInterno.maxlength, id : LoteInterno.id}" />
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div class="col-12 col-md-3" data-bind="visible: Balanca.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Balanca.text, attr: { for: Balanca.id }"></label>
+                            <select class="form-control" data-bind="valueAllowUnset: true, class: Balanca.requiredClass, enable: Balanca.enable, options: Balanca.options, optionsText: 'text', optionsValue: 'value', value: Balanca.val, attr: { maxlength: Balanca.maxlength, id : Balanca.id}"></select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: GerarIntegracao.visible">
+                        <button data-bind="click: GerarIntegracao.eventClick, attr: { id: GerarIntegracao.id}" class="btn btn-success" style="margin-top: 31px" type="button">
+                            <span data-bind="text: GerarIntegracao.text"></span>
+                        </button>
+                    </div>
+
+                    <div data-bind="visible: ProblemaIntegracao.visible" class="col-12 col-md-12" style="padding-bottom: 15px;">
+                        <label><b><span data-bind="text: ProblemaIntegracao.text"></span></b><span data-bind="text: ProblemaIntegracao.val"></span></label>
+                    </div>
+                </div>
+
+                <div class="panel-container" id="container-abas-pesagem-final">
+                    <div class="panel-content">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item active" id="liTabPesagemFinalAnexo">
+                                <a data-bs-toggle="tab" class="nav-link active" href="#tabPesagemFinalAnexo"><span class="hidden-mobile hidden-tablet">Anexos </span></a>
+                            </li>
+                            <li class="nav-item" id="liTabPesagemFinalIntegracao" style="display:none">
+                                <a data-bs-toggle="tab" class="nav-link" href="#tabPesagemFinalIntegracao"><span class="hidden-mobile hidden-tablet">Integração </span></a>
+                            </li>
+                            <li class="nav-item" id="liTabPesagemFinalAprovacao" style="display:none">
+                                <a data-bs-toggle="tab" class="nav-link" href="#tabPesagemFinalAprovacao"><i class="fal fa-check" id="tabPesagemFinalAprovacaoIcone"></i><span class="hidden-mobile hidden-tablet">Aprovação </span></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content border border-top-0 p-3" id="lista-aba-pesagem-final">
+                            <div class="tab-pane fade active show" id="tabPesagemFinalAnexo" role="tabpanel">
+                                <form novalidate>
+                                    <div class="row">
+                                        <div class="row" id="knockoutListaAnexosPesagemFinal">
+                                            <div data-bind="visible: Adicionar.visible" class="col-12 col-md-auto mb-2">
+                                                <input type="button" data-bind="click: Adicionar.eventClick, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-success" />
+                                            </div>
+                                            <div class="padding-side">
+                                                <table width="100%" class="table table-bordered table-hover margin-top-0" data-bind="attr: { id: Anexos.idGrid }" cellspacing="0"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="tabPesagemFinalIntegracao" role="tabpanel">
+                                <div class="row">
+                                    <div id="tabIntegracoesPesagemFinalConteudo"></div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="tabPesagemFinalAprovacao" role="tabpanel">
+                                <div class="row" id="knockoutPesagemFinalAprovacao">
+                                    <div class="p-2 pb-0">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: PossuiRegras.val">
+                                                <div class="card">
+                                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                                        <h3 class="card-title">Detalhes</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div data-bind="visible: AprovacoesNecessarias.visible" class="col-12 col-md-12 mb-2">
+                                                                <label><b data-bind="text: AprovacoesNecessarias.text"></b> <span data-bind="text: AprovacoesNecessarias.val"></span></label>
+                                                            </div>
+                                                            <div data-bind="visible: Aprovacoes.visible" class="col-12 col-md-12 mb-2">
+                                                                <label><b data-bind="text: Aprovacoes.text"></b> <span data-bind="text: Aprovacoes.val"></span></label>
+                                                            </div>
+                                                            <div data-bind="visible: Reprovacoes.visible" class="col-12 col-md-12 mb-2">
+                                                                <label><b data-bind="text: Reprovacoes.text"></b> <span data-bind="text: Reprovacoes.val"></span></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6" data-bind="visible: PossuiRegras.val">
+                                                <div class="card">
+                                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                                        <h3 class="card-title">Aprovadores</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Autorizacoes.idGrid}" cellspacing="0"></table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12" data-bind="visible: !PossuiRegras.val()">
+                                                <div class="text-center mt-5 alert alert-warning" role="alert">
+                                                    <span>
+                                                        Não foi encontrada nenhuma regra para aprovar a pesagem.<br>
+                                                        A pesagem ficará pendente até existir alguma regra de aprovação.<br>
+                                                        Clique em Reprocessar Regras para verificar.
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <footer class="d-flex justify-content-start">
+                                            <button class="btn btn-labeled btn-success botaoDentroSmartAdmimForm" type="button" data-bind="visible: !PossuiRegras.val(), click: ReprocessarRegras.eventClick, attr: { value: ReprocessarRegras.text, id : ReprocessarRegras.id}">
+                                                <span data-bind="text: ReprocessarRegras.text"></span>
+                                            </button>
+                                        </footer>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer id="knockoutPesagemFinalCRUD" data-bind="visible: SalvarPesagem.visible()" class="d-flex justify-content-end mt-3">
+                    <input type="button" data-bind="click: DesbloquearTicketBalanca.eventClick, enable: DesbloquearTicketBalanca.enable, visible: DesbloquearTicketBalanca.visible, attr: { value: DesbloquearTicketBalanca.text, id : DesbloquearTicketBalanca.id}" class="btn btn-warning" />
+                    <input type="button" data-bind="click: RefazerPesagemTicketBalanca.eventClick, enable: RefazerPesagemTicketBalanca.enable, visible: RefazerPesagemTicketBalanca.visible, attr: { value: RefazerPesagemTicketBalanca.text, id : RefazerPesagemTicketBalanca.id}" class="btn btn-danger mx-2" />
+                    <input type="button" data-bind="click: RefazerConsultaPesagemBalanca.eventClick, enable: RefazerConsultaPesagemBalanca.enable, visible: RefazerConsultaPesagemBalanca.visible, attr: { value: RefazerConsultaPesagemBalanca.text, id : RefazerConsultaPesagemBalanca.id}" class="btn btn-warning" />
+                    <input type="button" data-bind="click: SalvarPesagem.eventClick, enable: SalvarPesagem.enable, visible: SalvarPesagem.visible, attr: { value: SalvarPesagem.text, id : SalvarPesagem.id}" class="btn btn-success ms-2" />
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalPesagemLoteInterno" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Informações de lote interno</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row me-2" id="knockoutPesagemLoteInterno">
+                    <div class="col-12 col-md-6" data-bind="visible: LoteInterno.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: LoteInterno.text, attr: { for: LoteInterno.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: LoteInterno.requiredClass, value: LoteInterno.val, valueUpdate: 'afterkeydown', attr: { maxlength: LoteInterno.maxlength, id : LoteInterno.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: LoteInternoDois.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: LoteInternoDois.text, attr: { for: LoteInternoDois.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: LoteInternoDois.requiredClass, value: LoteInternoDois.val, valueUpdate: 'afterkeydown', attr: { maxlength: LoteInternoDois.maxlength, id : LoteInternoDois.id}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mb-2 me-2" id="knockoutPesagemLoteInternoCRUD">
+                    <input type="button" data-bind="click: SalvarPesagemLoteInterno.eventClick, enable: SalvarPesagemLoteInterno.enable, visible: SalvarPesagemLoteInterno.visible, attr: { value: SalvarPesagemLoteInterno.text, id : SalvarPesagemLoteInterno.id}" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalPesagemDetalhes" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Informações de Pesagem</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="knockoutPesagemDetalhes">
+                    <div data-bind="visible: PesagemInicial.visible" class="col-12 col-md-12">
+                        <label><b><span data-bind="text: PesagemInicial.text"></span></b><span data-bind="text: PesagemInicial.val"></span></label>
+                    </div>
+                    <div data-bind="visible: PesagemFinal.visible" class="col-12 col-md-12">
+                        <label><b><span data-bind="text: PesagemFinal.text"></span></b><span data-bind="text: PesagemFinal.val"></span></label>
+                    </div>
+                    <div data-bind="visible: PesoLiquido.visible" class="col-12 col-md-12">
+                        <label><b><span data-bind="text: PesoLiquido.text"></span></b><span data-bind="text: PesoLiquido.val"></span></label>
+                    </div>
+                    <div data-bind="visible: Lacre.visible" class="col-12 col-md-12">
+                        <label><b><span data-bind="text: Lacre.text"></span></b><span data-bind="text: Lacre.val"></span></label>
+                    </div>
+                    <div data-bind="visible: LoteInterno.visible" class="col-12 col-md-12">
+                        <label><b><span data-bind="text: LoteInterno.text"></span></b><span data-bind="text: LoteInterno.val"></span></label>
+                    </div>
+                    <div data-bind="visible: Origem.visible" class="col-12 col-md-12">
+                        <label><b><span data-bind="text: Origem.text"></span></b><span data-bind="text: Origem.val"></span></label>
+                    </div>
+                    <div data-bind="visible: Destino.visible" class="col-12 col-md-12">
+                        <label><b><span data-bind="text: Destino.text"></span></b><span data-bind="text: Destino.val"></span></label>
+                    </div>
+                    <div data-bind="visible: NumeroPedido.visible" class="col-12 col-md-12">
+                        <label><b><span data-bind="text: NumeroPedido.text"></span></b><span data-bind="text: NumeroPedido.val"></span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalDetalhesAutorizacaoPesagem" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalhes da Autorização</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="knockoutDetalheAutorizacaoPesagem">
+                    <tbody>
+                        <tr data-bind="visible: Regra.visible">
+                            <td>
+                                <b data-bind="text: Regra.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Regra.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: Situacao.visible">
+                            <td>
+                                <b data-bind="text: Situacao.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Situacao.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: Usuario.visible">
+                            <td>
+                                <b data-bind="text: Usuario.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Usuario.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: Data.visible && Data.val() != ''">
+                            <td>
+                                <b data-bind="text: Data.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Data.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: Motivo.visible && Motivo.val() != ''">
+                            <td>
+                                <b data-bind="text: Motivo.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Motivo.val"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

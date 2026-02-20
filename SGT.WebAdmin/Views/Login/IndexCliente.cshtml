@@ -1,0 +1,183 @@
+﻿@using SGT.WebAdmin;
+@using SGT.WebAdmin.Extensions;
+@model SGT.WebAdmin.Models.Login
+
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<title>@Html.Raw(ViewBag.Titulo) - Acesso ao Sistema</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="shortcut icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+	<link rel="icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="~/css/portalClientePublic" />
+	<link rel="stylesheet" href="~/css/fontAwesome" />
+
+</head>
+
+<body>
+
+	<script type="text/javascript">
+		var alteraCorPrincipal = '@ViewBag.AlteraCorPrincipalPortal'.toLowerCase() === 'true';
+
+		if(alteraCorPrincipal == true){
+			document.documentElement.style.setProperty('--cor-primaria-login-container', '#166770');
+		}
+	</script>
+
+	<div class="login-container" role="main">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-lg-5 d-flex align-items-center container-register">
+					<div class="flex-column">
+						<div class="text-center">
+							<img src="~/content/portal-cliente/public/@ViewBag.LogoPersonalizada" class="img-fluid" />
+						</div>
+						@if (ViewBag.ExibirConteudoColog)
+						{
+							<div class="text-center" style="margin: 100px 0">
+								<img src="~/content/portal-cliente/public/cologist-truck.png" class="img-fluid" />
+							</div>
+							<div>
+								<h3 class="h2 text-primary font-weight-bold">Já conhece a Cologist Tracking?</h3>
+								Encontre as principais informaçõe sobre as entregas dos seus pedidos em tempo real
+							</div>
+						}
+					</div>
+				</div>
+
+				<div class="col-md-6 col-lg-5 offset-md-0 offset-lg-2 d-flex align-items-center container-login">
+					<div class="flex-column">
+						<form method="post" action="@Url.Action("index", "login")" id="login-form" class="">
+							@Html.HiddenFor(m => m.ReturnUrl)
+							@Html.AntiForgeryToken()
+							<div>
+								<h1>Bem-vindo!</h1>
+								<h2 class="h3">Acesse a sua conta</h2>
+							</div>
+							<div class="form-group">
+								<input type="text" placeholder="Usuário" name="usuario" class="form-control" />
+							</div>
+							<div class="form-group">
+								<input type="password" placeholder="Senha" name="senha" class="form-control" />
+							</div>
+							@Html.ValidationBootstrap(alertType: "warning", heading: "Campos Obrigatórios", showCloseButton: false)
+							<div class="">
+								<!--<a href="EsqueciSenha#/" target="_blank">Esqueci a senha</a>-->
+								<button type="submit" class="btn btn-primary btn-sign-in">
+									Entrar
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	@if (ViewBag.ExibirConteudoColog)
+	{
+		<div class="page-info-container">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-5">
+						<div class="">
+							<div class="text-center">
+								<img src="~/content/portal-cliente/public/@ViewBag.LogoPersonalizada" class="img-fluid" />
+							</div>
+							<div class="text-about-container">
+								<h3 class="h2 text-primary font-weight-bold">Quem somos?</h3>
+								A cologistic nasceu de uma parceria entre Danone e Comfrio, duas empresas com larga experiência em seus mercados e que exergam uma oportuniodade de unir o melhor de suas operações:
+							</div>
+							<div class="container-about-images">
+								<img src="~/content/portal-cliente/public/conhecimentos-logisticos.png" alt="" />
+								<img src="~/content/portal-cliente/public/info-plus.png" alt="" />
+							</div>
+							<div class="container-about-images">
+								<img src="~/content/portal-cliente/public/malha-atendimento.png" class="about-images-malha" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-5 offset-lg-2">
+						<h3 class="h2 text-primary font-weight-bold">O que oferecemos?</h3>
+
+						<div class="boxes">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="box text-center">
+										<div class="box-image">
+											<img src="~/content/portal-cliente/public/box-transparency.png" alt="" />
+										</div>
+										<div class="box-name font-weight-bold text-default">Transparências</div>
+										<div class="box-description text-default">
+											Acompanhe o andamento de cada etapa do pedido à entrega final.
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="box text-center">
+										<div class="box-image">
+											<img src="~/content/portal-cliente/public/box-agility.png" alt="" />
+										</div>
+										<div class="box-name font-weight-bold text-default">Agilidade</div>
+										<div class="box-description text-default">
+											Roterizamos o percurso mais adequado para a sua entrega.
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="box text-center">
+										<div class="box-image">
+											<img src="~/content/portal-cliente/public/box-connection.png" alt="" />
+										</div>
+										<div class="box-name font-weight-bold text-default">Conexão</div>
+										<div class="box-description text-default">
+											Acompanhamos em tempo real por um sistema de monitoramento.
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="box text-center">
+										<div class="box-image">
+											<img src="~/content/portal-cliente/public/box-presence.png" alt="" />
+										</div>
+										<div class="box-name font-weight-bold text-default">Presença</div>
+										<div class="box-description text-default">
+											Com uma gestão coorenada, agilizamos a tomada de decisões para atuar na gestão de risco.
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer class="footer-fixed">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6">
+						<img src="~/content/portal-cliente/public/footer-message.png" class="img-fluid" />
+					</div>
+					<div class="col-lg-6">
+						<div class="row">
+							<div class="col-lg-6"><i class="fa fa-map-marker"></i> 4517 Washington Ave. Manchester, Kentucky 39495</div>
+							<div class="col-lg-6"><i class="fa fa-comment-o"></i> (255) 555-0118 | (255) 555-0118</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	}
+</body>
+</html>

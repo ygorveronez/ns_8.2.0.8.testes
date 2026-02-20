@@ -1,0 +1,38 @@
+fullnameOverride: "stg-processador-tarefas"
+
+replicaCount: 5
+
+externalSecrets:
+  enabled: false
+
+secrets:
+  enabled: true
+  name: "stg-processador-tarefas"
+
+image:
+  repository: multicte-e7fuhbhhcqdmc7dj.azurecr.io/gruposc/develop/processador-tarefas
+  pullPolicy: IfNotPresent
+  tag: "<sha>"
+
+imagePullSecrets:
+  - name: azure-registry-credential
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 2Gi
+  requests:
+    cpu: 100m
+    memory: 1Gi
+
+autoscaling:
+  enabled: false
+
+service:
+  type: NodePort
+  ports: 
+    - 8080
+    - 8081
+    
+ingress:
+  enabled: false

@@ -1,0 +1,762 @@
+﻿
+<section id="widget-grid">
+	<ol class="breadcrumb page-breadcrumb">
+		<li class="breadcrumb-item">Cargas</li>
+		<li class="breadcrumb-item active">Gestão de devolução</li>
+	</ol>
+
+	<div class="header-filtros">
+		<div class="layout-and-filters">
+			<div class="box-search" style="margin-right:0px">
+				<div class="button-filter" onclick="ExibirFiltros()"></div>
+			</div>
+			<div class="dropdown box-search" style="margin-left:0px" id="dropdown">
+				<button class="button-view-templates" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="span" id="texto-botao-visualizao-grids">Notas Fiscais</span><i class="fal fa-chevron-down"></i></button>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" onclick="mostrarGridDevolucoes()">Devoluções</a></li>
+					<li><a class="dropdown-item" onclick="mostrarGridNotasFiscaisPallet()">Notas Fiscais</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="aviso-filtragem-dados" style="display:none;">
+		<div>
+			<i class="fal fa-filter"></i>
+		</div>
+		<span class="fs-1 info-title">
+			Para localizar as Notas Fiscais de Devolução é <br /> necessário realizar a filtragem das informações.
+		</span>
+	</div>
+
+	<div class="panel aviso-selecionar-registro" id="aviso-selecionar-registro" style="display: none;">
+		<div class="panel-container">
+			<span class="fs-3 info-title" id="info-title">
+				Selecione um registro na tabela para visualizar seu progresso.
+			</span>
+		</div>
+	</div>
+
+	<div class="panel panel-etapas-devolucao" id="panel-etapas-devolucao" style="display: none; min-height: fit-content;">
+		<div class="panel-container">
+			<div id="knockoutEtapasDevolucao">
+				<ul class="nav nav-steps" id="nav-steps-fluxo">
+					<!-- ko foreach: { data: Etapas.val, as: 'Etapa' } -->
+					<li data-bind="visible: Etapa.visible" style="width: auto">
+						<button data-bs-target="#tabEtapa" data-bs-toggle="tab" data-bind="attr: {id : Etapa.id }, click : Etapa.eventClick, css: { 'active': Etapa.isActive }, enable: Etapa.enable">
+							<span rel="popover-hover" data-placement="top" data-bind="class: Etapa.class, attr: {'data-content' : Etapa.tooltip, 'data-original-title' : Etapa.tooltipTitle }"><img data-bind="attr:{src: Etapa.icon}" /> </span>
+							<span class="title" data-bind="text: Etapa.text" style=" max-width: 130px; "></span>
+						</button>
+					</li>
+					<!-- /ko -->
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="grid-panel panel" id="grid-devolucoes" style="display:none;">
+		<div class="panel-container">
+			<div class="panel-container">
+				<div class="panel-content">
+					<table width="100%" class="table table-bordered table-hover" id="grid-gestao-devolucao-devolucoes" cellspacing="0"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="grid-panel panel active" id="grid-devolucoes-pallet" style="display:none;">
+		<div class="panel-container">
+			<div class="panel-container">
+				<div class="panel-content">
+					<div class="d-flex justify-content-end mb-4">
+						<button type="button" class="btn btn-labeled btn-primary ms-1" data-bind="click: GerarDevolucaoPallet.eventClick, visible: GerarDevolucaoPallet.visible, attr: { id : GerarDevolucaoPallet.id}">
+							<span data-bind="text: GerarDevolucaoPallet.text"></span>
+						</button>
+					</div>
+					<table width="100%" class="table table-bordered table-hover" id="grid-gestao-devolucao-pallet" cellspacing="0"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="grid-panel panel" id="container-principal" style="display:none;">
+		<div class="panel-container">
+			<div class="panel-container">
+				<div class="panel-content" id="container-principal-content">
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div id="divModalFiltroPesquisaGestaoDevolucao" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutPesquisaGestaoDevolucao" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Filtrar</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="border p-4">
+                    <div class="row">
+                        <div class="col-12 col-md-4" data-bind="visible: Carga.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Carga.text"></label>
+                                <input type="text" class="form-control" data-bind="class: Carga.requiredClass, value: Carga.val, valueUpdate: 'afterkeydown', attr: { maxlength: Carga.maxlength, id : Carga.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: CargaDevolucao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: CargaDevolucao.text"></label>
+                                <input type="text" class="form-control" data-bind="class: CargaDevolucao.requiredClass, value: CargaDevolucao.val, valueUpdate: 'afterkeydown', attr: { maxlength: CargaDevolucao.maxlength, id : CargaDevolucao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: Transportador.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Transportador.text, attr: { for: Transportador.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Transportador.requiredClass, value: Transportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: Transportador.maxlength, id : Transportador.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Transportador.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: NFOrigem.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: NFOrigem.text"></label>
+                                <input type="text" class="form-control" data-bind="class: NFOrigem.requiredClass, value: NFOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: NFOrigem.maxlength, id : NFOrigem.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: NFDevolucao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: NFDevolucao.text"></label>
+                                <input type="text" class="form-control" data-bind="class: NFDevolucao.requiredClass, value: NFDevolucao.val, valueUpdate: 'afterkeydown', attr: { maxlength: NFDevolucao.maxlength, id : NFDevolucao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: Filial.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Filial.requiredClass, value: Filial.val, valueUpdate: 'afterkeydown', attr: { maxlength: Filial.maxlength, id : Filial.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Filial.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: EscritorioVendas.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: EscritorioVendas.text"></label>
+                                <input type="text" class="form-control" data-bind="class: EscritorioVendas.requiredClass, value: EscritorioVendas.val, valueUpdate: 'afterkeydown', attr: { maxlength: EscritorioVendas.maxlength, id : EscritorioVendas.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: EquipeVendas.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: EquipeVendas.text"></label>
+                                <input type="text" class="form-control" data-bind="class: EquipeVendas.requiredClass, value: EquipeVendas.val, valueUpdate: 'afterkeydown', attr: { maxlength: EquipeVendas.maxlength, id : EquipeVendas.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: TipoGestaoDevolucao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: TipoGestaoDevolucao.text, attr: { for: TipoGestaoDevolucao.id }"></label>
+                                <select class="form-control" data-bind="class: TipoGestaoDevolucao.requiredClass, options: TipoGestaoDevolucao.options, optionsText: 'text', optionsValue: 'value', selectedOptions: TipoGestaoDevolucao.val, attr: { maxlength: TipoGestaoDevolucao.maxlength, id : TipoGestaoDevolucao.id}" multiple="multiple"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: Cliente.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Cliente.text, attr: { for: Cliente.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Cliente.requiredClass, value: Cliente.val, valueUpdate: 'afterkeydown', attr: { maxlength: Cliente.maxlength, id : Cliente.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Cliente.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-2" data-bind="visible: DataEmissaoNFInicial.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataEmissaoNFInicial.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataEmissaoNFInicial.requiredClass, value: DataEmissaoNFInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoNFInicial.maxlength, id : DataEmissaoNFInicial.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: DataEmissaoNFFinal.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DataEmissaoNFFinal.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: DataEmissaoNFFinal.requiredClass, value: DataEmissaoNFFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoNFFinal.maxlength, id : DataEmissaoNFFinal.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: DevolucaoGerada.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: DevolucaoGerada.text, attr: { for: DevolucaoGerada.id }"></label>
+                                    <select class="form-control" data-bind="class: DevolucaoGerada.requiredClass, options: DevolucaoGerada.options, optionsText: 'text', optionsValue: 'value', value: DevolucaoGerada.val, attr: { maxlength: DevolucaoGerada.maxlength, id : DevolucaoGerada.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: TipoNotasGestaoDevolucao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoNotasGestaoDevolucao.text, attr: { for: TipoNotasGestaoDevolucao.id }"></label>
+                                    <select class="form-control" data-bind="class: TipoNotasGestaoDevolucao.requiredClass, options: TipoNotasGestaoDevolucao.options, optionsText: 'text', optionsValue: 'value', selectedOptions: TipoNotasGestaoDevolucao.val, attr: { maxlength: TipoNotasGestaoDevolucao.maxlength, id : TipoNotasGestaoDevolucao.id}" multiple="multiple"></select>
+                                </div>
+                            </div>
+							<div class="col-12 col-md-2" data-bind="visible: TipoNotasFiscais.visible">
+								<div class="form-group">
+									<label class="form-label" data-bind="text: TipoNotasFiscais.text, attr: { for: TipoNotasFiscais.id }"></label>
+									<select class="form-control" data-bind="class: TipoNotasFiscais.requiredClass, options: TipoNotasFiscais.options, optionsText: 'text', optionsValue: 'value', selectedOptions: TipoNotasFiscais.val, attr: { maxlength: TipoNotasFiscais.maxlength, id : TipoNotasFiscais.id}" multiple="multiple"></select>
+								</div>
+							</div>
+                            <div class="col-12 col-md-2" data-bind="visible: EtapaAtual.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: EtapaAtual.text, attr: { for: EtapaAtual.id }"></label>
+                                    <select class="form-control" data-bind="class: EtapaAtual.requiredClass, options: EtapaAtual.options, optionsText: 'text', optionsValue: 'value', selectedOptions: EtapaAtual.val, attr: { maxlength: EtapaAtual.maxlength, id : EtapaAtual.id}" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: TipoFluxoGestaoDevolucao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TipoFluxoGestaoDevolucao.text, attr: { for: TipoFluxoGestaoDevolucao.id }"></label>
+                                    <select class="form-control" data-bind="class: TipoFluxoGestaoDevolucao.requiredClass, options: TipoFluxoGestaoDevolucao.options, optionsText: 'text', optionsValue: 'value', value: TipoFluxoGestaoDevolucao.val, attr: { maxlength: TipoFluxoGestaoDevolucao.maxlength, id : TipoFluxoGestaoDevolucao.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: SituacaoDevolucao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: SituacaoDevolucao.text, attr: { for: SituacaoDevolucao.id }"></label>
+                                    <select class="form-control" data-bind="class: SituacaoDevolucao.requiredClass, options: SituacaoDevolucao.options, optionsText: 'text', optionsValue: 'value', selectedOptions: SituacaoDevolucao.val, attr: { maxlength: SituacaoDevolucao.maxlength, id : SituacaoDevolucao.id}" multiple="multiple"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3" style="gap:8px;">
+                    <button class="btn btn-outline-primary waves-effect waves-themed ghost-button" type="button" data-bind="click: CarregarFiltrosPesquisa.eventClick, attr: { id: CarregarFiltrosPesquisa.id}">
+                        <span data-bind="text: CarregarFiltrosPesquisa.text"></span>
+                    </button>
+                    <button class="btn btn-outline-primary waves-effect waves-themed" type="button" data-bind="click: ConfiguracaoModeloFiltroPesquisa.eventClick, attr: { id: ConfiguracaoModeloFiltroPesquisa.id}">
+                        <span data-bind="text: ConfiguracaoModeloFiltroPesquisa.text"></span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                        <span data-bind="text: Pesquisar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalHistoricoIntegracaoGestaoDevolucao" style="z-index:1200" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Histórico de Integração</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+					<i class="fal fa-times"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<table width="100%" class="table table-bordered table-hover" cellspacing="0" id="tblHistoricoIntegracaoGestaoDevolucao"></table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="divModalGerarDevolucao" class="modal fade" role="dialog" aria-hidden="true">
+	<div id="knockoutGeracaoDevolucaoManual" class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Gerar devolução</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal">
+				</button>
+			</div>
+			<div class="modal-body">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="divModalBuscaNotasOrigemDevolucao" class="modal fade" role="dialog" aria-hidden="true">
+	<div id="knockoutNotaFiscalOrigemDevolucao" class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Gerar Devolução</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal">
+				</button>
+			</div>
+			<div class="modal-body border m-4">
+				<div class="row">
+					<div class="col-12 col-md-4" data-bind="visible: NumeroNotaFiscal.visible">
+						<div class="form-group">
+							<label class="form-label" data-bind="text: NumeroNotaFiscal.text"></label>
+							<input type="text" class="form-control" data-bind="class: NumeroNotaFiscal.requiredClass, value: NumeroNotaFiscal.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroNotaFiscal.maxlength, id : NumeroNotaFiscal.id}" />
+						</div>
+					</div>
+					<div class="col-12 col-md-4" data-bind="visible: DataEmissaoInicial.visible">
+						<div class="form-group">
+							<label class="form-label" data-bind="text: DataEmissaoInicial.text"></label>
+							<input type="text" class="form-control" data-bind="class: DataEmissaoInicial.requiredClass, value: DataEmissaoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoInicial.maxlength, id : DataEmissaoInicial.id}" />
+						</div>
+					</div>
+					<div class="col-12 col-md-4" data-bind="visible: DataEmissaoFinal.visible">
+						<div class="form-group">
+							<label class="form-label" data-bind="text: DataEmissaoFinal.text"></label>
+							<input type="text" class="form-control" data-bind="class: DataEmissaoFinal.requiredClass, value: DataEmissaoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoFinal.maxlength, id : DataEmissaoFinal.id}" />
+						</div>
+					</div>
+					<div class="col-12 col-md-6" data-bind="visible: Serie.visible">
+						<div class="form-group">
+							<label class="form-label" data-bind="text: Serie.text"></label>
+							<input type="text" class="form-control" data-bind="class: Serie.requiredClass, value: Serie.val, valueUpdate: 'afterkeydown', attr: { maxlength: Serie.maxlength, id : Serie.id}" />
+						</div>
+					</div>
+					<div class="col-12 col-md-6" data-bind="visible: Chave.visible">
+						<div class="form-group">
+							<label class="form-label" data-bind="text: Chave.text"></label>
+							<input type="text" class="form-control" data-bind="class: Chave.requiredClass, value: Chave.val, valueUpdate: 'afterkeydown', attr: { maxlength: Chave.maxlength, id : Chave.id}" />
+						</div>
+					</div>
+					<div class="col-12 col-md-6" data-bind="visible: Remetente.visible">
+						<div class="form-group">
+							<label class="form-label" data-bind="text: Remetente.text, attr: { for: Remetente.id }"></label>
+							<div class="input-group">
+								<input type="text" class="form-control" data-bind="css: Remetente.requiredClass, value: Remetente.val, valueUpdate: 'afterkeydown', attr: { maxlength: Remetente.maxlength, id : Remetente.id}" />
+								<div class="input-group-append">
+									<button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Remetente.idBtnSearch}" type="button" aria-label="Buscar">
+										<i class="fal fa-search"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-md-6" data-bind="visible: Destinatario.visible">
+						<div class="form-group">
+							<label class="form-label" data-bind="text: Destinatario.text, attr: { for: Destinatario.id }"></label>
+							<div class="input-group">
+								<input type="text" class="form-control" data-bind="css: Destinatario.requiredClass, value: Destinatario.val, valueUpdate: 'afterkeydown', attr: { maxlength: Destinatario.maxlength, id : Destinatario.id}" />
+								<div class="input-group-append">
+									<button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Destinatario.idBtnSearch}" type="button" aria-label="Buscar">
+										<i class="fal fa-search"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex justify-content-end mt-3 mb-3">
+					<button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+						<i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+					</button>
+				</div>
+				<table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+				<div class="d-flex justify-content-end mt-3 mb-3" style="gap: 4px">
+					<button class="btn btn-outline-default" type="button" data-bind="click: Cancelar.eventClick, attr: { id: Cancelar.id}">
+						<span data-bind="text: Cancelar.text"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="divModalVisualizarAtendimentosGestaoDevolucao" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Atendimentos</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+					<i class="fal fa-times"></i>
+				</button>
+			</div>
+			<div id="knockoutAtendimentosGestaoDevolucao">
+				<div class="modal-body">
+					<table width="100%" class="table table-bordered table-hover margin-top-0" data-bind="attr: { id: AtendimentosGestaoDevolucao.idGrid }" cellspacing="0"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="divModalChamadoOcorrencia" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">{Localize::Cargas.ControleEntrega.Atendimento}</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+					<i class="fal fa-times"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="conteudo-chamado-ocorrencia"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="divModalAnexoOcorrencia" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">@Localization.Resources.Cargas.ControleEntrega.Imagens</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal">
+					<i class="fal fa-times"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="smart-form" id="knockoutAnexoOcorrencia">
+					<div class="padding-side">
+						<table width="100%" class="table table-bordered table-hover margin-top-0" data-bind="attr: { id: AnexoOcorrencias.idGrid }" cellspacing="0"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="divModalSolicitacaoCancelamento" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-md modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Solicitação de Cancelamento</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="knockoutSolicitacaoCancelamento">
+				<p>Deseja <span class="text-danger fw-bold">CANCELAR</span> esta Devolução?</p>
+				<p>Insira abaixo o motivo do cancelamento</p>
+				<div class="mb-3">
+					<label for="observacaoCancelamento" class="form-label">Observação:</label>
+					<textarea class="form-control" id="observacaoCancelamento" rows="4" data-bind="value: ObservacaoCancelamento.val"></textarea>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-danger-custom" onclick="salvarSolicitacaoCancelamento()">Cancelar Devolução</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="divModalAnaliseCancelamento" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
+		<div class="modal-content" id="knockoutDetalhesCancelamento">
+			<div class="modal-header">
+				<h4 class="modal-title">Detalhes da Devolução</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<h5 class="fw-bold mb-2 titulo-destaque"><strong>Nota</strong></h5>
+				<div class="row mb-3">
+					<div class="col-6">
+						<strong>NF de Origem:</strong>
+						<div class="text-muted" data-bind="text: NFOrigem.val"></div>
+					</div>
+					<div class="col-6">
+						<strong>NF de Devolução:</strong>
+						<div class="text-muted" data-bind="text: NFDevolucao.val"></div>
+					</div>
+				</div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <strong>Carga Origem:</strong>
+                        <div class="text-muted" data-bind="text: CargaOrigem.val"></div>
+                    </div>
+                    <div class="col-6">
+                        <strong>Carga Devolução:</strong>
+                        <div class="text-muted" data-bind="text: CargaDevolucao.val"></div>
+                    </div>
+                </div>
+				<h5 class="fw-bold mb-2 titulo-destaque"><strong>Origem</strong></h5>
+				<div class="row mb-2">
+					<div class="col-3">
+						<strong>Origem:</strong>
+						<div class="text-muted" data-bind="text: Origem.val"></div>
+					</div>
+					<div class="col-3">
+						<strong>Filial:</strong>
+						<div class="text-muted" data-bind="text: Filial.val"></div>
+					</div>
+					<div class="col-3">
+						<strong>Transportador:</strong>
+						<div class="text-muted" data-bind="text: Transportador.val"></div>
+					</div>
+					<div class="col-3">
+						<strong>Tomadores:</strong>
+						<div class="text-muted" data-bind="text: Tomadores.val"></div>
+					</div>
+				</div>
+				<h5 class="fw-bold mb-2 titulo-destaque"><strong>Status</strong></h5>
+				<div class="row mb-4">
+					<div class="col-3">
+						<strong>Etapa Atual:</strong>
+						<div class="text-muted" data-bind="text: EtapaAtual.val"></div>
+					</div>
+					<div class="col-3">
+						<strong>Aprovado?</strong>
+						<div class="text-muted" data-bind="text: Aprovado.val"></div>
+					</div>
+					<div class="col-3">
+						<strong>Laudo?</strong>
+						<div class="text-muted" data-bind="text: Laudo.val"></div>
+					</div>
+					<div class="col-3">
+						<strong>Tipo de Devolução:</strong>
+						<div class="text-muted" data-bind="text: TipoDevolucao.val"></div>
+					</div>
+				</div>
+				<h5 class="fw-bold mb-2 titulo-destaque"><strong>Pendências</strong></h5>
+				<div class="row mb-4">
+					<div class="col-6">
+						<strong>Pendência Financeira:</strong>
+						<div class="text-muted" data-bind="text: PendenciaFinanceira.val"></div>
+					</div>
+					<div class="col-6">
+						<strong>Atendimentos:</strong>
+						<div class="text-muted" data-bind="text: Atendimentos.val"></div>
+					</div>
+				</div>
+				<h5 class="fw-bold mb-2 titulo-destaque"><strong>Observação</strong></h5>
+				<div class="row mb-3">
+					<div class="col-12">
+						<div data-bind="text: ObservacaoCancelamento.val" readonly></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" data-bind="click: ReprovacaoCancelamento.eventClick, attr: { id: ReprovacaoCancelamento.id}">
+					<span data-bind="text: ReprovacaoCancelamento.text"></span>
+				</button>
+				<button class="btn btn-danger-custom" type="button" data-bind="click: ConfirmacaoCancelamento.eventClick, attr: { id: ConfirmacaoCancelamento.id}">
+					<span data-bind="text: ConfirmacaoCancelamento.text"></span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modalConfirmacaoCancelamento" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content" id="knockoutAprovacaoCancelamento">
+			<div class="modal-header">
+				<h5 class="modal-title">Confirmação</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Deseja <span class="text-danger fw-bold">CONFIRMAR O CANCELAMENTO</span> da Devolução?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Não</button>
+				<button class="btn btn-danger-custom" type="button" data-bind="click: ConfirmarAprovacaoCancelamento.eventClick, attr: { id: ConfirmarAprovacaoCancelamento.id}">
+					<span data-bind="text: ConfirmarAprovacaoCancelamento.text"></span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modalReprovacaoCancelamento" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content" id="knockoutReprovacaoCancelamento">
+			<div class="modal-header">
+				<h5 class="modal-title">Confirmação</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Deseja <span class="text-info fw-bold">REPROVAR O CANCELAMENTO</span> da Devolução?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Não</button>
+				<button class="btn btn-info" type="button" data-bind="click: ConfirmarReprovacaoCancelamento .eventClick, attr: { id: ConfirmarReprovacaoCancelamento .id}">
+					<span data-bind="text: ConfirmarReprovacaoCancelamento .text"></span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal fade" id="divModalDetalhesNota" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Detalhes da Nota</h1>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body pt-0">
+                <div class="tab-content p-2">
+                    <div id="knoutDetalhesNota" class="tab-pane active">
+                        <div class="container">
+                            <div>
+                                <div class="row">
+                                    <div class="col-12 col-md-2">
+                                        <h2 class="mb-4">Carga: </h2>
+                                    </div>
+                                    <div class="col-12 col-md-10">
+                                        <span data-bind="text: CodigoCargaEmbarcador.text"></span>
+                                        <h2 data-bind="text: CodigoCargaEmbarcador.val, attr: {  title:  CodigoCargaEmbarcador.val }"></h2>
+                                    </div>
+                                </div>
+                                <h3>Nota</h3>
+                                 <span data-bind="text: Chave.text"></span>
+                                 <h6 data-bind="text: Chave.val, attr: {  title:  Chave.val }"></h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: Serie.text"></span>
+                                    <h6 data-bind="text: Serie.val, attr: {  title:  Serie.val }"></h6>
+                                </div>
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: StringDataEmissao.text"></span>
+                                    <h6 data-bind="text: StringDataEmissao.val, attr: {  title: StringDataEmissao.val }"></h6>
+                                </div>
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: DescricaoTipoNF.text"></span>
+                                    <h6 data-bind="text:DescricaoTipoNF.val, attr: { title: DescricaoTipoNF.val }"></h6>
+                                </div>
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: NumeroNFDevolucao.text"></span>
+                                    <h6 data-bind="text: NumeroNFDevolucao.val, attr: { title:  NumeroNFDevolucao.val }"></h6>
+                                </div>
+                            </div>
+                                <h3>Devolução</h3>
+                            <div class="row">
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: DescricaoDevolucaoGerada.text"></span>
+                                    <h6 data-bind="text: DescricaoDevolucaoGerada.val, attr: {  title:  DescricaoDevolucaoGerada.val }"></h6>
+                                </div>
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: DescricaoResponsavelPallet.text"></span>
+                                    <h6 data-bind="text:DescricaoResponsavelPallet.val, attr: {  title:  DescricaoResponsavelPallet.val }"></h6>
+                                </div>
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: PrazoGeracaoDevolucao.text"></span>
+                                    <h6 data-bind="text: PrazoGeracaoDevolucao.val, attr: { title:  PrazoGeracaoDevolucao.val }"></h6>
+                                </div>
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: NumerosAtendimentos.text"></span>
+                                    <h6 data-bind="text: NumerosAtendimentos.val, attr: { title:  NumerosAtendimentos.val }"></h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: MotivoDevolucao.text"></span>
+                                    <h6 data-bind="text: MotivoDevolucao.val, attr: {  title:  MotivoDevolucao.val }"></h6>
+                                </div>
+                                <div class="col-12 col-md-3 info-inline">
+                                    <span data-bind="text: DevolucaoTotal.text"></span>
+                                    <h6 data-bind="text: DevolucaoTotal.val, attr: {  title: DevolucaoTotal.val }"></h6>
+                                </div>
+                            </div>
+                            <h3>Operação</h3>
+                            <div>
+                                <div>
+                                    <span data-bind="text: NomeCNPJTransportador.text"></span>
+                                    <h6 data-bind="text: NomeCNPJTransportador.val, attr: {  title:  NomeCNPJTransportador.val }"></h6>
+                                </div>
+                                <div>
+                                    <span data-bind="text: NomeCNPJFilial.text"></span>
+                                    <h6 data-bind="text: NomeCNPJFilial.val, attr: { title:  NomeCNPJFilial.val }"></h6>
+                                </div>
+                                <div>
+                                    <span data-bind="text: NomeCNPJCliente.text"></span>
+                                    <h6 data-bind="text: NomeCNPJCliente.val, attr: { title: NomeCNPJCliente.val }"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalGeracaoDevolucaoFluxoEmbarcador" role="dialog" aria-hidden="true">
+    <div id="knockoutModalGeracaoDevolucaoFluxoEmbarcador" class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Gerar Devolução</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body d-flex">
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: QuantidadeNotasSelecionadas.text"></p>
+                        <p class="fw-400 fs-5" data-bind="text: QuantidadeNotasSelecionadas.val"></p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6" data-bind="visible: TipoFluxoDeDevolucao.visible">
+                    <div class="form-group">
+                        <label class="info-title fw-bold text-uppercase mb-0" data-bind="text: TipoFluxoDeDevolucao.text, attr: { for: TipoFluxoDeDevolucao.id }"></label>
+                        <select class="form-control" data-bind="class: TipoFluxoDeDevolucao.requiredClass, options: TipoFluxoDeDevolucao.options, optionsText: 'text', optionsValue: 'value', value: TipoFluxoDeDevolucao.val, attr: { maxlength: TipoFluxoDeDevolucao.maxlength, id : TipoFluxoDeDevolucao.id}"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-default" type="button" data-bind="click: Cancelar.eventClick, attr: { id: Cancelar.id}">
+                    <span data-bind="text: Cancelar.text"></span>
+                </button>
+                <button class="btn btn-primary" type="button" data-bind="click: GerarDevolucaoFluxoEmbarcador.eventClick, attr: { id: GerarDevolucaoFluxoEmbarcador.id}">
+                    <span data-bind="text: GerarDevolucaoFluxoEmbarcador.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModaisCarga"> </div>
+<div id="ControleEntregaContent"></div>
+<div id="ControleEntregaModal"></div>
+<div id="ModaisTratativaAlerta"></div>
+
+<script src="/scripts/gestaoDevolucao"></script>
+<script src="/scripts/ocorrencia"></script>
+<script src="/scripts/controleSaldo"></script>
+<script src="/scripts/controleEntregaDevolucao"></script>
+<script src="/scripts/controleEntrega"></script>
+<script src="/scripts/tratativaAlerta"></script>
+<script src="/scripts/checkListComponent"></script>
+<script src="/scripts/webcam"></script>
+<script src="/scripts/mapas"></script>
+<script src="/scripts/configuracaoObservacaoCTe"></script>
+<script src="/scripts/dropzone"></script>
+
+<link rel="stylesheet" href="~/css/controleEntrega" />
+
+<!-- Início - Para inclusão do modal de Atendimento/Chamado na tela-->
+<div id="ModaisCarga"></div>
+<div id="ModaisChamado"></div>
+<div id="modaisOcorrencia"></div>
+<script src="/scripts/chamados"></script>
+<script src="/scripts/valePallet"></script>
+<script src="/scripts/cargaVeiculoContainer"></script>
+<script src="/scripts/carga"></script>
+<script src="/scripts/configuracaoEmissaoCTe"></script>
+<script src="/scripts/configuracaoComponentesFrete"></script>
+<!-- Fim - Para inclusão do modal de Atendimento/Chamado na tela-->
+
+<link rel="stylesheet" href="/css/gestaoDevolucao" />
+<link rel="stylesheet" href="~/css/cabecalhoPadraoTorreControle.css" />
+
+<script type="text/javascript">
+	pageSetUp();
+
+	var _PermissaoDelegar = @Html.Raw(ViewBag.PermissaoDelegar);
+
+	_PermissoesPersonalizadasCarga = @Html.Raw(ViewBag.PermissoesPersonalizadasCarga);
+	_PermissoesPersonalizadasOcorrencia = @Html.Raw(ViewBag.PermissoesPersonalizadasOcorrencia)
+		_PermissoesPersonalizadasControleEntrega = @Html.Raw(ViewBag.PermissoesPersonalizadasControleEntrega);
+
+	$(document).ready(function () {
+		LoadLocalizationResources(["Ocorrencias.Ocorrencia", "Ocorrencias.TipoOcorrencia", "Cargas.ControleEntrega", "Chamado.ChamadoOcorrencia", "Cargas.Carga"]).then(loadGestaoDevolucao);
+	});
+
+</script>
+

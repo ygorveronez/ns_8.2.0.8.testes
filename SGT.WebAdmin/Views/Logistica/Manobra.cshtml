@@ -1,0 +1,625 @@
+﻿
+
+<style>
+    table.table-bordered.dataTable {
+        border-collapse: collapse !important;
+    }
+
+    table.table-bordered tbody th,
+    table.table-bordered tbody td {
+        border-width: 1px;
+        -webkit-touch-callout: none;
+          -webkit-user-select: none;
+             -moz-user-select: none;
+              -ms-user-select: none;
+                  user-select: none;
+    }
+
+    table.table-bordered tbody tr td.dataTables_empty {
+        padding: 4px 10px !important;
+    }
+
+    table.table-bordered tbody tr td.sorting_disabled_opcao {
+        padding: 3px 10px !important;
+    }
+
+    table.dataTable thead th {
+        border-bottom-width: 2px;
+    }
+
+    table.table-bordered th:last-child,
+    table.table-bordered td:last-child {
+        border-right-width: 1px;
+    }
+
+    .btn-jarviswidget-content {
+        float: right;
+        margin-bottom: 8px;
+    }
+
+    .btn {
+        line-height: 18px;
+    }
+
+    .jarviswidget .jarviswidget-content {
+        padding-bottom: 13px;
+    }
+
+    .jarviswidget header .small-header {
+        width: 130px !important;
+    }
+
+    @@media (min-width: 768px) {
+        .jarviswidget-container-fixed {
+            padding-right: 1px;
+            position: fixed;
+            top: 14px;
+        }
+    }
+
+    .legenda-container div {
+        float: left;
+        padding: 0 5px;
+        position: relative;
+    }
+
+    @@media (max-width: 749px) {
+        .legenda-container div {
+            width: 33.33333% !important;
+        }
+    }
+
+    @@media (max-width: 499px) {
+        .legenda-container div {
+            width: 50% !important;
+        }
+    }
+
+    @@media (max-width: 319px) {
+        .legenda-container div {
+            width: 100% !important;
+        }
+    }
+
+    .legenda-cor-azul {
+        background-color: #c8e8ff;
+        border: solid 1px #7fa5b9;
+    }
+
+    .legenda-cor-laranja {
+        background-color: #ffcc99;
+        border: solid 1px #cc6600;
+    }
+
+    .legenda-cor-purpura {
+        background-color: #df80ff;
+        border: solid 1px #9900cc;
+    }
+
+    .legenda-cor-vermelha {
+        background-color: #ff8080;
+        border: solid 1px #b30000;
+    }
+
+    .legenda-cor-verde {
+        background-color: #85de7b;
+        border: solid 1px #008e83;
+    }
+
+    .legenda-cor-verde-escuro {
+        background-color: #008e83;
+        border: solid 1px #016f65;
+    }
+
+    .lista-manobra-tracao-container {
+        margin: 8px 0 0 0;
+    }
+
+    .lista-manobra-tracao-item {
+        -webkit-touch-callout: none;
+          -webkit-user-select: none;
+             -moz-user-select: none;
+              -ms-user-select: none;
+                  user-select: none;
+    }
+
+    .lista-manobra-tracao-item-campo {
+        position: relative;
+        height: 16px;
+    }
+
+    .lista-manobra-tracao-item-label {
+        left: 0;
+        position: absolute;
+        font-weight: bold;
+        width: 90px;
+    }
+
+    .lista-manobra-tracao-item-texto {
+        left: 90px;
+        position: absolute;
+        right: 0;
+    }
+
+    .lista-manobra-tracao-item-titulo {
+        height: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        width: 100%;
+    }
+
+    .lista-manobra-tracao-sem-item {
+        background-color: #d9d9d9;
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    .manobra-container .jarviswidget {
+        margin-bottom: 25px;
+    }
+
+    .manobra-tracao-detalhe-titulo {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .no-padding-bottom {
+        padding-bottom: 0;
+    }
+
+    .remocao-item-container {
+        background-color: #b30000;
+        height: 32px;
+        left: 13px;
+        position: absolute;
+        right: 13px;
+        text-align: center;
+        top: 10px;
+        z-index: 10;
+    }
+
+    .remocao-item-container i {
+        color: #ffffff;
+        font-size: 16px;
+    }
+
+    .remocao-item-container span {
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 32px;
+    }
+
+    .remocao-item-container-hover {
+        background-color: #ff3333 !important;
+    }
+
+    .smart-form .fieldset-padding {
+        padding: 25px 0 10px;
+    }
+</style>
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <div class="col col-lg-12">
+            <h2 class="page-title txt-color-blueDark">
+                Manobra
+            </h2>
+        </div>
+    </div>
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div id="knockoutPesquisaManobra">
+                <div class="jarviswidget margin-bottom-20" data-widget-colorbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-togglebutton="false">
+                    <header class="headerCursor" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                        <span class="widget-icon"> <i class="glyphicon glyphicon-search"></i> </span>
+                        <h2>Pesquisar Manobra</h2>
+                    </header>
+
+                    <div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                        <div>
+                            <div class="smart-form">
+                                <section>
+                                    <div class="well">
+                                        <fieldset>
+                                            <div class="row">
+                                                <section data-bind="visible: CentroCarregamento.visible" class="col col-xs-6 col-md-8">
+                                                    <div class="input-group">
+                                                        <label class="label"><b data-bind="text: CentroCarregamento.text"></b></label>
+                                                        <label data-bind="attr: { class: CentroCarregamento.requiredClass}">
+                                                            <input type="text" data-bind="value: CentroCarregamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: CentroCarregamento.maxlength, id : CentroCarregamento.id}" />
+                                                        </label>
+                                                        <div class="input-group-btn">
+                                                            <button data-bind="attr: { id: CentroCarregamento.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+                                                                <i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section data-bind="visible: DataInicial.visible" class="col col-xs-3 col-md-2">
+                                                    <label class="label"><b data-bind="text: DataInicial.text"></b></label>
+                                                    <label data-bind="attr: { class: DataInicial.requiredClass}">
+                                                        <input type="text" data-bind="value: DataInicial.val, attr: { maxlength: DataInicial.maxlength, id : DataInicial.id} , valueUpdate: 'afterkeydown'" />
+                                                    </label>
+                                                </section>
+                                                <section data-bind="visible: DataLimite.visible" class="col col-xs-3 col-md-2">
+                                                    <label class="label"><b data-bind="text: DataLimite.text"></b></label>
+                                                    <label data-bind="attr: { class: DataLimite.requiredClass}">
+                                                        <input type="text" data-bind="value: DataLimite.val, attr: { maxlength: DataLimite.maxlength, id : DataLimite.id} , valueUpdate: 'afterkeydown'" />
+                                                    </label>
+                                                </section>
+                                                <section data-bind="visible: Transportador.visible" class="col col-xs-6 col-md-8">
+                                                    <div class="input-group">
+                                                        <label class="label"><b data-bind="text: Transportador.text"></b></label>
+                                                        <label data-bind="attr: { class: Transportador.requiredClass}">
+                                                            <input type="text" data-bind="value: Transportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: Transportador.maxlength, id : Transportador.id}" />
+                                                        </label>
+                                                        <div class="input-group-btn">
+                                                            <button data-bind="attr: { id: Transportador.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+                                                                <i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section data-bind="visible : Situacao.visible" class="col col-xs-6 col-md-4">
+                                                    <label class="label"><b data-bind="text: Situacao.text"></b></label>
+                                                    <label class="select">
+                                                        <select data-bind="options: Situacao.options, optionsText: 'text', optionsValue: 'value', selectedOptions: Situacao.val, attr: { id : Situacao.id}" multiple="multiple" data-actions-box="false" data-selected-text-format="count > 3" title="Todas"></select>
+                                                    </label>
+                                                </section>
+                                            </div>
+                                        </fieldset>
+                                        <footer class="no-padding">
+                                            <button class="btn btn-default btn-primary btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                                                <i class="fa fa-search"></i>&nbsp;<span data-bind="text: Pesquisar.text"></span>
+                                            </button>
+                                        </footer>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <div class="hidden manobra-container" id="manobra-container">
+            <article class="col-xs-12">
+                <div class="row legenda-container">
+                    <div title="Aguardando início da manobra" style="width: 16.66666%;">
+                        <label class="legenda-cor-verde"></label>
+                        <span>Aguardando</span>
+                    </div>
+                    <div title="Em Manobra" class="col" style="width: 16.66666%;">
+                        <label class="legenda-cor-azul"></label>
+                        <span>Em Manobra</span>
+                    </div>
+                    <div title="Em atraso" class="col" style="width: 16.66666%;">
+                        <label class="legenda-cor-purpura"></label>
+                        <span>Em Atraso</span>
+                    </div>
+                    <div title="Reservada" class="col" style="width: 16.66666%;">
+                        <label class="legenda-cor-laranja"></label>
+                        <span>Reservada</span>
+                    </div>
+                    <div title="Cancelada" class="col" style="width: 16.66666%;">
+                        <label class="legenda-cor-vermelha"></label>
+                        <span>Cancelada</span>
+                    </div>
+                    <div title="Finalizada" class="col" style="width: 16.66666%;">
+                        <label class="legenda-cor-verde-escuro"></label>
+                        <span>Finalizada</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-xs-12 col-sm-8" data-widget-excludegrid="true" id="container-manobra-conteudo">
+                <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2>Manobras</h2>
+                    </header>
+                    <div class="jarviswidget-content padding-top-10" id="knockoutManobra">
+                        <div class="remocao-item-container" id="remocao-item-manobra" style="display: none;">
+                            <i class="fa fa-trash"></i> <span>Remover</span>
+                        </div>
+                        <section class="no-margin" data-bind="visible: Adicionar.visible">
+                            <div class="row">
+                                <div class="col col-sm-12 margin-bottom-5">
+                                    <button class="btn btn-default btn-success btn-jarviswidget-content margin-bottom-0" data-bind="click: Adicionar.eventClick" type="button">
+                                        <i class="fal fa-plus"></i> <span data-bind="text: Adicionar.text"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="widget-body no-padding-bottom" id="container-grid-manobra">
+                            <table width="100%" class="table table-bordered table-hover table-condensed table-striped tableCursorMove" id="grid-manobra" cellspacing="0"></table>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-xs-12 col-sm-4" data-widget-excludegrid="true">
+                <div class="jarviswidget" id="wid-id-2" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                        <h2 class="small-header">Cavalos de Manobra</h2>
+                    </header>
+                    <div class="jarviswidget-content padding-top-10" id="knockoutManobraTracao">
+                        <div class="remocao-item-container" id="remocao-item-manobra-tracao" style="display: none;">
+                            <i class="fa fa-trash"></i> <span>Remover</span>
+                        </div>
+                        <section class="no-margin">
+                            <div class="row">
+                                <div class="col col-sm-12">
+                                    <button class="btn btn-default btn-success btn-jarviswidget-content margin-bottom-5" data-bind="visible: Adicionar.visible, click: Adicionar.eventClick" type="button">
+                                        <i class="fal fa-plus"></i> <span data-bind="text: Adicionar.text"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="row lista-manobra-tracao-container">
+                            <!-- ko foreach: ListaManobraTracao -->
+                            <div data-bind="attr: {id: 'manobra-tracao-' + Codigo.val(), 'data-codigo': Codigo.val }" class="lista-manobra-tracao-item">
+                                <div class="well margin-bottom-20 padding-10" data-bind="css: ClasseCor.val">
+                                    <div class="lista-manobra-tracao-item-titulo">
+                                        <span data-bind="text: Placa.val"></span>
+                                    </div>
+                                    <div class="lista-manobra-tracao-item-campo">
+                                        <div class="lista-manobra-tracao-item-label"><span data-bind="text: Transportador.text"></span></div>
+                                        <div class="lista-manobra-tracao-item-texto txt-ellipsis"><span data-bind="text: Transportador.val"></span></div>
+                                    </div>
+                                    <div class="lista-manobra-tracao-item-campo">
+                                        <div class="lista-manobra-tracao-item-label"><span data-bind="text: Motorista.text"></span></div>
+                                        <div class="lista-manobra-tracao-item-texto txt-ellipsis"><span data-bind="text: Motorista.val"></span></div>
+                                    </div>
+                                    <div class="lista-manobra-tracao-item-campo">
+                                        <div class="lista-manobra-tracao-item-label"><span data-bind="text: DescricaoSituacao.text"></span></div>
+                                        <div class="lista-manobra-tracao-item-texto txt-ellipsis"><span data-bind="text: DescricaoSituacao.val"></span></div>
+                                    </div>
+                                    <div class="lista-manobra-tracao-item-campo">
+                                        <div class="lista-manobra-tracao-item-label"><span data-bind="text: AcaoAtual.text"></span></div>
+                                        <div class="lista-manobra-tracao-item-texto txt-ellipsis"><span data-bind="text: AcaoAtual.val"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /ko -->
+                            <!-- ko if: ListaManobraTracao().length == 0 -->
+                            <div class="lista-manobra-tracao-sem-item">
+                                <span>Nenhum registro encontrado</span>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="divModalCadastroManobra" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> ×</button>
+                <h4 class="modal-title">Adicionar Manobra</h4>
+            </div>
+            <div class="modal-body padding-bottom-5">
+                <div class="widget-body no-padding">
+                    <div class="smart-form" id="knockoutCadastroManobra">
+                        <fieldset class="fieldset-padding">
+                            <section class="col col-xs-6">
+                                <div class="input-group">
+                                    <label class="label"><b data-bind="text: Veiculo.text"></b></label>
+                                    <label data-bind="attr: { class: Veiculo.requiredClass}">
+                                        <input type="text" data-bind="value: Veiculo.val, enable: Veiculo.enable, attr: { maxlength: Veiculo.maxlength, id: Veiculo.id}, event: { blur: Veiculo.eventChange }, valueUpdate: 'afterkeydown'" />
+                                    </label>
+                                    <div class="input-group-btn">
+                                        <button data-bind="enable : Veiculo.enable, attr: { id: Veiculo.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+                                            <i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="col col-xs-6">
+                                <div class="input-group">
+                                    <label class="label"><b data-bind="text: ManobraAcao.text"></b></label>
+                                    <label data-bind="attr: { class: ManobraAcao.requiredClass}">
+                                        <input type="text" data-bind="value: ManobraAcao.val, enable: ManobraAcao.enable, attr: { maxlength: ManobraAcao.maxlength, id: ManobraAcao.id}, event: { blur: ManobraAcao.eventChange }, valueUpdate: 'afterkeydown'" />
+                                    </label>
+                                    <div class="input-group-btn">
+                                        <button data-bind="enable : ManobraAcao.enable, attr: { id: ManobraAcao.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+                                            <i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="col col-xs-6">
+                                <div class="input-group">
+                                    <label class="label"><b data-bind="text: LocalDestino.text"></b></label>
+                                    <label data-bind="attr: { class: LocalDestino.requiredClass}">
+                                        <input type="text" data-bind="value: LocalDestino.val, enable: LocalDestino.enable, attr: { maxlength: LocalDestino.maxlength, id: LocalDestino.id}, event: { blur: LocalDestino.eventChange }, valueUpdate: 'afterkeydown'" />
+                                    </label>
+                                    <div class="input-group-btn">
+                                        <button data-bind="enable : LocalDestino.enable, attr: { id: LocalDestino.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+                                            <i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </fieldset>
+                        <footer>
+                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-labeled btn-success">
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalCadastroManobraTracao" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> ×</button>
+                <h4 class="modal-title">Adicionar Tração para Manobra</h4>
+            </div>
+            <div class="modal-body padding-bottom-5">
+                <div class="widget-body no-padding">
+                    <div class="smart-form" id="knockoutCadastroManobraTracao">
+                        <fieldset class="fieldset-padding">
+                            <section class="col col-xs-6">
+                                <div class="input-group">
+                                    <label class="label"><b data-bind="text: Tracao.text"></b></label>
+                                    <label data-bind="attr: { class: Tracao.requiredClass}">
+                                        <input type="text" data-bind="value: Tracao.val, enable: Tracao.enable, attr: { maxlength: Tracao.maxlength, id: Tracao.id}, event: { blur: Tracao.eventChange }, valueUpdate: 'afterkeydown'" />
+                                    </label>
+                                    <div class="input-group-btn">
+                                        <button data-bind="enable : Tracao.enable, attr: { id: Tracao.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+                                            <i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="col col-xs-6">
+                                <div class="input-group">
+                                    <label class="label"><b data-bind="text: Motorista.text"></b></label>
+                                    <label data-bind="attr: { class: Motorista.requiredClass}">
+                                        <input type="text" data-bind="value: Motorista.val, enable: Motorista.enable, attr: { maxlength: Motorista.maxlength, id: Motorista.id}, event: { blur: Motorista.eventChange }, valueUpdate: 'afterkeydown'" />
+                                    </label>
+                                    <div class="input-group-btn">
+                                        <button data-bind="enable : Motorista.enable, attr: { id: Motorista.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+                                            <i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </fieldset>
+                        <footer>
+                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-labeled btn-success">
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalDetalhesManobra" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> ×</button>
+                <h4 class="modal-title">Detalhes da Manobra</h4>
+            </div>
+            <div class="modal-body padding-bottom-5">
+                <div class="widget-body">
+                    <div class="widget-body no-padding">
+                        <div class="smart-form">
+                            <header>
+                                <h4><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span>Histórico</span></h4>
+                            </header>
+                        </div>
+                    </div>
+                    <div class="dataTables_wrapper form-inline no-footer">
+                        <table width="100%" class="table table-bordered table-hover dataTable no-footer" id="grid-historico-manobra" cellspacing="0"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalDetalhesManobraTracao" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> ×</button>
+                <h4 class="modal-title">Detalhes da Tração de Manobra</h4>
+            </div>
+            <div class="modal-body padding-bottom-5">
+                <div class="widget-body">
+                    <fieldset id="knockoutManobraTracaoDetalhes" class="margin-bottom-20">
+                        <div class="row">
+                            <section class="col col-xs-12">
+                                <label><span data-bind="text: Placa.val" class="manobra-tracao-detalhe-titulo"></span></label>
+                            </section>
+                            <section class="col col-xs-12">
+                                <label><b data-bind="text: Motorista.text"></b> <span data-bind="text: Motorista.val"></span></label>
+                            </section>
+                            <section class="col col-xs-12">
+                                <label><b data-bind="text: AcoesRealizadas.text"></b> <span data-bind="text: AcoesRealizadas.val"></span></label>
+                            </section>
+                            <section class="col col-xs-12">
+                                <label><b data-bind="text: TempoMedioAcao.text"></b> <span data-bind="text: TempoMedioAcao.val"></span></label>
+                            </section>
+                            <section class="col col-xs-12">
+                                <label><b data-bind="text: TempoTotalOcioso.text"></b> <span data-bind="text: TempoTotalOcioso.val"></span></label>
+                            </section>
+                        </div>
+                    </fieldset>
+                    <div class="widget-body no-padding">
+                        <div class="smart-form">
+                            <header>
+                                <h4><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span>Histórico</span></h4>
+                            </header>
+                        </div>
+                    </div>
+                    <div class="dataTables_wrapper form-inline no-footer">
+                        <table width="100%" class="table table-bordered table-hover dataTable no-footer" id="grid-historico-manobra-tracao" cellspacing="0"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalFinalizarManobra" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> ×</button>
+                <h4 class="modal-title">Finalizar Manobra</h4>
+            </div>
+            <div class="modal-body padding-bottom-5">
+                <div class="widget-body no-padding">
+                    <div class="smart-form" id="knockoutFinalizarManobra">
+                        <fieldset class="fieldset-padding">
+                            <section class="col col-xs-12">
+                                <div class="input-group">
+                                    <label class="label"><b data-bind="text: Local.text"></b></label>
+                                    <label data-bind="attr: { class: Local.requiredClass}">
+                                        <input type="text" data-bind="value: Local.val, enable: Local.enable, attr: { maxlength: Local.maxlength, id: Local.id}, event: { blur: Local.eventChange }, valueUpdate: 'afterkeydown'" />
+                                    </label>
+                                    <div class="input-group-btn">
+                                        <button data-bind="enable : Local.enable, attr: { id: Local.idBtnSearch}" class="btn btn-default btn-primary botaoBusca" type="button">
+                                            <i class="fa fa-search"></i> &nbsp; Buscar &nbsp;
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </fieldset>
+                        <footer>
+                            <input type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, attr: { value: Adicionar.text, id : Adicionar.id}" class="btn btn-labeled btn-success">
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/manobra"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadManobra();
+    });
+
+</script>
+

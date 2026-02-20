@@ -1,0 +1,296 @@
+﻿<style>
+    .info-title {
+        color: #9BAFB9;
+    }
+
+    .btn-actions-menu-tratativa {
+        border-style: none;
+        background: none;
+    }
+
+        .btn-actions-menu-tratativa > i {
+            font-size: 16px;
+            color: #666666;
+        }
+
+    .grupo-alertas {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+        .grupo-alertas .alerta {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: fit-content;
+        }
+
+        .grupo-alertas .alertas {
+            gap: 16px;
+            justify-content: space-between;
+        }
+
+        .grupo-alertas .alerta.not-selected {
+            background-color: #fff;
+            color: #777777;
+            position: relative;
+        }
+
+        .grupo-alertas .alerta.selected {
+            border: solid 1px #AEAEAE;
+            border-radius: 4px;
+            padding-top: 2px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .grupo-alertas .alerta.not-selected::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+    .carousel-control-next:hover, .carousel-control-prev:hover {
+        background: none;
+    }
+
+    .carousel-control-next > span, .carousel-control-prev > span {
+        margin-top: 18px;
+        color: #616162;
+    }
+
+        .carousel-control-next > span > i {
+            font-weight: 700;
+        }
+
+        .carousel-control-prev > span > i {
+            font-weight: 700;
+        }
+
+    .carousel-item.active {
+        display: flex;
+        gap: 38px;
+        justify-content: center;
+    }
+</style>
+
+<div class="modal fade" id="divModalInformacoesAlerta" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Alertas</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                </button>
+            </div>
+            <div class="grupo-alertas" id="knockoutGrupoAlertas">
+                <div class="quantidade-alertas">
+                    <div>
+                        <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: QuantidadeAlertas.text"></p>
+                        <p class="fw-400 fs-5" data-bind="text: QuantidadeAlertas.val"></p>
+                    </div>
+                </div>
+                <div id="alertasCarousel" class="carousel" data-ride="carousel" data-bs-interval="false">
+                    <div class="carousel-inner" id="carouselGrupoAlertas">
+
+                    </div>
+                    <button class="carousel-control-next" type="button" data-bs-target="#alertasCarousel" data-bs-slide="next" data-bind="css: (QuantidadeAlertas.val() > 10) ? '' : 'd-none'">
+                        <span><i class="fal fa-chevron-right"></i></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#alertasCarousel" data-bs-slide="prev" data-bind="css: (QuantidadeAlertas.val() > 10) ? '' : 'd-none'">
+                        <span><i class="fal fa-chevron-left"></i></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="knockoutInformacoesAlerta">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="fw-bold">Informações do alerta</h4>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <div class="actions-menu-tratativa dropdown box-search dropdown-menu-lg-end" style="margin-left:0px;display:none;" id="dropdown">
+                                <button class="btn-actions-menu-tratativa" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span class="span"></span><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-bind="click: SalvarAlerta.eventClick, text: SalvarAlerta.text"></a></li>
+                                    <li><a class="dropdown-item" href="#" data-bind="click: DeixarAlerta.eventClick, text: DeixarAlerta.text"></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col">
+                            <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: TipoAlerta.text"></p>
+                            <p class="fw-400 fs-5" data-bind="text: TipoAlerta.val"></p>
+                        </div>
+                        <div class="col">
+                            <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: NumeroAlerta.text"></p>
+                            <p class="fw-400 fs-5" data-bind="text: NumeroAlerta.val"></p>
+                        </div>
+                        <div class="col">
+                            <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: DescricaoStatus.text"></p>
+                            <p class="fw-400 fs-5" data-bind="text: DescricaoStatus.val"></p>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col">
+                            <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: DataInicio.text"></p>
+                            <p class="fw-400 fs-5" data-bind="text: DataInicio.val"></p>
+                        </div>
+                        <div class="col">
+                            <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: DataFim.text"></p>
+                            <p class="fw-400 fs-5" data-bind="text: DataFim.val"></p>
+                        </div>
+                        <div class="col">
+                            <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: Gatilho.text"></p>
+                            <p class="fw-400 fs-5" data-bind="text: Gatilho.val"></p>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col">
+                            <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: Responsavel.text"></p>
+                            <p class="fw-400 fs-5" data-bind="text: Responsavel.val"></p>
+                        </div>
+                    </div>
+                    <div id="naoLocalizado" class="row" data-bind="visible: ExibirNaoLocalizado.visible"
+                         style="width: 100%; min-height: 250px; background: #F2F2F2; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                        <label style="font-weight: bold; margin-bottom: 12px;">
+                            NÃO HÁ LOCALIZAÇÃO VINCULADA AO ALERTA
+                        </label>
+                        <i class="fas fa-map-marker-alt" style="font-size: 32px; color: #888;"></i>
+                    </div>
+                    <div class="d-flex justify-content-end" style="margin-top: 10px; margin-right: 10px;">
+                        <button class="btn btn-primary waves-effect waves-themed btn-primary" data-bind="click: AssumirAlerta.eventClick, attr: { id: AssumirAlerta.id }, visible: AssumirAlerta.visible" type="button">
+                            <span data-bind="text: AssumirAlerta.text"></span>
+                        </button>
+                    </div>
+                    <div class="informacoes-tratativa-alerta" style="display:none">
+                        <div class="row">
+                            <div class="col">
+                                <h4 class="fw-bold">Tratativa do Alerta</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: Tratativa.text"></p>
+                                <p class="fw-400 fs-5" data-bind="text: Tratativa.val"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: Causa.text"></p>
+                                <p class="fw-400 fs-5" data-bind="text: Causa.val"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: Observacao.text"></p>
+                                <p class="fw-400 fs-5" data-bind="text: Observacao.val"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="info-title fw-bold text-uppercase mb-0" data-bind="text: ResolvidoPor.text"></p>
+                                <p class="fw-400 fs-5" data-bind="text: ResolvidoPor.val"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="knockoutTratativaAlerta" style="display:none;">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="fw-bold">Tratativa do alerta</h4>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 col-md-6" data-bind="visible: Causas.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Causas.text, attr: { for: Causas.id }"></label>
+                                <select class="form-control" data-bind="class: Causas.requiredClass, options: Causas.options, optionsText: 'text', optionsValue: 'value', value: Causas.val, attr: { maxlength: Causas.maxlength, id : Causas.id}, required: Causas.required, optionsCaption: 'Selecione uma causa'">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Tratativa.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Tratativa.text, attr: { for: Tratativa.id }"></label>
+                                <select class="form-control" data-bind="class: Tratativa.requiredClass, options: Tratativa.options, optionsText: 'text', optionsValue: 'value', value: Tratativa.val, attr: { maxlength: Tratativa.maxlength, id : Tratativa.id}, required: Tratativa.required, optionsCaption: 'Selecione uma tratativa'"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                <textarea class="form-control" rows="4" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="tratarOutrosAlertas">
+                        <div style="display:flex;align-items:baseline">
+                            <div>
+                                <h4 class="fw-bold">Outros Alertas</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="custom-control custom-switch mb-3">
+                                    <input type="checkbox" class="custom-control-input" data-bind="checked: TratarTodosDoMesmoTipo.val, attr: { name: TratarTodosDoMesmoTipo.id, id: TratarTodosDoMesmoTipo.id }">
+                                    <label class="custom-control-label" data-bind="text: TratarTodosDoMesmoTipo.text, attr: { for: TratarTodosDoMesmoTipo.id }"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="reprogramacaoAlerta">
+                        <div style="display:flex;align-items:baseline">
+                            <div>
+                                <h4 class="fw-bold">Reprogramação de alerta</h4>
+                            </div>
+                            <div class="subheader-help">
+                                <button type="button" onclick="iniciarAjuda(79677)" data-action="toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Abrir a ajuda" aria-label="Abrir a ajuda"><i class="fal fa-question-circle" style="font-size: 16px;"></i></button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="custom-control custom-switch mb-3">
+                                    <input type="checkbox" class="custom-control-input" data-bind="checked: ReprogramarAlerta.val, attr: { name: ReprogramarAlerta.id, id: ReprogramarAlerta.id }">
+                                    <label class="custom-control-label" data-bind="text: ReprogramarAlerta.text, attr: { for: ReprogramarAlerta.id }"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-3" data-bind="visible: TempoReprogramacaoAlerta.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TempoReprogramacaoAlerta.text"></label>
+                                    <input type="text" class="form-control" data-bind="class: TempoReprogramacaoAlerta.requiredClass, value: TempoReprogramacaoAlerta.val, valueUpdate: 'afterkeydown', attr: { maxlength: TempoReprogramacaoAlerta.maxlength, id : TempoReprogramacaoAlerta.id}, required: TempoReprogramacaoAlerta.required" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-padding" id="knockoutExibicaoMapa" style="padding:0;height:100%;margin-top:16px;">
+                    <div id="mapaAlerta" data-bind="visible: ExibirMapaAlerta.visible" style="width:100%;min-height:250px;height:100%;"></div>
+                </div>
+                <footer id="knockoutAcoesTratativaAlerta">
+                    <div class="d-flex justify-content-end " style="gap: 8px;">
+                        <button class="btn btn-outline-primary waves-effect waves-themed" data-bind="click: Cancelar.eventClick, attr: { id: Cancelar.id }, visible: Cancelar.visible" type="button">
+                            <span data-bind="text: Cancelar.text"></span>
+                        </button>
+                        <button class="btn btn-primary waves-effect waves-themed btn-primary " data-bind="click: Resolver.eventClick, attr: { id: Resolver.id }, visible: Resolver.visible" type="button">
+                            <span data-bind="text: Resolver.text"></span>
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://schemas.ipc.adm.br/efrete/logon" xmlns:s1="http://schemas.ipc.adm.br/efrete/logon/objects" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s2="http://schemas.ipc.adm.br/efrete/objects" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://schemas.ipc.adm.br/efrete/logon" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/logon">
+      <s:import namespace="http://schemas.ipc.adm.br/efrete/logon/objects" />
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:LoginRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:LoginResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Logout">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" ref="s1:LogoutRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogoutResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" ref="s1:LogoutResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/logon/objects">
+      <s:import namespace="http://schemas.ipc.adm.br/efrete/objects" />
+      <s:element name="LoginRequest" type="s1:LoginRequest" />
+      <s:complexType name="LoginRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Integrador" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Versao" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Usuario" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Senha" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="LoginResult" nillable="true" type="s1:LoginResponse" />
+      <s:complexType name="LoginResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Response">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Token" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="LogoutRequest" type="s1:LogoutRequest" />
+      <s:complexType name="LogoutRequest">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Request" />
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="LogoutResult" nillable="true" type="s1:LogoutResponse" />
+      <s:complexType name="LogoutResponse">
+        <s:complexContent mixed="false">
+          <s:extension base="s2:Response" />
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.ipc.adm.br/efrete/objects">
+      <s:complexType name="Response" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Versao" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Sucesso" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Excecao" type="s2:Excecao" />
+          <s:element minOccurs="1" maxOccurs="1" name="ProtocoloServico" nillable="true" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Excecao">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Mensagem" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Codigo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Request" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Token" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Integrador" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Versao" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="LogoutSoapIn">
+    <wsdl:part name="parameters" element="tns:Logout" />
+  </wsdl:message>
+  <wsdl:message name="LogoutSoapOut">
+    <wsdl:part name="parameters" element="tns:LogoutResponse" />
+  </wsdl:message>
+  <wsdl:portType name="LogonServiceSoap">
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <wsdl:input message="tns:LogoutSoapIn" />
+      <wsdl:output message="tns:LogoutSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LogonServiceSoap" type="tns:LogonServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://schemas.ipc.adm.br/efrete/logon/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap:operation soapAction="http://schemas.ipc.adm.br/efrete/logon/Logout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LogonServiceSoap12" type="tns:LogonServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://schemas.ipc.adm.br/efrete/logon/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap12:operation soapAction="http://schemas.ipc.adm.br/efrete/logon/Logout" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LogonService">
+    <wsdl:port name="LogonServiceSoap" binding="tns:LogonServiceSoap">
+      <soap:address location="https://dev.efrete.com.br/Services/LogonService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LogonServiceSoap12" binding="tns:LogonServiceSoap12">
+      <soap12:address location="https://dev.efrete.com.br/Services/LogonService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

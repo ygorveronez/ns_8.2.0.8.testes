@@ -1,0 +1,125 @@
+﻿const EnumTipoEmbarcacaoHelper = function () {
+    this.Todos = "";
+    this.Alvarenga = 1;
+    this.Barcaca = 2;
+    this.BarcacaPropulsada = 3;
+    this.Cargueiro = 4;
+    this.CatamaraMisto = 5;
+    this.CatamaraPassageiros = 6;
+    this.ChataCargueira = 7;
+    this.ChataGraneleira = 8;
+    this.ChataMista = 9;
+    this.ChataTanque = 10;
+    this.Empurrador = 11;
+    this.Estimulacao = 12;
+    this.FerryBoat = 13;
+    this.Flotel = 14;
+    this.Flutuante = 15;
+    this.CabreaGuindaste = 16;
+    this.LanchaMista = 17;
+    this.LanchaPassageiros = 18;
+    this.LanchaPratico = 19;
+    this.ManuseioDeEspias = 20;
+    this.Pesquisa = 21;
+    this.Rebocador = 22;
+    this.Suprimento = 23;
+    this.Transbordador = 24;
+    this.CargaPesada = 25;
+    this.Frigorifico = 26;
+    this.Glp = 27;
+    this.Graneleiro = 28;
+    this.MineroPetroleiro = 29;
+    this.MultiProposito = 30;
+    this.NavioCisterna = 31;
+    this.Passageiros = 32;
+    this.Petroleiro = 33;
+    this.PortaConteiner = 34;
+    this.TanqueQuimico = 35;
+    this.RoRo = 36;
+    this.Draga = 37;
+    this.Outros = 38;
+    this.Balsa = 39;
+    this.Dsv = 40;
+    this.Swath = 41;
+    this.Rov = 42;
+    this.Ahts = 43;
+    this.Ut4000 = 44;
+    this.Ut750 = 45;
+    this.Rsv = 46;
+    this.TanqueGlp = 47;
+    this.PatrolVessel = 48;
+    this.TanqueGnl = 50;
+    this.LançamentoDeLinhas = 51;
+    this.BarcoAMotor = 52;
+    this.BalsaMotorizada = 53;
+    this.Mpsv = 54;
+    this.Pesqueiro = 55;
+    this.Psv = 56;
+};
+
+EnumTipoEmbarcacaoHelper.prototype = {
+    obterOpcoes: function () {
+        return [
+            { text: "01 Alvarenga", value: this.Alvarenga = 1 },
+            { text: "02 Barcaça", value: this.Barcaca = 2 },
+            { text: "03 Barcaça Propulsada", value: this.BarcacaPropulsada = 3 },
+            { text: "04 Cargueiro", value: this.Cargueiro = 4 },
+            { text: "05 Catamarã Misto", value: this.CatamaraMisto = 5 },
+            { text: "06 Catamarã Passageiros", value: this.CatamaraPassageiros = 6 },
+            { text: "07 Chata Cargueira", value: this.ChataCargueira = 7 },
+            { text: "08 Chata Graneleira", value: this.ChataGraneleira = 8 },
+            { text: "09 Chata Mista", value: this.ChataMista = 9 },
+            { text: "10 Chata Tanque", value: this.ChataTanque = 10 },
+            { text: "11 Empurrador", value: this.Empurrador = 11 },
+            { text: "12 Estimulação", value: this.Estimulacao = 12 },
+            { text: "13 Ferry Boat", value: this.FerryBoat = 13 },
+            { text: "14 Flotel", value: this.Flotel = 14 },
+            { text: "15 Flutuante", value: this.Flutuante = 15 },
+            { text: "16 Cabrea/Guindaste", value: this.CabreaGuindaste = 16 },
+            { text: "17 Lancha Mista", value: this.LanchaMista = 17 },
+            { text: "18 Lancha Passageiros", value: this.LanchaPassageiros = 18 },
+            { text: "19 Lancha Prático", value: this.LanchaPratico = 19 },
+            { text: "20 Manuseio De Espias", value: this.ManuseioDeEspias = 20 },
+            { text: "21 Pesquisa", value: this.Pesquisa = 21 },
+            { text: "22 Rebocador", value: this.Rebocador = 22 },
+            { text: "23 Suprimento", value: this.Suprimento = 23 },
+            { text: "24 Transbordador", value: this.Transbordador = 24 },
+            { text: "25 Carga Pesada", value: this.CargaPesada = 25 },
+            { text: "26 Frigorífico", value: this.Frigorifico = 26 },
+            { text: "27 Glp", value: this.Glp = 27 },
+            { text: "28 Graneleiro", value: this.Graneleiro = 28 },
+            { text: "29 Minero-Petroleiro", value: this.MineroPetroleiro = 29 },
+            { text: "30 Multi-Proposito", value: this.MultiProposito = 30 },
+            { text: "31 Navio Cisterna", value: this.NavioCisterna = 31 },
+            { text: "32 Passageiros", value: this.Passageiros = 32 },
+            { text: "33 Petroleiro", value: this.Petroleiro = 33 },
+            { text: "34 Porta Conteiner", value: this.PortaConteiner = 34 },
+            { text: "35 Tanque Quimico", value: this.TanqueQuimico = 35 },
+            { text: "36 Ro-Ro", value: this.RoRo = 36 },
+            { text: "37 Draga", value: this.Draga = 37 },
+            { text: "38 Outros", value: this.Outros = 38 },
+            { text: "39 Balsa", value: this.Balsa = 39 },
+            { text: "40 Dsv", value: this.Dsv = 40 },
+            { text: "41 Swath", value: this.Swath = 41 },
+            { text: "42 Rov", value: this.Rov = 42 },
+            { text: "43 Ahts", value: this.Ahts = 43 },
+            { text: "44 Ut 4.000", value: this.Ut4000 = 44 },
+            { text: "45 Ut 750", value: this.Ut750 = 45 },
+            { text: "46 Rsv", value: this.Rsv = 46 },
+            { text: "47 Tanque Glp", value: this.TanqueGlp = 47 },
+            { text: "48 Patrol Vessel", value: this.PatrolVessel = 48 },
+            { text: "50 Tanque Gnl", value: this.TanqueGnl = 50 },
+            { text: "51 Lançamento De Linhas", value: this.LançamentoDeLinhas = 51 },
+            { text: "52 Barco A Motor", value: this.BarcoAMotor = 52 },
+            { text: "53 Balsa Motorizada", value: this.BalsaMotorizada = 53 },
+            { text: "54 Mpsv", value: this.Mpsv = 54 },
+            { text: "55 Pesqueiro", value: this.Pesqueiro = 55 },
+            { text: "56 Psv", value: this.Psv = 56 }
+        ];
+    },
+    obterOpcoesPesquisa: function () {
+        return [{ text: "Todos", value: this.Todos }].concat(this.obterOpcoes());
+    }
+};
+
+const EnumTipoEmbarcacao = Object.freeze(new EnumTipoEmbarcacaoHelper());

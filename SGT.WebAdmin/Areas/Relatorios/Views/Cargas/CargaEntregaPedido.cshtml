@@ -1,0 +1,231 @@
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage
+
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Relatórios</li>
+        <li class="breadcrumb-item">Cargas</li>
+        <li class="breadcrumb-item active">Carga Entrega Pedido</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            Relatório de Dados Entrega Pedidos
+        </h1>
+    </div>
+
+    <div id="divConteudoRelatorio" class="panel">
+        <div class="panel-container">
+            <div class="panel-hdr">
+                <h3>
+                    <i class="fal fa-file-alt"></i>
+                    Filtrar Relatório
+                </h3>
+            </div>
+                <div class="panel-content">
+                    <form>
+                        <div class="row" id="knockoutPesquisaCargaEntregaPedido">
+
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-2">
+                                    <label class="form-label">Data Criação</label>
+                                    <div class="input-group">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: DataCriacaoInicial.text, attr: { for: DataCriacaoInicial.id }"></label>
+                                            <input type="text" class="form-control" data-bind="value: DataCriacaoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataCriacaoInicial.maxlength, id : DataCriacaoInicial.id}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <label class="form-label">&nbsp;</label>
+                                    <div class="input-group">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: DataCriacaoFinal.text, attr: { for: DataCriacaoFinal.id }"></label>
+                                            <input type="text" class="form-control" data-bind="value: DataCriacaoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataCriacaoFinal.maxlength, id : DataCriacaoFinal.id}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <label class="form-label">Data Entrega</label>
+                                    <div class="input-group">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: DataEntregaInicial.text, attr: { for: DataEntregaInicial.id }"></label>
+                                            <input type="text" class="form-control" data-bind="value: DataEntregaInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntregaInicial.maxlength, id : DataEntregaInicial.id}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <label class="form-label">&nbsp;</label>
+                                    <div class="input-group">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: DataEntregaFinal.text, attr: { for: DataEntregaFinal.id }"></label>
+                                            <input type="text" class="form-control" data-bind="value: DataEntregaFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntregaFinal.maxlength, id : DataEntregaFinal.id}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <label class="form-label">Data Entrega Planejada</label>
+                                    <div class="input-group">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: PrevisaoEntregaPlanejadaInicio.text"></label>
+                                            <input type="text" class="form-control" data-bind="class: PrevisaoEntregaPlanejadaInicio.requiredClass, value: PrevisaoEntregaPlanejadaInicio.val, valueUpdate: 'afterkeydown', attr: { maxlength: PrevisaoEntregaPlanejadaInicio.maxlength, id : PrevisaoEntregaPlanejadaInicio.id}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <label class="form-label">&nbsp;</label>
+                                    <div class="input-group">
+                                        <div class="form-group">
+                                            <label class="form-label" data-bind="text: PrevisaoEntregaPlanejadaFinal.text"></label>
+                                            <input type="text" class="form-control" data-bind="class: PrevisaoEntregaPlanejadaFinal.requiredClass, value: PrevisaoEntregaPlanejadaFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: PrevisaoEntregaPlanejadaFinal.maxlength, id : PrevisaoEntregaPlanejadaFinal.id}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="row">
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group" data-bind="visible: CargaAgendada.visible">
+                                        <label class="form-label" data-bind="text: CargaAgendada.text, attr: { for: CargaAgendada.id }"></label>
+                                        <select class="form-control" data-bind="class: CargaAgendada.requiredClass, options: CargaAgendada.options, optionsText: 'text', optionsValue: 'value', value: CargaAgendada.val, attr: { maxlength: CargaAgendada.maxlength, id : CargaAgendada.id}"></select>
+                                    </div>
+
+                                    <div class="form-group" data-bind="visible : SituacaoCarga.visible, css: SituacaoCarga.cssClass">
+                                        <label class="form-label" data-bind="text: SituacaoCarga.text, attr: { for: SituacaoCarga.id }"></label>
+                                        <select class="form-control" data-bind="options: SituacaoCarga.options, optionsText: 'text', optionsValue: 'value', selectedOptions: SituacaoCarga.val, attr: { id : SituacaoCarga.id}" multiple="multiple" data-actions-box="false" data-selected-text-format="count > 3" title="Todos"></select>
+                                    </div>
+
+                                    <div class="form-group" data-bind="visible: Filial.visible">
+                                        <label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Filial.val, valueUpdate: 'afterkeydown', attr: { maxlength: Filial.maxlength, id : Filial.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Filial.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                        <div class="form-group" data-bind="visible: TipoDestino.visible">
+                                        <label class="form-label" data-bind="text: TipoDestino.text, attr: { for: TipoDestino.id }"></label>
+                                        <select class="form-control" data-bind="class: TipoDestino.requiredClass, options: TipoDestino.options, optionsText: 'text', optionsValue: 'value', selectedOptions: TipoDestino.val, attr: { maxlength: TipoDestino.maxlength, id : TipoDestino.id}"></select>
+                                    </div>
+
+                                        <div class="form-group" data-bind="visible: PossuiRedespacho.visible">
+                                        <label class="form-label" data-bind="text: PossuiRedespacho.text, attr: { for: PossuiRedespacho.id }"></label>
+                                        <select class="form-control" data-bind="options: PossuiRedespacho.options, optionsText: 'text', optionsValue: 'value', value: PossuiRedespacho.val, attr: { id : PossuiRedespacho.id}"></select>
+                                    </div>
+
+                                        <div class="form-group" data-bind="visible : Transportadora.visible">
+                                        <label class="form-label" data-bind="text: Transportadora.text, attr: { for: Transportadora.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: Transportadora.val, valueUpdate: 'afterkeydown', attr: { maxlength: Transportadora.maxlength, id : Transportadora.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Transportadora.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: MonitoramentoStatus.text, attr: { for: MonitoramentoStatus.id }"></label>
+                                        <select class="form-control" data-bind="class: MonitoramentoStatus.requiredClass, options: MonitoramentoStatus.options, optionsText: 'text', optionsValue: 'value', selectedOptions: MonitoramentoStatus.val, attr: { maxlength: MonitoramentoStatus.maxlength, id : MonitoramentoStatus.id}" multiple></select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoRelatorio.text, attr: { for: TipoRelatorio.id }"></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-bind="value: TipoRelatorio.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoRelatorio.maxlength, id : TipoRelatorio.id}" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoRelatorio.idBtnSearch}" type="button" aria-label="Buscar">
+                                                    <i class="fal fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                    <div class="row mb-4 mt-4">
+                        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+                            <div id="knockoutCRUDConfiguracaoRelatorio">
+                                <button class="btn btn-outline-secondary"
+                                        data-bind="enable: ExibirConfiguracoes.enable,
+                                           click: ExibirConfiguracoes.eventClick,
+                                           attr: { id: ExibirConfiguracoes.id }"
+                                        type="button">
+                                    <i data-bind="css: ExibirConfiguracoes.icon" class="me-1"></i>
+                                    <span data-bind="text: ExibirConfiguracoes.text"></span>
+                                </button>
+                            </div>
+                            <div id="knockoutCRUDFiltrosPesquisaCargaEntregaPedido">
+                               <button class="btn btn-outline-secondary"
+                                        data-bind="click: Preview.eventClick, attr: { id: Preview.id }"
+                                        type="button">
+                                    <i class="fal fa-search me-1"></i>
+                                    <span data-bind="text: Preview.text"></span>
+                                </button>
+                            </div>
+                           <div id="knockoutCRUDPesquisaCargaEntregaPedido">
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" id="gerarRelatorioDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-file-pdf-fill me-1"></i>
+                                        <span>Gerar Relatorio</span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="gerarRelatorioDropdown">
+                                        <li>
+                                            <button class="dropdown-item"
+                                                    data-bind="click: GerarRelatorioExcel.eventClick, attr: { id: GerarRelatorioExcel.id }"
+                                                    type="button">
+                                                <i class="fal fa-file-excel me-1"></i>
+                                                <span data-bind="text: GerarRelatorioExcel.text"></span>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item"
+                                                    data-bind="click: GerarRelatorioPDF.eventClick, attr: { id: GerarRelatorioPDF.id }"
+                                                    type="button">
+                                                <i class="fal fa-file-pdf me-1"></i>
+                                                <span data-bind="text: GerarRelatorioPDF.text"></span>
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="divConfigRelatorio"></div>
+                    <div id="divModalConfiguracoes" class="modal fade" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-xl modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Evento</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                        <i class="fal fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="divConfigRelatorio"></div>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>  
+                    <table id="gridPreviewRelatorio" class="table table-bordered table-hover table-condensed table-striped" width="100%" cellspacing="0"></table>
+                </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/relatorios/scripts/CargaEntregaPedido"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadLocalizationResources(["Logistica.Monitoramento"]).then(LoadCargaEntregaPedido);
+    });
+
+</script>

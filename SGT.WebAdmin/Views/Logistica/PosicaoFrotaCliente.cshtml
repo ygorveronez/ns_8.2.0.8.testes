@@ -1,0 +1,262 @@
+﻿
+
+<style>
+    span.disable {
+        background-color: #DDD;
+        opacity: 0.5;
+    }
+
+    #exibir-legendas {
+        display: block;
+        position: absolute;
+        right: 90px;
+        height: 30px;
+        margin-bottom: -30px;
+        padding: 8px;
+        color: #333;
+        text-decoration: none;
+    }
+
+    #divModalLegenda .smart-form {
+        padding: 20px;
+    }
+
+    #divModalLegenda fieldset {
+        padding: 0;
+        margin-bottom: 20px;
+        border: none;
+    }
+
+        #divModalLegenda fieldset label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+    ul.legenda {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        ul.legenda li {
+            padding: 3px 0;
+        }
+
+            ul.legenda li span {
+                height: 18px;
+                width: 18px;
+                margin-top: -3px;
+                margin-right: 10px;
+                border: 1px solid none;
+                border-radius: 10px;
+                background-color: #EEE;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            ul.legenda li.sub {
+                padding: 0;
+            }
+
+                ul.legenda li.sub span {
+                    height: 10px;
+                    width: 10px;
+                    margin-left: 28px;
+                    margin-right: 10px;
+                }
+
+    #legenda-totais-container {
+        z-index: 10;
+        position: absolute;
+        display: none;
+        width: 177px;
+        margin-left: 10px;
+        opacity: 0.9;
+        top: 125px;
+        padding: 5px 12px;
+        background-color: #fff;
+    }
+
+    #InfoWindowVeiculo div {
+        padding-bottom: 10px;
+        font-size: 11px;
+        width: 320px;
+    }
+
+        #InfoWindowVeiculo div label {
+            font-style: italic;
+            display: block;
+            float: left;
+            width: 120px;
+        }
+
+        #InfoWindowVeiculo div span {
+            display: block;
+            margin-left: 120px;
+        }
+
+        #InfoWindowVeiculo div.placa {
+            font-size: 16px;
+            font-weight: bold;
+        }
+</style>
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class=""></i> Posicao da Frota
+    </h1>
+</div>
+
+<div class="page-content">
+    <div id="knockoutPesquisaPosicaoFrota">
+        <form>
+            <div class="row mb-4">
+                <div class="col-12 col-md-2" data-bind="visible: CodigoCargaEmbarcador.visible">
+                    <div class="form-group">
+                        <input type="text" class="form-control" data-bind="class: CodigoCargaEmbarcador.requiredClass, value: CodigoCargaEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: CodigoCargaEmbarcador.maxlength, id : CodigoCargaEmbarcador.id, placeholder: CodigoCargaEmbarcador.placeholder }" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-2" data-bind="visible: DataInicio.visible">
+                    <div class="form-group">
+                        <input type="text" class="form-control" data-bind="class: DataInicio.requiredClass, value: DataInicio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicio.maxlength, id : DataInicio.id, placeholder: DataInicio.placeholder }" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-2" data-bind="visible: DataFim.visible">
+                    <div class="form-group">
+                        <input type="text" class="form-control" data-bind="class: DataFim.requiredClass, value: DataFim.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFim.maxlength, id : DataFim.id, placeholder: DataFim.placeholder }" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-2" data-bind="visible: StatusViagemControleEntrega.visible">
+                    <div class="form-group">
+                        <select class="form-control" data-bind="class: StatusViagemControleEntrega.requiredClass, options: StatusViagemControleEntrega.options, optionsText: 'text', optionsValue: 'value', value: StatusViagemControleEntrega.val, attr: { maxlength: StatusViagemControleEntrega.maxlength, id : StatusViagemControleEntrega.id}"></select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4" data-bind="visible: Filial.visible">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="css: Filial.requiredClass, value: Filial.val, valueUpdate: 'afterkeydown', attr: { maxlength: Filial.maxlength, id : Filial.id, placeholder: Filial.placeholder }" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Filial.idBtnSearch}" type="button" aria-label="Buscar">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-12 col-md-3" data-bind="visible: Transportador.visible">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="css: Transportador.requiredClass, value: Transportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: Transportador.maxlength, id : Transportador.id, placeholder: Transportador.placeholder }" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Transportador.idBtnSearch}" type="button" aria-label="Buscar">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="d-flex align-items-center justify-content-end mb-3">
+            <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+            </button>
+        </div>
+        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+    </div>
+</div>
+
+<div id="posicao-frota-container">
+    <div class="card" id="mapa-container">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-1">
+                    <div class="card-title"><h4>{Localize::Logistica.PosicaoFrota.Mapa}</h4></div>
+                </div>
+                <div class="col-4 mt-2 d-flex justify-content-start">
+                    <div id="knockoutPlayerPosicaoFrota" style="font-style: italic">
+                        <span class="btn btn-xs btn-default" data-bind="click: Play.eventClick, attr: { id: Play.id}">
+                            <a style="font-weight: bold; cursor:pointer;"><span class="widget-icon"><i class="fal fa-play"></i></span></a>
+                        </span>
+                        <span class="btn btn-xs btn-default" data-bind="click: Pause.eventClick, attr: { id: Pause.id}">
+                            <a style="font-weight: bold; cursor:pointer;"><span class="widget-icon"><i class="fal fa-pause"></i></span></a>
+                        </span>
+                        <span class="btn btn-xs btn-default" data-bind="click: Refresh.eventClick, attr: { id: Refresh.id}">
+                            <a style="font-weight: bold; cursor:pointer;"><span class="widget-icon"><i class="fal fa-sync"></i></span></a>
+                        </span>
+                        {Localize::Logistica.PosicaoFrota.Atualizaem} <span class="count-seconds">X</span> {Localize::Logistica.PosicaoFrota.Segundos}
+                    </div>
+                </div>
+                <div class="col-6 d-flex justify-content-end">
+                    <a href="javascript:ExibirLegenda()" id="exibir-legendas" class="btn btn-link btn-sm active border border-secondary mb-2" role="button" aria-pressed="true">{Localize::Logistica.PosicaoFrota.Legendas}</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" id="widget-mapa">
+            <div id="legenda-totais-container">
+                <div>
+                    <ul id="legenda-totais" class="legenda">
+                        <li><span style="background-color:#E06F1F;border-color:#E06F1F"></span>Total</li>
+                        <li><span style="background-color:#E06F1F;border-color:#E06F1F"></span>Total</li>
+                        <li><span style="background-color:#E06F1F;border-color:#E06F1F"></span>Total</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-body no-padding" style="padding:0;">
+                <div class="no-padding" style="padding:0;height:100%;">
+                    <div id="map" style="width:100%;min-height:650px;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-3" id="grid-container">
+        <div class="card-header">
+            <div class="card-title"><h4>{Localize::Logistica.PosicaoFrota.Veiculos}</h4></div>
+        </div>
+        <div class="card-body" id="widget-grid">
+            <table width="100%" class="table table-bordered table-hover table-condensed table-striped" id="grid-posicao-frota" cellspacing="0"></table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalLegenda" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{Localize::Logistica.PosicaoFrota.Legendas}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="smart-form">
+                    <fieldset class="legenda-veiculos">
+                        <label>{Localize::Logistica.PosicaoFrota.Veiculos}:</label>
+                        <ul class="legenda"></ul>
+                    </fieldset>
+                    <fieldset class="legenda-categorias">
+                        <label>Categorias dos alvos:</label>
+                        <ul class="legenda"></ul>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/posicaoFrota"></script>
+<link rel="stylesheet" href="~/css/tracking" />
+
+<script type="text/javascript">
+    pageSetUp();
+
+    if (!$("body").hasClass("menu-on-top"))
+        $("body").addClass("minified");
+
+    $(document).ready(function () {
+        LoadLocalizationResources("Logistica.PosicaoFrota").then(loadPosicaoFrota);
+    });
+</script>

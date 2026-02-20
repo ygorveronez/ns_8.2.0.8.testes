@@ -1,0 +1,96 @@
+using System;
+
+namespace Dominio.Relatorios.Embarcador.DataSource.CTe
+{
+    public class RelatorioPreDACTE
+    {
+        public int Numero { get; set; }
+        public int Serie { get; set; }
+        public DateTime DataEmissao { get; set; }
+        public string CNPJEmpresa { get; set; }
+        public string IEEmpresa { get; set; }
+        public string RazaoEmpresa { get; set; }
+        public string FoneEmpresa { get; set; }
+        public string CEPEmpresa { get; set; }
+        public string EnderecoEmpresa { get; set; }
+        public string NumeroEmpresa { get; set; }
+        public string ComplementoEmpresa { get; set; }
+        public string BairroEmpresa { get; set; }
+        public string CidadeEmpresa { get; set; }
+        public string EstadoEmpresa { get; set; }
+        public string TipoCTE { get; set; }
+        public string TipoServico { get; set; }
+        public string Tomador { get; set; }
+        public int TipoTomador { get; set; }
+        public string IndicadorGlobalizado { get; set; }
+        public int CFOP { get; set; }
+        public string DescricaoCFOP { get; set; }
+        public string CidadeInicioPrestacao { get; set; }
+        public string EstadoInicioPrestacao { get; set; }
+        public string CidadeTerminoPrestacao { get; set; }
+        public string EstadoTerminoPrestacao { get; set; }
+        public string CNPJRemetente { get; set; }
+        public string IERemetente { get; set; }
+        public string RazaoRemetente { get; set; }
+        public string FoneRemetente { get; set; }
+        public string CEPRemetente { get; set; }
+        public string EnderecoRemetente { get; set; }
+        public string NumeroRemetente { get; set; }
+        public string ComplementoRemetente { get; set; }
+        public string BairroRemetente { get; set; }
+        public string CidadeRemetente { get; set; }
+        public string EstadoRemetente { get; set; }
+        public string CNPJDestinatario { get; set; }
+        public string IEDestinatario { get; set; }
+        public string RazaoDestinatario { get; set; }
+        public string FoneDestinatario { get; set; }
+        public string CEPDestinatario { get; set; }
+        public string EnderecoDestinatario { get; set; }
+        public string NumeroDestinatario { get; set; }
+        public string ComplementoDestinatario { get; set; }
+        public string BairroDestinatario { get; set; }
+        public string CidadeDestinatario { get; set; }
+        public string EstadoDestinatario { get; set; }
+        public string CNPJExpedidor { get; set; }
+        public string IEExpedidor { get; set; }
+        public string RazaoExpedidor { get; set; }
+        public string FoneExpedidor { get; set; }
+        public string CEPExpedidor { get; set; }
+        public string EnderecoExpedidor { get; set; }
+        public string NumeroExpedidor { get; set; }
+        public string ComplementoExpedidor { get; set; }
+        public string BairroExpedidor { get; set; }
+        public string CidadeExpedidor { get; set; }
+        public string EstadoExpedidor { get; set; }
+        public string CNPJRecebedor { get; set; }
+        public string IERecebedor { get; set; }
+        public string RazaoRecebedor { get; set; }
+        public string FoneRecebedor { get; set; }
+        public string CEPRecebedor { get; set; }
+        public string EnderecoRecebedor { get; set; }
+        public string NumeroRecebedor { get; set; }
+        public string ComplementoRecebedor { get; set; }
+        public string BairroRecebedor { get; set; }
+        public string CidadeRecebedor { get; set; }
+        public string EstadoRecebedor { get; set; }
+        public string ProdutoPredominante { get; set; }
+        public string OutrasCaracteristicasDaCarga { get; set; }
+        public decimal ValorTotalMercadoria { get; set; }
+        public decimal ValorFrete { get; set; }
+        public decimal ValorPrestacaoServico { get; set; }
+        public decimal ValorAReceber { get; set; }
+        public string CST { get; set; }
+        public decimal BaseCalculoICMS { get; set; }
+        public decimal AliquotaICMS { get; set; }
+        public decimal ValorICMS { get; set; }
+        public string ObservacoesGerais { get; set; }
+        public string RNTRC { get; set; }
+        public string ChaveNFE { get; set; }
+        public decimal ValorNFE { get; set; }
+        public string NumeroNFE { get; set; }
+        public string DescricaoNFE { get; set; }
+        public string ModeloNFE { get; set; }
+        public string ObservacoesContribuinte { get; set; }
+        public string ObservacoesFisco { get; set; }
+    }
+}

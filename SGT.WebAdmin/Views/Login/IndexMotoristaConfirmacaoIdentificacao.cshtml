@@ -1,0 +1,273 @@
+﻿@model SGT.WebAdmin.Models.AcessoMotorista
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>@Html.Raw(ViewBag.Titulo) - Acesso ao Sistema</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="~/css/bootstrap" />
+	<link rel="stylesheet" href="~/css/fontAwesome" />
+	<link rel="stylesheet" href="~/css/plugins" />
+	<link rel="stylesheet" href="~/css/production" />
+	<link rel="stylesheet" href="~/css/skins" />
+	<link rel="stylesheet" href="~/css/smartAdminRTL" />
+	<link rel="stylesheet" href="~/css/retiradaProduto" />
+
+	<link rel="shortcut icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+	<link rel="icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+
+<body class="animated fadeInDown @Html.Raw(ViewBag.ClasseCorBotoes)">
+	<header id="header" style="@Html.Raw(ViewBag.Layout)">
+		<div id="logo-group">
+			<span id="logo"> <img src="@Html.Raw(ViewBag.Logo)" alt="SmartAdmin"> </span>
+		</div>
+	</header>
+	<div id="main" role="main">
+		<div id="content" class="container" style="width: 25%;">
+			<div class="row container-formulario-autenticacao">
+				<form method="post" action="@Url.Action("ConfirmarDados", "LoginMotorista")" class="smart-form client-form">
+					<header class="text-center">
+						<h3>Confirmação de identificação</h3>
+					</header>
+					@Html.AntiForgeryToken()
+					<fieldset>
+						@Html.HiddenFor(m => m.DadosCarga.CodigoCarga)
+						<section>
+							<b>Número da carga: </b><span>@Model.DadosCarga.NumeroCarga</span>
+						</section>
+						<section>
+							<b>Motorista: </b><span>@Model.DadosCarga.DescricaoMotorista</span>
+						</section>
+						<section>
+							<b>Veículo: </b><span>@Model.DadosCarga.Veiculo</span>
+						</section>
+						<section>
+							<b>Destino: </b><span>@Model.DadosCarga.Destino</span>
+						</section>
+						<section>
+							<b>Peso: </b><span>@Model.DadosCarga.Peso</span>
+						</section>
+						<section>
+							<b>Horário de carregamento: </b><span>@Model.DadosCarga.HorarioCarregamento</span>
+						</section>
+						<section class="text-center">
+							@Html.HiddenFor(m => m.ImagemBase64)
+							<div id="foto-motorista" style="margin: auto; display: table;">
+								<i style="display: table-cell; vertical-align: middle;" class="fa fa-camera fa-4x" aria-hidden="true"></i>
+							</div>
+						</section>
+						<section class="text-center" style="padding-top: 10px; padding-bottom: 20px; margin-bottom: 0;">
+							<button id="btnTirarFoto" type="button" class="btn btn-secondary padding-5">
+								Validação Facial
+							</button>
+						</section>
+					</fieldset>
+					<footer>
+						<div class="row">
+							<section class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-0">
+								<button type="submit" class="btn btn-success pull-right">
+									Confirmar
+								</button>
+							</section>
+						</div>
+					</footer>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	@{
+		Html.RenderPartial("~/Views/Login/_ModalLoginMotoristaCamera.cshtml");
+	}
+
+	<script src="~/scripts/jquery"></script>
+	<script src="~/scripts/jqueryUI"></script>
+	<script src="~/scripts/appConfig"></script>
+	<script src="~/scripts/bootstrap"></script>
+	<script src="~/scripts/jqueryValidate"></script>
+	<script src="~/scripts/maskedInput"></script>
+	<script src="~/scripts/app"></script>
+	<script src="~/scripts/webcam"></script>
+
+	<script>
+		var webcamElement;
+		var canvasElement;
+		var snapSoundElement;
+		var webcam;
+
+		$(document).ready(function () {
+			webcamElement = document.getElementById('webcam');
+			canvasElement = document.getElementById('canvas');
+			snapSoundElement = document.getElementById('snapSound');
+			webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
+
+			setarEventosModal();
+
+			$("#btnTirarFoto").click(function () {
+				$("#modalValidacaoFacial")
+					.modal("show");
+			});
+
+			$("#tirar-foto").click(function () {
+				tirarFoto();
+			});
+
+			$("#tentar-novamente").click(function () {
+				exibirWebcam();
+			});
+
+			$("#confirmar-foto").click(function () {
+				confirmarFoto();
+			});
+		});
+
+		function setarEventosModal() {
+			$("#modalValidacaoFacial")
+				.on("show.bs.modal", function () {
+					exibirWebcam();
+					iniciarCamera();
+				})
+				.on("hidden.bs.modal", function () {
+					pararCamera();
+				});
+		}
+
+		function iniciarCamera() {
+			webcam.start()
+				.then(result => {
+				})
+				.catch(err => {
+					console.log(err);
+					alert("Não há uma câmera conectada.");
+				});
+		}
+
+		function pararCamera() {
+			webcam.stop();
+		}
+
+		function tirarFoto() {
+			let picture = webcam.snap();
+			exibirResultadoFoto();
+		}
+
+		function exibirResultadoFoto() {
+			exibirCanva();
+			exibirBotaoTentarNovamente();
+			exibirBotaoConfirmarFoto();
+			esconderBotaoTirarFoto();
+		}
+
+		function confirmarFoto() {
+			$("#foto-tirada-motorista").css("display", "inline");
+			$("#foto-motorista i").css("display", "none");
+
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			var urlImagem = canvas.toDataURL();
+
+			$("#ImagemBase64").attr("value", urlImagem);
+			$("#foto-motorista").css("background", 'url(' + urlImagem + ')');
+			$("#foto-motorista").css("background-position", "center");
+
+			Global.fecharModal("modalValidacaoFacial");
+		}
+
+		function exibirCanva() {
+			$("#webcam-section").css("display", "none");
+			$("#canvas-section").css("display", "block");
+		}
+
+		function exibirWebcam() {
+			$("#webcam-section").css("display", "block");
+			$("#canvas-section").css("display", "none");
+
+			exibirBotaoTirarFoto();
+			esconderBotaoConfirmarFoto();
+			esconderBotaoTentarNovamente();
+		}
+
+		function exibirBotaoTentarNovamente() {
+			$("#tentar-novamente").css("display", "inline");
+		}
+
+		function exibirBotaoConfirmarFoto() {
+			$("#confirmar-foto").css("display", "inline");
+		}
+
+		function esconderBotaoTentarNovamente() {
+			$("#tentar-novamente").css("display", "none");
+		}
+
+		function exibirBotaoTirarFoto() {
+			$("#tirar-foto").css("display", "inline");
+		}
+
+		function esconderBotaoTirarFoto() {
+			$("#tirar-foto").css("display", "none");
+		}
+
+		function esconderBotaoConfirmarFoto() {
+			$("#confirmar-foto").css("display", "none");
+		}
+	</script>
+</body>
+
+</html>
+
+<style>
+	.container-formulario-autenticacao {
+		border: 1px solid #ddd;
+	}
+
+		.container-formulario-autenticacao ul {
+			list-style: none;
+		}
+
+		.container-formulario-autenticacao .alert {
+			margin-bottom: 0;
+		}
+
+	video {
+		background-color: #ebeaea;
+		border-radius: 50%;
+	}
+
+	#main {
+		margin: 0;
+	}
+
+	canvas {
+		position: absolute;
+		left: -15%;
+	}
+
+	#foto-motorista {
+		height: 200px;
+		width: 200px;
+		background-color: #ebeaea;
+		border-radius: 50%;
+		overflow: hidden;
+	}
+
+	#webcam {
+		position: absolute;
+		left: 25%;
+	}
+
+	.web-cam, #canvas-section {
+		margin: 0 auto;
+		border-radius: 50%;
+		text-align: center;
+		width: 240px;
+		height: 240px;
+		-webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+	}
+</style>

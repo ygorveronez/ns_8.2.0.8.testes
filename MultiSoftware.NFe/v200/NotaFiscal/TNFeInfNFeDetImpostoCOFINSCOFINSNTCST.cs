@@ -1,0 +1,30 @@
+namespace MultiSoftware.NFe.NotaFiscal
+{
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.1")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.portalfiscal.inf.br/nfe")]
+    public enum TNFeInfNFeDetImpostoCOFINSCOFINSNTCST
+    {
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("04")]
+        Item04 = 04,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("06")]
+        Item06 = 06,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("07")]
+        Item07 = 07,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("08")]
+        Item08 = 08,
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("09")]
+        Item09 = 09
+    }
+}

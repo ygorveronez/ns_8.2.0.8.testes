@@ -1,0 +1,399 @@
+﻿<style>
+    .container-imagem-canhoto {
+        max-height: 600px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+        .container-imagem-canhoto::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .container-imagem-canhoto::-webkit-scrollbar-thumb {
+            background: #afb4ba;
+            border-radius: 5px;
+        }
+
+            .container-imagem-canhoto::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+
+        .container-imagem-canhoto::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        .container-imagem-canhoto::-webkit-scrollbar-button {
+            display: none;
+        }
+
+    .img-canhoto {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .draggable-img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .esmaecido {
+        opacity: 0.5;
+        pointer-events: none; 
+    }
+</style>
+
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Torre de Controle</li>
+    <li class="breadcrumb-item active">Qualidade das Entregas</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        Qualidade das Entregas
+    </h1>
+</div>
+
+<div>
+    <div class="row">
+        <div class="header-filtros">
+            <div class="layout-and-filters">
+                <div class="box-search" style="margin-right:0px">
+                    <div onclick="abrirModalFiltrosPesquisaQualidadeEntrega()" class="button-filter"></div>
+                </div>
+            </div>
+            <div id="knockoutResumoQualidadeEntrega">
+                <div id="carousel-filters" class="carousel" data-ride="carousel" data-bs-interval="false">
+                    <div class="carousel-inner">
+                        <!-- Primeira Página do Carrossel -->
+                        <div class="carousel-item active">
+                            <div class="resumos">
+                                <span>Situação de liberação do Canhoto</span>
+                                <div class="view-selection-items">
+                                    <div class="view-selection" id="view-select-filters">
+                                        <div id="view-11" class="view-select-button" data-bind="click: DisponivelParaConsulta.eventClick">
+                                            <div style="color:#1F7C4A" class="icon-number" data-bind="text: QtdDisponivelParaConsulta.val"></div>
+                                            <span>Liberada</span>
+                                        </div>
+                                    </div>
+                                    <div class="vr"></div>
+
+                                    <div class="view-selection" id="view-select-filters">
+                                        <div id="view-2" class="view-select-button" data-bind="click: TotalParaConsulta.eventClick">
+                                            <div style="color:#F39A14" class="icon-number" data-bind="text: QtdTotalParaConsulta.val"></div>
+                                            <span>Todas</span>
+                                        </div>
+                                    </div>
+                                    <div class="vr"></div>
+
+                                    <div class="view-selection" id="view-select-filters">
+                                        <div id="view-3" class="view-select-button" data-bind="click: NaoDisponivelParaConsulta.eventClick">
+                                            <div style="color:#FF4E4E" class="icon-number" data-bind="text: QtdNaoDisponivelParaConsulta.val"></div>
+                                            <span>Bloqueado</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-filters" data-bs-slide="next" disabled style="display:none;">
+                        <span><i class="fal fa-chevron-right"></i></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-filters" data-bs-slide="prev" disabled style="display:none;">
+                        <span><i class="fal fa-chevron-left"></i></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <div class="carousel-indicators" style="position:unset !important">
+                        <button type="button" data-bs-target="#carousel-filters" data-bs-slide-to="0" class="indicator-button active" aria-label="Slide 1"></button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="config-div">
+                <div class="box-search" style="margin-right:0px">
+                    <div onclick="abrirModalConfiguracaoQualidadeEntrega()" class="button-config"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-container">
+        <div class="panel-content">
+            <div id="knockoutQualidadeEntrega">
+                <div class="d-flex justify-content-end mb-2" style="gap:8px">
+                    <button class="btn btn-success" type="button" data-bind="click: LiberarMultiplasNotas.eventClick, text: LiberarMultiplasNotas.text, attr: { id: LiberarMultiplasNotas.id}, visible: LiberarMultiplasNotas.visible"></button>
+                    <button class="btn btn-primary" type="button" data-bind="click: SelecionarTodos.eventClick, text: SelecionarTodos.text, attr: { id: SelecionarTodos.id}, visible: SelecionarTodos.visible"></button>
+                </div>
+                <div class="row">
+                    <table width="100%" class="table table-bordered table-hover table-condensed" id="grid-qualidade-entrega" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="divModalFiltrosPesquisaQualidadeEntrega" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="padding: 8px">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Filtrar</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="border" style="padding: 20px" id="knockoutPesquisaQualidadeEntrega">
+                <div class="row" style="padding-bottom: 20px;">
+                    <div class="filters-action-buttons">
+                        <button class="btn button-outline" data-bind="click: CarregarFiltrosPesquisa.eventClick, attr: { id: CarregarFiltrosPesquisa.id}" type="button">
+                            <span data-bind="text: CarregarFiltrosPesquisa.text"></span>
+                        </button>
+                        <button class="ghost-button" data-bind="click: LimparFiltros.eventClick, attr: { id: LimparFiltros.id}" type="button">
+                            <span data-bind="text: LimparFiltros.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-4" data-bind="visible: Filial.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="value: Filial.val, valueUpdate: 'afterkeydown', attr: { maxlength: Filial.maxlength, id : Filial.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Filial.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" data-bind="visible: NumeroCarga.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: NumeroCarga.text, attr: { for: NumeroCarga.id }"></label>
+                            <input type="text" class="form-control" data-bind="value: NumeroCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroCarga.maxlength, id : NumeroCarga.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4" data-bind="visible: NumeroNF.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: NumeroNF.text, attr: { for: NumeroNF.id }"></label>
+                            <input type="text" class="form-control" data-bind="value: NumeroNF.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroNF.maxlength, id : NumeroNF.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: DataInicioCriacaoCarga.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataInicioCriacaoCarga.text, attr: { for: DataInicioCriacaoCarga.id }"></label>
+                            <input type="text" class="form-control" data-bind="value: DataInicioCriacaoCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioCriacaoCarga.maxlength, id : DataInicioCriacaoCarga.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: DataFimCriacaoCarga.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataFimCriacaoCarga.text, attr: { for: DataFimCriacaoCarga.id }"></label>
+                            <input type="text" class="form-control" data-bind="value: DataFimCriacaoCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFimCriacaoCarga.maxlength, id : DataFimCriacaoCarga.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: DataInicioEmissaoNF.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataInicioEmissaoNF.text, attr: { for: DataInicioEmissaoNF.id }"></label>
+                            <input type="text" class="form-control" data-bind="value: DataInicioEmissaoNF.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioEmissaoNF.maxlength, id : DataInicioEmissaoNF.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: DataFimEmissaoNF.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataFimEmissaoNF.text, attr: { for: DataFimEmissaoNF.id }"></label>
+                            <input type="text" class="form-control" data-bind="value: DataFimEmissaoNF.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFimEmissaoNF.maxlength, id : DataFimEmissaoNF.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3" data-bind="visible: SituacaoDigitalizacaoCanhoto.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: SituacaoDigitalizacaoCanhoto.text"></label>
+                            <select class="form-control" data-bind="options: SituacaoDigitalizacaoCanhoto.options, optionsText: 'text', optionsValue: 'value', value: SituacaoDigitalizacaoCanhoto.val, attr: { id : SituacaoDigitalizacaoCanhoto.id}"></select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-2" data-bind="visible: TipoCanhoto.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: TipoCanhoto.text, attr: { for: TipoCanhoto.id }"></label>
+                            <select class="form-control" data-bind="class: TipoCanhoto.requiredClass, options: TipoCanhoto.options, optionsText: 'text', optionsValue: 'value', value: TipoCanhoto.val, attr: { maxlength: TipoCanhoto.maxlength, id : TipoCanhoto.id}"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="filters-action-buttons justify-content-end">
+                        <button class="btn button-outline" type="button" data-bind="click: ConfiguracaoModeloFiltroPesquisa.eventClick, attr: { id: ConfiguracaoModeloFiltroPesquisa.id}">
+                            <span data-bind="text: ConfiguracaoModeloFiltroPesquisa.text"></span>
+                        </button>
+                        <button class="btn button-primary" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                            <span data-bind="text: Pesquisar.text"></span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalConfigurarQualidadeEntrega" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="knockoutConfiguracaoQualidadeEntrega">
+        <div class="modal-content" style="padding: 8px">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Configurar Qualidade de Entrega</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="border" style="padding: 22px">
+                <div>
+                    <h4 class="modal-subtitle" id="myModalLabel">Configuração da Qualidade de Entrega</h4>
+                    <span>Personalize os critérios utilizados para avaliar a qualidade das entregas.</span>
+                </div>
+                <div class="mt-4">
+                    <h4 class="modal-title mb-2">Análise de Datas</h4>
+                    <div class="custom-control custom-switch mb-3">
+                        <input type="checkbox" class="custom-control-input" data-bind="checked: VerificarDataConfirmacaoIntervaloRaio.val, attr: { name: VerificarDataConfirmacaoIntervaloRaio.id, id: VerificarDataConfirmacaoIntervaloRaio.id }">
+                        <label class="custom-control-label" data-bind="text: VerificarDataConfirmacaoIntervaloRaio.text, attr: { for: VerificarDataConfirmacaoIntervaloRaio.id }"></label>
+                        <div>
+                            <span data-bind="text: VerificarDataConfirmacaoIntervaloRaio.tooltip"></span>
+                        </div>
+                    </div>
+
+                    <div class="custom-control custom-switch mb-3" style="margin-left: 28px;" data-bind="css: { 'esmaecido': !VerificarDataConfirmacaoIntervaloRaio.val() }">
+                        <input type="checkbox" class="custom-control-input"
+                               data-bind="checked: ConsiderarDataHoraConfirmacaoIntervaloRaio.val, attr: { name: ConsiderarDataHoraConfirmacaoIntervaloRaio.id, id: ConsiderarDataHoraConfirmacaoIntervaloRaio.id }, enable: VerificarDataConfirmacaoIntervaloRaio.val">
+                        <label class="custom-control-label" data-bind="text: ConsiderarDataHoraConfirmacaoIntervaloRaio.text, attr: { for: ConsiderarDataHoraConfirmacaoIntervaloRaio.id }"></label>
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <div class="d-flex justify-content-end" style="gap: 12px">
+                    <button class="btn btn-light shadow-none" data-bs-toggle="dropdown" aria-expanded="false" data-bind="click: Auditar.eventClick">
+                        <span data-bind="text: Auditar.text"></span>
+                    </button>
+                    <button class="btn button-outline" data-bind="click: Cancelar.eventClick, attr: { id: Cancelar.id}" type="button">
+                        <span data-bind="text: Cancelar.text"></span>
+                    </button>
+                    <button class="btn button-primary" type="button" data-bind="click: SalvarPreferencias.eventClick, attr: { id: SalvarPreferencias.id}">
+                        <span data-bind="text: SalvarPreferencias.text"></span>
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalAlterarDataEntrega" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="knockoutAlterarDataEntrega">
+        <div class="modal-content" style="padding: 8px">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Alterar data de Entrega</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="border" style="padding: 22px">
+                <div class="row mb-3" data-bind="visible: LiberarPreenchimentoEntradaSaidaRaio.val">
+                    <div class="col-12 col-md-6" data-bind="visible:DataEntradaRaio.visible">
+                        <label class="form-label" data-bind="text: DataEntradaRaio.text, attr: { for: DataEntradaRaio.id }"></label>
+                        <input type="text" class="form-control" data-bind="value: DataEntradaRaio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntradaRaio.maxlength, id : DataEntradaRaio.id}" />
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible:DataSaidaRaio.visible">
+                        <label class="form-label" data-bind="text: DataSaidaRaio.text, attr: { for: DataSaidaRaio.id }"></label>
+                        <input type="text" class="form-control" data-bind="value: DataSaidaRaio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataSaidaRaio.maxlength, id : DataSaidaRaio.id}" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible:DataInicioEntregaInformada.visible">
+                        <label class="form-label" data-bind="text: DataInicioEntregaInformada.text, attr: { for: DataInicioEntregaInformada.id }"></label>
+                        <input type="text" class="form-control" data-bind="value: DataInicioEntregaInformada.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicioEntregaInformada.maxlength, id : DataInicioEntregaInformada.id}" />
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible:DataFimEntregaInformada.visible">
+                        <label class="form-label" data-bind="text: DataFimEntregaInformada.text, attr: { for: DataFimEntregaInformada.id }"></label>
+                        <input type="text" class="form-control" data-bind="value: DataFimEntregaInformada.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFimEntregaInformada.maxlength, id : DataFimEntregaInformada.id}" />
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <div class="d-flex justify-content-between w-100">
+                    <!-- Primeira Div -->
+                    <div class="d-flex align-items-center">
+                        <div class="alert alert-info m-0 p-2" role="alert" style="font-size: 0.875rem;">
+                            Alterar a Data de Entrega sobrescreve a <b>Data de Confirmação</b>.
+                        </div>
+                    </div>
+
+                    <!-- Segunda Div -->
+                    <div class="d-flex justify-content-end" style="gap: 4px">
+                        <button class="btn button-outline" data-bind="click: Cancelar.eventClick, attr: { id: Cancelar.id}" type="button">
+                            <span data-bind="text: Cancelar.text"></span>
+                        </button>
+                        <button class="btn btn-primary ms-2" type="button" data-bind="click: AlterarDataEntrega.eventClick, enable: AlterarDataEntrega.enable, visible: AlterarDataEntrega.visible, attr: { id : AlterarDataEntrega.id}">
+                            <span data-bind="text: AlterarDataEntrega.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalVisualizarCanhoto" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" id="knockoutVisualizarImagemCanhoto">
+        <div class="modal-content" style="padding: 8px">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Visualizar Imagem do Canhoto</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div>
+                <!-- ko if: Imagem.val() !== null && ArquivoPDF.val() === false -->
+                <div class="container-imagem-canhoto">
+                    <div class="img-canhoto container-drag">
+                        <img class="draggable-img" data-bind="attr: { src: 'data:image/png;base64,' + Imagem.val() }" />
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: Imagem.val() === null && ArquivoPDF.val() === true -->
+                <div>
+                    <embed class="pdf-viewer-canhoto-agrupado" data-bind="attr: { src: 'Canhotos/RenderizarPDF?Canhoto=' + CodigoCanhoto.val() }" style="width: 100%; height: 550px; overflow:hidden" />
+                </div>
+                <!-- /ko -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="ModalDivDetalhesCanhoto" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Histórico do Canhoto</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetalhesCanhoto">
+                    <!-- O conteúdo será carregado aqui -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="knockoutArquivo" style="display:none;"></div>
+
+<script src="~/script/detalhesCanhoto.js"></script>
+<script src="~/scripts/qualidadeEntrega"></script>
+<link rel="stylesheet" href="~/css/cabecalhoPadraoTorreControle.css" />
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    _PermissoesPersonalizadasQualidadeEntrega = @Html.Raw(ViewBag.PermissoesPersonalizadasQualidadeEntrega);
+
+    $(document).ready(function () {
+        LoadLocalizationResources("Canhotos.Canhoto").then(loadQualidadeEntrega);       
+    });
+
+</script>

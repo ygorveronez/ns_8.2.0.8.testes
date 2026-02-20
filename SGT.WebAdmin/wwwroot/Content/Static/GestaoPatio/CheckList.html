@@ -1,0 +1,175 @@
+﻿<div id="knockoutResumoCheckList">
+    <div class="card" data-bind="visible: Resumo.visible">
+        <div class="card-body">
+            <div class="row">
+                <section data-bind="visible: Viagem.visible" class="col col-md-2">
+                    <label><b data-bind="text: Viagem.text"></b> <span data-bind="text: Viagem.val"></span></label>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="knockoutCheckList">
+    <div class="row mt-3 mb-3" data-bind="visible: Auditar.visible">
+        <div class="col-6">
+            <span class="btn-group auditoria" data-bind="click: Auditar.eventClick, visible: Auditar.visible">
+                <button class="btn btn-default btn-xs btn-block " aria-expanded="false">
+                    <i class="fal fa-eye"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div>
+        <h4 data-bind="text: PreencherChecklist.text"></h4>
+        <hr />
+    </div>
+
+    <div data-bind="visible: (Transportador.val() != 0)" class="col col-xs-12 margin-bottom-5">
+        <label><b><span data-bind="text: Transportador.text"></span></b><span data-bind="text: Transportador.val"></span></label>
+    </div>
+    <div data-bind="visible: (Carga.val() != 0)" class="col col-xs-12 margin-bottom-5">
+        <label><b><span data-bind="text: Carga.text"></span></b><span data-bind="text: Carga.val"></span></label>
+    </div>
+    <div data-bind="visible: (Destinatario.val() != 0)" class="col col-xs-12 margin-bottom-5">
+        <label><b><span data-bind="text: Destinatario.text"></span></b><span data-bind="text: Destinatario.val"></span></label>
+    </div>
+    <div data-bind="visible: (Veiculo.val() != 0)" class="col col-xs-12 margin-bottom-5">
+        <label><b><span data-bind="text: Veiculo.text"></span></b><span data-bind="text: Veiculo.val"></span></label>
+    </div>
+    <div data-bind="visible: (Motorista.val() != 0)" class="col col-xs-12 margin-bottom-5">
+        <label><b><span data-bind="text: Motorista.text"></span></b><span data-bind="text: Motorista.val"></span></label>
+    </div>
+
+
+    <div class="row mt-4">
+        <!-- ko if: RetornosGR().length > 0 -->
+        <div class="col col-md-12">
+            <div class="alert alert-danger alert-block">
+                <div>
+                    <!-- ko foreach: { data: RetornosGR, as: 'RetornoGR' } -->
+                    <div>
+                        <span data-bind="text: RetornoGR"></span>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko foreach: { data: GrupoPerguntas.val(), as: 'grupo' } -->
+        <div class="col col-md-6 mb-3 grupo-pergunta-container">
+            <div class="card">
+                <div class="card-header">
+                    <span data-bind="text: grupo.Descricao"></span>
+                </div>
+                <div class="card-body">
+                    <div class="row" data-bind="foreach: { data: grupo.Perguntas, as: 'pergunta' }">
+                        <div data-bind='component: {name: "pergunta", params: { Pergunta: pergunta }}'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ko if: $index() > 0 && ($index() % 2 != 0) --><div class="col col-sm-12"></div><!-- /ko -->
+        <!-- /ko -->
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Observações Gerais</div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12" data-bind="visible: ObservacoesGerais.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ObservacoesGerais.text, attr: { for: ObservacoesGerais.id }"></label>
+                                <textarea class="form-control" rows="5" data-bind="value: ObservacoesGerais.val, valueUpdate: 'afterkeydown', attr: { maxlength: ObservacoesGerais.maxlength, id : ObservacoesGerais.id }"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card" style="display: none;">
+                <div class="card-header">
+                    <div class="card-title">Tempos</div>
+                </div>
+                <div class="card-body">
+                </div>
+            </div>
+            <div class="card" id="liAssinaturaCheckList" style="display: none;">
+                <div class="card-header">
+                    <div class="card-title">Assinaturas</div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Assinatura Motorista -->
+                        <div data-bind="visible: AssinaturaMotorista.visible" class="col-12 mb-2">
+                            <label class="label"><b data-bind="text: AssinaturaMotorista.text"></b></label>
+                            <div class="wrapper" style="border:none;">
+                                <canvas data-bind="attr: { id : AssinaturaMotorista.id}" class="signature-pad border border-secondary"></canvas>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-default mt-1" data-bind="click: LimparAssinaturaMotorista.eventClick, enable: LimparAssinaturaMotorista.enable, visible: AssinaturaMotorista.visible, attr: { value: LimparAssinaturaMotorista.text, id : LimparAssinaturaMotorista.id}">
+                                <span data-bind="text: LimparAssinaturaMotorista.text"></span>
+                            </button>
+                        </div>
+                        <!-- Assinatura Carregador -->
+                        <div data-bind="visible: AssinaturaCarregador.visible" class="col-12 mb-2">
+                            <label class="label"><b data-bind="text: AssinaturaCarregador.text"></b></label>
+                            <div class="wrapper" style="border:none;">
+                                <canvas data-bind="attr: { id : AssinaturaCarregador.id}" class="signature-pad border border-secondary"></canvas>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-default mt-1" data-bind="click: LimparAssinaturaCarregador.eventClick, enable: LimparAssinaturaCarregador.enable, visible: AssinaturaCarregador.visible, attr: { value: LimparAssinaturaCarregador.text, id : LimparAssinaturaCarregador.id}">
+                                <span data-bind="text: LimparAssinaturaCarregador.text"></span>
+                            </button>
+                        </div>
+                        <!-- Assinatura Responsável Aprovação -->
+                        <div data-bind="visible: AssinaturaResponsavelAprovacao.visible" class="col-12 mb-2">
+                            <label class="label"><b data-bind="text: AssinaturaResponsavelAprovacao.text"></b></label>
+                            <div class="wrapper" style="border:none;">
+                                <canvas data-bind="attr: { id : AssinaturaResponsavelAprovacao.id}" class="signature-pad border border-secondary"></canvas>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-default mt-1" data-bind="click: LimparAssinaturaResponsavelAprovacao.eventClick, enable: LimparAssinaturaResponsavelAprovacao.enable, visible: AssinaturaResponsavelAprovacao.visible, attr: { value: LimparAssinaturaResponsavelAprovacao.text, id : LimparAssinaturaResponsavelAprovacao.id}">
+                                <span data-bind="text: LimparAssinaturaResponsavelAprovacao.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer id="footerCheckList">
+        <div class="row mt-3">
+            <div class="col-12 d-flex justify-content-end">
+                <button type="button" class="btn btn-labeled btn-default ms-2" data-bind="click: VoltarEtapa.eventClick, enable: VoltarEtapa.enable, visible: VoltarEtapa.visible, attr: { value: VoltarEtapa.text, id : VoltarEtapa.id}">
+                    <span data-bind="text: VoltarEtapa.text"></span>
+                </button>
+                <button type="button" class="btn btn-labeled btn-primary ms-2" data-bind="click: ObservacoesEtapa.eventClick, enable: ObservacoesEtapa.enable, visible: ObservacoesEtapa.visible, attr: { value: ObservacoesEtapa.text, id : ObservacoesEtapa.id}">
+                    <span data-bind="text: ObservacoesEtapa.text"></span>
+                </button>
+                <button type="button" class="btn btn-labeled btn-default ms-2" data-bind="click: Reavaliar.eventClick, visible: Reavaliar.visible, attr: { value: Reavaliar.text, id : Reavaliar.id}">
+                    <span data-bind="text: Reavaliar.text"></span>
+                </button>
+                <button type="button" class="btn btn-labeled btn-primary ms-2" data-bind="click: Anexos.eventClick, visible: Anexos.visible, attr: { value: Anexos.text, id : Anexos.id}">
+                    <span data-bind="text: Anexos.text"></span>
+                </button>
+                <button type="button" class="btn btn-labeled btn-default ms-2" data-bind="click: Imprimir.eventClick, visible: Imprimir.visible, attr: { value: Imprimir.text, id : Imprimir.id}">
+                    <span data-bind="text: Imprimir.text"></span>
+                </button>
+                <button type="button" class="btn btn-labeled btn-success ms-2" data-bind="click: Salvar.eventClick, visible: Salvar.visible, attr: { value: Salvar.text, id : Salvar.id}">
+                    <span data-bind="text: Salvar.text"></span>
+                </button>
+                <button type="button" class="btn btn-labeled btn-success ms-2" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { value: Atualizar.text, id : Atualizar.id}">
+                    <span data-bind="text: Atualizar.text"></span>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+</div>
+

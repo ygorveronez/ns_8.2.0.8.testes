@@ -1,0 +1,91 @@
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage
+
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Relatórios</li>
+    <li class="breadcrumb-item">Frota</li>
+    <li class="breadcrumb-item active">Movimentação Pneu Veículo</li>
+</ol>
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class="subheader-icon fal fa-truck"></i>Relatório de Movimentação de Pneu de Veículo
+    </h1>
+</div>
+
+<div id="divConteudoRelatorio" class="panel">
+    <div class="panel-container">
+        <div class="panel-hdr">
+            <h3>
+                <i class="fal fa-file-alt"></i>
+                Relatórios
+            </h3>
+        </div>
+        <div class="panel-content">
+            <form>
+                <div id="knockoutPesquisaMovimentacaoPneuVeiculo">
+                    <div class="row">
+                        <div class="col-12 col-md-6" data-bind="visible: Veiculo.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Veiculo.requiredClass, value: Veiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Veiculo.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 d-flex align-items-center" data-bind="visible: OcultarDados.visible">
+                            <div class="form-group mb-0 mt-1">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" data-bind="checked: OcultarDados.val, valueUpdate: 'afterkeydown', attr: { name: OcultarDados.id, id : OcultarDados.id}" />
+                                    <label class="custom-control-label" data-bind="text: OcultarDados.text, attr: { for: OcultarDados.id }"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row mb-3">
+                <div id="knockoutCRUDConfiguracaoRelatorio" class="col-12 col-md-6 mb-3 mb-md-0">
+                    <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="enable: ExibirConfiguracoes.enable, click: ExibirConfiguracoes.eventClick, attr: { id: ExibirConfiguracoes.id}" type="button">
+                        <i data-bind="css: ExibirConfiguracoes.icon"></i><span data-bind="text: ExibirConfiguracoes.text"></span>
+                    </button>
+                </div>
+
+                <div id="knockoutCRUDFiltrosPesquisaMovimentacaoPneuVeiculo" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                    <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="click: Preview.eventClick, attr: { id: Preview.id}" type="button">
+                        <i class="fal fa-search"></i><span data-bind="text: Preview.text"></span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="divConfigRelatorio">
+
+            </div>
+
+            <table id="gridPreviewRelatorio" class="table table-bordered table-hover table-condensed table-striped" width="100%" cellspacing="0"></table>
+
+            <div id="knockoutCRUDPesquisaMovimentacaoPneuVeiculo" class="d-flex justify-content-center justify-content-md-end mt-3">
+                <button class="btn btn-success" data-bind="click: GerarRelatorioPDF.eventClick, attr: { id: GerarRelatorioPDF.id}" type="button">
+                    <i class="fal fa-file-pdf"></i><span data-bind="text: GerarRelatorioPDF.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/relatorios/scripts/movimentacaoPneuVeiculo"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        LoadMovimentacaoPneuVeiculo();
+    });
+
+</script>

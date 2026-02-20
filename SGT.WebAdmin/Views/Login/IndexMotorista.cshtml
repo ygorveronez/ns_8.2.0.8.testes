@@ -1,0 +1,102 @@
+﻿@using SGT.WebAdmin;
+@using SGT.WebAdmin.Extensions;
+@model SGT.WebAdmin.Models.AcessoMotorista
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>@Html.Raw(ViewBag.Titulo) - Acesso ao Sistema</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="~/css/bootstrap" />
+	<link rel="stylesheet" href="~/css/fontAwesome" />
+	<link rel="stylesheet" href="~/css/plugins" />
+	<link rel="stylesheet" href="~/css/production" />
+	<link rel="stylesheet" href="~/css/skins" />
+	<link rel="stylesheet" href="~/css/smartAdminRTL" />
+	<link rel="stylesheet" href="~/css/retiradaProduto" />
+
+	<link rel="shortcut icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+	<link rel="icon" href="@Html.Raw(ViewBag.Favicon)" type="image/x-icon">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+
+<body class="animated fadeInDown @Html.Raw(ViewBag.ClasseCorBotoes)">
+	<header id="header" style="@Html.Raw(ViewBag.Layout)">
+		<div id="logo-group">
+			<span id="logo"> <img src="@Html.Raw(ViewBag.Logo)" alt="SmartAdmin"> </span>
+		</div>
+	</header>
+	<div id="main" role="main">
+		<div id="content" class="container">
+			<div class="row container-formulario-autenticacao">
+				<form method="post" action="@Url.Action("IndexMotorista", "LoginMotorista")" class="smart-form client-form">
+					<header class="text-center">
+						<h3>Faça a bipagem da ordem de carregamento ou da nota fiscal para sua entrada ser autorizada</h3>
+					</header>
+					@Html.AntiForgeryToken()
+					<fieldset>
+						<section>
+							<label class="label">Entrada:</label>
+							<label class="input">
+								@Html.TextBoxFor(m => m.Acesso)
+								<b class="tooltip tooltip-top-right">Bipe a ordem de carregamento ou a nota fiscal</b>
+							</label>
+						</section>
+						@Html.ValidationBootstrap()
+						@if (Model.ExibirNumeroPager)
+						{
+							<section>
+								<label class="label">Número do Pager:</label>
+								<label class="input">
+									@Html.TextBoxFor(m => m.Pager)
+									<b class="tooltip tooltip-top-right">Insira o número do pager</b>
+								</label>
+							</section>
+						}
+					</fieldset>
+					<footer>
+						<div class="row">
+							<section class="col col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-bottom-0">
+								<button type="submit" class="btn btn-primary pull-right">
+									Acessar
+								</button>
+							</section>
+						</div>
+					</footer>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script src="~/scripts/jquery"></script>
+	<script src="~/scripts/jqueryUI"></script>
+	<script src="~/scripts/appConfig"></script>
+	<script src="~/scripts/bootstrap"></script>
+	<script src="~/scripts/jqueryValidate"></script>
+	<script src="~/scripts/maskedInput"></script>
+	<script src="~/scripts/app"></script>
+</body>
+</html>
+
+<style>
+	.container-formulario-autenticacao {
+		border: 1px solid #ddd;
+	}
+
+		.container-formulario-autenticacao ul {
+			list-style: none;
+		}
+
+		.container-formulario-autenticacao .alert {
+			margin-bottom: 0;
+		}
+
+	#main {
+		margin: 0;
+	}
+</style>

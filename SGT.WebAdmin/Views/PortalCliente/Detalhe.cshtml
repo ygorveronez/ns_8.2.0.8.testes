@@ -1,0 +1,154 @@
+﻿@using Dominio.ObjetosDeValor.Embarcador.PortalCliente
+@model Dominio.ObjetosDeValor.Embarcador.PortalCliente.PortalClienteView
+@{
+    Layout = "~/Views/PortalCliente/Acompanhamento.cshtml";
+    bool possuiNfe = !string.IsNullOrWhiteSpace(Model.ChaveNFe);
+    string chaveNfe = Model?.ChaveNFe;
+    string nomeEmpresa = string.IsNullOrWhiteSpace(Model.NomeFantasia) ? Model.RazaoSocial : Model.NomeFantasia;
+    int totalParcelas = @Model.Parcelas?.Count ?? 1;
+}
+
+<div class="row">
+    <div class="col-4 col-lg-5" style="max-width: 450px">
+        <div class="card pd-3 mt-3 shadow">
+            <span id="logo">
+                <img class="mx-auto d-block mt-5" style="max-width: 200px" src="@Model.CaminhoLogo" alt="Logo - @nomeEmpresa)" onerror="this.src='/img/logoNFe2.png'" />
+            </span>
+            <div class="card-body mt-3">
+                <h5 class="card-title">@nomeEmpresa</h5>
+                <p class="card-text fs-6 text-break fw-lighter lh-1">@Model.CNPJ</p>
+            </div>
+        </div>
+        <div class="card pd-3 mt-3 shadow">
+            <div class="card-body">
+                <h5 class="card-title">Destinatário</h5>
+                <p class="card-text fs-6 text-break fw-lighter lh-1">Nome: @Model.DestinatarioNome</p>
+            </div>
+        </div>
+        @if (possuiNfe)
+        {
+            <div class="card pd-3 mt-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Chave de acesso da NF-e</h5>
+                    <p id="chaveNfe" class="card-text text-secondary fs-6 text-break fw-lighter lh-1">@Model.ChaveNFe</p>
+                </div>
+            </div>
+
+            <div class="card pd-3 mt-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">DANFE</h5>
+                    <button type="button" class="text-decoration-none bg-transparent border-0" onclick="DownloadDanfeCLick()">
+                        <p class="card-text text-secondary fs-6 text-break fw-lighter lh-1 d-inline me-2">@Model.ChaveNFe</p>
+                        <i class="bi bi-download text-secondary"></i>
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="card pd-3 mt-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">XML da NF-e</h5>
+                    <button type="button" class="text-decoration-none bg-transparent border-0" onclick="DownloadXmlClick(@Model.CodigoNotaFiscal)">
+                        <p class="card-text text-secondary fs-6 text-break fw-lighter lh-1 d-inline me-2">@Model.ChaveNFe</p>
+                        <i class="bi bi-download text-secondary"></i>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-8 col-lg-7">
+        @if (possuiNfe)
+        {
+            <div class="row">
+                <div class="col-4">
+                    <div class="card pd-3 mt-3 shadow">
+                        <div class="card-body">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <h5 class="card-title d-inline fs-6 ps-1">Número da nota</h5>
+                            <p class="card-text text-break lh-1 py-2 me-3">@Model.NumeroNotaFiscal</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card pd-3 mt-3 shadow">
+                        <div class="card-body">
+                            <i class="bi bi-calendar2"></i>
+                            <h5 class="card-title d-inline fs-6 ps-1">Data de emissão</h5>
+                            <p class="card-text text-break lh-1 py-2 me-3">@Model.DataEmissao</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card pd-3 mt-3 shadow">
+                        <div class="card-body">
+                            <i class="bi bi-currency-dollar"></i>
+                            <h5 class="card-title d-inline fs-6 ps-1">Valor da nota</h5>
+                            <p class="card-text text-break lh-1 py-2 me-3">R$ @Model.ValorNota</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="card pd-3 mt-3 shadow" id="knockoutGridTitulos">
+            <div class="card-body">
+                <i class="bi bi-file-earmark-text"></i>
+                @if (totalParcelas > 1)
+                {
+                    <h5 class="card-title d-inline fs-6 ps-1">Parcelas (@totalParcelas)</h5>
+                }
+                else
+                {
+                    <h5 class="card-title d-inline fs-6 ps-1">Parcela (@totalParcelas)</h5>
+                }
+                <hr />
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Identificação</th>
+                            <th scope="col">Parcela</th>
+                            <th scope="col">Vencimento</th>
+                            <th scope="col">Situacao</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ParcelaView parcela in Model.Parcelas)
+                        {
+                            <tr>
+                                <th scope="row">@parcela.ParcelaId</th>
+                                <td>@parcela.Sequencia/@totalParcelas</td>
+                                <td>@parcela.Vencimento</td>
+                                <td>@parcela.Situacao</td>
+                                <td>R$ @parcela.Valor</td>
+                                <td>
+                                    <button type="button" class="text-decoration-none bg-transparent border-0 px-3" onclick="DownloadBoletoClick(@parcela.ParcelaId)">
+                                        <i class="bi bi-download text-primary-emphasis"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container">
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i id="IconeSucesso" class="bi bi-check2-circle pe-2 d-none"></i>
+                <i id="IconeErro" class="bi bi-ban pe-2 d-none"></i>
+                <strong id="NotificacaoTitulo" class="me-auto">Titulo</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <p id="NotificacaoDescricao">Descricao</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/portalCliente"></script>

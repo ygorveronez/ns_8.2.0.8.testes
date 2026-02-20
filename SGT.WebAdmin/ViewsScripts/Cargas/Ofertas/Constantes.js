@@ -1,0 +1,8 @@
+﻿const CONTROLLER_PARAMETROS_OFERTAS = "ParametrosOfertas";
+const ENDPOINT_PESQUISAR_PARAMETROS_OFERTAS = "PesquisarGridParametrosOfertas";
+const ENDPOINT_RECUPERAR_PARAMETROS_OFERTAS = "RecuperarParametrosOfertas";
+const ENDPOINT_ADICIONAR_PARAMETROS_OFERTAS = "Adicionar";
+const ENDPOINT_ATUALIZAR_PARAMETROS_OFERTAS = "Atualizar";
+
+const MSG_AVISO_TITULO_CAMPOS_OBRIGATORIOS = "Campos Obrigatórios";
+const MSG_AVISO_TITULO_INCONSISTENCIA = "Inconsistência";

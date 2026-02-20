@@ -1,0 +1,491 @@
+﻿
+
+<style>
+    #knockoutEtapaLicitacaoParticipacao .col {
+        float: left;
+    }
+
+    #knockoutLicitacaoParticipacaoAnexo .dt-toolbar {
+        display: none;
+    }
+
+    .content-no-padding fieldset {
+        padding: 20px 0 0 0 !important;
+    }
+
+    .content-no-padding header {
+        margin: 0;
+        padding: 6px 0 8px 0;
+    }
+
+    .fieldset-bordered {
+        border: 1px solid #dddddd !important;
+    }
+</style>
+
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Fretes</li>
+    <li class="breadcrumb-item active">Licitação Participação</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class=""></i> Licitações
+    </h1>
+</div>
+
+<div id="knockoutPesquisaLicitacao">
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <i class="fal fa-search"></i>
+                    Pesquisar Licitações
+                </button>
+                <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-2" data-bind="visible: Numero.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Numero.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: Numero.val, valueUpdate: 'afterkeydown', attr: { maxlength: Numero.maxlength, id : Numero.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text"></label>
+                                    <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6" data-bind="visible: TabelaFrete.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: TabelaFrete.text, attr: { for: TabelaFrete.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: TabelaFrete.requiredClass, value: TabelaFrete.val, valueUpdate: 'afterkeydown', attr: { maxlength: TabelaFrete.maxlength, id : TabelaFrete.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TabelaFrete.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex align-items-center justify-content-end mb-3">
+                        <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-hdr">
+                <h3>
+                    Licitações Disponíveis
+                </h3>
+            </div>
+            <div class="panel-content">
+                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalLicitacaoParticipacao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Participar da Licitação</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card" id="knockoutResumoLicitacaoParticipacao">
+                    <div class="card-body">
+                        <div class="row">
+                            <section class="col col-md-6 mb-3">
+                                <label><b data-bind="text: Numero.text"></b> <span data-bind="text: Numero.val"></span></label>
+                            </section>
+                            <section class="col col-md-6 mb-3">
+                                <label><b data-bind="text: Descricao.text"></b> <span data-bind="text: Descricao.val"></span></label>
+                            </section>
+                            <section class="col col-md-6 mb-3">
+                                <label><b data-bind="text: Validade.text"></b> <span data-bind="text: Validade.val"></span></label>
+                            </section>
+                            <section data-bind="visible: Situacao.visible" class="col col-md-6 mb-3">
+                                <label><b data-bind="text: Situacao.text"></b> <span data-bind="text: Situacao.val"></span></label>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="knockoutEtapaLicitacaoParticipacao">
+                    <ul class="nav nav-steps">
+                        <li data-target="#step1" data-bind="visible : EtapaInscricao.visible">
+                            <button class="active" data-bs-target="#inscricao" data-bs-toggle="tab" data-bind="attr: {id : EtapaInscricao.idTab }, click : EtapaInscricao.eventClick, visible : EtapaInscricao.visible">
+                                <span class="step" data-bind="attr: {'data-content' : EtapaInscricao.tooltip, 'data-original-title' : EtapaInscricao.tooltipTitle }">
+                                    <i class="fal fa-file-alt"></i>
+                                </span>
+                                <span class="title" data-bind="text: EtapaInscricao.text"></span>
+                            </button>
+                        </li>
+                        <li data-target="#step2" data-bind="visible : EtapaOferta.visible">
+                            <button data-bs-target="#oferta" data-bs-toggle="tab" data-bind="attr: {id : EtapaOferta.idTab }, click : EtapaOferta.eventClick">
+                                <span class="step" data-bind="attr: {'data-content' : EtapaOferta.tooltip, 'data-original-title' : EtapaOferta.tooltipTitle }">
+                                    <i class="fal fa-usd-circle"></i>
+                                </span>
+                                <span class="title" data-bind="text: EtapaOferta.text"></span>
+                            </button>
+                        </li>
+                        <li data-target="#step3" data-bind="visible : EtapaRetornoOferta.visible">
+                            <button data-bs-target="#retornoOferta" data-bs-toggle="tab" data-bind="attr: {id : EtapaRetornoOferta.idTab }, click : EtapaRetornoOferta.eventClick">
+                                <span class="step" data-bind="attr: {'data-content' : EtapaRetornoOferta.tooltip, 'data-original-title' : EtapaRetornoOferta.tooltipTitle }">
+                                    <i class="fal fa-file-check"></i>
+                                </span>
+                                <span class="title" data-bind="text: EtapaRetornoOferta.text"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+                    <!-- Inscrição -->
+                    <div id="inscricao" class="tab-pane fade show active">
+                        <div class="panel mt-3" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+                            <div class="panel-container">
+                                <div class="panel-content">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item active">
+                                            <a href="#knockoutLicitacaoParticipacaoInscricao" id="abaLicitacaoParticipacaoInscricao" class="nav-link active" data-bs-toggle="tab">
+                                                <span class="hidden-mobile hidden-tablet">Inscrição</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" id="tabLicitacaoParticipacaoInscricaoAnexo">
+                                            <a href="#knockoutLicitacaoParticipacaoAnexo" class="nav-link" data-bs-toggle="tab">
+                                                <span class="hidden-mobile hidden-tablet">Anexos</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content border border-top-0 p-3">
+                                        <!-- Inscrição -->
+                                        <div id="knockoutLicitacaoParticipacaoInscricao" class="tab-pane fade show active">
+                                            <div class="row">
+                                                <div class="col-12 col-md-3" data-bind="visible: Numero.visible">
+                                                    <div class="form-group">
+                                                        <label class="form-label" data-bind="text: Numero.text"></label>
+                                                        <input type="text" class="form-control" data-bind="value: Numero.val, enable: Numero.enable, attr: { maxlength: Numero.maxlength, id: Numero.id}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                                                    <div class="form-group">
+                                                        <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                                        <textarea class="form-control" rows="5" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-12" data-bind="visible: AceitarTermosContrato.visible">
+                                                    <div class="form-group">
+                                                        <div class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" data-bind="checked: AceitarTermosContrato.val, attr: { maxlength: AceitarTermosContrato.maxlength, name: AceitarTermosContrato.id, id: AceitarTermosContrato.id }">
+                                                            <label class="custom-control-label" data-bind="text: AceitarTermosContrato.text, attr: { for: AceitarTermosContrato.id }"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Anexos -->
+                                        <div id="knockoutLicitacaoParticipacaoAnexo" class="tab-pane">
+                                            <div class="row">
+                                                <table width="100%" class="table table-bordered table-hover" id="grid_licitacao_anexo" cellspacing="0"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Oferta -->
+                    <div id="oferta" class="tab-pane">
+                        <form id="knockoutLicitacaoParticipacaoOferta">
+                            <div class="row">
+                                <div class="col-12 col-md-12" data-bind="visible: OpcoesOferta.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: OpcoesOferta.text, attr: { for: OpcoesOferta.id }"></label>
+                                        <select class="form-control" data-bind="options: OpcoesOferta.options, optionsText: 'text', optionsValue: 'value', value: OpcoesOferta.val, enable: OpcoesOferta.enable, attr: { id : OpcoesOferta.id}"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="divValoresTabelaFrete" style="display:none;">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#tabTabelaFrete" data-toggle="tab" aria-expanded="true">
+                                            <span>Tabela de Valores do Frete</span>
+                                            <i onclick="event.stopPropagation(); event.preventDefault(); iniciarAjuda(1037);" class="fal fa-question-circle" style="cursor: pointer;"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="tabTabelaFrete" class="tab-pane active">
+                                        <div class="row">
+                                            <div style="overflow-x: scroll; width: 100%; height: auto; padding-bottom: 100px;">
+                                                <table class="table table-condensed table-bordered table-striped table-hover" id="tblValores"></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divConfigRelatorio" style="display: none;">
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Retorno Oferta -->
+                    <div id="retornoOferta" class="tab-pane">
+                        <div class="row" id="knockoutLicitacaoParticipacaoRetornoOferta">
+                            <div class="col col-md-12">
+                                <div data-bind="text: Mensagem.val, css: ClasseCor.val" class="alert"></div>
+                            </div>
+                            <section data-bind="visible: Observacao.val" class="col col-md-12">
+                                <label><b data-bind="text: Observacao.text"></b> <span data-bind="text: Observacao.val"></span></label>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="knockoutCRUDCadastroLicitacaoParticipacao" data-bind="visible: (Adicionar.visible() || Cancelar.visible())">
+                <button type="button" class="btn btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { value: Cancelar.text, id : Cancelar.id}">
+                    <span data-bind="text: Cancelar.text"></span>
+                </button>
+                <button type="button" class="btn btn-success" data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { value: Adicionar.text, id : Adicionar.id}">
+                    <span data-bind="text: Adicionar.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalSolicitarCancelamentoCarga" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Observação</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <hr />
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 mb-3">
+                        <div class="form-group">
+                            <label class="form-label">Observação</label>
+                            <textarea class="form-control" rows="5" id="txtObservacao"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tags -->
+                <div class="row">
+                    <label class="mb-1"><b>Tags:</b></label>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagCNPJEmitente">
+                            <span>CNPJ do Emitente</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNomeEmitente">
+                            <span>Nome do Emitente</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagCNPJTomador">
+                            <span>CNPJ do Tomador</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNomeTomador">
+                            <span>Nome do Tomador</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagCNPJRemetente">
+                            <span>CNPJ do Remetente</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNomeRemetente">
+                            <span>Nome do Remetente</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagCNPJDestinatario">
+                            <span>CNPJ do Destinatário</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNomeDestinatario">
+                            <span>Nome do Destinatário</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNumeroCTe">
+                            <span>Número do CTe</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagSerieCTe">
+                            <span>Série do CTe</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagValorTotalPrestacao">
+                            <span>Valor Total da Prestação</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNumeroPedido">
+                            <span>Número do Pedido</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagRota">
+                            <span>Rota</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagRotaPedido">
+                            <span>Rota do Pedido</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagRotaPedidoComValor">
+                            <span>Rota do Pedido com Valor</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagPlacas">
+                            <span>Placas</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagMarcaVeiculo">
+                            <span>Marca do Veículo</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagCPFMotorista">
+                            <span>CPF do motorista</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNomeMotorista">
+                            <span>Nome do motorista</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagCodigoTabelaFrete">
+                            <span>Código da Tabela de Frete</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagCPFOperador">
+                            <span>CPF do Operador</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNomeOperador">
+                            <span>Nome do Operador</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagModeloVeicularCarga">
+                            <span>Modelo Veicular de Carga</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagSeguradora">
+                            <span>Seguradora</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagApoliceSeguro">
+                            <span>Apólice de Seguro</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagChaveDocumentoTransporteAnterior">
+                            <span>Chave do Doc. de Transp. Anterior</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNumeroOCADocumentoTransporteAnterior">
+                            <span>Nº OCA do Doc. de Transp. Anterior</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNumeroNotaFiscal">
+                            <span>Nº Nota Fiscal</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagObservacaoNotaFiscal">
+                            <span>Obs. Nota Fiscal</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNumeroContainer">
+                            <span>Número Container</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagOrdem">
+                            <span>Ordem Pedido</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagTipoOperacao">
+                            <span>Tipo Operação</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagDataAgendamento">
+                            <span>Data de Agendamento</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagFaixaTemperatura">
+                            <span>Faixa de Temperatura</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-12 mt-3">
+                        <div class="form-group">
+                            <label class="form-label">Observação Para Terceiro</label>
+                            <textarea class="form-control" rows="5" id="txtObservacaoTerceiro"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tags -->
+                <div class="row">
+                    <label class="mb-1"><b>Tags:</b></label>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagCPFCNPJProprietarioVeiculo">
+                            <span>CPF/CNPJ do Prop. do Veículo</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagIEProprietarioVeiculo">
+                            <span>IE do Prop. do Veículo</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagNomeProprietarioVeiculo">
+                            <span>Nome do Prop. do Veículo</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagEnderecoProprietarioVeiculo">
+                            <span>Endereço do Prop. do Veículo</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagRNTRCProprietarioVeiculo">
+                            <span>RNTRC do Prop. do Veículo</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagPlacaVeiculoTerceiro">
+                            <span>Placa do Veículo</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagRENAVAMVeiculoTerceiro">
+                            <span>RENAVAM do Veículo</span>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default botaoTags mb-1" id="btnTagMarcaVeiculoTerceiro">
+                            <span>Marca do Veículo</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="form-check d-flex justify-content-start">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="form-check-input" id="chkImprimirObservacaoCTe">
+                            <label class="form-check-label" for="chkImprimirObservacaoCTe"><b> Imprimir Observação no CT-e?</b></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSalvarObservacaoTabelaValores">
+                    <span>Salvar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    #tblValores thead tr th {
+        width: 149px !important;
+        height: auto;
+        text-overflow: ellipsis;
+        white-space: normal;
+        overflow: hidden;
+        max-height: 50px;
+        vertical-align: baseline;
+    }
+
+    #tblValores tbody tr td {
+        overflow: visible;
+    }
+
+        #tblValores tbody tr td .dropdown-toggle, #tblValores .btn {
+            padding: 6px 12px !important;
+            margin-right: -2px;
+        }
+</style>
+
+<script src="~/scripts/licitacaoParticipacao"></script>
+<script src="~/scripts/tabelaValores"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadLicitacaoParticipacao();
+    });
+
+</script>

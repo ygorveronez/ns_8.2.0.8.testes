@@ -1,0 +1,166 @@
+﻿@model Dominio.ObjetosDeValor.Embarcador.GestaoEntregas.EntregaView
+
+@if (Model.Questionario.HabilitarAvaliacao && !Model.Questionario.AvaliacaoRespondia)
+{
+<header>@Localization.Resources.GestaoEntregas.Acompanhamento.AvaliacaoDaEntrega</header>
+    <fieldset class="questions">
+        @if (Model.Questionario.HabilitarAvaliacaoQuestionario)
+        {
+            foreach (var pergunta in Model.Questionario.Perguntas)
+            {
+                <div class="question">
+                    <div class="row">
+                        <section class="col col-7">
+                            <b class="question-title">@pergunta.Titulo</b>
+                        </section>
+
+                        <section class="col col-5">
+                            <div class="rating" data-question="@pergunta.Codigo">
+                                @for (var i = 5; i > 0; i--)
+                                {
+                                    <input type="radio" id="star-rate-@pergunta.Codigo-@i" name="question-@pergunta.Codigo" value="@i" />
+                                    <label class="full" for="star-rate-@pergunta.Codigo-@i"></label>
+                                }
+                            </div>
+                        </section>
+
+                        <secion class="col col-12 question-description">
+                            @Html.Raw(Html.Encode(pergunta.Conteudo).Replace("\n", "<br />"))
+                        </secion>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="question">
+                <div class="row">
+                    <section class="col col-7">
+                        <b class="question-title">@Localization.Resources.GestaoEntregas.Acompanhamento.ComoVoceAvaliaSuaExperienciaComEssaEntrega?</b>
+                    </section>
+
+                    <section class="col col-5">
+                        <div class="rating">
+                            @for (var i = 5; i > 0; i--)
+                            {
+                                <input type="radio" id="star-rate-@i" name="evaluate" value="@i" />
+                                <label class="full" for="star-rate-@i"></label>
+                            }
+                        </div>
+                    </section>
+
+                    <secion class="col col-12 question-description">
+                        @Localization.Resources.GestaoEntregas.Acompanhamento.ComoVoceAvaliaSuaExperienciaComEssaEntrega
+                    </secion>
+                </div>
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.Questionario.LinkAvaliacaoExterna))
+        {
+            <div class="question">
+                <secion class="question-description">
+                    <a href="@Html.Raw(Model.Questionario.LinkAvaliacaoExterna)" title="Link pesquisa" target="_blank">@Localization.Resources.GestaoEntregas.Acompanhamento.CliqueAquiParaResponderNossaPesquisaDeSatisfacao</a>
+                </secion>
+            </div>
+        }
+
+        <div class="row">
+            <section class="col col-sm-12 col-lg-6" id="motivo-avaliacao" style="display: none;">
+                <label class="label"><b>@Localization.Resources.GestaoEntregas.Acompanhamento.MotivoDaAvaliacao:</b></label>
+                <select name="select-motivo-avaliacao" class="form-control">
+                    @foreach (var motivo in Model.MotivosAvaliacao)
+                    {
+                        <option value="@motivo.Valor">@motivo.Descricao</option>
+                    }
+                </select>
+            </section>
+
+            <section class="col col-12">
+                <label class="label"><b>@Localization.Resources.Gerais.Geral.Observacao:</b></label>
+                <label class="input">
+                    <textarea style="width: 100%;" rows="5" type="text" name="observation"></textarea>
+                </label>
+            </section>
+        </div>
+
+        <section class="feedback-container"></section>
+    </fieldset>
+
+    <footer>
+        <input type="button" value="Salvar" id="btn-save" class="btn btn-labeled btn-success" />
+    </footer>
+}
+else if (Model.Questionario.AvaliacaoRespondia)
+{
+<header>@Localization.Resources.GestaoEntregas.Acompanhamento.AvaliacaoDaEntrega</header>
+    <fieldset class="questions">
+        @if (Model.Questionario.HabilitarAvaliacaoQuestionario)
+        {
+            foreach (var pergunta in Model.Questionario.Perguntas)
+            {
+                <div class="question">
+                    <div class="row">
+                        <section class="col col-7">
+                            <b class="question-title">@pergunta.Titulo</b>
+                        </section>
+
+                        <section class="col col-5">
+                            <div class="rating">
+                                @for (var i = 5; i > 0; i--)
+                                {
+                                    <input type="radio" disabled="disabled" value="@i" @Html.Raw(pergunta.Resposta == i ? "checked=\"checked\"" : "") />
+                                    <label class="full"></label>
+                                }
+                            </div>
+                        </section>
+
+                        <secion class="col col-12 question-description">
+                            @Html.Raw(Html.Encode(pergunta.Conteudo).Replace("\n", "<br />"))
+                        </secion>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="question">
+                <div class="row">
+                    <section class="col col-7">
+                        <b class="question-title">@Localization.Resources.GestaoEntregas.Acompanhamento.ComoVoceAvaliaSuaExperienciaComEssaEntrega?</b>
+                    </section>
+
+                    <section class="col col-5">
+                        <div class="rating">
+                            @for (var i = 5; i > 0; i--)
+                            {
+                                <input type="radio" disabled="disabled" value="@i" @Html.Raw(Model.Avaliacao == i ? "checked=\"checked\"" : "") />
+                                <label class="full"></label>
+                            }
+                        </div>
+                    </section>
+
+                    <secion class="col col-12 question-description">
+                        @Localization.Resources.GestaoEntregas.Acompanhamento.ComoVoceAvaliaSuaExperienciaComEssaEntrega
+                    </secion>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            @if (!string.IsNullOrWhiteSpace(Model.MotivoAvaliacao))
+            {
+                <section class="col col-12" id="motivo-avaliacao">
+                    <b>@Localization.Resources.GestaoEntregas.Acompanhamento.MotivoDaAvaliacao: </b><span>@Model.MotivoAvaliacao</span>
+                </section>
+            }
+
+            <section class="col col-12">
+                <label class="label"><b>@Localization.Resources.Gerais.Geral.Observacao:</b></label>
+                <label class="input">
+                    <span>@Html.Raw(Html.Encode(Model.Observacao).Replace("\n", "<br />"))</span>
+                </label>
+            </section>
+        </div>
+    </fieldset>
+}

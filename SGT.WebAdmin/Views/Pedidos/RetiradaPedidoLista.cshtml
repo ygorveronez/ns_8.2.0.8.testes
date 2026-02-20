@@ -1,0 +1,262 @@
+﻿
+<style>
+	.info {
+		display: inline;
+	}
+
+	.font-bold {
+		font-weight: bold !important;
+	}
+</style>
+<section id="widget-grid">
+	<ol class="breadcrumb page-breadcrumb">
+		<li class="breadcrumb-item">{Localize::Pedidos.RetiradaPedidoLista.Pedidos}</li>
+		<li class="breadcrumb-item active">{Localize::Pedidos.RetiradaPedidoLista.RetiradaPedido}</li>
+	</ol>
+	<div class="panel" id="knockoutRetiradaPedidoLista">
+		<div class="panel-container">
+			<div class="panel-content">
+				<div data-widget-colorbutton="false" data-widget-sortable="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-togglebutton="false">
+					<button class="btn btn-primary" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+						<i class="fal fa-search"></i> {Localize::Pedidos.RetiradaPedidoLista.DescricaoPesquisarPedidos}
+					</button>
+					<div data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade" class="mt-3">
+						<div class="row">
+							<div>
+								<div class="smart-form">
+									<section>
+										<div class="well">
+											<fieldset>
+												<div class="row">
+													<div class="col-12 col-md-3" data-bind="visible: NumeroPedidoEmbarcador.visible">
+														<div class="form-group">
+															<label class="form-label" data-bind="text: NumeroPedidoEmbarcador.text"></label>
+															<input type="text" class="form-control" data-bind="class: NumeroPedidoEmbarcador.requiredClass, value: NumeroPedidoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: NumeroPedidoEmbarcador.maxlength, id : NumeroPedidoEmbarcador.id}" />
+														</div>
+													</div>
+													<div class="col-12 col-md-2" data-bind="visible: DataInicio.visible">
+														<div class="form-group">
+															<label class="form-label" data-bind="text: DataInicio.text"></label>
+															<input type="text" class="form-control" data-bind="class: DataInicio.requiredClass, value: DataInicio.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicio.maxlength, id : DataInicio.id}" />
+														</div>
+													</div>
+													<div class="col-12 col-md-2" data-bind="visible: DataFim.visible">
+														<div class="form-group">
+															<label class="form-label" data-bind="text: DataFim.text"></label>
+															<input type="text" class="form-control" data-bind="class: DataFim.requiredClass, value: DataFim.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFim.maxlength, id : DataFim.id}" />
+														</div>
+													</div>
+													<div class="col-12 col-md-3" data-bind="visible: Filial.visible">
+														<div class="form-group">
+															<label class="form-label" data-bind="text: Filial.text, attr: { for: Filial.id }"></label>
+															<select class="form-control" data-bind="class: Filial.requiredClass, options: Filial.options, optionsText: 'text', optionsValue: 'value', value: Filial.val, attr: { maxlength: Filial.maxlength, id : Filial.id}"></select>
+														</div>
+													</div>
+													<div class="col-12 col-md-2" data-bind="visible: Situacao.visible">
+														<div class="form-group">
+															<label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+															<select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}"></select>
+														</div>
+													</div>
+												</div>
+											</fieldset>
+											<footer class="d-flex justify-content-end mb-3">
+												<button class="btn btn-primary ms-2" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+													<i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+												</button>
+											</footer>
+										</div>
+									</section>
+								</div>
+							</div>
+							<div class="widget-body">
+								<table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="divModalSelecaoPedido" class="modal fade" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content retirada-produto">
+				<div class="modal-header">
+					<h4 class="modal-title">{Localize::Pedidos.RetiradaPedidoLista.Detalhes}</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal">
+						<i class="fal fa-times"></i>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="smart-form" id="knockoutPedido">
+						<div>
+							<div class="row">
+								<section class="col col-lg-12">
+									{Localize::Pedidos.RetiradaPedidoLista.DescricaoPedido} <span data-bind="text: NumeroPedidoEmbarcador.val"></span>
+								</section>
+								<section class="col col-lg-12">
+									{Localize::Pedidos.RetiradaPedidoLista.Cliente} <span data-bind="text: Destinatario.val().Descricao"></span>
+								</section>
+								<section class="col col-lg-12">
+									{Localize::Pedidos.RetiradaPedidoLista.TipoDeOperacao} <span data-bind="text: TipoOperacao.val().Descricao"></span>
+								</section>
+								<section class="col col-lg-12">
+									{Localize::Pedidos.RetiradaPedidoLista.Filial} <span data-bind="text: Filial.val().Descricao"></span>
+								</section>
+							</div>
+							<div class="jarviswidget mt-3" id="wid-id-4" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+								<div class="row">
+									<header>
+										<div id="knoutRetiradaPedidoTabs">
+											<ul class="nav nav-tabs" id="myTab">
+												<li class="nav-item">
+													<a href="#tabStatus" class="nav-link active" data-bs-toggle="tab">
+														<i class="fal fa-car"></i> <span class="hidden-mobile hidden-tablet">{Localize::Pedidos.RetiradaPedidoLista.Status}</span>
+													</a>
+												</li>
+												<li id="liEmissao" class="nav-item">
+													<a href="#tabAgendamentos" class="nav-link" data-bs-toggle="tab">
+														<i class="fal fa-tachometer"></i> <span class="hidden-mobile hidden-tablet">{Localize::Pedidos.RetiradaPedidoLista.Agendamentos}</span>
+													</a>
+												</li>
+												<li id="liSeguro" class="nav-item">
+													<a href="#tabProdutos" class="nav-link" data-bs-toggle="tab">
+														<i class="fal fa-tachometer"></i> <span class="hidden-mobile hidden-tablet">{Localize::Pedidos.RetiradaPedidoLista.Produtos}</span>
+													</a>
+												</li>
+											</ul>
+										</div>
+									</header>
+									<div class="widget-body widget-body-no-padding">
+										<div class="smart-form">
+											<div class="tab-content border border-top-0 p-3">
+												<div class="tab-pane fade active show" id="tabStatus" role="tabpanel">
+													<form novalidate>
+														<div class="row">
+															<div class="row" style="border: none !important; margin-bottom: 100px">
+																<div class="col col-md-12" style="padding-right: 0; padding-left: 0;padding-top: 9px; margin-bottom: 0px; height: 70px; padding-top: 9px !important;margin-top: 25px">
+																	<ul class="nav nav-steps">
+																		<li data-target="#step1TMS" data-bind="visible : DataCriacaoPedido.visible">
+																			<button class="active" data-bs-target="#tab1TMS" data-bs-toggle="tab" data-bind="attr: {id : DataCriacaoPedido.idTab }, click : DataCriacaoPedido.eventClick, visible : DataCriacaoPedido.visible">
+																				<span class="step" data-bind="attr: {class: DataCriacaoPedido.cssClass, 'data-content' : DataCriacaoPedido.tooltip, 'data-original-title' : DataCriacaoPedido.tooltipTitle }"><i class="fal fa-calendar-alt"></i></span>
+																				<span class="title" data-bind="text: DataCriacaoPedido.text"></span>
+																				<span class="title" data-bind="text: DataCriacaoPedido.val() != null ? 'Concluído' : 'Pendente'"></span>
+																				<span class="title" data-bind="text: DataCriacaoPedido.val"></span>
+																			</button>
+																		</li>
+																		<li data-target="#step1TMS" data-bind="visible : DataLiberacaoComercial.visible">
+																			<button class="active" data-bs-target="#tab1TMS" data-bs-toggle="tab" data-bind="attr: {id : DataLiberacaoComercial.idTab }, click : DataLiberacaoComercial.eventClick, visible : DataLiberacaoComercial.visible">
+																				<span class="step" data-bind="attr: {class: DataLiberacaoComercial.cssClass, 'data-content' : DataLiberacaoComercial.tooltip, 'data-original-title' : DataLiberacaoComercial.tooltipTitle }"><i class="fal fa-calendar-alt"></i></span>
+																				<span class="title" data-bind="text: DataLiberacaoComercial.text"></span>
+																				<span class="title" data-bind="text: DataLiberacaoComercial.val() != null ? 'Concluído' : 'Pendente'"></span>
+																				<span class="title" data-bind="text: DataLiberacaoComercial.val"></span>
+																			</button>
+																		</li>
+																		<li data-target="#step1TMS" data-bind="visible : DataLiberacaoFinanceira.visible">
+																			<button class="active" data-bs-target="#tab1TMS" data-bs-toggle="tab" data-bind="attr: {id : DataLiberacaoFinanceira.idTab }, click : DataLiberacaoFinanceira.eventClick, visible : DataLiberacaoFinanceira.visible">
+																				<span class="step" data-bind="attr: {class: DataLiberacaoFinanceira.cssClass, 'data-content' : DataLiberacaoFinanceira.tooltip, 'data-original-title' : DataLiberacaoFinanceira.tooltipTitle }"><i class="fal fa-calendar-alt"></i></span>
+																				<span class="title" data-bind="text: DataLiberacaoFinanceira.text"></span>
+																				<span class="title" data-bind="text: DataLiberacaoFinanceira.val() != null ? 'Concluído' : 'Pendente'"></span>
+																				<span class="title" data-bind="text: DataLiberacaoFinanceira.val"></span>
+																			</button>
+																		</li>
+																		<li data-target="#step1TMS" data-bind="visible : DataAgendamento.visible">
+																			<button class="active" data-bs-target="#tab1TMS" data-bs-toggle="tab" data-bind="attr: {id : DataAgendamento.idTab }, click : DataAgendamento.eventClick, visible : DataAgendamento.visible">
+																				<span class="step" data-bind="attr: {class: DataAgendamento.cssClass, 'data-content' : DataAgendamento.tooltip, 'data-original-title' : DataAgendamento.tooltipTitle }"><i class="fal fa-calendar-alt"></i></span>
+																				<span class="title" data-bind="text: DataAgendamento.text"></span>
+																				<span class="title" data-bind="text: DataAgendamento.val() != null ? 'Concluído' : 'Pendente'"></span>
+																				<span class="title" data-bind="text: DataAgendamento.val"></span>
+																			</button>
+																		</li>
+																		<li data-target="#step1TMS" data-bind="visible : DataRemessaConcluida.visible">
+																			<button class="active" data-bs-target="#tab1TMS" data-bs-toggle="tab" data-bind="attr: {id : DataRemessaConcluida.idTab }, click : DataRemessaConcluida.eventClick, visible : DataRemessaConcluida.visible">
+																				<span class="step" data-bind="attr: {class: DataRemessaConcluida.cssClass, 'data-content' : DataRemessaConcluida.tooltip, 'data-original-title' : DataRemessaConcluida.tooltipTitle }"><i class="fal fa-calendar-alt"></i></span>
+																				<span class="title" data-bind="text: DataRemessaConcluida.text"></span>
+																				<span class="title" data-bind="text: DataRemessaConcluida.val() != null ? 'Concluído' : 'Pendente'"></span>
+																				<span class="title" data-bind="text: DataRemessaConcluida.val"></span>
+																			</button>
+																		</li>
+																		<li data-target="#step1TMS" data-bind="visible : DataCarregamentoConcluido.visible">
+																			<button class="active" data-bs-target="#tab1TMS" data-bs-toggle="tab" data-bind="attr: {id : DataCarregamentoConcluido.idTab }, click : DataCarregamentoConcluido.eventClick, visible : DataCarregamentoConcluido.visible">
+																				<span class="step" data-bind="attr: {class: DataCarregamentoConcluido.cssClass, 'data-content' : DataCarregamentoConcluido.tooltip, 'data-original-title' : DataCarregamentoConcluido.tooltipTitle }"><i class="fal fa-calendar-alt"></i></span>
+																				<span class="title" data-bind="text: DataCarregamentoConcluido.text"></span>
+																				<span class="title" data-bind="text: DataCarregamentoConcluido.val() != null ? 'Concluído' : 'Pendente'"></span>
+																				<span class="title" data-bind="text: DataCarregamentoConcluido.val"></span>
+																			</button>
+																		</li>
+																		<li data-target="#step1TMS" data-bind="visible : DataFaturamentoConcluido.visible">
+																			<button class="active" data-bs-target="#tab1TMS" data-bs-toggle="tab" data-bind="attr: {id : DataFaturamentoConcluido.idTab }, click : DataFaturamentoConcluido.eventClick, visible : DataFaturamentoConcluido.visible">
+																				<span class="step" data-bind="attr: {class: DataFaturamentoConcluido.cssClass, 'data-content' : DataFaturamentoConcluido.tooltip, 'data-original-title' : DataFaturamentoConcluido.tooltipTitle }"><i class="fal fa-calendar-alt"></i></span>
+																				<span class="title" data-bind="text: DataFaturamentoConcluido.text"></span>
+																				<span class="title" data-bind="text: DataFaturamentoConcluido.val() != null ? 'Concluído' : 'Pendente'"></span>
+																				<span class="title" data-bind="text: DataFaturamentoConcluido.val"></span>
+																			</button>
+																		</li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+
+													</form>
+
+												</div>
+
+												<div class="tab-pane fade" id="tabAgendamentos" role="tabpanel">
+													<form novalidate>
+														<div class="row">
+															<div class="col col-xs-12 insideNoPaddignTable">
+																<table width="100%" class="table table-hover" data-bind="attr: { id: Agendamentos.idGrid }" cellspacing="0"></table>
+															</div>
+														</div>
+													</form>
+												</div>
+
+												<div class="tab-pane fade" id="tabProdutos" role="tabpanel">
+													<form novalidate>
+														<div class="row">
+															<div class="col col-xs-12 insideNoPaddignTable">
+																<table width="100%" class="table table-hover" data-bind="attr: { id: GridProduto.idGrid }" cellspacing="0"></table>
+															</div>
+														</div>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.configurations-header {
+		padding: 8px 0;
+		border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+		font-size: 16px;
+		font-weight: 300;
+		color: #232323;
+		margin: 15px 0;
+	}
+</style>
+
+<script src="~/scripts/configuracaoObservacaoCTe"></script>
+<script src="~/scripts/retiradaProduto"></script>
+<script src="~/scripts/configuracaoEmissaoCTe"></script>
+<script src="~/scripts/configuracaoLayoutEDI"></script>
+<script src="~/scripts/configuracaoComponentesFrete"></script>
+
+<script type="text/javascript">
+
+	pageSetUp();
+
+	$(document).ready(function () {
+		LoadLocalizationResources("Pedidos.RetiradaPedidoLista").then(loadRetiradaPedidoLista);
+
+	});
+
+</script>

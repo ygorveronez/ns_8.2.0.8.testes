@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+  <xs:element name="TransportOrderExtLight">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Envelope">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SenderIdentification" type="String7C"/>
+              <xs:element name="ReceiverIdentification" type="ReceiverIdentificationType"/>
+              <xs:element name="MessageTypes" type="MessageTypes" fixed="SHPFIX"/>
+              <xs:element name="MessageVersion" type="VersionType" fixed="01.10"/>
+              <xs:element name="EnvelopeIdentification" type="String1..13"/>
+              <xs:element name="TransmissionDateTime" type="DateTime"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Message" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ControllingOffice" type="String7"/>
+              <xs:element name="AddressInformation">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Customer" type="Address"/>
+                    <xs:element name="Shipper">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="PartyInformation" type="Address"/>
+                          <xs:element name="ContactInformation" type="Contact" minOccurs="0"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Consignee">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="PartyInformation" type="Address"/>
+                          <xs:element name="ContactInformation" type="Contact" minOccurs="0"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Notify" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="PartyInformation" type="Address"/>
+                          <xs:element name="ContactInformation" type="Contact" minOccurs="0"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ShippingInformation">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ModeOfTransport">
+                      <xs:simpleType>
+                        <xs:restriction base="ModeOfTransport"/>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="ETS" type="DateTimeOpt" minOccurs="0"/>
+                    <xs:element name="ETAPortOfDischarge" type="DateTimeOpt" minOccurs="0"/>
+                    <xs:element name="ETAPlaceOfDelivery" type="DateTimeOpt" minOccurs="0"/>
+                    <xs:element name="TermsOfDelivery" type="IncotermCodeType"/>
+                    <xs:element name="TermsOfDeliveryLocation" type="String1..35" minOccurs="0"/>
+                    <xs:element name="TypeOfShipment">
+                      <xs:simpleType>
+                        <xs:restriction base="String1"/>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="CountryOfDestination" type="CountryCodeType" minOccurs="0"/>
+                    <xs:element name="CountryOfOrigin" type="CountryCodeType"/>
+                    <xs:element name="PortOfLoading" type="UNLocationCodeType"/>
+                    <xs:element name="PortOfDischarge" type="UNLocationCodeType" minOccurs="0"/>
+                    <xs:element name="References" type="Reference" minOccurs="0" maxOccurs="999"/>
+                    <xs:element name="CargoDetails" maxOccurs="999">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="PackageType" type="ReferenceCodeType"/>
+                          <xs:element name="ContainerNumber" type="String0..13" minOccurs="0"/>
+                          <xs:element name="SealNumber" type="String0..13" minOccurs="0"/>
+                          <xs:element name="NumberOfPackages" type="Numeric6_0"/>
+                          <xs:element name="GrossWeight" type="Numeric8_2"/>
+                          <xs:element name="Volume" type="Numeric8_3"/>
+                          <xs:element name="Content" maxOccurs="999">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="CargoDescription" type="String1..26"/>
+                                <xs:element name="MarksAndNumbers" type="String0..17" minOccurs="0"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Dimensions" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Length" type="Numeric5_0"/>
+                                <xs:element name="Width" type="Numeric5_0"/>
+                                <xs:element name="Height" type="Numeric5_0"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="References" type="Reference" minOccurs="0" maxOccurs="999"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Address">
+    <xs:sequence>
+      <xs:element name="PartyName" type="String1..35"/>
+      <xs:element name="PartyName_2" type="String0..35" minOccurs="0"/>
+      <xs:element name="Street" type="String1..35"/>
+      <xs:element name="Street_2" type="String0..35" minOccurs="0"/>
+      <xs:element name="POBox" type="String0..10" minOccurs="0"/>
+      <xs:element name="City" type="String1..35"/>
+      <xs:element name="ZIPCode" type="String0..12" minOccurs="0"/>
+      <xs:element name="StateRegionCode" type="String0..3C" minOccurs="0"/>
+      <xs:element name="CountryCode" type="CountryCodeType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="AddressTypeCode">
+    <xs:restriction base="String2">
+      <xs:pattern value="[^a-z]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Contact">
+    <xs:sequence>
+      <xs:element name="TypeOfContact">
+        <xs:simpleType>
+          <xs:restriction base="String1..3C"/>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ContactName" type="String1..35"/>
+      <xs:element name="ContactDepartment" type="String1..35" minOccurs="0"/>
+      <xs:element name="Email" type="String0..70" minOccurs="0"/>
+      <xs:element name="ContactChannel" minOccurs="0" maxOccurs="2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="TypeOfChannel">
+              <xs:simpleType>
+                <xs:restriction base="String1..3C"/>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="CommunicationChannel" type="String1..25"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="CountryCodeType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="DateTime">
+    <xs:sequence>
+      <xs:element name="Date" type="xs:date"/>
+      <xs:element name="Time" type="xs:time"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DateTimeOpt">
+    <xs:sequence>
+      <xs:element name="Date" type="xs:date"/>
+      <xs:element name="Time" type="xs:time" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="IncotermCodeType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{3}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MeasureUnit">
+    <xs:restriction base="String1"/>
+  </xs:simpleType>
+  <xs:simpleType name="MessageTypes">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="10"/>
+      <xs:pattern value="[^a-z]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ModeOfTransport">
+    <xs:restriction base="Numeric1"/>
+  </xs:simpleType>
+  <xs:simpleType name="Numeric1">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:totalDigits value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Numeric5_0">
+    <xs:restriction base="xs:integer">
+      <xs:totalDigits value="5"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Numeric6_0">
+    <xs:restriction base="xs:integer">
+      <xs:totalDigits value="6"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Numeric8_2">
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="8"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Numeric8_3">
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="8"/>
+      <xs:fractionDigits value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ReceiverIdentificationType">
+    <xs:restriction base="String0..13"/>
+  </xs:simpleType>
+  <xs:complexType name="Reference">
+    <xs:sequence>
+      <xs:element name="AddressType">
+        <xs:simpleType>
+          <xs:restriction base="AddressTypeCode"/>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ReferenceType" type="ReferenceCodeType"/>
+      <xs:element name="Reference" type="String1..35"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="ReferenceCodeType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="2"/>
+      <xs:maxLength value="3"/>
+      <xs:pattern value="[^a-z]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String0..10">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String0..12">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="12"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String0..13">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="13"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String0..17">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="17"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String0..35">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="0"/>
+      <xs:maxLength value="35"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String0..3C">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="3"/>
+      <xs:pattern value="[^a-z]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String0..70">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="70"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String1">
+    <xs:restriction base="xs:string">
+      <xs:length value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String1..13">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="13"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String1..25">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="25"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String1..26">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="26"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String1..35">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="35"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String1..3C">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="3"/>
+      <xs:pattern value="[^a-z]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String2">
+    <xs:restriction base="xs:string">
+      <xs:length value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String7">
+    <xs:restriction base="xs:string">
+      <xs:length value="7"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="String7C">
+    <xs:restriction base="xs:string">
+      <xs:length value="7"/>
+      <xs:pattern value="[A-Z0-9]{7}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UNLocationCodeType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z]{5}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VersionType">
+    <xs:restriction base="xs:string">
+      <xs:length value="5"/>
+      <xs:pattern value="\d{2}.\d{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

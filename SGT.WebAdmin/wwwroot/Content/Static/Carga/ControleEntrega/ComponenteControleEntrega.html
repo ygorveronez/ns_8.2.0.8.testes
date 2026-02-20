@@ -1,0 +1,104 @@
+﻿<script type="text/html" id="carga-entrega-template">
+    <div class="container-fluxo-entrega" data-bind="template: { afterRender: afterRenderEntrega }">
+        <div class="fluxo-entrega row">
+            <div data-bind="style: {display: ModoSelecao.val() ? 'flex' : 'none', 'max-height': '30px'}" class="w-auto align-self-center">
+                <label class="checkbox">
+                    <input type="checkbox" name="checkbox-toggle" checked="checked" data-bind="enable: PodeSelecionar, checked: Selecionado.val, attr: { name: Selecionado.id, id: Selecionado.id }">
+                    <i style="margin-top: 2px"></i>
+                </label>
+                <div style="align-self: center; margin-right: 7px; inline-size: max-content;" data-bind="text: '(' + AnalistaResponsavelMonitoramento.val() + ')', visible: AnalistaResponsavelMonitoramento.val()"></div>
+            </div>
+            <div class="identificao-fluxo fluxo-col fluxo-col ps-0 pe-1" style="width: 35px">
+                <div class="identificao-fluxo">
+                    <div data-bind="html: ImagemOnlineOffline()" class="signal" style="margin-top:4px;">
+                    </div>
+                </div>
+            </div>
+            <div class="identificao-fluxo fluxo-col fluxo-col ps-0 pe-1">
+                <div rel="popover-hover" class="identificacao-flex identificao" data-bind="click: Carga.eventClick, css: {'fluxo-carga-cancelada': CargaCancelada.val}, attr:{'data-bs-content' : Tooltip.val}, style: { backgroundColor: CorFundo.val() != null ? CorFundo.val() : '#ECF3F9' }">
+                    <div class="placa" style="margin-right: 2px;" data-bind="style: { backgroundColor: CorFundo.val() != null ? CorFundo.val() : '#ECF3F9' }"><strong data-bind="text: Placas.val"></strong></div>
+
+                    <div class="imagem-mensagem"
+                         data-bs-html="true"
+                         data-bind="attr: {
+                                 'data-bs-toggle': !ImagemMensagem.enable ? 'tooltip' : null,
+                                 'data-bs-placement': !ImagemMensagem.enable ? 'top' : null,
+                                 title: !ImagemMensagem.enable ? ImagemMensagem.text : null,
+                                 'aria-label': !ImagemMensagem.enable ? ImagemMensagem.text : null
+                             }">
+                        <img data-bind="click: ImagemMensagem.eventClick, css: { 'disabled-chat': !ImagemMensagem.enable }, attr:{src: ImagemMensagem.enable ? ImagemMensagem.val : ImagemMensagem.icon }" />
+                    </div>
+
+                    <div class="imagem-imprimir" data-bind="visible: ImagemImprimirMinuta.val() != ''">
+                        <img data-bind="click: ImagemImprimirMinuta.eventClick, attr:{src: ImagemImprimirMinuta.val}" />
+                    </div>
+                    <!--ko if: CargaCritica.val()-->
+                    <div class="imagem-alerta" data-bind="attr:{title: 'Carga crítica'}">
+                        <img src="../../../../Content/TorreControle/Icones/gerais/alert.svg" />
+                    </div>
+                    <!--/ko-->
+
+                </div>
+            </div>
+
+            <div class="col etapas-scroll fluxo-col" data-bind="style: { backgroundColor: CorFundo.val() != null ? CorFundo.val() : '#ECF3F9' }">
+                <div class="etapas-fluxo">
+
+                    <!-- ko foreach: { data: InformacoesComplementares.val, as: 'Info' } -->
+                    <div data-bind="css: 'etapa-container info-entrega-container col' + ($index() === ($parent.InformacoesComplementares.val().length - 1) ? ' last-info' : '')">
+                        <div data-bind="css: 'info-entrega ' + Info.Descricao">
+                            <span data-bind="text: Info.Valor, visible: !Info.Icone, attr: Info.Tooltip && Info.Tooltip.length> 0 ? { 'data-bs-content': Info.Tooltip }: {}"
+                                  data-html="true"
+                                  rel="popover-hover"
+                                  data-bs-trigger="hover"
+                                  data-bs-container="body"
+                                  data-bs-placement="top">
+                            </span>
+                            <i data-bind="css: 'fa ' + Info.Valor, visible: Info.Icone"></i>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko foreach: { data: KnoutEtapas.val, as: 'Etapa' } -->
+                    <!-- ko foreach: { data: Etapa.alertas, as: 'Alerta' } -->
+                    <div class="etapa-container col" style="width:34px; min-height: fit-content">
+                        <div class="bolinha-etapa " style="margin-right: 8px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2px;">
+                                <img style="width: 12px; height: 12px;" data-bind="attr:{id: 'alertaEtapa_'+Alerta.CodigoAlerta, src: Alerta.ImagemStatus}" />
+                                <div>
+                                    <!-- ko if: Alerta.numeroDeAlertasPorGrupo >= 2 || Alerta.numeroDeAlertasPorGrupo == '99+' -->
+                                    <div data-bind="text: Alerta.numeroDeAlertasPorGrupo" class="bolinha-qtd-alertas"></div>
+                                    <!-- /ko -->
+                                </div>
+                            </div>
+                            <a href="#tabFluxo" data-bind="attr:{title: Alerta.numeroDeAlertasPorGrupo}, click: Etapa.eventAlertaClick" data-toggle="tab" style="cursor: pointer;">
+                                <img style="margin-top: -15px;cursor: pointer;margin-left: 6px;margin-right: 8px;" height="25" width="25" data-bind="attr:{src: Alerta.Imagem}, css: ((Alerta.Status === 1) ? 1 : 0) ? '' : 'alerta-em-aberto speedType blink'" />
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: Etapa.mostrarEtapa -->
+                    <div class="etapa-container col" style="width:34px">
+                        <div class="bolinha-etapa" data-bind="css: {'destaque-filtro': Etapa.destacarFiltrosConsultados}">
+                            <a href="#tabFluxo" data-bind="click: Etapa.eventClick" data-toggle="tab">
+                                <div data-html="true" rel="popover-hover" data-bs-trigger="hover" data-bs-container="body" data-bs-placement="top" data-bind="attr: {'data-bs-content' : Etapa.tooltip, 'data-original-title' : Etapa.tooltipTitle, class: Etapa.class}">
+                                    <span class="responsavel-chamado" data-bind="visible: Etapa.exibirInicialResponsavel, text: Etapa.responsavelChamado"></span>
+                                    <!-- ko if: Etapa.imagem != '' --><img style="width:30px; height:30px; position:relative" data-bind="attr:{ src: Etapa.imagem }" /><!-- /ko -->
+                                    <!-- ko if: Etapa.imagemForaRaio != '' --><img style="width:10px; height:10px; position:absolute; top:0;left:0" data-bind="attr:{ src: Etapa.imagemForaRaio }" /><!-- /ko -->
+                                    <!-- ko if: Etapa.indicadorComplementar != '' --><img style="width:11px; height:11px; position:absolute; top:10px;left:10px" data-bind="attr:{ src: Etapa.indicadorComplementar }" /><!-- /ko -->
+                                    <!-- ko if: Etapa.imagemForaSequencia != '' --><img style="width:10px; height:10px; position:absolute; top:20px;left:0" data-bind="attr:{ src: Etapa.imagemForaSequencia }" /><!-- /ko -->
+                                    <!-- ko if: Etapa.imagemParcial != '' --><img style="width:10px; height:10px; position:absolute; top:0;left:20px" data-bind="attr:{ src: Etapa.imagemParcial }" /><!-- /ko -->
+                                    <!-- ko if: Etapa.imagemSemCoordenada != '' --><img style="width:10px; height:10px; position:absolute; top:20px;left:20px" data-bind="attr:{ src: Etapa.imagemSemCoordenada }" /><!-- /ko -->
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <div class="overflow-scroll" data-bind="visible: GridMonitoramento.visible">
+            <table width="100%" class="table table-bordered table-hover table-condensed table-resize-container-scroll" data-bind="attr: { id : GridMonitoramento.id }" cellspacing="0"></table>
+        </div>
+    </div>
+</script>

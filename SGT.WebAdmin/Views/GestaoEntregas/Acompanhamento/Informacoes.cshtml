@@ -1,0 +1,99 @@
+﻿@model Dominio.ObjetosDeValor.Embarcador.GestaoEntregas.EntregaView
+    <table class="table-hover">
+        <tr>
+            <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.NumeroDaCarga:</td>
+            <td class="col-11 col-md-10">@Model.Numero </td>
+        </tr>
+        @if (!string.IsNullOrWhiteSpace(Model.NumeroTransporte))
+        {
+            <tr>
+                <td class="col-1 col-md-2 desc-tabela">Nº do transporte:</td>
+                <td class="col-11 col-md-10">@Model.NumeroTransporte  </td>
+            </tr>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Remetente))
+        {
+            <tr>
+                <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.Remetente:</td>
+                <td class="col-11 col-md-10">@Model.Remetente </td>
+            </tr>
+        }
+        <tr>
+            <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.Destinatario:</td>
+            <td class="col-11 col-md-10">@Model.Destinatario</td>
+        </tr>
+        <tr>
+            <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.Localidade:</td>
+            <td class="col-11 col-md-10">@Model.Localidade</td>
+        </tr>
+        @if (!string.IsNullOrWhiteSpace(Model.NotasFiscais))
+        {
+            <tr>
+                <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.NotasFiscais:</td>
+                <td class="col-11 col-md-10">@Model.NotasFiscais </td>
+            </tr>
+        }
+        @if (Model.Volumes > 0)
+        {
+            <tr>
+                <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.QuantidadeDeVolumes:</td>
+                <td class="col-11 col-md-10">@Model.Volumes </td>
+            </tr>
+        }
+        @if (Model.QuantidadeVolumesNF > 0)
+        {
+            <tr>
+                <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.QuantidadeDeVolumesReal:</td>
+                <td class="col-11 col-md-10">@Model.QuantidadeVolumesNF </td>
+            </tr>
+        }
+        <tr>
+            <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.Transportador:</td>
+            <td class="col-11 col-md-10">@Model.Transportador</td>
+        </tr>
+        @if (Model.PesoBruto > 0m)
+        {
+            <tr>
+                <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.PesoBruto:</td>
+                <td class="col-11 col-md-10">@Model.PesoBruto </td>
+            </tr>
+        }   
+        @if (Model.PesoLiquido > 0m)
+        {
+            <tr>
+                <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.PesoLiquido:</td>
+                <td class="col-11 col-md-10">@Model.PesoLiquido </td>
+            </tr>
+        }
+        @if (Model.ClienteExterior)
+        {
+            if (!string.IsNullOrWhiteSpace(Model.CodigoPedidoCliente))
+            {
+                <tr>
+                    <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.NumeroPedidoCliente:</td>
+                    <td class="col-11 col-md-10">@Model.CodigoPedidoCliente</td>
+                </tr>
+            }
+            if (!string.IsNullOrWhiteSpace(Model.NumeroOrdemCompra))
+            {
+                <tr>
+                    <td class="col-1 col-md-2 desc-tabela">@Localization.Resources.GestaoEntregas.Acompanhamento.NumeroOrdem:</td>
+                    <td class="col-11 col-md-10">@Model.NumeroOrdemCompra</td>
+                </tr>
+            }
+
+            foreach (var anexo in Model.Anexos)
+            {
+                <tr>
+                    <td class="col-1 col-md-2 desc-tabela">@anexo.DescricaoAnexo:</td>
+                    <td class="col-11 col-md-10"><a href="#" onclick="downloadAnexoClick(@anexo.CodigoAnexo)">@anexo.NomeAnexo&nbsp;&nbsp;<i class="fa fa-download"></i></a></td>
+                </tr>
+            }
+        }
+    </table>
+
+    <div style="margin-top:20px;">
+        <section class="feedback-container"></section>
+    </div>
+    @*@Html.Partial("~/Views/GestaoEntregas/Acompanhamento/Avaliacao.cshtml", Model)*@
+

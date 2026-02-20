@@ -1,0 +1,120 @@
+using System;
+
+namespace Dominio.ObjetosDeValor.EDI.CONEMB
+{
+    public class CTeEmbarcado
+    {
+        public string CodigoCentroCusto { get; set; }
+        public string CodigoEstabelecimento { get; set; }
+        public string Filial { get; set; }
+        public int Serie { get; set; }
+        public int Numero { get; set; }
+        public DateTime DataEmissao { get; set; }
+        public string CondicaoFrete { get; set; }
+        public decimal PesoTransportado { get; set; }
+        public decimal ValorTotalFrete { get; set; }
+        public decimal BaseCalculoICMS { get; set; }
+        public decimal AliquotaICMS { get; set; }
+        public decimal ValorICMS { get; set; }
+        public decimal ValorFretePorPeso { get; set; }
+        public decimal ValorADVALOREM { get; set; }
+        public decimal ValorSECCAT { get; set; }
+        public decimal ValorITR { get; set; }
+        public decimal ValorDespacho { get; set; }
+        public decimal ValorPedagio { get; set; }
+        public decimal ValorADEME { get; set; }
+        /// <summary>
+        /// Valor da diferença entre ValorTotalFrete – ValorFretePorPeso
+        /// </summary>
+        public decimal ValorTaxas { get; set; }
+        public string SubstituicaoTributaria { get; set; }
+        public string Filler { get; set; }
+        public string CNPJEmissorConhecimento { get; set; }
+        public string CNPJTomadorServico { get; set; }
+        public string SerieNotaFiscal1 { get; set; }
+        public string NumeroNotaFiscal1 { get; set; }
+        public string SerieNotaFiscal2 { get; set; }
+        public string NumeroNotaFiscal2 { get; set; }
+        public string SerieNotaFiscal3 { get; set; }
+        public string NumeroNotaFiscal3 { get; set; }
+        public string SerieNotaFiscal4 { get; set; }
+        public string NumeroNotaFiscal4 { get; set; }
+        public string SerieNotaFiscal5 { get; set; }
+        public string NumeroNotaFiscal5 { get; set; }
+        public string SerieNotaFiscal6 { get; set; }
+        public string NumeroNotaFiscal6 { get; set; }
+        public string SerieNotaFiscal7 { get; set; }
+        public string NumeroNotaFiscal7 { get; set; }
+        public string SerieNotaFiscal8 { get; set; }
+        public string NumeroNotaFiscal8 { get; set; }
+        public string SerieNotaFiscal9 { get; set; }
+        public string NumeroNotaFiscal9 { get; set; }
+        public string SerieNotaFiscal10 { get; set; }
+        public string NumeroNotaFiscal10 { get; set; }
+        public string SerieNotaFiscal11 { get; set; }
+        public string NumeroNotaFiscal11 { get; set; }
+        public string SerieNotaFiscal12 { get; set; }
+        public string NumeroNotaFiscal12 { get; set; }
+        public string SerieNotaFiscal13 { get; set; }
+        public string NumeroNotaFiscal13 { get; set; }
+        public string SerieNotaFiscal14 { get; set; }
+        public string NumeroNotaFiscal14 { get; set; }
+        public string SerieNotaFiscal15 { get; set; }
+        public string NumeroNotaFiscal15 { get; set; }
+        public string SerieNotaFiscal16 { get; set; }
+        public string NumeroNotaFiscal16 { get; set; }
+        public string SerieNotaFiscal17 { get; set; }
+        public string NumeroNotaFiscal17 { get; set; }
+        public string SerieNotaFiscal18 { get; set; }
+        public string NumeroNotaFiscal18 { get; set; }
+        public string SerieNotaFiscal19 { get; set; }
+        public string NumeroNotaFiscal19 { get; set; }
+        public string SerieNotaFiscal20 { get; set; }
+        public string NumeroNotaFiscal20 { get; set; }
+        public string SerieNotaFiscal21 { get; set; }
+        public string NumeroNotaFiscal21 { get; set; }
+        public string SerieNotaFiscal22 { get; set; }
+        public string NumeroNotaFiscal22 { get; set; }
+        public string SerieNotaFiscal23 { get; set; }
+        public string NumeroNotaFiscal23 { get; set; }
+        public string SerieNotaFiscal24 { get; set; }
+        public string NumeroNotaFiscal24 { get; set; }
+        public string SerieNotaFiscal25 { get; set; }
+        public string NumeroNotaFiscal25 { get; set; }
+        public string SerieNotaFiscal26 { get; set; }
+        public string NumeroNotaFiscal26 { get; set; }
+        public string SerieNotaFiscal27 { get; set; }
+        public string NumeroNotaFiscal27 { get; set; }
+        public string SerieNotaFiscal28 { get; set; }
+        public string NumeroNotaFiscal28 { get; set; }
+        public string SerieNotaFiscal29 { get; set; }
+        public string NumeroNotaFiscal29 { get; set; }
+        public string SerieNotaFiscal30 { get; set; }
+        public string NumeroNotaFiscal30 { get; set; }
+        public string SerieNotaFiscal31 { get; set; }
+        public string NumeroNotaFiscal31 { get; set; }
+        public string SerieNotaFiscal32 { get; set; }
+        public string NumeroNotaFiscal32 { get; set; }
+        public string SerieNotaFiscal33 { get; set; }
+        public string NumeroNotaFiscal33 { get; set; }
+        public string SerieNotaFiscal34 { get; set; }
+        public string NumeroNotaFiscal34 { get; set; }
+        public string SerieNotaFiscal35 { get; set; }
+        public string NumeroNotaFiscal35 { get; set; }
+        public string SerieNotaFiscal36 { get; set; }
+        public string NumeroNotaFiscal36 { get; set; }
+        public string SerieNotaFiscal37 { get; set; }
+        public string NumeroNotaFiscal37 { get; set; }
+        public string SerieNotaFiscal38 { get; set; }
+        public string NumeroNotaFiscal38 { get; set; }
+        public string SerieNotaFiscal39 { get; set; }
+        public string NumeroNotaFiscal39 { get; set; }
+        public string SerieNotaFiscal40 { get; set; }
+        public string NumeroNotaFiscal40 { get; set; }
+        public string AcaoDocumento { get; set; }
+        public string TipoConhecimento { get; set; }
+        public string IndicacaoRepeticao { get; set; }
+        public string CFOP { get; set; }
+        public DadosComplementaresCTeEmbarcado DadosComplementares { get; set; }
+    }
+}

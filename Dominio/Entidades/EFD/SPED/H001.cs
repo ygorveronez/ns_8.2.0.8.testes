@@ -1,0 +1,40 @@
+using System.Linq;
+
+namespace Dominio.Entidades.EFD.SPED
+{
+    public class H001 : Registro
+    {
+        #region Construtores
+
+        public H001()
+            : base("H001")
+        {
+        }
+
+        #endregion
+
+        #region Propriedades
+
+        private string IndicadorDeMovimento
+        {
+            get
+            {
+                return this.Registros.Count() > 0 ? "0" : "1";
+            }
+        }
+
+        #endregion
+
+        #region Métodos
+
+        public override string ObterDadosParaArquivo()
+        {
+            this.EscreverDado(this.IndicadorDeMovimento);
+            this.FinalizarRegistro();
+            this.ObterRegistrosSPEDDerivados();
+            return this.RegistroSPED.ToString();
+        }
+
+        #endregion
+    }
+}

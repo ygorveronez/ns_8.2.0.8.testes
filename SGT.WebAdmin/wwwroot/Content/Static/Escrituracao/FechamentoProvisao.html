@@ -1,0 +1,340 @@
+﻿<div class="tab-content">
+    <div id="knockoutProvisao" class="tab-pane fade show active">
+        <div class="panel">
+            <div class="panel-container">
+                <div class="panel-content">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a href="#tabFechamentoProvisaoStatico" class="nav-link active" data-bs-toggle="tab"><span class="hidden-mobile hidden-tablet">Fechamento da Provisão</span></a>
+                        </li>
+                        <li id="tabDetalhamentoNav" class="nav-item">
+                            <a href="#tabDetalhamento" class="nav-link" data-bs-toggle="tab"><span class="hidden-mobile hidden-tablet">Detalhamento por Grupo de Produto</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content border border-top-0 p-3">
+
+                        <div id="tabFechamentoProvisaoStatico" class="tab-pane fade active show">
+                            <form>
+                                <div>
+                                    <div class="row" id="knockoutPercentualFechamentoProvisao" style="display: none;">
+                                        <section class="col-12 col-md-12">
+                                            <p>
+                                                Gerando os movimentos para a provisão, aguarde...
+                                                <span class="txt-color-purple pull-right"><i class="fa fa-warning"></i> <span data-bind="text: PercentualProcessado.val"></span> concluídos</span>
+                                            </p>
+                                            <div class="progress">
+                                                <div class="progress progress-striped active">
+                                                    <div class="progress-bar bg-color-darken" role="progressbar" data-bind="attr: {id : PercentualProcessado.id}" style="width: 0%"></div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="row padding-5" id="divMotivoProblemaFechamento" style="display: none;">
+                                        <section class="col-sm-12 ">
+                                            <alert dismissible="true" type="danger">
+                                                <div role="alert" class="alert alert-danger alert-dismissible ng-star-inserted">
+                                                    <strong>Problema! </strong> <span id="pMotivoProblemaFechamento"></span>
+                                                </div>
+                                            </alert>
+                                        </section>
+                                    </div>
+                                    <div class="row" id="knoutFechamentoProvisao" style="display: none;">
+                                        <div class="col-12 col-md-3" data-bind="visible: DataLancamento.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: DataLancamento.text, attr: { for: DataLancamento.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: DataLancamento.requiredClass, value: DataLancamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataLancamento.maxlength, id : DataLancamento.id}" />
+                                            </div>
+                                        </div>
+                                        <section class="col col-12 insideNoPaddignTable" data-bind="visible: !PossuiStage.val()">
+                                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Contabilizacao.idGrid}" cellspacing="0"></table>
+                                        </section>
+                                        <div data-bind="visible: PossuiStage.val()">
+                                            <!-- ko foreach: DocumentosContabeisPorStage -->
+                                            <div class="accordion mb-3" data-bind="css: { 'accordion-danger': IVA.val() == '' }">
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" aria-expanded="false" data-bind="text: (NumeroStage.text + ' ' + NumeroStage.val()), attr:{ 'aria-controls': 'documento-por-stage-' + CodigoStage.val(), 'data-bs-target': '#documento-por-stage-' + CodigoStage.val()} "></button>
+                                                    </h2>
+                                                    <div class="accordion-collapse collapse pt-1" data-bind="attr: { id: 'documento-por-stage-' + CodigoStage.val() }">
+                                                        <div class="row p-3">
+                                                            <div class="col-12 col-md-6 col-xl-4">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: IVA.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: IVA.val, visible: IVA.val() != ''"></label>
+                                                                        <a href="javascript:;" data-bind="click: DefinirIVA.eventClick, text: DefinirIVA.text, visible: IVA.val() == '', attr: { id : DefinirIVA.id}"></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (AliquotaIcms.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: AliquotaIcms.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: AliquotaIcms.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (Icms.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: Icms.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: Icms.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (IcmsST.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: IcmsST.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: IcmsST.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (AliquotaPis.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: AliquotaPis.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: AliquotaPis.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (Pis.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: Pis.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: Pis.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (AliquotaCofins.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: AliquotaCofins.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: AliquotaCofins.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (Cofins.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: Cofins.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: Cofins.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (AliquotaIss.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: AliquotaIss.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: AliquotaIss.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (Iss.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: Iss.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: Iss.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (IssRetido.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: IssRetido.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: IssRetido.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (AdValorem.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: AdValorem.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: AdValorem.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (Pedagio.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: Pedagio.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: Pedagio.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (Gris.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: Gris.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: Gris.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (TaxaDescarga.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: TaxaDescarga.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: TaxaDescarga.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (TaxaEntrega.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: TaxaEntrega.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: TaxaEntrega.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (Pernoite.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: Pernoite.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: Pernoite.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (CustoFixo.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: CustoFixo.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: CustoFixo.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (FreteCaixa.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: FreteCaixa.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: FreteCaixa.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (FreteKM.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: FreteKM.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: FreteKM.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (FretePeso.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: FretePeso.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: FretePeso.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (FreteViagem.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: FreteViagem.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: FreteViagem.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (FreteLiquido.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: FreteLiquido.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: FreteLiquido.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (FreteTotal.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: FreteTotal.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: FreteTotal.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-md-6 col-xl-4" data-bind="visible: (TaxaTotal.val() != '')">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <label class="fw-bold" data-bind="text: TaxaTotal.text"></label>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <label data-bind="text: TaxaTotal.val"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /ko -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <footer id="knoutCRUDFechamentoProvisao" data-bind="visible: ProcessarNovamente.visible">
+                                    <input type="button" data-bind="click: ProcessarNovamente.eventClick, visible: ProcessarNovamente.visible, attr: { value: ProcessarNovamente.text, id : ProcessarNovamente.id}" class="btn btn-labeled btn-warning" />
+                                    <input type="button" data-bind="click: CancelarProvisao.eventClick, visible: CancelarProvisao.visible, attr: { value: CancelarProvisao.text, id : CancelarProvisao.id}" class="btn btn-labeled btn-danger" />
+                                    <input type="button" data-bind="click: ConfirmarProvisao.eventClick, visible: ConfirmarProvisao.visible, attr: { value: ConfirmarProvisao.text, id : ConfirmarProvisao.id}" class="btn btn-labeled btn-success" />
+                                </footer>
+                            </form>
+                        </div>
+                        <div id="tabDetalhamento" class="tab-pane fade">
+                            <form>
+                                <div class="card" id="knockoutGridDetalhamentoRateio">
+                                    <div class="card-body">
+                                        <table class="table table-bordered table-hover" data-bind="attr:{id: DetalhamentoRateio.idGrid}" cellspacing="0"></table>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

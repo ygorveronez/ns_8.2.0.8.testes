@@ -1,0 +1,295 @@
+﻿
+
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        Pedidos
+    </h1>
+</div>
+
+<div class="page-content">
+    <div id="knoutPesquisaPedidos">
+        <div class="row mb-2">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <div class="form-group d-flex align-items-center">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" data-bind="checked: SelecionarPedidosParaCotacaoEspecial.val, attr: { maxlength: SelecionarPedidosParaCotacaoEspecial.maxlength, name: SelecionarPedidosParaCotacaoEspecial.id, id: SelecionarPedidosParaCotacaoEspecial.id }">
+                        <label class="custom-control-label" data-bind="text: SelecionarPedidosParaCotacaoEspecial.text, attr: { for: SelecionarPedidosParaCotacaoEspecial.id }"></label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="button" data-bind="visible: SolicitarCotacaoFrete.visible, click: SolicitarCotacaoFrete.eventClick, attr: { id: SolicitarCotacaoFrete.id}">
+                    <span data-bind="text: SolicitarCotacaoFrete.text"></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="row filter-boxes with-arrow">
+            <!-- ko foreach: { data: Filtro.filtros, as: 'filtro' } -->
+            <div class="col-box" data-bind="style: { width: $root.Filtro.width }">
+                <div class="box" data-bind="click: (e) => $root.Situacao.eventBoxClick(e, filtro.enum), css: { 'active': filtro.active }">
+                    <div class="filter-number" data-bind="text: filtro.val"></div>
+                    <div class="filter-name" data-bind="text: filtro.text"></div>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <form>
+            <div class="row mb-4">
+                <div class="col-12 col-md-3" data-bind="visible: Filtro.visible">
+                    <div class="form-group">
+                        <input type="text" placeholder="Pesquise por Nome, CNPJ, UF e Notas fiscais (Ex: 10002,1003)." class="form-control" data-bind="class: Filtro.requiredClass, value: Filtro.val, valueUpdate: 'afterkeydown', attr: { maxlength: Filtro.maxlength, id : Filtro.id}" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-2" data-bind="visible: Situacao.visible">
+                    <div class="form-group">
+                        <select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}"></select>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2" data-bind="visible: DataInicial.visible">
+                    <div class="form-group">
+                        <input type="text" placeholder="Selecione a data inicial" class="form-control" data-bind="class: DataInicial.requiredClass, value: DataInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataInicial.maxlength, id : DataInicial.id}" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-2" data-bind="visible: DataFinal.visible">
+                    <div class="form-group">
+                        <input type="text" placeholder="Selecione a data final" class="form-control" data-bind="class: DataFinal.requiredClass, value: DataFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataFinal.maxlength, id : DataFinal.id}" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-3" data-bind="visible: TipoOperacao.visible">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="css: TipoOperacao.requiredClass, value: TipoOperacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoOperacao.maxlength, id : TipoOperacao.id, placeholder: TipoOperacao.text }" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoOperacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="d-flex justify-content-end my-3">
+            <button class="btn btn-primary" type="button" data-bind="visible: SelecionarTodos.visible, click: SelecionarTodos.eventClick, attr: { id: SelecionarTodos.id}">
+                <i class="fal fa-check"></i><span data-bind="text: SelecionarTodos.text"></span>
+            </button>
+        </div>
+        <table class="table colog-table" data-bind="attr: { id: Grid.id}"></table>
+    </div>
+</div>
+
+<div class="modal fade" id="knockoutModalCanhotos" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Canhotos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> &times;</button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="row container-imagens" style="display: block;">
+                    <!-- ko foreach: { data: Imagens.val, as: 'imagem' } -->
+                    <div class="col col-xs-12 mb-3">
+                        <div data-bind="css: { 'container-img': true, 'possui-imagem': imagem.Miniatura != null, 'sem-imagem': imagem.Miniatura == null }">
+                            <div class="img-canhoto">
+                                <!-- ko if: imagem.Miniatura != null -->
+                                <img class="" data-bind="attr: { src:  'data:image/png;base64,' + imagem.Miniatura }" />
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Compartilhar</button>
+                <button type="button" class="btn btn-secondary">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="content-detalhes-pedido">
+    <div class="row detalhes-pedido" id="{{id}}">
+        <div class="col-sm-6">
+            <table class="table colog-table" data-bind="attr: { id: Grid.id}"></table>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="btn-container">
+                <button class="btn btn-opacity" data-bind="text: Acompanhar.text, click: Acompanhar.eventClick, id: Acompanhar.id"></button>
+                <button class="btn btn-primary" data-bind="text: Atendimento.text, click: Atendimento.eventClick, id: Atendimento.id"></button>
+                <button class="btn btn-primary" data-bind="text: AbrirOcorrencia.text, click: AbrirOcorrencia.eventClick, id: AbrirOcorrencia.id"></button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<div class="modal fade" id="divSolicitarNovoAtendimento" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="padding:15px; border-radius:25px">
+            <div class="modal-header">
+                <h4 class="modal-title">Deseja solicitar Atendimento?</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"> &times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6 my-3">
+                        <div class="form-group">
+                            <label class="form-label" for="OpcaoMotivoNovoAtendimento">Motivo:</label>
+                            <select id="OpcaoMotivoNovoAtendimento" class="form-control">
+                                <option value="0" selected>Selecione um motivo</option>
+                                <option value="1">Avaria</option>
+                                <option value="2">Falta de Produto</option>
+                                <option value="3">Sobra de produto</option>
+                                <option value="4">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <button type="button" class="btn btn-secondary ms-3" onclick="closeModalSolicitarNovoAtendimento()" style="width:150px; padding:10px">Cancelar</button>
+                    <button type="submit" class="btn btn-primary ms-3" onclick="IniciarNovoChatTelaPedidos()" style="width:240px; padding:10px">Sim, selecionar pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalGestaoOcorrencia" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ocorrência</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="gestaoOcorrencia">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalEscolhaTipo" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Tipo de Modal</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="tipoModal">Selecione o tipo de modal:</label>
+                    <select id="tipoModal" class="form-control">
+                        <option value="" disabled selected>Selecione</option>
+                        <option value="Expresso">Expresso</option>
+                        <option value="Dedicado">Dedicado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSalvarTipoModal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .detalhes-pedido .btn-container {
+        background-color: #f1f2f9;
+        padding: 50px;
+        border-radius: 10px;
+        margin-top: 12px;
+    }
+
+        .detalhes-pedido .btn-container .btn {
+            min-width: 300px;
+            margin: 10px auto;
+            display: block;
+        }
+
+    .container-imagens .possui-imagem,
+    .container-imagens .sem-imagem,
+    .container-imagens .thumb-pdf {
+        border: 1px solid #d0d0d0;
+        border-radius: 3px;
+    }
+
+    .container-imagens .thumb-pdf {
+        padding: 25px 0;
+    }
+
+    .container-imagens .possui-imagem .img-canhoto img {
+        width: 100%;
+    }
+
+    .container-imagens .sem-imagem .img-canhoto,
+    .container-imagens .thumb-pdf .img-canhoto {
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        height: 150px;
+    }
+
+    .container-imagens .sem-imagem .img-canhoto {
+        height: 150px;
+    }
+
+    .container-imagens .thumb-pdf .img-canhoto {
+        height: 100px;
+    }
+
+    @@media(max-width: 991px) {
+        .container-imagens .sem-imagem .img-canhoto {
+            height: 100px;
+        }
+
+        .container-imagens .thumb-pdf {
+            padding: 20px 0;
+        }
+
+            .container-imagens .thumb-pdf .img-canhoto {
+                height: 60px;
+            }
+    }
+
+    .container-imagens .sem-imagem .img-canhoto {
+        background-image: url('../img/sem_foto.jpg');
+    }
+
+    .container-imagens .thumb-pdf .img-canhoto {
+        background-image: url('../img/thumb_pdf.png');
+        opacity: 0.45;
+    }
+
+    .quantidade-notas {
+        height: 9px;
+        border-radius: 15px;
+    }
+
+    .label-quantidade-notas {
+        display: block;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 3px;
+    }
+</style>
+
+<script src="~/scripts/pedidoCliente"></script>
+<script src="~/scripts/atendimentoPedidoCliente"></script>
+<script src="~/scripts/gestaoOcorrencia"></script>
+<script src="~/scripts/controleEntregaDevolucao"></script>
+
+<script type="text/javascript">
+    var _telaDetalhesPedido = null;
+    $(document).ready(function () {
+        _telaDetalhesPedido = new TelaPedidos();
+        _telaDetalhesPedido.Load("knoutPesquisaPedidos", "knockoutModalCanhotos");
+    });
+</script>

@@ -1,0 +1,172 @@
+﻿@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage
+
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Relatórios</li>
+    <li class="breadcrumb-item">Faturamentos Mensais</li>
+    <li class="breadcrumb-item active">Cobrança Mensal</li>
+</ol>
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class=""></i> Relatório de Cobranças Mensais
+    </h1>
+</div>
+
+<div id="divConteudoRelatorio" class="panel">
+    <div class="panel-container">
+        <div class="panel-hdr">
+            <h3>
+                <i class="fal fa-file-alt"></i>
+                Relatórios
+            </h3>
+        </div>
+        <div class="panel-content">
+            <form>
+                <div id="knockoutPesquisaCobrancasMensais">
+                    <div class="row">
+                        <div class="col-12 col-md-2" data-bind="visible: DataEmissaoInicial.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataEmissaoInicial.text"></label>
+                                <input type="text" class="form-control" data-bind="value: DataEmissaoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoInicial.maxlength, id : DataEmissaoInicial.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: DataEmissaoFinal.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataEmissaoFinal.text"></label>
+                                <input type="text" class="form-control" data-bind="value: DataEmissaoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissaoFinal.maxlength, id : DataEmissaoFinal.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: DataVencimentoInicial.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataVencimentoInicial.text"></label>
+                                <input type="text" class="form-control" data-bind="value: DataVencimentoInicial.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataVencimentoInicial.maxlength, id : DataVencimentoInicial.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: DataVencimentoFinal.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataVencimentoFinal.text"></label>
+                                <input type="text" class="form-control" data-bind="value: DataVencimentoFinal.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataVencimentoFinal.maxlength, id : DataVencimentoFinal.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: Status.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Status.text, attr: { for: Status.id }"></label>
+                                <select class="form-control" data-bind="options: Status.options, optionsText: 'text', optionsValue: 'value', value: Status.val, attr: { id : Status.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: GrupoFaturamento.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: GrupoFaturamento.text, attr: { for: GrupoFaturamento.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: GrupoFaturamento.requiredClass, value: GrupoFaturamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: GrupoFaturamento.maxlength, id : GrupoFaturamento.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: GrupoFaturamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: Pessoa.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Pessoa.text, attr: { for: Pessoa.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Pessoa.requiredClass, value: Pessoa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Pessoa.maxlength, id : Pessoa.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Pessoa.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: Servico.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Servico.text, attr: { for: Servico.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Servico.requiredClass, value: Servico.val, valueUpdate: 'afterkeydown', attr: { maxlength: Servico.maxlength, id : Servico.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Servico.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" data-bind="visible: Dia.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Dia.text"></label>
+                                <input type="text" class="form-control" data-bind="value: Dia.val, valueUpdate: 'afterkeydown', attr: { maxlength: Dia.maxlength, id : Dia.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: ConfiguracaoBoleto.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ConfiguracaoBoleto.text, attr: { for: ConfiguracaoBoleto.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: ConfiguracaoBoleto.requiredClass, value: ConfiguracaoBoleto.val, valueUpdate: 'afterkeydown', attr: { maxlength: ConfiguracaoBoleto.maxlength, id : ConfiguracaoBoleto.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: ConfiguracaoBoleto.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: TipoRelatorio.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: TipoRelatorio.text, attr: { for: TipoRelatorio.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: TipoRelatorio.requiredClass, value: TipoRelatorio.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoRelatorio.maxlength, id : TipoRelatorio.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoRelatorio.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row mb-3 mt-3">
+                <!-- CRUD Configurações -->
+                <div id="knockoutCRUDConfiguracaoRelatorio" class="col-12 col-md-6 mb-3 mb-md-0">
+                    <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="enable: ExibirConfiguracoes.enable, click: ExibirConfiguracoes.eventClick, attr: { id: ExibirConfiguracoes.id}" type="button">
+                        <i data-bind="css: ExibirConfiguracoes.icon"></i><span data-bind="text: ExibirConfiguracoes.text"></span>
+                    </button>
+                </div>
+                <!-- CRUD Filtro de Pesquisa -->
+                <div id="knockoutCRUDFiltrosPesquisaCobrancasMensais" class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end">
+                    <button class="btn btn-primary btnPesquisarFiltroPesquisa" data-bind="click: Preview.eventClick, attr: { id: Preview.id}" type="button">
+                        <i class="fal fa-search"></i><span data-bind="text: Preview.text"></span>
+                    </button>
+                </div>
+            </div>
+            <!-- Configurações do Relatório -->
+            <div id="divConfigRelatorio">
+            </div>
+            <!-- GRID de Resultados -->
+            <table id="gridPreviewRelatorio" class="table table-bordered table-hover table-condensed table-striped" width="100%" cellspacing="0"></table>
+            <!-- Botões Inferiores-->
+            <div id="knockoutCRUDPesquisaCobrancasMensais" class="d-flex justify-content-center justify-content-md-end mt-3">
+                <button class="btn btn-success me-3" data-bind="click: GerarRelatorioExcel.eventClick, attr: { id: GerarRelatorioExcel.id}" type="button">
+                    <i class="fal fa-file-excel"></i><span data-bind="text: GerarRelatorioExcel.text"></span>
+                </button>
+                <button class="btn btn-success" data-bind="click: GerarRelatorioPDF.eventClick, attr: { id: GerarRelatorioPDF.id}" type="button">
+                    <i class="fal fa-file-pdf"></i><span data-bind="text: GerarRelatorioPDF.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/relatorios/scripts/cobrancasMensais"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadRelatorioCobrancasMensais();
+    });
+
+</script>

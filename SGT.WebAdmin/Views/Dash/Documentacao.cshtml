@@ -1,0 +1,266 @@
+﻿
+
+<div id="knockoutDocumentacao" class="dash-documentacao">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-lg-4">
+            <ol class="breadcrumb page-breadcrumb">
+                <li class="breadcrumb-item" data-bind="text: formatarData(moment())"></li>
+            </ol>
+            <div class="subheader">
+                <h1 class="subheader-title" data-bind="text: NomeUsuario.val"></h1>
+            </div>
+        </div>
+        <div class="row col-12 col-lg-4">
+            <div class="col-md-6 mt-4" data-bind="visible: Regiao.visible">
+                <div class="form-group">
+                    <label class="form-label" data-bind="text: Regiao.text, attr: { for: Regiao.id }"></label>
+                    <select class="form-control" data-bind="options: Regiao.options,
+                            optionsText: 'text',
+                            optionsValue: 'value',
+                            value: Regiao.val,
+                            enable: Regiao.enable,
+                            attr: { id : Regiao.id},
+                            event: { change: PesquisaFiltroInicial.eventClick }"></select>
+                </div>
+            </div>
+            <div class="col-md-6 mt-4">
+                <div class="form-group">
+                    <label class="form-label" data-bind="text: Embarque.text, attr: { for: Embarque.id }"></label>
+                    <select class="form-control select-embarque" name="embarques[]" multiple="multiple" data-bind="options: Embarque.options,
+                            optionsText: 'text',
+                            optionsValue: 'value',
+                            selectedOptions: Embarque.val,
+                            event: { change: PesquisaFiltroInicial.eventClick },
+                            attr: { id : Embarque.id}">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row col-12 col-lg-4">
+            <label class="form-label mb-0" for="data1">Navios fechados - Data de saída</label>
+            <div class="col-md-6">
+                <div data-bind="visible: DataInicial.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: DataInicial.text, attr: { for: DataInicial.id }"></label>
+                        <input type="text" class="form-control" data-bind="css: DataInicial.requiredClass,
+                               value: DataInicial.val,
+                               attr: { maxlength: DataInicial.maxlength, id : DataInicial.id},
+                              event: { change: PesquisaFiltroInicial.eventClick }" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div data-bind="visible: DataFinal.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: DataFinal.text, attr: { for: DataFinal.id }"></label>
+                        <input type="text" class="form-control"
+                               data-bind="css: DataFinal.requiredClass,
+                              value: DataFinal.val,
+                              enable: DataFinal.enable,
+                              attr: { maxlength: DataFinal.maxlength, id : DataFinal.id }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <div class="row">
+                    <div class="col-12 col-md-4 mb-3 mb-md-0">
+                        <span class="navios-nome" style="margin-left: 6px; font-weight: 500;">Navios fechados</span>
+                        <button class="navios fechados" data-bind="click: PesquisarNavioFechado.eventClick, attr: {'data-content' : PesquisarNavioFechado.tooltip, 'data-original-title' : PesquisarNavioFechado.tooltipTitle }">
+                            <div class="navios-icon" id="navio-fechado-btn">
+                                <img src="~/img/icon-navio-fechado.png" />
+                                <h4 class="navios-data--number"><span data-bind="text: QuantidadeNavioFechado.val"></span></h4>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3 mb-md-0">
+                        <span class="navios-nome" style="margin-left: 6px; font-weight: 500;">Navios abertos</span>
+                        <button class="navios abertos active" data-bind="click: PesquisarNavioAberto.eventClick, attr: {'data-content' : PesquisarNavioAberto.tooltip, 'data-original-title' : PesquisarNavioAberto.tooltipTitle }">
+                            <div class="navios-icon" id="navio-aberto-btn">
+                                <img src="~/img/icon-navio-aberto.png" />
+                                <h4 class="navios-data--number"><span data-bind="text: QuantidadeNavioAberto.val"></span></h4>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-4 d-flex align-items-center justify-content-center">
+                        <img src="~/img/icon-alianca.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel" id="panel-dados">
+        <div class="panel-container">
+            <div class="panel-content">
+                <div class="row row-cols-1 row-cols-xl-3">
+                    <!-- ko foreach: { data: DadosDash.val, as: 'dados' } -->
+                    <div class="col mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-header--title" data-bind="text: dados.NomeNavio"></h3>
+                                <time datetime="2023-10-05">
+                                    <span data-bs-toggle="tooltip" data-bs-title="Data de saída" data-bind="text: moment(dados.DataEtsPol).format('DD/MM/YYYY')"></span>
+                                    <!-- ko if: dados.NavioAberto -->
+                                    <img data-bs-toggle="tooltip" data-bs-title="Navio em aberto" data-bind="attr: { src: '../img/icon-dash-navio.png' }" />
+                                    <!-- /ko -->
+                                    <!-- ko if: !dados.NavioAberto -->
+                                    <img data-bs-toggle="tooltip" data-bs-title="Navio fechado" data-bind="attr: { src: '../img/icon-dash-navio-fechado.png' }" />
+                                    <!-- /ko -->
+                                </time>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-city" data-bind="text: dados.Regiao"></div>
+                                <div class="card-booking">
+                                    <span><b>Booking</b></span>
+                                    <span><b data-bind="text: dados.Bookings"></b></span>
+                                </div>
+                                <div class="graficos">
+                                    <div class="grafico">
+                                        <h4 class="grafico-title">Cargas</h4>
+                                        <ul class="grafico-legend">
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesCarga(dados.NomeNavio, 'Cargas Pendentes'); }">
+                                                    <span class="dash-documentacao-yellow"></span> Pendentes
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesCarga(dados.NomeNavio, 'Cargas Ag.Emissão'); }">
+                                                    <span class="dash-documentacao-blue"></span> Aguardando Emissão
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesCarga(dados.NomeNavio, 'Cargas Com erro'); }">
+                                                    <span class="dash-documentacao-red"></span> Com Erro
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesCarga(dados.NomeNavio, 'Cargas Geradas'); }">
+                                                    <span class="dash-documentacao-green"></span> Geradas
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <!-- ko if: dados.TotalCargas > 0 -->
+                                        <div class="grafico-pie">
+                                            <span class="grafico-pie--number" data-bind="text: dados.TotalCargas"></span>
+                                            <span data-bind="attr: { id: 'chartCargas' + $index() }" class="grafico-pie--chart"></span>
+                                        </div>
+                                        <!-- /ko -->
+                                        <!-- ko if: dados.TotalCargas == 0 -->
+                                        <div class="grafico-pie">
+                                        </div>
+                                        <!-- /ko -->
+                                    </div>
+                                    <div class="grafico">
+                                        <h4 class="grafico-title">SVMs</h4>
+                                        <ul class="grafico-legend">
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesSvm(dados.NomeNavio, 'SVM Pendentes'); }">
+                                                    <span class="dash-documentacao-yellow"></span> Pendentes
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesSvm(dados.NomeNavio, 'SVM Com erro'); }">
+                                                    <span class="dash-documentacao-red"></span> Com Erro
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesSvm(dados.NomeNavio, 'SVM Geradas'); }">
+                                                    <span class="dash-documentacao-green"></span> Geradas
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <!-- ko if: dados.TotalSvm > 0 -->
+                                        <div class="grafico-pie">
+                                            <span class="grafico-pie--number" data-bind="text: dados.TotalSvm"></span>
+                                            <span data-bind="attr: { id: 'chartSVMs' + $index() }" class="grafico-pie--chart"></span>
+                                        </div>
+                                        <!-- /ko -->
+                                        <!-- ko if: dados.TotalSvm == 0 -->
+                                        <div class="grafico-pie">
+                                        </div>
+                                        <!-- /ko -->
+                                    </div>
+                                    <div class="grafico">
+                                        <h4 class="grafico-title">Mercante</h4>
+                                        <ul class="grafico-legend">
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesMercante(dados.NomeNavio, 'Mercante Pendentes'); }">
+                                                    <span class="dash-documentacao-yellow"></span> Pendentes
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button data-bs-toggle="modal" data-bs-target="#divModalLegenda" data-bind="click: function(data, event) { pesquisaDetalhesMercante(dados.NomeNavio, 'Mercante Retornados'); }">
+                                                    <span class="dash-documentacao-green"></span> Retornados
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <!-- ko if: dados.TotalMercante > 0 -->
+                                        <div class="grafico-pie-mercante">
+                                            <span class="grafico-pie--number" data-bind="text: dados.TotalMercante"></span>
+                                            <span data-bind="attr: { id: 'chartMercante' + $index() }" class="grafico-pie--chart"></span>
+                                        </div>
+                                        <!-- /ko -->
+                                        <!-- ko if: dados.TotalMercante == 0 -->
+                                        <div class="grafico-pie">
+                                        </div>
+                                        <!-- /ko -->
+                                    </div>
+                                </div>
+                                <div class="card-mfe">
+                                    <b>MDF-e</b>
+                                    <span>Status: <b data-bind="text: dados.Mdfe"></b></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="knockoutDocumentacao">
+    <div id="divModalLegenda" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="tituloModalLegenda"></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fal fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <table width="100%" class="table table-bordered table-hover" cellspacing="0" id="tblDetalhesModalDash"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .grafico-legend button {
+        text-align: justify !important;
+    }
+</style>
+
+<script src="~/scripts/documentacao"></script>
+<script src="~/js-new/formplugins/select2/select2.bundle.js"></script>
+<script src="~/js-new/statistics/chartist/chartist.js"></script>
+<script type="text/javascript">
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadDocumentacao();
+        $('.select-embarque').select2();
+    });
+</script>

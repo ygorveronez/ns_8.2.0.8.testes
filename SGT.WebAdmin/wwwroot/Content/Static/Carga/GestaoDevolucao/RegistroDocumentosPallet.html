@@ -1,0 +1,109 @@
+﻿<div id="knockoutRegistroDocumentosPallet">
+    <div class="row" style="margin-bottom: 32px;">
+        <div class="col-md-11">
+            <h4 class="fw-bold">Registro de Documentos da Permuta</h4>
+            <span>Inclua os anexos necessários para confirmação.</span>
+        </div>
+    </div>
+    <div class="panel-container">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 360px">
+            <div id="adicionar-notas-container">
+                <span class="fs-3 info-title" id="info-title" style="font-size: 32px !important; font-weight: 700; text-align: center; display: block;">
+                    Para confirmar a Permuta é obrigatório incluir os <br>
+                    Documentos da nota (XML e PDF).
+                </span>
+                <div style="display: flex;justify-content: center; margin-top: 16px;">
+                    <button class="btn btn-outline-secondary waves-effect waves-themed" type="button" data-bind="click: AdicionarXMLNotasFiscais.eventClick, attr: { id: AdicionarXMLNotasFiscais.id}, enable: AdicionarXMLNotasFiscais.enable">
+                        <i class="fal fa-plus"></i><span data-bind="text: AdicionarXMLNotasFiscais.text"></span>
+                    </button>
+                </div>
+            </div>
+            <div id="registro-documentos-container">
+                <table width="100%" class="table table-bordered table-hover" id="grid-gestao-devolucao-registro-documentos-pallet" cellspacing="0"></table>
+                <div class="mt-4">
+                    <h5 class="fw-bold">Dados do XML</h5>
+                    <div class="row">
+                        <div class="col-12 d-grid" style="width: fit-content">
+                            <span class="info-title fw-bold text-uppercase mb-0" data-bind="text: Numero.text"></span>
+                            <span class="fw-400 fs-5" data-bind="text: Numero.val"></span>
+                        </div>
+                        <div class="col-12 d-grid" style="width: fit-content">
+                            <span class="info-title fw-bold text-uppercase mb-0" data-bind="text: Chave.text"></span>
+                            <span class="fw-400 fs-5" data-bind="text: Chave.val"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 d-grid" style="width: fit-content">
+                            <span class="info-title fw-bold text-uppercase mb-0" data-bind="text: Valor.text"></span>
+                            <span class="fw-400 fs-5" data-bind="text: Valor.val"></span>
+                        </div>
+                        <div class="col-12 d-grid" style="width: fit-content">
+                            <span class="info-title fw-bold text-uppercase mb-0" data-bind="text: DataEmissao.text"></span>
+                            <span class="fw-400 fs-5" data-bind="text: DataEmissao.val"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-4 align-items-center">
+                        <div class="col-12 col-md-3" data-bind="visible: ClientePagouNFe.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ClientePagouNFe.text, attr: { for: ClientePagouNFe.id }"></label>
+                                <select class="form-control" data-bind="class: ClientePagouNFe.requiredClass, options: ClientePagouNFe.options, optionsText: 'text', optionsValue: 'value', value: ClientePagouNFe.val, attr: { maxlength: ClientePagouNFe.maxlength, id : ClientePagouNFe.id}, enable: ClientePagouNFe.enable"></select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 mt-2">
+                            <button class="btn btn-outline-secondary waves-effect waves-themed" type="button" data-bind="click: AbrirModalAdicionarComprovantePagamento.eventClick, attr: { id: AbrirModalAdicionarComprovantePagamento.id}, enable: AbrirModalAdicionarComprovantePagamento.enable">
+                                <i class="fal fa-plus"></i><span data-bind="text: AbrirModalAdicionarComprovantePagamento.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3 mb-3" style="gap: 4px">
+                        <button class="btn btn-outline-primary" type="button" data-bind="click: CancelarEnvioDocumentos.eventClick, attr: { id: CancelarEnvioDocumentos.id}">
+                            <span data-bind="text: CancelarEnvioDocumentos.text"></span>
+                        </button>
+                        <button class="btn btn-success" type="button" data-bind="click: ConfirmarEnvioDocumentos.eventClick, attr: { id: ConfirmarEnvioDocumentos.id}, enable: ClientePagouNFe.enable">
+                            <span data-bind="text: ConfirmarEnvioDocumentos.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="divModalAdicionarArquivosNotasFiscaisPallet" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Adicionar Anexo</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group col-12 col-md-12" data-bind="visible: Arquivo.visible">
+                        <p class="form-label" data-bind="text: Arquivo.text"></p>
+                        <div class="custom-file" data-bind="visible: Arquivo.visible">
+                            <input type="file" placeholder="Selecione uma arquivo para anexar" class="custom-file-input" accept=".xml,.pdf, .jpg, .jpeg, .png" data-bind="attr: {id: Arquivo.id }, value: Arquivo.val" readonly>
+                            <label class="custom-file-label" data-bind="text: NomeArquivo.val, attr: { for: Arquivo.id }"></label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                            <textarea class="form-control" rows="4" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer d-flex justify-content-end">
+                    <button class="btn  btn-outline-primary" type="button" data-bind="click: Cancelar.eventClick, attr: { id: Cancelar.id}">
+                        <span data-bind="text: Cancelar.text"></span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-bind="click: AdicionarArquivo.eventClick, attr: { id: AdicionarArquivo.id}, visible: AdicionarArquivo.visible">
+                        <span data-bind="text: AdicionarArquivo.text"></span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-bind="click: AdicionarComprovante.eventClick, attr: { id: AdicionarComprovante.id}, visible: AdicionarComprovante.visible">
+                        <span data-bind="text: AdicionarComprovante.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

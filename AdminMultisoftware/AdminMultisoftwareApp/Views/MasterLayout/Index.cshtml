@@ -1,0 +1,350 @@
+﻿@using System.Web.Optimization
+
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@Html.Raw(ViewBag.Titulo)</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    @System.Web.Optimization.Styles.Render("~/css/bootstrap",
+                                           "~/css/fontAwesome",
+                                           "~/css/plugins",
+                                           "~/css/production",
+                                           "~/css/skins",
+                                           "~/css/bootstrap-datetimepicker",
+                                           "~/css/bootstrapSelect",
+                                           "~/css/yourStyle")
+
+    <link rel="shortcut icon" href="img/favicon/favicon.ico?v=2" type="image/x-icon">
+    <link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+</head>
+
+<body class="smart-style-3">
+    <header id="header">
+        <div id="logo-group">
+            <span id="logo"> <img src="~/img/LogoClienteLight.svg" style="margin-top:-15px;" alt="Multisoftware"></span>
+            <div id="knoutNotificacaoGlobal">
+                <span id="activity" class="activity-dropdown" data-bind="click: NaoVistas.eventClick, visible: Total.visible"><i class="fa fa-user"></i><b class="badge" data-bind="text: NaoVistas.val">0</b></span>
+                <div class="ajax-dropdown">
+                    <div class="ajax-notifications custom-scroll" data-bind="attr: {id : Total.id}, event: { scroll: Total.eventChange }">
+                        <ul class="notification-body" data-bind="foreach: Notificacoes">
+                            <li>
+                                <span data-bind="attr: {class: 'padding-10 ' + ReadClass.val()  }, click: URLPagina.eventClick">
+                                    <em data-bind="attr: {class: 'badge padding-5 no-border-radius ' + IconeCorFundo.val() + ' pull-left margin-right-5' }">
+                                        <i data-bind="attr: {class: 'fa ' + Icone.val() + ' fa-fw fa-2x'} "></i>
+                                    </em>
+                                    <span>
+                                        <span data-bind="text: Nota.val"></span>
+                                        <br>
+                                        <span class="pull-right font-xs text-muted"><i data-bind="text: DataNotificacao.val"></i></span>
+                                    </span>
+                                </span>
+                            </li>
+                        </ul>
+                        <ul class="notification-body" data-bind="visible: RequisicaoPendente.val">
+                            <li class="text-align-center">
+                                <a href="javascript:void(0);" class="btn txt-color-blue"><i class="fa fa-gear fa-2x fa-spin"></i> Carregando...</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <span>
+                        Ver todas as notificações
+                        <button type="button" title="ir para notificações" data-bind="click: VerTodasNotificacoes.eventClick" data-loading-text="<i class='fa fa-arrow-right'></i> " class="btn btn-xs btn-default pull-right">
+                            <i class="fa fa-arrow-right"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="pull-right">
+            <div id="hide-menu" class="btn-header pull-right">
+                <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+            </div>
+            <div id="logout" class="btn-header transparent pull-right">
+                <span>
+                    <a href="/Login" title="Sair do Sistema" data-action="userLogout" data-logout-msg="Você realmente deseja sair do sistema?">
+                        <i class="fa fa-sign-out"></i>
+                    </a>
+                </span>
+            </div>
+            <div id="fullscreen" class="btn-header transparent pull-right">
+                <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+            </div>
+            <div id="divAuditoriaGlobal" style="display:none" class="btn-header transparent pull-right">
+                <span style="cursor:pointer"><a href="#" title="Auditar"><i class="fa fa-eye"></i></a></span>
+            </div>
+            <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs">
+                <li class="">
+                    <div class="btn-header transparent pull-right" data-toggle="dropdown">
+                        <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-gear"></i></a> </span>
+                    </div>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="#Pessoas/AlterarSenha" id="show-shortcutadeu">
+                                <i class="fa fa-edit"></i>
+                                <span>
+                                    Alterar Senha
+                                </span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/Login" title="Sair do Sistema" data-action="userLogout" data-logout-msg="Você realmente deseja sair do sistema?"><i class="fa fa-sign-out"></i>Sair do Sistema</a>
+                        </li>
+                    </ul>
+                    <div class="pull-right" style="margin-top:15px; margin-right:10px;">
+                        <span>
+                            <i class="fa fa-user"></i>
+                            <span>
+                                @Session["NomeUsuario"]
+                            </span>
+                        </span>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </header>
+
+    <aside id="left-panel">
+
+        <div class="login-info">
+            <div class="login-info">
+                <span>
+                    <a href="#Pessoas/AlterarSenha" id="show-shortcut">
+                        <i class="fa fa-user"></i>
+                        <span>
+                            @Session["NomeUsuario"]
+                        </span>
+                    </a>
+
+                </span>
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                @if (ViewBag.AcessoModulos)
+                {
+                    <li class="">
+                        <a href="#Modulos/Modulo" title="Modulos"><i class="fa fa-lg fa-fw fa-cubes"></i> <span class="menu-item-parent">Modulos</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoFormulario)
+                {
+                    <li class="">
+                        <a href="#Modulos/Formulario" title="Formulários"><i class="fa fa-lg fa-fw fa-file-image-o"></i> <span class="menu-item-parent">Formulários</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoPermissaoPersonalizada)
+                {
+                    <li class="">
+                        <a href="#Modulos/PermissaoPersonalizada" title="Permissões Personalizadas"><i class="fa fa-lg fa-fw fa-check"></i> <span class="menu-item-parent">Permissões Personalizadas</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoUsuario)
+                {
+                    <li class="">
+                        <a href="#Usuarios/Usuario" title="Usuários"><i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent">Usuários</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoCliente)
+                {
+                    <li class="">
+                        <a href="#Pessoas/Cliente" title="Clientes"><i class="fa fa-lg fa-fw fa-users"></i> <span class="menu-item-parent">Clientes</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoClienteURLAcesso)
+                {
+                    <li class="">
+                        <a href="#Pessoas/ClienteURLAcesso" title="Cliente URL de Acesso"><i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent">Cliente URL de Acesso</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoClienteFormulario)
+                {
+                    <li class="">
+                        <a href="#Modulos/ClienteFormulario" title="Formulários do Cliente"><i class="fa fa-lg fa-fw fa-check-square-o"></i> <span class="menu-item-parent">Formulários do Cliente</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoClienteModulo)
+                {
+                    <li class="">
+                        <a href="#Modulos/ClienteModulo" title="Módulos do Cliente"><i class="fa fa-lg fa-fw fa-check-square"></i> <span class="menu-item-parent">Módulos do Cliente</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoInstanciaBase)
+                {
+                    <li class="">
+                        <a href="#Configuracoes/InstanciaBase" title="Instâncias de Base"><i class="fa fa-lg fa-fw fa-database"></i> <span class="menu-item-parent">Instâncias de Base</span></a>
+                    </li>
+                }
+                @if (ViewBag.AcessoMensagensAviso)
+                {
+                    <li class="">
+                        <a href="#Notificacoes/MensagemAviso" title="Mensagens de Aviso">
+                            <i class="fa fa-lg fa-fw fa-file-text-o"></i> <span class="menu-item-parent">Mensagens de Aviso</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
+
+    </aside>
+
+    <div id="main" role="main">
+
+        <div id="ribbon" style="display:none">
+
+            <span class="ribbon-button-alignment" style="display:none">
+                <span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true" data-reset-msg="Would you like to RESET all your saved widgets and clear LocalStorage?"><i class="fa fa-refresh"></i></span>
+            </span>
+            <ol class="breadcrumb" style="display:none"></ol>
+
+        </div>
+        <div id="content">
+
+        </div>
+
+        <div class="modal fade" id="divModalAuditoria" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document" id="knoutModalAuditoria">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x</button>
+                        <h4 class="modal-title" data-bind="text: Auditoria.text"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <table width="100%" class="table table-bordered table-hover" id="tableModalAuditoria"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="divModalDetalhesAuditoria" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document" id="knoutModalDetalhesAuditoria">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x</button>
+                        <h4 class="modal-title" data-bind="text: DetalhesAuditoria.text"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <table width="100%" class="table table-bordered table-hover" id="tableModalDetalheAuditoria"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="page-footer">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <span class="txt-color-white">nstech © @Html.Raw(ViewBag.AnoCorrente)</span>
+            </div>
+
+            <div class="col-xs-6 col-sm-6 text-right hidden-xs" id="knoutCentralProcessamento">
+                <div class="txt-color-white inline-block">
+                    <div data-bind="attr: { class: NadaParaProcessar.cssClass }" style="margin-right:10px;">
+                        <button class="btn btn-xs dropdown-toggle bg-color-blue txt-color-white" data-bind="click: NadaParaProcessar.eventClick">
+                            <i class="fa fa-gears"></i> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu pull-right text-left" data-bind="foreach: Processamentos">
+                            <li>
+                                <div class="padding-5">
+                                    <p class="txt-color-darken font-sm no-margin" data-bind="text: Descricao.val, attr:{title:Titulo.val}"></p>
+                                    <div class="progress progress-sm no-margin progress-striped active">
+                                        <div class="progress-bar progress-bar-success" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                        </ul>
+                        <ul class="dropdown-menu pull-right text-left" data-bind="visible: NadaParaProcessar.val">
+                            <li>
+                                <div class="padding-5">
+                                    <p class="txt-color-darken font-sm no-margin text-align-center">Nada para processar</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="shortcut">
+        <ul>
+            <li>
+                <a href="#ajax/inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
+            </li>
+            <li>
+                <a href="#ajax/calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
+            </li>
+            <li>
+                <a href="#ajax/gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a>
+            </li>
+            <li>
+                <a href="#ajax/invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span> </a>
+            </li>
+            <li>
+                <a href="#ajax/gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
+            </li>
+            <li>
+                <a href="#ajax/profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
+            </li>
+        </ul>
+    </div>
+    @Scripts.Render("~/scripts/jquery",
+                    "~/scripts/jqueryUI",
+                    "~/scripts/blockUI",
+                    "~/scripts/jqueryTouch",
+                    "~/scripts/fileDownload",
+                    "~/scripts/JarvisWidget",
+                    "~/scripts/appConfig",
+                    "~/scripts/myAppConfig",
+                    "~/scripts/bootstrap",
+                    "~/scripts/jqueryValidate",
+                    "~/scripts/maskedInput",
+                    "~/scripts/jqueryMbBrowser",
+                    "~/scripts/smartNotification",
+                    "~/scripts/fastClick",
+                    "~/scripts/maskMoney",
+                    "~/scripts/moment",
+                    "~/scripts/datetimepicker",
+                    "~/scripts/globalize",
+                    "~/scripts/dataTables",
+                    "~/scripts/bootstrapSelect",
+                    "~/scripts/knockout",
+                    "~/scripts/global",
+                    "~/scripts/twbsPagination",
+                    "~/scripts/global",
+                    "~/scripts/consultas",
+                    "~/scripts/enumeradores",
+                    "~/scripts/app")
+
+    <!--[if IE 8]>
+        <h1>Seu não suporta o Multi Embarcador por favor atualize seu navegador para uma versão mais atual e tente novamente.</h1>
+    <![endif]-->
+    <script src="js/plugin/datatables/jquery.dataTables.rowReordering.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            initApp.domReadyMisc();
+        });
+    </script>
+</body>
+
+
+
+</html>
+

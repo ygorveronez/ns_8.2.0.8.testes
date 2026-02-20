@@ -1,0 +1,218 @@
+﻿
+
+<section>
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Escalas</li>
+        <li class="breadcrumb-item active">Escala Veículo</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            Veículos em Escala
+        </h1>
+        <div class="subheader-help">
+            <button type="button" onclick="iniciarAjuda(960)" data-action="toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Abrir a ajuda da página" aria-label="Abrir a ajuda da página"><i class="fal fa-question-circle"></i></button>
+        </div>
+    </div>
+
+    <div id="knockoutPesquisaEscalaVeiculo">
+        <div class="panel">
+            <div class="panel-container">
+                <div class="panel-hdr">
+                    <h3><i class="fal fa-search"></i> Pesquisar Veículos em Escala</h3>
+                </div>
+                <div class="panel-content">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-5" data-bind="visible: ModeloVeicularCarga.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: ModeloVeicularCarga.text, attr: { for: ModeloVeicularCarga.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: ModeloVeicularCarga.requiredClass, value: ModeloVeicularCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: ModeloVeicularCarga.maxlength, id : ModeloVeicularCarga.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: ModeloVeicularCarga.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5" data-bind="visible: Veiculo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" data-bind="css: Veiculo.requiredClass, value: Veiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Veiculo.idBtnSearch}" type="button" aria-label="Buscar">
+                                                <i class="fal fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Situacao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Situacao.text, attr: { for: Situacao.id }"></label>
+                                    <select class="form-control" data-bind="class: Situacao.requiredClass, options: Situacao.options, optionsText: 'text', optionsValue: 'value', value: Situacao.val, attr: { maxlength: Situacao.maxlength, id : Situacao.id}"></select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12" data-bind="visible: SomenteVeiculosDataPrevisaoRetornoExcedida.visible">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" data-bind="checked: SomenteVeiculosDataPrevisaoRetornoExcedida.val, attr: { maxlength: SomenteVeiculosDataPrevisaoRetornoExcedida.maxlength, name: SomenteVeiculosDataPrevisaoRetornoExcedida.id, id: SomenteVeiculosDataPrevisaoRetornoExcedida.id }">
+                                        <label class="custom-control-label" data-bind="text: SomenteVeiculosDataPrevisaoRetornoExcedida.text, attr: { for: SomenteVeiculosDataPrevisaoRetornoExcedida.id }"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                            <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-container">
+                <div class="panel-hdr">
+                    <h3>Veículos</h3>
+                </div>
+                <div class="panel-content">
+                    <div class="d-flex justify-content-end mb-2">
+                        <button class="btn btn-primary" type="button" data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id}">
+                            <i class="fal fa-plus"></i><span data-bind="text: Adicionar.text"></span>
+                        </button>
+                    </div>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade" id="divModalEscalaVeiculoAdicionar" role="dialog" aria-hidden="true">
+    <div id="knockoutEscalaVeiculoAdicionar" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Adicionar Veículo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12 col-md-12">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Veiculo.text, attr: { for: Veiculo.id }"></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="css: Veiculo.requiredClass, value: Veiculo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Veiculo.maxlength, id : Veiculo.id}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Veiculo.idBtnSearch}" type="button" aria-label="Buscar">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-default me-2" type="button" data-bind="click: Cancelar.eventClick, attr: { id : Cancelar.id}">
+                        <span data-bind="text: Cancelar.text"></span>
+                    </button>
+                    <button class="btn btn-primary" type="button" data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id}">
+                        <span data-bind="text: Adicionar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="divModalEscalaVeiculoDetalhe" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalhes</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutEscalaVeiculoDetalhe">
+                <table class="table table-clean table-sm align-self-end">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong data-bind="text: Veiculo.text"></strong>
+                            </td>
+                            <td>
+                                <span data-bind="text: Veiculo.val"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong data-bind="text: SituacaoAtual.text"></strong>
+                            </td>
+                            <td>
+                                <span data-bind="text: SituacaoAtual.val"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="panel-hdr"><h3>Histórico</h3></div>
+                <table width="100%" class="table table-bordered table-hover dataTable no-footer" id="grid-detalhes-escala-veiculo" cellspacing="0"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="divModalEscalaVeiculoSuspensao" role="dialog" aria-hidden="true">
+    <div id="knockoutEscalaVeiculoSuspensao" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Suspender Veículo</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: MotivoRemocao.text, attr: { for: MotivoRemocao.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: MotivoRemocao.requiredClass, value: MotivoRemocao.val, valueUpdate: 'afterkeydown', attr: { maxlength: MotivoRemocao.maxlength, id : MotivoRemocao.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: MotivoRemocao.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: DataPrevisaoRetorno.text, attr: { for: DataPrevisaoRetorno.id }"></label>
+                            <input type="text" class="form-control" data-bind="class: DataPrevisaoRetorno.requiredClass, value: DataPrevisaoRetorno.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataPrevisaoRetorno.maxlength, id : DataPrevisaoRetorno.id}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-default me-2" type="button" data-bind="click: Cancelar.eventClick, attr: { id : Cancelar.id}">
+                        <span data-bind="text: Cancelar.text"></span>
+                    </button>
+                    <button class="btn btn-success" type="button" data-bind="click: Suspender.eventClick, attr: { id : Suspender.id}">
+                        <span data-bind="text: Suspender.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/escalaVeiculo"></script>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadEscalaVeiculo();
+    });
+
+</script>

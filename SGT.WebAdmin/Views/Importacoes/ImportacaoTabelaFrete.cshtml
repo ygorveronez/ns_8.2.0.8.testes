@@ -1,0 +1,670 @@
+﻿﻿
+
+<style>
+    @@media (min-width: 992px) {
+        .col-md-2-dot-4 {
+            width: 20%;
+        }
+    }
+</style>
+
+<section id="widget-grid" class="">
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item">Importações</li>
+        <li class="breadcrumb-item active">Importação Tabela Frete</li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            Importações de Tabelas de Frete
+        </h1>
+        <div class="subheader-help">
+            <button type="button" onclick="iniciarAjuda(205)" data-action="toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Abrir a ajuda da página" aria-label="Abrir a ajuda da página"><i class="fal fa-question-circle"></i></button>
+        </div>
+
+    </div>
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-hdr">
+                <h3>
+                    <i class="fal fa-file-alt"></i>
+                    Formulário de Importação
+                </h3>
+            </div>
+            <div class="panel-content">
+                <form>
+                    <div class="row" id="knockoutImportacaoTabelaFrete">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="visible: ErrosImportacao.visible, attr: {id: ErrosImportacao.idGrid}" cellspacing="0"></table>
+                        <div class="col-12 col-md-12" data-bind="visible: DownloadRetornoProcessamento.visible">
+                            <div class="form-group">
+                                <button class="btn btn-default ms-2" type="button" data-bind="click: DownloadRetornoProcessamento.eventClick, visible: DownloadRetornoProcessamento.visible, attr: { id: DownloadRetornoProcessamento.id}">
+                                    <span data-bind="text: DownloadRetornoProcessamento.text"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <a class="hidden" id="lnkDownloadProcessamento"></a>
+                        <div class="col-12 col-md-6" data-bind="visible: TabelaFrete.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: TabelaFrete.text, attr: { for: TabelaFrete.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: TabelaFrete.requiredClass, value: TabelaFrete.val, valueUpdate: 'afterkeydown', attr: { maxlength: TabelaFrete.maxlength, id : TabelaFrete.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TabelaFrete.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" data-bind="visible: Vigencia.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Vigencia.text, attr: { for: Vigencia.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Vigencia.requiredClass, value: Vigencia.val, valueUpdate: 'afterkeydown', attr: { maxlength: Vigencia.maxlength, id : Vigencia.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Vigencia.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" data-bind="visible: TipoOperacao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: TipoOperacao.text, attr: { for: TipoOperacao.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: TipoOperacao.requiredClass, value: TipoOperacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoOperacao.maxlength, id : TipoOperacao.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoOperacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" data-bind="visible: Origem.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Origem.text, attr: { for: Origem.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Origem.requiredClass, value: Origem.val, valueUpdate: 'afterkeydown', attr: { maxlength: Origem.maxlength, id : Origem.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Origem.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" data-bind="visible: Destino.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Destino.text, attr: { for: Destino.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Destino.requiredClass, value: Destino.val, valueUpdate: 'afterkeydown', attr: { maxlength: Destino.maxlength, id : Destino.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Destino.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" data-bind="visible: Empresa.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Empresa.text, attr: { for: Empresa.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Empresa.requiredClass, value: Empresa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Empresa.maxlength, id : Empresa.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Empresa.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3" data-bind="visible: Moeda.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Moeda.text, attr: { for: Moeda.id }"></label>
+                                <select class="form-control" data-bind="class: Moeda.requiredClass, options: Moeda.options, optionsText: 'text', optionsValue: 'value', value: Moeda.val, attr: { maxlength: Moeda.maxlength, id : Moeda.id}"></select>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3" data-bind="visible: TipoPagamento.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: TipoPagamento.text, attr: { for: TipoPagamento.id }"></label>
+                                <select class="form-control" data-bind="class: TipoPagamento.requiredClass, options: TipoPagamento.options, optionsText: 'text', optionsValue: 'value', value: TipoPagamento.val, attr: { maxlength: TipoPagamento.maxlength, id : TipoPagamento.id}"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-12 col-md-12" data-bind="visible: Arquivo.visible">
+                            <p class="form-label" data-bind="text: Arquivo.text"></p>
+                            <div class="custom-file" data-bind="visible: Arquivo.visible">
+                                <input type="file" class="custom-file-input" data-bind="value: Arquivo.val, attr: { id: Arquivo.id }" readonly>
+                                <label class="custom-file-label" data-bind="attr: {for: Arquivo.id}, text: Arquivo.val">Selecione o arquivo para importação</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item active">
+                                    <a href="#tabGerais" class="nav-link active" data-bs-toggle="tab">
+                                        <span class="hidden-mobile hidden-tablet">Gerais</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabOrigemDestino" class="nav-link" data-bs-toggle="tab">
+                                        <span class="hidden-mobile hidden-tablet">Origem e Destino</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabParametrosSaida" class="nav-link" data-bs-toggle="tab">
+                                        <span class="hidden-mobile hidden-tablet">Parâmetros de Saída</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content border border-1 border-top-0 mt-0 p-3">
+                                <div class="tab-pane fade active show" id="tabGerais">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4" data-bind="visible: LinhaInicioDados.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: LinhaInicioDados.text, attr: { for: LinhaInicioDados.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: LinhaInicioDados.requiredClass, value: LinhaInicioDados.val, valueUpdate: 'afterkeydown', attr: { maxlength: LinhaInicioDados.maxlength, id : LinhaInicioDados.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaParametrosBase.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaParametrosBase.text, attr: { for: ColunaParametrosBase.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaParametrosBase.requiredClass, value: ColunaParametrosBase.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaParametrosBase.maxlength, id : ColunaParametrosBase.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaCodigoIntegracao.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaCodigoIntegracao.text, attr: { for: ColunaCodigoIntegracao.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaCodigoIntegracao.requiredClass, value: ColunaCodigoIntegracao.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaCodigoIntegracao.maxlength, id : ColunaCodigoIntegracao.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaPrioridadeUso.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaPrioridadeUso.text, attr: { for: ColunaPrioridadeUso.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaPrioridadeUso.requiredClass, value: ColunaPrioridadeUso.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaPrioridadeUso.maxlength, id : ColunaPrioridadeUso.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaTransportador.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaTransportador.text, attr: { for: ColunaTransportador.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaTransportador.requiredClass, value: ColunaTransportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaTransportador.maxlength, id : ColunaTransportador.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaContratoTransportador.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaContratoTransportador.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaContratoTransportador.requiredClass, value: ColunaContratoTransportador.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaContratoTransportador.maxlength, id : ColunaContratoTransportador.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaObservacaoInterna.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaObservacaoInterna.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaObservacaoInterna.requiredClass, value: ColunaObservacaoInterna.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaObservacaoInterna.maxlength, id : ColunaObservacaoInterna.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaTipoOperacao.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaTipoOperacao.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaTipoOperacao.requiredClass, value: ColunaTipoOperacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaTipoOperacao.maxlength, id : ColunaTipoOperacao.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaTipoCarga.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaTipoCarga.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaTipoCarga.requiredClass, value: ColunaTipoCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaTipoCarga.maxlength, id : ColunaTipoCarga.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaFronteira.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaFronteira.text, attr: { for: ColunaFronteira.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaFronteira.requiredClass, value: ColunaFronteira.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaFronteira.maxlength, id : ColunaFronteira.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaKMSistema.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaKMSistema.text, attr: { for: ColunaKMSistema.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaKMSistema.requiredClass, value: ColunaKMSistema.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaKMSistema.maxlength, id : ColunaKMSistema.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" data-bind="visible: NaoAtualizarValoresZerados.visible">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" data-bind="checked: NaoAtualizarValoresZerados.val, attr: { maxlength: NaoAtualizarValoresZerados.maxlength, name: NaoAtualizarValoresZerados.id, id: NaoAtualizarValoresZerados.id }">
+                                                <label class="custom-control-label" data-bind="text: NaoAtualizarValoresZerados.text, attr: { for: NaoAtualizarValoresZerados.id }"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="tabOrigemDestino">
+                                    <div class="row">
+                                        <div class="col-12 col-md-12 mb-3" data-bind="visible: ColunaOrigem.visible">
+                                            <div class="card">
+                                                <div class="card-header d-flex align-items-center justify-content-between">
+                                                    <h3 class="card-title">
+                                                        <i class="fal fa-map-marker"></i>
+                                                        Origens
+                                                    </h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaOrigem.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaOrigem.text, attr: { for: ColunaOrigem.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaOrigem.requiredClass, value: ColunaOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaOrigem.maxlength, id : ColunaOrigem.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaEstadoOrigem.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaEstadoOrigem.text, attr: { for: ColunaEstadoOrigem.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaEstadoOrigem.requiredClass, value: ColunaEstadoOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaEstadoOrigem.maxlength, id : ColunaEstadoOrigem.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaClienteOrigem.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaClienteOrigem.text, attr: { for: ColunaClienteOrigem.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaClienteOrigem.requiredClass, value: ColunaClienteOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaClienteOrigem.maxlength, id : ColunaClienteOrigem.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaCEPOrigem.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaCEPOrigem.text, attr: { for: ColunaCEPOrigem.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaCEPOrigem.requiredClass, value: ColunaCEPOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaCEPOrigem.maxlength, id : ColunaCEPOrigem.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaRotaOrigem.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaRotaOrigem.text, attr: { for: ColunaRotaOrigem.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaRotaOrigem.requiredClass, value: ColunaRotaOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaRotaOrigem.maxlength, id : ColunaRotaOrigem.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaRegiaoOrigem.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaRegiaoOrigem.text, attr: { for: ColunaRegiaoOrigem.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaRegiaoOrigem.requiredClass, value: ColunaRegiaoOrigem.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaRegiaoOrigem.maxlength, id : ColunaRegiaoOrigem.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12" data-bind="visible: FreteValidoParaQualquerOrigem.visible">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" data-bind="checked: FreteValidoParaQualquerOrigem.val, attr: { maxlength: FreteValidoParaQualquerOrigem.maxlength, name: FreteValidoParaQualquerOrigem.id, id: FreteValidoParaQualquerOrigem.id }">
+                                                                <label class="custom-control-label" data-bind="text: FreteValidoParaQualquerOrigem.text, attr: { for: FreteValidoParaQualquerOrigem.id }"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-12" data-bind="visible: ColunaDestino.visible">
+                                            <div class="card">
+                                                <div class="card-header d-flex align-items-center justify-content-between">
+                                                    <h3 class="card-title">
+                                                        <i class="fal fa-map-marker"></i>
+                                                        Destinos
+                                                    </h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaDestino.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaDestino.text, attr: { for: ColunaDestino.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaDestino.requiredClass, value: ColunaDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaDestino.maxlength, id : ColunaDestino.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaEstadoDestino.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaEstadoDestino.text, attr: { for: ColunaEstadoDestino.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaEstadoDestino.requiredClass, value: ColunaEstadoDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaEstadoDestino.maxlength, id : ColunaEstadoDestino.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaClienteDestino.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaClienteDestino.text, attr: { for: ColunaClienteDestino.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaClienteDestino.requiredClass, value: ColunaClienteDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaClienteDestino.maxlength, id : ColunaClienteDestino.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaCEPDestino.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaCEPDestino.text, attr: { for: ColunaCEPDestino.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaCEPDestino.requiredClass, value: ColunaCEPDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaCEPDestino.maxlength, id : ColunaCEPDestino.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaRotaDestino.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaRotaDestino.text, attr: { for: ColunaRotaDestino.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaRotaDestino.requiredClass, value: ColunaRotaDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaRotaDestino.maxlength, id : ColunaRotaDestino.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaRegiaoDestino.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaRegiaoDestino.text, attr: { for: ColunaRegiaoDestino.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaRegiaoDestino.requiredClass, value: ColunaRegiaoDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaRegiaoDestino.maxlength, id : ColunaRegiaoDestino.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaTomadorDestino.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaTomadorDestino.text"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaTomadorDestino.requiredClass, value: ColunaTomadorDestino.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaTomadorDestino.maxlength, id : ColunaTomadorDestino.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-4" data-bind="visible: ColunaCEPDestinoDiasUteis.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaCEPDestinoDiasUteis.text, attr: { for: ColunaCEPDestinoDiasUteis.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaCEPDestinoDiasUteis.requiredClass, value: ColunaCEPDestinoDiasUteis.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaCEPDestinoDiasUteis.maxlength, id : ColunaCEPDestinoDiasUteis.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaLeadTime.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaLeadTime.text, attr: { for: ColunaLeadTime.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaLeadTime.requiredClass, value: ColunaLeadTime.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaLeadTime.maxlength, id : ColunaLeadTime.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaSeg.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaSeg.text, attr: { for: ColunaSeg.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaSeg.requiredClass, value: ColunaSeg.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaSeg.maxlength, id : ColunaSeg.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaTer.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaTer.text, attr: { for: ColunaTer.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaTer.requiredClass, value: ColunaTer.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaTer.maxlength, id : ColunaTer.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaQua.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaQua.text, attr: { for: ColunaQua.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaQua.requiredClass, value: ColunaQua.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaQua.maxlength, id : ColunaQua.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaQui.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaQui.text, attr: { for: ColunaQui.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaQui.requiredClass, value: ColunaQui.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaQui.maxlength, id : ColunaQui.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaSex.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaSex.text, attr: { for: ColunaSex.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaSex.requiredClass, value: ColunaSex.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaSex.maxlength, id : ColunaSex.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaSab.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaSab.text, attr: { for: ColunaSab.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaSab.requiredClass, value: ColunaSab.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaSab.maxlength, id : ColunaSab.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12 col-md-2" data-bind="visible: ColunaDom.visible">
+                                                            <div class="form-group">
+                                                                <label class="form-label" data-bind="text: ColunaDom.text, attr: { for: ColunaDom.id }"></label>
+                                                                <input type="text" class="form-control" data-bind="class: ColunaDom.requiredClass, value: ColunaDom.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaDom.maxlength, id : ColunaDom.id}" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-12" data-bind="visible: FreteValidoParaQualquerDestino.visible">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" data-bind="checked: FreteValidoParaQualquerDestino.val, attr: { maxlength: FreteValidoParaQualquerDestino.maxlength, name: FreteValidoParaQualquerDestino.id, id: FreteValidoParaQualquerDestino.id }">
+                                                                <label class="custom-control-label" data-bind="text: FreteValidoParaQualquerDestino.text, attr: { for: FreteValidoParaQualquerDestino.id }"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="tabParametrosSaida">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaCanalEntrega.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaCanalEntrega.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaCanalEntrega.requiredClass, value: ColunaCanalEntrega.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaCanalEntrega.maxlength, id : ColunaCanalEntrega.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaPercentualRota.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaPercentualRota.text, attr: { for: ColunaPercentualRota.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaPercentualRota.requiredClass, value: ColunaPercentualRota.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaPercentualRota.maxlength, id : ColunaPercentualRota.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaQuantidadeEntregas.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaQuantidadeEntregas.text, attr: { for: ColunaQuantidadeEntregas.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaQuantidadeEntregas.requiredClass, value: ColunaQuantidadeEntregas.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaQuantidadeEntregas.maxlength, id : ColunaQuantidadeEntregas.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaCapacidadeOTM.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaCapacidadeOTM.text, attr: { for: ColunaCapacidadeOTM.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaCapacidadeOTM.requiredClass, value: ColunaCapacidadeOTM.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaCapacidadeOTM.maxlength, id : ColunaCapacidadeOTM.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaDominioOTM.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaDominioOTM.text, attr: { for: ColunaDominioOTM.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaDominioOTM.requiredClass, value: ColunaDominioOTM.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaDominioOTM.maxlength, id : ColunaDominioOTM.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaTipoIntegracao.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaTipoIntegracao.text, attr: { for: ColunaTipoIntegracao.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaTipoIntegracao.requiredClass, value: ColunaTipoIntegracao.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaTipoIntegracao.maxlength, id : ColunaTipoIntegracao.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaPontoPlanejamentoTransporte.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaPontoPlanejamentoTransporte.text, attr: { for: ColunaPontoPlanejamentoTransporte.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaPontoPlanejamentoTransporte.requiredClass, value: ColunaPontoPlanejamentoTransporte.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaPontoPlanejamentoTransporte.maxlength, id : ColunaPontoPlanejamentoTransporte.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaCanalVenda.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaCanalVenda.text, attr: { for: ColunaCanalVenda.id }"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaCanalVenda.requiredClass, value: ColunaCanalVenda.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaCanalVenda.maxlength, id : ColunaCanalVenda.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaGrupoCarga.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaGrupoCarga.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaGrupoCarga.requiredClass, value: ColunaGrupoCarga.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaGrupoCarga.maxlength, id : ColunaGrupoCarga.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaGerenciarCapacidade.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaGerenciarCapacidade.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaGerenciarCapacidade.requiredClass, value: ColunaGerenciarCapacidade.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaGerenciarCapacidade.maxlength, id : ColunaGerenciarCapacidade.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaEstruturaTabela.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaEstruturaTabela.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaEstruturaTabela.requiredClass, value: ColunaEstruturaTabela.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaEstruturaTabela.maxlength, id : ColunaEstruturaTabela.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-4" data-bind="visible: ColunaLeadTimeDias.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: ColunaLeadTimeDias.text"></label>
+                                                <input type="text" class="form-control" data-bind="class: ColunaLeadTimeDias.requiredClass, value: ColunaLeadTimeDias.val, valueUpdate: 'afterkeydown', attr: { maxlength: ColunaLeadTimeDias.maxlength, id : ColunaLeadTimeDias.id}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="knockoutParametros" class="mt-4">
+                        <div class="row">
+                            <div class="col-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header d-flex align-items-center justify-content-between">
+                                        <h3 class="card-title">
+                                            <i class="fal fa-list"></i>
+                                            Valores do Frete
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Grid.id}" cellspacing="0"></table>
+
+                                            <div class="col-12 col-md-3" data-bind="visible: ParametroBase.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: ParametroBase.text, attr: { for: ParametroBase.id }"></label>
+                                                    <select class="form-control" data-bind="class: ParametroBase.requiredClass, options: ParametroBase.options, optionsText: 'text', optionsValue: 'value', value: ParametroBase.val, attr: { maxlength: ParametroBase.maxlength, id : ParametroBase.id}"></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-3" data-bind="visible: ItemParametroBase.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: ItemParametroBase.text, attr: { for: ItemParametroBase.id }"></label>
+                                                    <select class="form-control" data-bind="class: ItemParametroBase.requiredClass, options: ItemParametroBase.options, optionsText: 'text', optionsValue: 'value', value: ItemParametroBase.val, attr: { maxlength: ItemParametroBase.maxlength, id : ItemParametroBase.id}"></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-3" data-bind="visible: TipoValor.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoValor.text, attr: { for: TipoValor.id }"></label>
+                                                    <select class="form-control" data-bind="class: TipoValor.requiredClass, options: TipoValor.options, optionsText: 'text', optionsValue: 'value', value: TipoValor.val, attr: { maxlength: TipoValor.maxlength, id : TipoValor.id}"></select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-3" data-bind="visible: Coluna.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: Coluna.text, attr: { for: Coluna.id }"></label>
+                                                    <input type="text" class="form-control" data-bind="class: Coluna.requiredClass, value: Coluna.val, valueUpdate: 'afterkeydown', attr: { maxlength: Coluna.maxlength, id : Coluna.id}" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-6">
+                                                <button class="btn btn-success  waves-effect waves-themed botaoDentroSmartAdmimForm" data-bind="click: Adicionar.eventClick, attr: { id: Adicionar.id}" type="button">
+                                                    <i class="fal fa-plus"></i><span data-bind="text: Adicionar.text"></span>
+                                                </button>
+                                                <button class="btn btn-danger waves-effect waves-themed botaoDentroSmartAdmimForm me-2" data-bind="click: ExcluirTodos.eventClick, attr: { id: ExcluirTodos.id}" type="button">
+                                                    <i class="fal fa-trash"></i><span data-bind="text: ExcluirTodos.text"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <footer class="row mb-3 me-2">
+                <div id="knockoutCRUDImportacaoTabelaFrete" class="d-flex justify-content-end">
+                    <button class="btn btn-default ms-2" type="button" data-bind="click: LayoutImportacao.eventClick, visible: LayoutImportacao.visible, attr: { id: LayoutImportacao.id}">
+                        <span data-bind="text: LayoutImportacao.text"></span>
+                    </button>
+
+                    <button class="btn btn-default ms-2" type="button" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { id: Cancelar.id}">
+                        <i class="fal fa-ban"></i><span data-bind="text: Cancelar.text"></span>
+                    </button>
+
+                    <button class="btn btn-success ms-2" type="button" data-bind="click: Importar.eventClick, visible: Importar.visible, attr: { id: Importar.id }">
+                        <span data-bind="text: Importar.text"></span>
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+</section>
+
+<div id="divModalLayoutImportacao" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutLayoutImportacao" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Layout de Importação</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Descricao.text"></label>
+                            <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button class="btn btn-success" type="button" style="margin-top: 32px;" data-bind="click: Salvar.eventClick, attr: { id : Salvar.id}">
+                            <i class="fal fa-check"></i><span data-bind="text: Salvar.text"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Grid.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/importacaoTabelaFrete"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    _CONFIGURACAO_TMS = $.extend({}, _CONFIGURACAO_TMS, @Html.Raw(ViewBag.ConfiguracoesImportacaoTabelaFrete));
+
+    $(document).ready(function () {
+        loadImportacaoTabelaFrete();
+    });
+
+</script>

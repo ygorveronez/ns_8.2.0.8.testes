@@ -1,0 +1,26 @@
+﻿var EnumCSTICMS = {
+    CST00: 1,
+    CST10: 2,
+    CST20: 3,
+    CST30: 4,
+    CST40: 5,
+    CST41: 6,
+    CST50: 7,
+    CST51: 8,
+    CST60: 9,
+    CST70: 10,
+    CST90: 11,
+    CSOSN101: 12,
+    CSOSN102: 13,
+    CSOSN103: 14,
+    CSOSN201: 15,
+    CSOSN202: 16,
+    CSOSN203: 17,
+    CSOSN300: 18,
+    CSOSN400: 19,
+    CSOSN500: 20,
+    CSOSN900: 21,
+    CST61: 22,
+
+
+}

@@ -1,0 +1,842 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Documentos</li>
+    <li class="breadcrumb-item active">Modelos Documento Fiscal</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        Modelos de Documentos Fiscais
+    </h1>
+</div>
+
+<div id="knockoutPesquisaModeloDocumentoFiscal">
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <button class="btn btn-primary waves-effect waves-themed" data-bind="click: ExibirFiltros.eventClick, id: ExibirFiltros.id">
+                    <i class="fal fa-search"></i>
+                    Pesquisar Modelos de Documentos Fiscais
+                </button>
+
+                <div class="mt-3" data-bind="id: ExibirFiltros.idFade, fadeVisible: ExibirFiltros.visibleFade">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 col-md-10" data-bind="visible: Descricao.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                    <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-2" data-bind="visible: Ativo.visible">
+                                <div class="form-group">
+                                    <label class="form-label" data-bind="text: Ativo.text, attr: { for: Ativo.id }"></label>
+                                    <select class="form-control" data-bind="options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { id : Ativo.id}"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="d-flex align-items-center justify-content-end mb-3">
+                        <button class="btn btn-primary waves-effect waves-themed btnPesquisarFiltroPesquisa" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}" type="button">
+                            <i class="fal fa-search"></i><span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel mt-3">
+    <div class="panel-container">
+        <div class="panel-content">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a href="#tabDetalhes" class="nav-link active" data-bs-toggle="tab">
+                        <i class="fal fa-edit"></i><span class="hidden-mobile hidden-tablet">Detalhes </span>
+                    </a>
+                </li>
+                <li class="nav-item d-none" id="liTabMovimentoFinanceiro">
+                    <a href="#tabMovimentoFinanceiro" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-dollar"></i><span class="hidden-mobile hidden-tablet">Movimento Financeiro de Emissão </span>
+                    </a>
+                </li>
+                <li class="nav-item d-none" id="liTabMovimentoFinanceiroEntrada">
+                    <a href="#tabMovimentoFinanceiroEntrada" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-dollar"></i><span class="hidden-mobile hidden-tablet">Movimento Financeiro de Entrada </span>
+                    </a>
+                </li>
+
+                <li class="nav-item d-none" id="liTabSerie">
+                    <a href="#knockoutSerie" class="nav-link" data-bs-toggle="tab">
+                        <i class="fal fa-list"></i><span class="hidden-mobile hidden-tablet">Séries para Emissão</span>
+                    </a>
+                </li>
+            </ul>
+            <div id="tabsModeloDocumento">
+                <div id="knockoutCadastroModeloDocumentoFiscal" class="tab-content border border-top-0 p-3">
+                    <div class="tab-pane fade active show" role="tabpanel" id="tabDetalhes">
+                        <form novalidate>
+                            <div class="row">
+                                <div class="col-12 col-md-12" data-bind="visible: Descricao.visible, css: { 'col-md-9': Especie.visible }">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: Descricao.requiredClass, enable: Editavel.val, value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: Ativo.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Ativo.text, attr: { for: Ativo.id }"></label>
+                                        <select class="form-control" data-bind="class: Ativo.requiredClass, options: Ativo.options, optionsText: 'text', optionsValue: 'value', value: Ativo.val, attr: { maxlength: Ativo.maxlength, id : Ativo.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: Abreviacao.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Abreviacao.text, attr: { for: Abreviacao.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: Abreviacao.requiredClass, value: Abreviacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Abreviacao.maxlength, id : Abreviacao.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: Numero.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Numero.text, attr: { for: Numero.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: Numero.requiredClass, value: Numero.val, valueUpdate: 'afterkeydown', attr: { maxlength: Numero.maxlength, id : Numero.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: Especie.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: Especie.text, attr: { for: Especie.id }"></label>
+                                        <input type="text" class="form-control" data-bind="class: Especie.requiredClass, value: Especie.val, valueUpdate: 'afterkeydown', attr: { maxlength: Especie.maxlength, id : Especie.id}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3" data-bind="visible: TipoDocumentoCreditoDebito.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: TipoDocumentoCreditoDebito.text, attr: { for: TipoDocumentoCreditoDebito.id }"></label>
+                                        <select class="form-control" data-bind="class: TipoDocumentoCreditoDebito.requiredClass, options: TipoDocumentoCreditoDebito.options, optionsText: 'text', optionsValue: 'value', value: TipoDocumentoCreditoDebito.val, attr: { maxlength: TipoDocumentoCreditoDebito.maxlength, id : TipoDocumentoCreditoDebito.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: AverbarDocumento.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: AverbarDocumento.val, attr: { maxlength: AverbarDocumento.maxlength, name: AverbarDocumento.id, id: AverbarDocumento.id }">
+                                            <label class="custom-control-label" data-bind="text: AverbarDocumento.text, attr: { for: AverbarDocumento.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: UtilizarNumeracaoCTe.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: UtilizarNumeracaoCTe.val, attr: { maxlength: UtilizarNumeracaoCTe.maxlength, name: UtilizarNumeracaoCTe.id, id: UtilizarNumeracaoCTe.id }">
+                                            <label class="custom-control-label" data-bind="text: UtilizarNumeracaoCTe.text, attr: { for: UtilizarNumeracaoCTe.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: UtilizarNumeracaoNFe.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: UtilizarNumeracaoNFe.val, attr: { maxlength: UtilizarNumeracaoNFe.maxlength, name: UtilizarNumeracaoNFe.id, id: UtilizarNumeracaoNFe.id }">
+                                            <label class="custom-control-label" data-bind="text: UtilizarNumeracaoNFe.text, attr: { for: UtilizarNumeracaoNFe.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: NaoGerarFaturamento.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: NaoGerarFaturamento.val, attr: { maxlength: NaoGerarFaturamento.maxlength, name: NaoGerarFaturamento.id, id: NaoGerarFaturamento.id }">
+                                            <label class="custom-control-label" data-bind="text: NaoGerarFaturamento.text, attr: { for: NaoGerarFaturamento.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: GerarISSAutomaticamente.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: GerarISSAutomaticamente.val, attr: { maxlength: GerarISSAutomaticamente.maxlength, name: GerarISSAutomaticamente.id, id: GerarISSAutomaticamente.id }">
+                                            <label class="custom-control-label" data-bind="text: GerarISSAutomaticamente.text, attr: { for: GerarISSAutomaticamente.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: NaoGerarEscrituracao.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: NaoGerarEscrituracao.val, attr: { maxlength: NaoGerarEscrituracao.maxlength, name: NaoGerarEscrituracao.id, id: NaoGerarEscrituracao.id }">
+                                            <label class="custom-control-label" data-bind="text: NaoGerarEscrituracao.text, attr: { for: NaoGerarEscrituracao.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: CalcularImpostos.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: CalcularImpostos.val, attr: { maxlength: CalcularImpostos.maxlength, name: CalcularImpostos.id, id: CalcularImpostos.id }">
+                                            <label class="custom-control-label" data-bind="text: CalcularImpostos.text, attr: { for: CalcularImpostos.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: DocumentoComMoedaEstrangeira.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: DocumentoComMoedaEstrangeira.val, attr: { maxlength: DocumentoComMoedaEstrangeira.maxlength, name: DocumentoComMoedaEstrangeira.id, id: DocumentoComMoedaEstrangeira.id }">
+                                            <label class="custom-control-label" data-bind="text: DocumentoComMoedaEstrangeira.text, attr: { for: DocumentoComMoedaEstrangeira.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: MoedaCotacaoBancoCentral.visible">
+                                    <div class="form-group">
+                                        <label class="form-label" data-bind="text: MoedaCotacaoBancoCentral.text, attr: { for: MoedaCotacaoBancoCentral.id }"></label>
+                                        <select class="form-control" data-bind="class: MoedaCotacaoBancoCentral.requiredClass, options: MoedaCotacaoBancoCentral.options, optionsText: 'text', optionsValue: 'value', value: MoedaCotacaoBancoCentral.val, attr: { maxlength: MoedaCotacaoBancoCentral.maxlength, id : MoedaCotacaoBancoCentral.id}"></select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: DocumentoTipoCRT.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: DocumentoTipoCRT.val, attr: { maxlength: DocumentoTipoCRT.maxlength, name: DocumentoTipoCRT.id, id: DocumentoTipoCRT.id }">
+                                            <label class="custom-control-label" data-bind="text: DocumentoTipoCRT.text, attr: { for: DocumentoTipoCRT.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12" data-bind="visible: DescontarValorDesseDocumentoFatura.visible">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" data-bind="checked: DescontarValorDesseDocumentoFatura.val, attr: { maxlength: DescontarValorDesseDocumentoFatura.maxlength, name: DescontarValorDesseDocumentoFatura.id, id: DescontarValorDesseDocumentoFatura.id }">
+                                            <label class="custom-control-label" data-bind="text: DescontarValorDesseDocumentoFatura.text, attr: { for: DescontarValorDesseDocumentoFatura.id }"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="tabMovimentoFinanceiro" role="tabpanel">
+                        <div>
+                            <div class="custom-control custom-switch mb-3 mt-1">
+                                <input type="checkbox" class="custom-control-input" data-bind="checked: GerarMovimentoAutomatico.val, attr: { name: GerarMovimentoAutomatico.id, id: GerarMovimentoAutomatico.id }">
+                                <label class="custom-control-label" data-bind="text: GerarMovimentoAutomatico.text, attr: { for: GerarMovimentoAutomatico.id }"></label>
+                            </div>
+                            <hr />
+                            <div class="row " data-bind="id: GerarMovimentoAutomatico.idFade, fadeVisible: GerarMovimentoAutomatico.visibleFade">
+                                <div>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoEmissao.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoEmissao.text, attr: { for: TipoMovimentoEmissao.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoEmissao.requiredClass, value: TipoMovimentoEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoEmissao.maxlength, id : TipoMovimentoEmissao.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoEmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCancelamento.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoCancelamento.text, attr: { for: TipoMovimentoCancelamento.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoCancelamento.requiredClass, value: TipoMovimentoCancelamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCancelamento.maxlength, id : TipoMovimentoCancelamento.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCancelamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoAnulacao.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoAnulacao.text, attr: { for: TipoMovimentoAnulacao.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoAnulacao.requiredClass, value: TipoMovimentoAnulacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoAnulacao.maxlength, id : TipoMovimentoAnulacao.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoAnulacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoAnulacaoComNotaAnulacaoEmbarcador.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoAnulacaoComNotaAnulacaoEmbarcador.text, attr: { for: TipoMovimentoAnulacaoComNotaAnulacaoEmbarcador.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoAnulacaoComNotaAnulacaoEmbarcador.requiredClass, value: TipoMovimentoAnulacaoComNotaAnulacaoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoAnulacaoComNotaAnulacaoEmbarcador.maxlength, id : TipoMovimentoAnulacaoComNotaAnulacaoEmbarcador.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoAnulacaoComNotaAnulacaoEmbarcador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="custom-control custom-switch ms-3 mb-3 mt-1">
+                                                <input type="checkbox" class="custom-control-input" data-bind="checked: DiferenciarMovimentosParaValorLiquido.val, attr: { name: DiferenciarMovimentosParaValorLiquido.id, id: DiferenciarMovimentosParaValorLiquido.id }">
+                                                <label class="custom-control-label" data-bind="text: DiferenciarMovimentosParaValorLiquido.text, attr: { for: DiferenciarMovimentosParaValorLiquido.id }"></label>
+                                            </div>
+
+                                            <div class="card mx-1" data-bind="id: DiferenciarMovimentosParaValorLiquido.idFade, fadeVisible: DiferenciarMovimentosParaValorLiquido.visibleFade">
+                                                <div class="row mt-3 ">
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoValorLiquidoEmissao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoValorLiquidoEmissao.text, attr: { for: TipoMovimentoValorLiquidoEmissao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoValorLiquidoEmissao.requiredClass, value: TipoMovimentoValorLiquidoEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoValorLiquidoEmissao.maxlength, id : TipoMovimentoValorLiquidoEmissao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoValorLiquidoEmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoValorLiquidoCancelamento.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoValorLiquidoCancelamento.text, attr: { for: TipoMovimentoValorLiquidoCancelamento.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoValorLiquidoCancelamento.requiredClass, value: TipoMovimentoValorLiquidoCancelamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoValorLiquidoCancelamento.maxlength, id : TipoMovimentoValorLiquidoCancelamento.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoValorLiquidoCancelamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoValorLiquidoAnulacao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoValorLiquidoAnulacao.text, attr: { for: TipoMovimentoValorLiquidoAnulacao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoValorLiquidoAnulacao.requiredClass, value: TipoMovimentoValorLiquidoAnulacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoValorLiquidoAnulacao.maxlength, id : TipoMovimentoValorLiquidoAnulacao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoValorLiquidoAnulacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoValorLiquidoAnulacaoComNotaAnulacaoEmbarcador.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoValorLiquidoAnulacaoComNotaAnulacaoEmbarcador.text, attr: { for: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.requiredClass, value: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.maxlength, id : TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="custom-control custom-switch ms-3 mb-3 mt-1">
+                                                <input type="checkbox" class="custom-control-input" data-bind="checked: DiferenciarMovimentosParaImpostos.val, attr: { name: DiferenciarMovimentosParaImpostos.id, id: DiferenciarMovimentosParaImpostos.id }">
+                                                <label class="custom-control-label" data-bind="text: DiferenciarMovimentosParaImpostos.text, attr: { for: DiferenciarMovimentosParaImpostos.id }"></label>
+                                            </div>
+
+                                            <div class="card mx-1" data-bind="id: DiferenciarMovimentosParaImpostos.idFade, fadeVisible: DiferenciarMovimentosParaImpostos.visibleFade">
+                                                <div class="row mt-3 ">
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoImpostoEmissao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoImpostoEmissao.text, attr: { for: TipoMovimentoImpostoEmissao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoImpostoEmissao.requiredClass, value: TipoMovimentoImpostoEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoImpostoEmissao.maxlength, id : TipoMovimentoImpostoEmissao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoImpostoEmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoImpostoCancelamento.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoImpostoCancelamento.text, attr: { for: TipoMovimentoImpostoCancelamento.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoImpostoCancelamento.requiredClass, value: TipoMovimentoImpostoCancelamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoImpostoCancelamento.maxlength, id : TipoMovimentoImpostoCancelamento.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoImpostoCancelamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoImpostoAnulacao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoImpostoAnulacao.text, attr: { for: TipoMovimentoImpostoAnulacao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoImpostoAnulacao.requiredClass, value: TipoMovimentoImpostoAnulacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoImpostoAnulacao.maxlength, id : TipoMovimentoImpostoAnulacao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoImpostoAnulacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.text, attr: { for: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.requiredClass, value: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.maxlength, id : TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoImpostoAnulacaoComNotaAnulacaoEmbarcador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="custom-control custom-switch ms-3 mb-3 mt-1">
+                                                <input type="checkbox" class="custom-control-input" data-bind="checked: DiferenciarMovimentosParaPIS.val, attr: { name: DiferenciarMovimentosParaPIS.id, id: DiferenciarMovimentosParaPIS.id }">
+                                                <label class="custom-control-label" data-bind="text: DiferenciarMovimentosParaPIS.text, attr: { for: DiferenciarMovimentosParaPIS.id }"></label>
+                                            </div>
+
+                                            <div class="card mx-1" data-bind="id: DiferenciarMovimentosParaPIS.idFade, fadeVisible: DiferenciarMovimentosParaPIS.visibleFade">
+                                                <div class="row mt-3 ">
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoPISEmissao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoPISEmissao.text, attr: { for: TipoMovimentoPISEmissao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoPISEmissao.requiredClass, value: TipoMovimentoPISEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoPISEmissao.maxlength, id : TipoMovimentoPISEmissao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoPISEmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoPISCancelamento.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoPISCancelamento.text, attr: { for: TipoMovimentoPISCancelamento.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoPISCancelamento.requiredClass, value: TipoMovimentoPISCancelamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoPISCancelamento.maxlength, id : TipoMovimentoPISCancelamento.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoPISCancelamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoPISAnulacao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoPISAnulacao.text, attr: { for: TipoMovimentoPISAnulacao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoPISAnulacao.requiredClass, value: TipoMovimentoPISAnulacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoPISAnulacao.maxlength, id : TipoMovimentoPISAnulacao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoPISAnulacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoPISAnulacaoComNotaAnulacaoEmbarcador.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoPISAnulacaoComNotaAnulacaoEmbarcador.text, attr: { for: TipoMovimentoPISAnulacaoComNotaAnulacaoEmbarcador.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoPISAnulacaoComNotaAnulacaoEmbarcador.requiredClass, value: TipoMovimentoPISAnulacaoComNotaAnulacaoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoPISAnulacaoComNotaAnulacaoEmbarcador.maxlength, id : TipoMovimentoPISAnulacaoComNotaAnulacaoEmbarcador.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoPISAnulacaoComNotaAnulacaoEmbarcador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="custom-control custom-switch ms-3 mb-3 mt-1">
+                                                <input type="checkbox" class="custom-control-input" data-bind="checked: DiferenciarMovimentosParaCSLL.val, attr: { name: DiferenciarMovimentosParaCSLL.id, id: DiferenciarMovimentosParaCSLL.id }">
+                                                <label class="custom-control-label" data-bind="text: DiferenciarMovimentosParaCSLL.text, attr: { for: DiferenciarMovimentosParaCSLL.id }"></label>
+                                            </div>
+
+                                            <div class="card mx-1" data-bind="id: DiferenciarMovimentosParaCSLL.idFade, fadeVisible: DiferenciarMovimentosParaCSLL.visibleFade">
+
+                                                <div class="row mt-3 ">
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCSLLEmissao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoCSLLEmissao.text, attr: { for: TipoMovimentoCSLLEmissao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoCSLLEmissao.requiredClass, value: TipoMovimentoCSLLEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCSLLEmissao.maxlength, id : TipoMovimentoCSLLEmissao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCSLLEmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCSLLCancelamento.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoCSLLCancelamento.text, attr: { for: TipoMovimentoCSLLCancelamento.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoCSLLCancelamento.requiredClass, value: TipoMovimentoCSLLCancelamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCSLLCancelamento.maxlength, id : TipoMovimentoCSLLCancelamento.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCSLLCancelamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCSLLAnulacao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoCSLLAnulacao.text, attr: { for: TipoMovimentoCSLLAnulacao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoCSLLAnulacao.requiredClass, value: TipoMovimentoCSLLAnulacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCSLLAnulacao.maxlength, id : TipoMovimentoCSLLAnulacao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCSLLAnulacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCSLLAnulacaoComNotaAnulacaoEmbarcador.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoCSLLAnulacaoComNotaAnulacaoEmbarcador.text, attr: { for: TipoMovimentoCSLLAnulacaoComNotaAnulacaoEmbarcador.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoCSLLAnulacaoComNotaAnulacaoEmbarcador.requiredClass, value: TipoMovimentoCSLLAnulacaoComNotaAnulacaoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCSLLAnulacaoComNotaAnulacaoEmbarcador.maxlength, id : TipoMovimentoCSLLAnulacaoComNotaAnulacaoEmbarcador.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCSLLAnulacaoComNotaAnulacaoEmbarcador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="custom-control custom-switch ms-3 mb-3 mt-1">
+                                                <input type="checkbox" class="custom-control-input" data-bind="checked: DiferenciarMovimentosParaIR.val, attr: { name: DiferenciarMovimentosParaIR.id, id: DiferenciarMovimentosParaIR.id }">
+                                                <label class="custom-control-label" data-bind="text: DiferenciarMovimentosParaIR.text, attr: { for: DiferenciarMovimentosParaIR.id }"></label>
+                                            </div>
+
+                                            <div class="card mx-1" data-bind="id: DiferenciarMovimentosParaIR.idFade, fadeVisible: DiferenciarMovimentosParaIR.visibleFade">
+
+                                                <div class="row mt-3 ">
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoIREmissao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoIREmissao.text, attr: { for: TipoMovimentoIREmissao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoIREmissao.requiredClass, value: TipoMovimentoIREmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoIREmissao.maxlength, id : TipoMovimentoIREmissao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoIREmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoIRCancelamento.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoIRCancelamento.text, attr: { for: TipoMovimentoIRCancelamento.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoIRCancelamento.requiredClass, value: TipoMovimentoIRCancelamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoIRCancelamento.maxlength, id : TipoMovimentoIRCancelamento.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoIRCancelamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoIRAnulacao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoIRAnulacao.text, attr: { for: TipoMovimentoIRAnulacao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoIRAnulacao.requiredClass, value: TipoMovimentoIRAnulacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoIRAnulacao.maxlength, id : TipoMovimentoIRAnulacao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoIRAnulacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoIRAnulacaoComNotaAnulacaoEmbarcador.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoIRAnulacaoComNotaAnulacaoEmbarcador.text, attr: { for: TipoMovimentoIRAnulacaoComNotaAnulacaoEmbarcador.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoIRAnulacaoComNotaAnulacaoEmbarcador.requiredClass, value: TipoMovimentoIRAnulacaoComNotaAnulacaoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoIRAnulacaoComNotaAnulacaoEmbarcador.maxlength, id : TipoMovimentoIRAnulacaoComNotaAnulacaoEmbarcador.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoIRAnulacaoComNotaAnulacaoEmbarcador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="custom-control custom-switch ms-3 mb-3 mt-1">
+                                                <input type="checkbox" class="custom-control-input" data-bind="checked: DiferenciarMovimentosParaCOFINS.val, attr: { name: DiferenciarMovimentosParaCOFINS.id, id: DiferenciarMovimentosParaCOFINS.id }">
+                                                <label class="custom-control-label" data-bind="text: DiferenciarMovimentosParaCOFINS.text, attr: { for: DiferenciarMovimentosParaCOFINS.id }"></label>
+                                            </div>
+
+                                            <div class="card mx-1" data-bind="id: DiferenciarMovimentosParaCOFINS.idFade, fadeVisible: DiferenciarMovimentosParaCOFINS.visibleFade">
+
+                                                <div class="row mt-3 ">
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCOFINSEmissao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoCOFINSEmissao.text, attr: { for: TipoMovimentoCOFINSEmissao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoCOFINSEmissao.requiredClass, value: TipoMovimentoCOFINSEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCOFINSEmissao.maxlength, id : TipoMovimentoCOFINSEmissao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCOFINSEmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCOFINSCancelamento.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoCOFINSCancelamento.text, attr: { for: TipoMovimentoCOFINSCancelamento.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoCOFINSCancelamento.requiredClass, value: TipoMovimentoCOFINSCancelamento.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCOFINSCancelamento.maxlength, id : TipoMovimentoCOFINSCancelamento.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCOFINSCancelamento.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCOFINSAnulacao.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoCOFINSAnulacao.text, attr: { for: TipoMovimentoCOFINSAnulacao.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoCOFINSAnulacao.requiredClass, value: TipoMovimentoCOFINSAnulacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCOFINSAnulacao.maxlength, id : TipoMovimentoCOFINSAnulacao.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCOFINSAnulacao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoCOFINSAnulacaoComNotaAnulacaoEmbarcador.visible">
+                                                        <div class="form-group">
+                                                            <label class="form-label" data-bind="text: TipoMovimentoCOFINSAnulacaoComNotaAnulacaoEmbarcador.text, attr: { for: TipoMovimentoCOFINSAnulacaoComNotaAnulacaoEmbarcador.id }"></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-bind="css: TipoMovimentoCOFINSAnulacaoComNotaAnulacaoEmbarcador.requiredClass, value: TipoMovimentoCOFINSAnulacaoComNotaAnulacaoEmbarcador.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoCOFINSAnulacaoComNotaAnulacaoEmbarcador.maxlength, id : TipoMovimentoCOFINSAnulacaoComNotaAnulacaoEmbarcador.id}" />
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoCOFINSAnulacaoComNotaAnulacaoEmbarcador.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                        <i class="fal fa-search"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabMovimentoFinanceiroEntrada" role="tabpanel">
+                        <div>
+                            <div class="custom-control custom-switch mb-3">
+                                <input type="checkbox" class="custom-control-input" data-bind="checked: GerarMovimentoAutomaticoEntrada.val, attr: { name: GerarMovimentoAutomaticoEntrada.id, id: GerarMovimentoAutomaticoEntrada.id }">
+                                <label class="custom-control-label" data-bind="text: GerarMovimentoAutomaticoEntrada.text, attr: { for: GerarMovimentoAutomaticoEntrada.id }"></label>
+                            </div>
+                            <hr />
+                            <div class="row " data-bind="id: GerarMovimentoAutomaticoEntrada.idFade, fadeVisible: GerarMovimentoAutomaticoEntrada.visibleFade">
+                                <div>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoUsoEntrada.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoUsoEntrada.text, attr: { for: TipoMovimentoUsoEntrada.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoUsoEntrada.requiredClass, value: TipoMovimentoUsoEntrada.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoUsoEntrada.maxlength, id : TipoMovimentoUsoEntrada.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoUsoEntrada.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoReversaoEntrada.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoReversaoEntrada.text, attr: { for: TipoMovimentoReversaoEntrada.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoReversaoEntrada.requiredClass, value: TipoMovimentoReversaoEntrada.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoReversaoEntrada.maxlength, id : TipoMovimentoReversaoEntrada.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoReversaoEntrada.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="custom-control custom-switch mb-3 mt-1">
+                                <input type="checkbox" class="custom-control-input" data-bind="checked: GerarMovimentoValorSTRetido.val, attr: { name: GerarMovimentoValorSTRetido.id, id: GerarMovimentoValorSTRetido.id }">
+                                <label class="custom-control-label" data-bind="text: GerarMovimentoValorSTRetido.text, attr: { for: GerarMovimentoValorSTRetido.id }"></label>
+                            </div>
+                            <hr />
+                            <div class="row " data-bind="id: GerarMovimentoValorSTRetido.idFade, fadeVisible: GerarMovimentoValorSTRetido.visibleFade">
+                                <div>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoValorSTRetidoEmissao.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoValorSTRetidoEmissao.text, attr: { for: TipoMovimentoValorSTRetidoEmissao.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoValorSTRetidoEmissao.requiredClass, value: TipoMovimentoValorSTRetidoEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoValorSTRetidoEmissao.maxlength, id : TipoMovimentoValorSTRetidoEmissao.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoValorSTRetidoEmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoBaseSTRetidoReversao.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoBaseSTRetidoReversao.text, attr: { for: TipoMovimentoBaseSTRetidoReversao.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoBaseSTRetidoReversao.requiredClass, value: TipoMovimentoBaseSTRetidoReversao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoBaseSTRetidoReversao.maxlength, id : TipoMovimentoBaseSTRetidoReversao.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoBaseSTRetidoReversao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="custom-control custom-switch mb-3 mt-1">
+                                <input type="checkbox" class="custom-control-input" data-bind="checked: GerarMovimentoBaseSTRetido.val, attr: { name: GerarMovimentoBaseSTRetido.id, id: GerarMovimentoBaseSTRetido.id }">
+                                <label class="custom-control-label" data-bind="text: GerarMovimentoBaseSTRetido.text, attr: { for: GerarMovimentoBaseSTRetido.id }"></label>
+                            </div>
+                            <hr />
+                            <div class="row " data-bind="id: GerarMovimentoBaseSTRetido.idFade, fadeVisible: GerarMovimentoBaseSTRetido.visibleFade">
+                                <div>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoBaseSTRetidoEmissao.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoBaseSTRetidoEmissao.text, attr: { for: TipoMovimentoBaseSTRetidoEmissao.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoBaseSTRetidoEmissao.requiredClass, value: TipoMovimentoBaseSTRetidoEmissao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoBaseSTRetidoEmissao.maxlength, id : TipoMovimentoBaseSTRetidoEmissao.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoBaseSTRetidoEmissao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6" data-bind="visible: TipoMovimentoBaseSTRetidoReversao.visible">
+                                                <div class="form-group">
+                                                    <label class="form-label" data-bind="text: TipoMovimentoBaseSTRetidoReversao.text, attr: { for: TipoMovimentoBaseSTRetidoReversao.id }"></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" data-bind="css: TipoMovimentoBaseSTRetidoReversao.requiredClass, value: TipoMovimentoBaseSTRetidoReversao.val, valueUpdate: 'afterkeydown', attr: { maxlength: TipoMovimentoBaseSTRetidoReversao.maxlength, id : TipoMovimentoBaseSTRetidoReversao.id}" />
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: TipoMovimentoBaseSTRetidoReversao.idBtnSearch}" type="button" aria-label="Buscar">
+                                                                <i class="fal fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="knockoutSerie">
+                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: {id: Grid.id}" cellspacing="0"></table>
+                    <div class="row">
+                        <div class="col-12 col-md-8" data-bind="visible: Empresa.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Empresa.text, attr: { for: Empresa.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Empresa.requiredClass, value: Empresa.val, valueUpdate: 'afterkeydown', attr: { maxlength: Empresa.maxlength, id : Empresa.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Empresa.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4" data-bind="visible: Serie.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Serie.text, attr: { for: Serie.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="enable: Serie.enable, css: Serie.requiredClass, value: Serie.val, valueUpdate: 'afterkeydown', attr: { maxlength: Serie.maxlength, id : Serie.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Serie.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <button type="button" class="btn btn-labeled btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                                <span data-bind="text: Adicionar.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-3" id="knockoutCRUDModeloDocumentoFiscal">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-labeled btn-default" data-bind="click: Cancelar.eventClick, visible: Cancelar.visible, attr: { id : Cancelar.id}">
+                        <i class="fal fa-ban"></i><span data-bind="text: Cancelar.text"></span>
+                    </button>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-danger mx-1 mx-sm-3" data-bind="click: Excluir.eventClick, visible: Excluir.visible, attr: { id : Excluir.id}">
+                        <i class="fal fa-trash"></i><span data-bind="text: Excluir.text"></span>
+                    </button>
+                    <button type="button" class="btn btn-success" data-bind="click: Atualizar.eventClick, visible: Atualizar.visible, attr: { id : Atualizar.id}">
+                        <i class="fal fa-check"></i><span data-bind="text: Atualizar.text"></span>
+                    </button>
+                    <button type="button" class="btn btn-success" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick, visible: Adicionar.visible, attr: { id : Adicionar.id}">
+                        <i class="fal fa-check"></i><span data-bind="text: Adicionar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/scripts/modeloDocumentoFiscal"></script>
+<script type="text/javascript">
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadModeloDocumentoFiscal();
+    });
+</script>
+

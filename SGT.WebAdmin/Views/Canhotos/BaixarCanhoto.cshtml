@@ -1,0 +1,125 @@
+﻿
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item">Canhotos</li>
+    <li class="breadcrumb-item active">Baixar Canhoto</li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class=""></i> Baixa de Canhotos
+    </h1>
+    <div class="subheader-help">
+        <button type="button" onclick="iniciarAjuda(1010)" data-action="toggle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Abrir a ajuda da página" aria-label="Abrir a ajuda da página"><i class="fal fa-question-circle"></i></button>
+    </div>
+</div>
+
+<div id="knockoutBaixarCanhoto">
+    <div class="panel">
+        <div class="panel-container">
+            <div class="panel-content">
+                <form>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="col-12" data-bind="visible : DadosBaixa.visible">
+                                <label class="form-label"><b data-bind="text: DadosBaixa.text"></b></label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="" aria-label="Recipient's username" aria-describedby="basic-addon2" data-bind="class: DadosBaixa.requiredClass, value: DadosBaixa.val,valueUpdate: 'afterkeydown', attr: { maxlength: DadosBaixa.maxlength, id : DadosBaixa.id}, enable : DadosBaixa.enable">
+                                    <div class="input-group-append">
+                                        <button data-bind="attr: { id: DadosBaixa.idBtnSearch}, click: DadosBaixa.eventClick, enable : DadosBaixa.enable" class="btn btn-success" type="button">
+                                            <i class="fal fa-arrow-right"></i>
+                                            <span>Enviar</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        Local de Armazenamento Atual
+                                    </div>
+                                    <div data-bind="visible: Descricao.visible">
+                                        <div class="col-12 col-md-6" data-bind="visible: TipoCanhoto.visible">
+                                            <div class="form-group">
+                                                <label class="form-label" data-bind="text: TipoCanhoto.text, attr: { for: TipoCanhoto.id }"></label>
+                                                <select class="form-control" data-bind="options: TipoCanhoto.options, optionsText: 'text', optionsValue: 'value', value: TipoCanhoto.val, attr: { id : TipoCanhoto.id}, event : {change : TipoCanhoto.eventChange}"></select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <section class="col-12 col-md-12 mt-2" data-bind="visible: Descricao.visible">
+                                                <label><b data-bind="text: Descricao.text"></b> <span data-bind="text: Descricao.val"></span></label>
+                                            </section>
+                                            <section class="col-12 col-md-12 mt-2" data-bind="visible: CapacidadeArmazenagem.visible">
+                                                <label><b data-bind="text: CapacidadeArmazenagem.text"></b> <span data-bind="text: QuantidadeArmazenada.val"></span>/<span data-bind="text: CapacidadeArmazenagem.val"></span></label>
+                                            </section>
+                                            <section class="col-12 col-md-6 mt-2" data-bind="visible: PacoteAtual.visible">
+                                                <label><b data-bind="text: PacoteAtual.text"></b> <span data-bind="text: PacoteAtual.val"></span>/<span data-bind="text: TotalDePacotes.val"></span></label>
+                                            </section>
+                                            <section class="col-12 col-md-6 mt-2" data-bind="visible: DividirEmPacotesDe.visible">
+                                                <label><b data-bind="text: DividirEmPacotesDe.text"></b> <span data-bind="text: DividirEmPacotesDe.val"></span></label>
+                                            </section>
+                                            <section class="col-12 col-md-12 mt-2" data-bind="visible: Observacao.visible">
+                                                <label><b data-bind="text: Observacao.text"></b> <span data-bind="text: Observacao.val"></span>/<span data-bind="text: Observacao.val"></span></label>
+                                            </section>
+                                        </div>
+                                        <div class="row" data-bind="visible: !Descricao.visible()">
+                                            <p>Não existe um local de armazenamento configurado para baixa.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        Canhotos Enviados para o Local de Armazenamento
+                                    </div>
+                                    <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Pesquisar.idGrid}" cellspacing="0"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalDataEntregaCanhoto" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Informar data de Entrega</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knoutDataEntregaClienteCanhoto">
+                <div class="col-12 col-md-12" data-bind="visible: DataEntregaNotaCliente.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: DataEntregaNotaCliente.text"></label>
+                        <input type="text" class="form-control" data-bind="class: DataEntregaNotaCliente.requiredClass, value: DataEntregaNotaCliente.val, valueUpdate: 'afterkeydown', attr: { maxlength: DataEntregaNotaCliente.maxlength, id : DataEntregaNotaCliente.id}" />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-success" type="button" data-bind="click: Enviar.eventClick, attr: { id : Enviar.id}">
+                        <span data-bind="text: Enviar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/scripts/baixarCanhoto"></script>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    $(document).ready(function () {
+        loadBaixarCanhoto();
+    });
+
+</script>
+

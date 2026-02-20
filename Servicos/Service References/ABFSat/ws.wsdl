@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ads4wtrack.temsat.com.br/wstemsat1" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://ads4wtrack.temsat.com.br/wstemsat1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ABF Rastreadores - Sliic Web Service.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ads4wtrack.temsat.com.br/wstemsat1">
+      <s:element name="WSRegistro">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Cliente" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Usuario" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Senha" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="Inicial" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="WSRegistroResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="WSRegistroResult" type="tns:ArrayOfPosicao" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfPosicao">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Posicao" nillable="true" type="tns:Posicao" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Posicao">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IdMensagem" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="DataHora" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdRastreador" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Placa" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="Estado" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cidade" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Logradouro" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ArrayOfPosicao" nillable="true" type="tns:ArrayOfPosicao" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="WSRegistroSoapIn">
+    <wsdl:part name="parameters" element="tns:WSRegistro" />
+  </wsdl:message>
+  <wsdl:message name="WSRegistroSoapOut">
+    <wsdl:part name="parameters" element="tns:WSRegistroResponse" />
+  </wsdl:message>
+  <wsdl:message name="WSRegistroHttpGetIn">
+    <wsdl:part name="Cliente" type="s:string" />
+    <wsdl:part name="Usuario" type="s:string" />
+    <wsdl:part name="Senha" type="s:string" />
+    <wsdl:part name="Inicial" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="WSRegistroHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfPosicao" />
+  </wsdl:message>
+  <wsdl:message name="WSRegistroHttpPostIn">
+    <wsdl:part name="Cliente" type="s:string" />
+    <wsdl:part name="Usuario" type="s:string" />
+    <wsdl:part name="Senha" type="s:string" />
+    <wsdl:part name="Inicial" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="WSRegistroHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfPosicao" />
+  </wsdl:message>
+  <wsdl:portType name="wstemsat1Soap">
+    <wsdl:operation name="WSRegistro">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Mensagem de Posicionamento.</wsdl:documentation>
+      <wsdl:input message="tns:WSRegistroSoapIn" />
+      <wsdl:output message="tns:WSRegistroSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wstemsat1HttpGet">
+    <wsdl:operation name="WSRegistro">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Mensagem de Posicionamento.</wsdl:documentation>
+      <wsdl:input message="tns:WSRegistroHttpGetIn" />
+      <wsdl:output message="tns:WSRegistroHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="wstemsat1HttpPost">
+    <wsdl:operation name="WSRegistro">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Mensagem de Posicionamento.</wsdl:documentation>
+      <wsdl:input message="tns:WSRegistroHttpPostIn" />
+      <wsdl:output message="tns:WSRegistroHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wstemsat1Soap" type="tns:wstemsat1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WSRegistro">
+      <soap:operation soapAction="http://ads4wtrack.temsat.com.br/wstemsat1/WSRegistro" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wstemsat1Soap12" type="tns:wstemsat1Soap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WSRegistro">
+      <soap12:operation soapAction="http://ads4wtrack.temsat.com.br/wstemsat1/WSRegistro" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wstemsat1HttpGet" type="tns:wstemsat1HttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="WSRegistro">
+      <http:operation location="/WSRegistro" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wstemsat1HttpPost" type="tns:wstemsat1HttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="WSRegistro">
+      <http:operation location="/WSRegistro" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wstemsat1">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">ABF Rastreadores - Sliic Web Service.</wsdl:documentation>
+    <wsdl:port name="wstemsat1Soap" binding="tns:wstemsat1Soap">
+      <soap:address location="http://portal.abfsat.com.br/wstemsat1/ws.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wstemsat1Soap12" binding="tns:wstemsat1Soap12">
+      <soap12:address location="http://portal.abfsat.com.br/wstemsat1/ws.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wstemsat1HttpGet" binding="tns:wstemsat1HttpGet">
+      <http:address location="http://portal.abfsat.com.br/wstemsat1/ws.asmx" />
+    </wsdl:port>
+    <wsdl:port name="wstemsat1HttpPost" binding="tns:wstemsat1HttpPost">
+      <http:address location="http://portal.abfsat.com.br/wstemsat1/ws.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

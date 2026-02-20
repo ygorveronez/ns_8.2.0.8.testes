@@ -1,0 +1,97 @@
+﻿
+
+
+<div class="page-content">
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="well">
+				<div class="welcome text-primary"><strong>Bem-vindo(a)</strong></div>
+				<div class="welcome-name text-primary"><strong>@ViewBag.NomeUsuario</strong></div>
+			</div>
+
+            <div class="well" id="knockouDashboard" data-bind="visible: !_CONFIGURACAO_TMS.SomenteVisualizacaoBI">
+                <div class="well-title">
+                    <div class="icon-highlight warning pull-left">
+                        <i class="fa fa-truck"></i>
+                    </div>
+                    <div class="icon-highlight-title">
+                        Status das entregas
+                    </div>
+                </div>
+
+				<div class="text-primary text-center mt-4 mb-4" data-bind="visible: GraficoVazio.val">
+					<strong>Não há entregas em andamento</strong>
+				</div>
+				<canvas class="delivery-chart" data-bind="attr: { id: Chart.id }, visible: !GraficoVazio.val()"></canvas>
+			</div>
+		</div>
+
+		<div class="col-sm-6 notifications">
+			<div class="well well-dark" id="knockoutNotificacaoDashboard">
+				Notificações recentes
+
+                <div class="notifications-list" data-bind="foreach: { data: Notificacoes.val(), as: 'notificacao'}, visible: !_CONFIGURACAO_TMS.SomenteVisualizacaoBI">
+                    <a href="#" data-bind="click: (e) => URLPagina.eventClick(e, notificacao)">
+                        <div class="notification" data-bind="css: {'notification-unread': notificacao.SituacaoNotificacao.val() == EnumSituacaoNotificacao.Nova}">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="notification-icon" data-bind="css: 'notification-icon-' + notificacao.StatusVisual.val()">
+                                        <i class="fa fa-fw fa-2x" data-bind="css: notificacao.Icone.val()"></i>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8" data-bind="text: notificacao.Nota.val()"></div>
+                                <div class="col-sm-2">
+                                    <span data-bind="text: notificacao.Data.val()"></span>
+                                    <br />
+                                    <span data-bind="text: notificacao.Hora.val()"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+	.welcome-name {
+		font-size: 30px;
+	}
+
+	.delivery-chart {
+		margin: 30px 0 15px 0;
+	}
+</style>
+
+<script src="/scripts/homeCliente"></script>
+<script src="/scripts/notificacaoGlobal"></script>
+<script src="/scripts/chartjs"></script>
+
+<script type="text/javascript">
+	var _notificacaoPortalDashboard = null;
+	var _dashboard = null;
+
+	document.addEventListener('DOMContentLoaded', function() {
+		//altera a cor Principal do portal multiclifor
+		var alteraCorPrincipal = '@ViewBag.AlteraCorPrincipalPortal'.toLowerCase() === 'true';
+
+		if(alteraCorPrincipal){
+			document.documentElement.style.setProperty('--cor-principal', '#166770');
+			document.documentElement.style.setProperty('--cor-primaria', '#166770');
+		};
+    });
+
+	$(document).ready(function () {
+
+		var DesabilitarIconeNotificacao = '@ViewBag.DesabilitarIconeNotificacao'.toLowerCase() === 'true';
+
+		if(!DesabilitarIconeNotificacao){
+			_notificacaoPortalDashboard = new NotificacaoPortalCliente();
+			_notificacaoPortalDashboard.Load("knockoutNotificacaoDashboard");
+		}
+
+		_dashboard = new Dashboard();
+		_dashboard.Load("knockouDashboard");
+	});
+</script>

@@ -1,0 +1,718 @@
+﻿<div id="knoutEnviarArquivo" style="display:none">
+    <label for="file" class="input input-file">
+        <input type="file" accept=".xml" data-bind="attr: { id: Arquivo.id }" name="file" />
+    </label>
+</div>
+
+<div class="modal fade" id="divModalRetornoSefaz" style="z-index:1200" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.MensagemRetornoSefaz}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="PMensagemRetornoSefaz"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalDetalhesAutorizacao" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.DetalhesDaAutorizacao}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutDetalheAutorizacao">
+                <table>
+                    <tbody>
+                        <tr data-bind="visible: Regra.visible">
+                            <td>
+                                <b data-bind="text: Regra.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Regra.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: SituacaoDescricao.visible">
+                            <td>
+                                <b data-bind="text: SituacaoDescricao.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: SituacaoDescricao.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: Usuario.visible">
+                            <td>
+                                <b data-bind="text: Usuario.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Usuario.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: Data.visible && Data.val() != ''">
+                            <td>
+                                <b data-bind="text: Data.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Data.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: Justificativa.visible && Justificativa.val() != ''">
+                            <td>
+                                <b data-bind="text: Justificativa.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Justificativa.val"></span>
+                            </td>
+                        </tr>
+                        <tr data-bind="visible: Motivo.visible && Motivo.val() != ''">
+                            <td>
+                                <b data-bind="text: Motivo.text"></b>
+                            </td>
+                            <td>
+                                <span data-bind="text: Motivo.val"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end" style="gap:8px;">
+                    <button class="btn btn-primary" type="button" data-bind="click: Delegar.eventClick, visible: Delegar.visible ,attr: { id: Delegar.id}">
+                        <span data-bind="text: Delegar.text"></span>
+                    </button>
+                    <button class="btn btn-danger" type="button" data-bind="click: Rejeitar.eventClick, visible: Rejeitar.visible ,attr: { id: Rejeitar.id}">
+                        <span data-bind="text: Rejeitar.text"></span>
+                    </button>
+                    <button class="btn btn-success" type="button" data-bind="click: Aprovar.eventClick, visible: Aprovar.visible ,attr: { id: Aprovar.id}">
+                        <span data-bind="text: Aprovar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divModalDelegarOcorrencia" class="modal fade" role="dialog" aria-hidden="true">
+    <div id="knockoutDelegarOcorrencia" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.Delegar}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label" data-bind="text: UsuarioDelegado.text, attr: { for: UsuarioDelegado.id }"></label>
+                <div class="input-group">
+                    <input type="text" class="form-control" data-bind="css: UsuarioDelegado.requiredClass, value: UsuarioDelegado.val, valueUpdate: 'afterkeydown', attr: { maxlength: UsuarioDelegado.maxlength, id : UsuarioDelegado.id}" />
+                    <div class="input-group-append">
+                        <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="attr: { id: UsuarioDelegado.idBtnSearch}">
+                            <i class="fal fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12" data-bind="visible: Observacao.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                        <textarea class="form-control" rows="4" data-bind="value: Observacao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id }"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-2 mb-2 me-2">
+                <button class="btn btn-default me-2" type="button" data-bind="click: CancelarDelegar.eventClick, attr: { id: CancelarDelegar.id}">
+                    <span data-bind="text: CancelarDelegar.text"></span>
+                </button>
+                <button class="btn btn-success" type="button" data-bind="click: Delegar.eventClick, attr: { id: Delegar.id}">
+                    <i class="fal fa-check"></i><span data-bind="text: Delegar.text"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalRejeitarOcorrencia" role="dialog" aria-hidden="true">
+    <div id="knockoutRejeitarOcorrencia" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.Rejeitar}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-3 col-md-12" data-bind="visible: Justificativa.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: Justificativa.text, attr: { for: Justificativa.id }"></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" data-bind="value: Justificativa.val, enable: Justificativa.enable, attr: { maxlength: Justificativa.maxlength, id: Justificativa.id}, event: { blur: Justificativa.eventChange }, valueUpdate: 'afterkeydown'" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed" type="button" data-bind="enable : Justificativa.enable, attr: { id: Justificativa.idBtnSearch}">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" data-bind="visible: Motivo.visible">
+                    <label class="form-label" data-bind="text: Motivo.text, attr: { for: Motivo.id }"></label>
+                    <textarea class="form-control" rows="5" type="text" data-bind="value: Motivo.val, valueUpdate: 'afterkeydown', attr: { maxlength: Motivo.maxlength, id : Motivo.id}"></textarea>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-default me-2" type="button" data-bind="click: Cancelar.eventClick, attr: { id : Cancelar.id}">
+                        <i class="fal fa-times"></i><span data-bind="text: Cancelar.text"></span>
+                    </button>
+                    <button class="btn btn-danger" type="button" data-bind="click: Rejeitar.eventClick, attr: { id : Rejeitar.id}">
+                        <i class="fal fa-ban"></i><span data-bind="text: Rejeitar.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalGerenciarAnexos" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.AnexosDasOcorrencias}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutCadastroAnexos">
+                <form class="mb-3" data-bind="visible: Anexos.visible">
+                    <div class="row">
+                        <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                            </div>
+                        </div>
+                        <div class="form-group col-12 col-md-6" data-bind="visible: Arquivo.visible">
+                            <label class="form-label" data-bind="text: Arquivo.text"></label>
+                            <div class="custom-file" data-bind="visible: Arquivo.visible">
+                                <input type="file" name="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.pdf,.xls,.xlsx,.doc,.docx" data-bind="value: Arquivo.val, attr: { id: Arquivo.id }" readonly />
+                                <label data-bind="text: NomeArquivo.val, attr: { for: Arquivo.id }" class="custom-file-label"></label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <h4>{Localize::Ocorrencias.Ocorrencia.ArquivosAnexados}</h4>
+                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id : Anexos.idGrid}"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalGerenciarAnexosCarga" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.AnexosDaCarga}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutCadastroAnexosCarga">
+                <form class="mb-3" data-bind="visible: Anexos.visible">
+                    <div class="row">
+                        <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Arquivo.visible">
+                            <div class="form-group">
+                                <span class="form-label" data-bind="text: Arquivo.text"></span>
+                                <div class="custom-file">
+                                    <input type="file" name="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.pdf,.xls,.xlsx,.doc,.docx" data-bind="value: Arquivo.val, enable : Arquivo.enable, attr: { id: Arquivo.id }" />
+                                    <label class="custom-file-label" data-bind="text: Arquivo.val, attr: { for: Arquivo.id }"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <h4>{Localize::Ocorrencias.Ocorrencia.ArquivosAnexados}</h4>
+                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id : Anexos.idGrid}"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalGerenciarAnexosVeiculoContrato" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.AnexosDoVeiculo}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutCadastroAnexosVeiculoContrato">
+                <form class="mb-3" data-bind="visible: Anexos.visible">
+                    <div class="row">
+                        <div class="col-12 col-md-6" data-bind="visible: Descricao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Descricao.text, attr: { for: Descricao.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Descricao.val, valueUpdate: 'afterkeydown', attr: { maxlength: Descricao.maxlength, id : Descricao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: Arquivo.visible">
+                            <div class="form-group">
+                                <span class="form-label" data-bind="text: Arquivo.text"></span>
+                                <div class="custom-input">
+                                    <input type="file" name="file" class="custom-file-input" accept=".jpg,.jpeg,.png,.pdf,.xls,.xlsx,.doc,.docx" data-bind="value: Arquivo.val, enable : Arquivo.enable, attr: { id: Arquivo.id }" />
+                                    <label class="custom-file-label" data-bind="text: Arquivo.val, attr: { for: Arquivo.id }"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-success" type="button" data-loading-text="Aguarde..." data-bind="click: Adicionar.eventClick,visible: Adicionar.visible, text: Adicionar.text, attr: { id : Adicionar.id}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <h4>{Localize::Ocorrencias.Ocorrencia.ArquivosAnexados}</h4>
+                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id : Anexos.idGrid}"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalDetalhesCarga" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.DetalhesDasCargas}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>{Localize::Ocorrencias.Ocorrencia.Documentos}</h4>
+                <div id="knockoutDetalhesCargaSumarizada">
+                    <div data-bind="visible: Documentos.visible">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id : Documentos.idGrid}"></table>
+                    </div>
+                </div>
+                <div id="knockoutDetalhesDocumentosAgrupados">
+                    <div data-bind="visible: Documentos.visible">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id : Documentos.idGrid}"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalHistoricoIntegracaoCTe" style="z-index:1200" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.HistoricoDeIntegracaoDoCtE}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%" class="table table-bordered table-hover" cellspacing="0" id="tblHistoricoIntegracaoCTe"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="display:none">
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" accept=".xml" id="FileEnviarCTeDoPreCTeOcorrencia" name="file" />
+        <label class="custom-file-label" for="FileEnviarCTeDoPreCTeOcorrencia"></label>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalNFSeManual" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.Documento}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="knockoutNFSeManual">
+                <h4 class="position-relative">
+                    {Localize::Ocorrencias.Ocorrencia.DadosDaNfs}
+                    <a href="javascript:void(0);" title="Entenda a página" class="card-help" onclick="iniciarAjuda(962)"><i class="fal fa-question-circle"></i></a>
+                </h4>
+                <form>
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorTotal.text, attr: { for: ValorTotal.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorTotal.val, enable: ValorTotal.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorTotal.maxlength, id : ValorTotal.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Numero.text, attr: { for: Numero.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Numero.val, enable: Numero.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Numero.maxlength, id : Numero.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Serie.text, attr: { for: Serie.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: Serie.val, enable: Serie.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Serie.maxlength, id : Serie.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorPrestacaoServico.text, attr: { for: ValorPrestacaoServico.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorPrestacaoServico.val, enable: ValorPrestacaoServico.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorPrestacaoServico.maxlength, id : ValorPrestacaoServico.id}, event : {blur : ValorPrestacaoServico.eventChange}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: DataEmissao.text, attr: { for: DataEmissao.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: DataEmissao.val, enable: DataEmissao.enable, valueUpdate: 'afterkeydown', attr: { maxlength: DataEmissao.maxlength, id : DataEmissao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: AliquotaISS.text, attr: { for: AliquotaISS.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: AliquotaISS.val, enable: AliquotaISS.enable, valueUpdate: 'afterkeydown', attr: { maxlength: AliquotaISS.maxlength, id : AliquotaISS.id}, event : {blur : AliquotaISS.eventChange}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: BaseCalculo.text, attr: { for: BaseCalculo.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: BaseCalculo.val, enable: BaseCalculo.enable, valueUpdate: 'afterkeydown', attr: { maxlength: BaseCalculo.maxlength, id : BaseCalculo.id}, event : {blur : BaseCalculo.eventChange}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorISS.text, attr: { for: ValorISS.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorISS.val, enable: ValorISS.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorISS.maxlength, id : ValorISS.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: PercentualRetencao.text, attr: { for: PercentualRetencao.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: PercentualRetencao.val, enable: PercentualRetencao.enable, valueUpdate: 'afterkeydown', attr: { maxlength: PercentualRetencao.maxlength, id : PercentualRetencao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorRetencao.text, attr: { for: ValorRetencao.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorRetencao.val, enable: ValorRetencao.enable, valueUpdate: 'afterkeydown', attr: { maxlength: ValorRetencao.maxlength, id : ValorRetencao.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-group d-flex align-items-center h-100 mb-0">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" data-bind="checked: IncluirValorBC.val, valueUpdate: 'afterkeydown', attr: { name: IncluirValorBC.id, id : IncluirValorBC.id}" />
+                                    <label class="custom-control-label" data-bind="text: IncluirValorBC.text, attr: { for: IncluirValorBC.id }"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: XMLAutorizacao.visible">
+                            <div class="form-group">
+                                <span class="form-label" data-bind="text: XMLAutorizacao.text"></span>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" name="file" class="custom-file-input" accept=".xml" data-bind="value: XMLAutorizacao.val, enable: XMLAutorizacao.enable, attr: { id: XMLAutorizacao.id }">
+                                        <label class="custom-file-label" data-bind="text: XMLAutorizacao.val, attr: { for: XMLAutorizacao.id }"></label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="click: DownloadXML.eventClick, attr: { id: DownloadXML.id}">
+                                            <i class="fal fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" data-bind="visible: DANFSE.visible">
+                            <div class="form-group">
+                                <span class="form-label" data-bind="text: DANFSE.text, attr: { for: DANFSE.id }"></span>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" name="file" class="custom-file-input" accept=".pdf" data-bind="value: DANFSE.val, enable: DANFSE.enable, attr: { id: DANFSE.id }" />
+                                        <label class="custom-file-label" data-bind="text: DANFSE.val, attr: { for: DANFSE.id }"></label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button" data-bind="click: DownloadDANFSE.eventClick, attr: { id: DownloadDANFSE.id}">
+                                            <i class="fal fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" data-bind="visible: Observacao.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Observacao.text, attr: { for: Observacao.id }"></label>
+                                <textarea rows="5" class="form-control" type="text" data-bind="value: Observacao.val, enable: Observacao.enable, valueUpdate: 'afterkeydown', attr: { maxlength: Observacao.maxlength, id : Observacao.id}"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-default" type="button" data-bind="click: Fechar.eventClick, visible: Fechar.visible, text: Fechar.text, attr: { id : Fechar.id}"></button>
+                                <button class="btn btn-success ms-2" type="button" data-bind="click: Emitir.eventClick, visible: Emitir.visible, text: Emitir.text, attr: { id : Emitir.id}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="knockoutAlteracaoMoedaOcorrencia" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="fal fa-dollar"></i> {Localize::Ocorrencias.Ocorrencia.AlteracaoDeMoedaDaOcorrencia} </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-12 col-md-3" data-bind="visible: ValorCotacaoMoeda.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: ValorCotacaoMoeda.text, attr: { for: ValorCotacaoMoeda.id }"></label>
+                                <input type="text" class="form-control" data-bind="value: ValorCotacaoMoeda.val, valueUpdate: 'afterkeydown', attr: { maxlength: ValorCotacaoMoeda.maxlength, id : ValorCotacaoMoeda.id}" />
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: Moeda.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Moeda.text, attr: { for: Moeda.id }"></label>
+                                <select class="form-control" data-bind="options: Moeda.options, optionsText: 'text', optionsValue: 'value', value: Moeda.val, attr: { id : Moeda.id}"></select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-default" type="button" data-bind="click: Fechar.eventClick, visible: Fechar.visible, attr: { id: Fechar.id}">
+                                    <i data-bind="css: Fechar.icon"></i> <span data-bind="text: Fechar.text"></span>
+                                </button>
+                                <button class="btn btn-success ms-2" type="button" data-bind="click: Alterar.eventClick, visible: Alterar.visible, attr: { id: Alterar.id}">
+                                    <i data-bind="css: Alterar.icon"></i> <span data-bind="text: Alterar.text"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalProtocoloIntegracao" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.ProtocoloDeIntegracao}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="knoutModalProtocoloIntegracao">
+                    <b data-bind="text: CodigoProtocolo.text"></b> <span data-bind="text: CodigoProtocolo.val"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalNotasComplementares" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.NotasFiscaisParaComplemento}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div id="knockoutNotasComplementares">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12 col-md-3" data-bind="visible: CTe.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: CTe.text, attr: { for: CTe.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: CTe.requiredClass, value: CTe.val, valueUpdate: 'afterkeydown', attr: { maxlength: CTe.maxlength, id : CTe.id}, enable: CTe.enable" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: CTe.idBtnSearch}, enable: CTe.enable" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" data-bind="visible: Destinatario.visible">
+                            <div class="form-group">
+                                <label class="form-label" data-bind="text: Destinatario.text, attr: { for: Destinatario.id }"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" data-bind="css: Destinatario.requiredClass, value: Destinatario.val, valueUpdate: 'afterkeydown', attr: { maxlength: Destinatario.maxlength, id : Destinatario.id}" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Destinatario.idBtnSearch}" type="button" aria-label="Buscar">
+                                            <i class="fal fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary" type="button" data-bind="click: Pesquisar.eventClick, attr: { id: Pesquisar.id}">
+                            <i class="fal fa-search"></i> <span data-bind="text: Pesquisar.text"></span>
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button class="btn btn-default my-2" type="button" data-bind="click: SelecionarTodos.eventClick, attr: { id: SelecionarTodos.id}, enable: SelecionarTodos.enable, visible: SelecionarTodos.visible">
+                                <i class="fal fa-check"></i> <span data-bind="text: SelecionarTodos.text"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div data-bind="visible: NotasComplementaresGlobal.visible">
+                        <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id : NotasComplementaresGlobal.idGrid}"></table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <input type="button" data-loading-text="Aguarde..." data-bind="click: Confirmar.eventClick, visible: Confirmar.visible, attr: { value: Confirmar.text, id : Confirmar.id}" class="btn btn-labeled btn-success" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalEditarOutrosDocumentos" role="dialog" aria-hidden="true">
+    <div id="knockoutModalEditarOutrosDocumentos" class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Gerais.Geral.Editar}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6" data-bind="visible: Numero.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Numero.text"></label>
+                            <input type="text" class="form-control" data-bind="class: Numero.requiredClass, value: Numero.val, valueUpdate: 'afterkeydown', attr: { maxlength: Numero.maxlength, id : Numero.id}" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6" data-bind="visible: Serie.visible">
+                        <div class="form-group">
+                            <label class="form-label" data-bind="text: Serie.text, attr: { for: Serie.id }"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" data-bind="css: Serie.requiredClass, value: Serie.val, valueUpdate: 'afterkeydown', attr: { maxlength: Serie.maxlength, id : Serie.id}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary waves-effect waves-themed" data-bind="attr: { id: Serie.idBtnSearch}" type="button" aria-label="Buscar">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-default me-2" type="button" data-bind="click: Cancelar.eventClick, attr: { id : Cancelar.id}">
+                            <i class="fal fa-times"></i><span data-bind="text: Cancelar.text"></span>
+                        </button>
+                        <button class="btn btn-primary" type="button" data-bind="click: Confirmar.eventClick, attr: { id : Confirmar.id}">
+                            <i class="fal fa-ban"></i><span data-bind="text: Confirmar.text"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalDevolverProdutosOcorrencia" role="dialog" aria-hidden="true">
+    <div id="knockoutOcorrenciaNFeProduto" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.SelecionarProdutosParaDevolucao}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table width="100%" class="table table-bordered table-hover" data-bind="attr: { id: Grid.id }" cellspacing="0"></table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="knockoutImportacaoNOTFIS" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{Localize::Ocorrencias.Ocorrencia.ImportarNOTFIS}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12 col-md-12" data-bind="visible: LayoutEDI.visible">
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: LayoutEDI.text, attr: { for: LayoutEDI.id }"></label>
+                        <div class="input-group">
+                            <input type="text" data-bind="css: LayoutEDI.requiredClass, value: LayoutEDI.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': LayoutEDI.text, maxlength: LayoutEDI.maxlength, id: LayoutEDI.id, name: LayoutEDI.id }" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed is-invalid" type="button" data-bind="attr: { id: LayoutEDI.idBtnSearch}">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" data-bind="text: TipoOcorrenciaImportacaoNOTFIS.text, attr: { for: TipoOcorrenciaImportacaoNOTFIS.id }"></label>
+                        <div class="input-group">
+                            <input type="text" data-bind="css: TipoOcorrenciaImportacaoNOTFIS.requiredClass, value: TipoOcorrenciaImportacaoNOTFIS.val, valueUpdate: 'afterkeydown', attr: { 'aria-label': TipoOcorrenciaImportacaoNOTFIS.text, maxlength: TipoOcorrenciaImportacaoNOTFIS.maxlength, id: TipoOcorrenciaImportacaoNOTFIS.id, name: TipoOcorrenciaImportacaoNOTFIS.id }" />
+                            <div class="input-group-append">
+                                <button class="btn btn-primary waves-effect waves-themed is-invalid" type="button" data-bind="attr: { id: TipoOcorrenciaImportacaoNOTFIS.idBtnSearch}">
+                                    <i class="fal fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group col-12 col-md-12" data-bind="visible: ArquivoNOTFIS.visible">
+                            <p class="form-label" data-bind="text: ArquivoNOTFIS.text"></p>
+                            <div class="custom-file" data-bind="visible: ArquivoNOTFIS.visible">
+                                <input type="file" class="custom-file-input" data-bind="value: ArquivoNOTFIS.val, attr: {id: ArquivoNOTFIS.id}, multiple: true " readonly>
+                                <label class="custom-file-label" data-bind="attr: {for: ArquivoNOTFIS.id}, text: ArquivoNOTFIS.val() !=``? ArquivoNOTFIS.val(): `Selecione um arquivo para anexar`"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-success" type="button" data-bind="click: UploadNOTFIS.eventClick, attr: { id: UploadNOTFIS.id}">
+                        <i class="fal fa-upload"></i><span data-bind="text: UploadNOTFIS.text"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
